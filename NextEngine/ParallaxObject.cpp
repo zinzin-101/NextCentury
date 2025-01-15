@@ -41,6 +41,7 @@ ParallaxObject::ParallaxObject(float x,float y,float z, bool vertical, PlayerObj
 		//loopObject->getTransform().setPosition(glm::vec3(this->getTransform().getPosition().x + 10.3f, this->getTransform().getPosition().y, 0));
 		loopObject->getTransform().setScale(glm::vec3(10.0f, 10.0f, 0.0f));
 		cout << "loop created" << endl;
+		this->offsetLoop = 9.0f;
 	}
 	else {
 		loopObject = nullptr;
@@ -81,12 +82,13 @@ void ParallaxObject::update(list<DrawableObject*>& objectsList) {
 	glm::vec3 newPos = startPos + (travelDistance * parallaxFactor);
 	//cout << newPos.x << " " << newPos.y << " " << newPos.z << endl;
 	if (!vertical) {
-		if (playerPos.x - this->getTransform().getPosition().x > 5) {
-			offsetLoop += 10.3f;
+		if (playerPos.x - this->getTransform().getPosition().x > 1.0f) {
+			offsetLoop += 9.0f;
 		}
-		else if (playerPos.x - this->getTransform().getPosition().x < 5) {
-			offsetLoop += -10.3f;
+		else if (playerPos.x - this->getTransform().getPosition().x < 1.0f) {
+			offsetLoop -= 9.0f;
 		}
+		
 		this->getTransform().setPosition(glm::vec3(newPos.x + offsetLoop, startPos.y, startPos.z));
 		//cout << this->getTransform().getPosition().x;
 	}
