@@ -2,7 +2,10 @@
 #include "DrawableObject.h"
 #include "ParticleObject.h"
 
-class ParticleSystem : public DrawableObject {
+class ParticleEmitter : public DrawableObject {
 	private:
 		ParticleObject particle;
+
+	public:
+		ParticleEmitter(ParticleObject particle);
 };
