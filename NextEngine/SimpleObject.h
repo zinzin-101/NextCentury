@@ -10,12 +10,6 @@ public:
 	SimpleObject();
 	SimpleObject(string name);
 	~SimpleObject();
-	///////////////////////////////////////////////
-	virtual void onCollisionStay(Collider* collider);
-	virtual void onCollisionExit(Collider* collider);
-	virtual void onTriggerStay(Collider* collider);
-	virtual void onTriggerExit(Collider* collider);
-	///////////////////////////////////////////////
 	void setColor(float r, float g, float b);
 	void render(glm::mat4 globalModelTransform);
 };

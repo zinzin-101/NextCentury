@@ -16,42 +16,6 @@ SimpleObject::SimpleObject(string name) {
 
 SimpleObject::~SimpleObject() {}
 
-void SimpleObject::onCollisionStay(Collider* collider) {
-	DrawableObject* obj = collider->getObject();
-	LivingEntity* entity = dynamic_cast<LivingEntity*>(obj);
-	std::cout << "marker colliding with " << obj->getName() << std::endl;
-	/*if (entity != NULL) {
-		std::cout << "marker colliding with " << obj->getName() << std::endl;
-	} */
-}
-
-void SimpleObject::onCollisionExit(Collider* collider) {
-	DrawableObject* obj = collider->getObject();
-	LivingEntity* entity = dynamic_cast<LivingEntity*>(obj);
-	std::cout << "marker collision exit from " << obj->getName() << std::endl;
-	/*if (entity != NULL) {
-		std::cout << "marker collision exit from " << obj->getName() << std::endl;
-	}*/
-}
-
-void SimpleObject::onTriggerStay(Collider* collider) {
-	DrawableObject* obj = collider->getObject();
-	LivingEntity* entity = dynamic_cast<LivingEntity*>(obj);
-	std::cout << "marker triggering with " << obj->getName() << std::endl;
-	/*if (entity != NULL) {
-		std::cout << "marker colliding with " << obj->getName() << std::endl;
-	} */
-}
-
-void SimpleObject::onTriggerExit(Collider* collider) {
-	DrawableObject* obj = collider->getObject();
-	LivingEntity* entity = dynamic_cast<LivingEntity*>(obj);
-	std::cout << "marker trigger exit from " << obj->getName() << std::endl;
-	/*if (entity != NULL) {
-		std::cout << "marker collision exit from " << obj->getName() << std::endl;
-	}*/
-}
-
 void SimpleObject::setColor(float r, float g, float b) {
 	color = glm::vec3(r, g, b);
 }
