@@ -1,6 +1,7 @@
 #include "EnemyObject.h"
 #include "GameEngine.h"
 #include "PlayerObject.h"
+#include "ProjectileObject.h"
 #include <iostream>
 
 EnemyObject::EnemyObject(EnemyInfo& enemyInfo) : LivingEntity(enemyInfo.name, enemyInfo.health) {
@@ -228,8 +229,17 @@ void EnemyObject::updateBehavior(list<DrawableObject*>& objectsList) {
 				if (isPlayerInAttackRange(targetEntity->getTransform().getPosition())) {
 					//player->takeDamage(10); // Subtract 10 health points
 					//std::cout << player->getName() << " took 10 damage!" << std::endl;
-					attack();
+					
+					//attack();
 					std::cout << this->getName() << " attacked" << std::endl;
+				}
+				else {
+					Transform targetTranform = targetEntity->getTransform();
+					glm::vec3 targetPos = targetTranform.getPosition();
+
+					glm::vec2 velocity((targetPos.x > this->getTransform().getPosition().x) ? 5 : -5, 0);
+					ProjectileObject<PlayerObject>* projectile = new ProjectileObject<PlayerObject>(this, damage, this->getTransform().getPosition(), velocity, 5);
+					objectsList.emplace_back(projectile);
 				}
 			}
 		}

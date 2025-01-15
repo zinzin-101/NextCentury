@@ -2,7 +2,7 @@
 #include "ColliderObject.h"
 #include "EnemyObject.h"
 #include "GameEngine.h"
-//#include "LivingEntity.h"
+#include "LivingEntity.h"
 #include "PlayerObject.h"
 #include "SquareBorderMesh.h"
 
@@ -22,7 +22,6 @@ class DamageCollider : public ColliderObject {
 		DamageCollider(LivingEntity* owner, int damage, float lifespan);
 		virtual void update(std::list<DrawableObject*>& objectsList);
 		virtual void onCollisionEnter(Collider* collider);
-		virtual void onCollisionStay(Collider* collider);
 
 		void trigger(glm::vec3 pos);
 		void trigger(glm::vec3 pos, glm::vec3 offset);
@@ -77,16 +76,6 @@ void DamageCollider<TargetEntityType>::onCollisionEnter(Collider* collider) {
 	if (entity != NULL) {
 		entity->takeDamage(damage);
 		std::cout << entity->getName() << " took " << damage << " damage" << std::endl;
-	}
-}
-
-template <class TargetEntityType>
-void DamageCollider<TargetEntityType>::onCollisionStay(Collider* collider) {
-	DrawableObject* obj = collider->getObject();
-	TargetEntityType* entity = dynamic_cast<TargetEntityType*>(obj);
-
-	if (entity != NULL) {
-		std::cout << entity->getName() << " is in collider" << std::endl;
 	}
 }
 

@@ -2,7 +2,7 @@
 #include "Collider.h"
 #include "DrawableObject.h"
 
-class ColliderObject : public DrawableObject {
+class ColliderObject : public virtual DrawableObject {
 	public:
 		ColliderObject();
 		ColliderObject(std::string name);

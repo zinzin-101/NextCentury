@@ -56,7 +56,7 @@ void LevelPrototype::levelInit() {
         if (enemy != NULL) {
             enemy->setTarget(player);
             enemy->setHealth(15);
-            enemy->setCanAttack(false); // debug
+            //enemy->setCanAttack(false); // debug
             enemy->setDrawCollider(true); // for debugging
             cout << "enemy found" << endl;
         }
