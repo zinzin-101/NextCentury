@@ -25,38 +25,38 @@ void LevelEnemTest::levelInit() {
     //audio->playMusicByIndex(1, 0);
     ////////////////////////////////////
 
-    ParallaxObject* background = new ParallaxObject(5,3.5f,700.0f, false, player);
+    ParallaxObject* background = new ParallaxObject(5,3.5f,700.0f, false, player, true);
     background->setTexture("../Resource/Texture/OutskirtParallax/OSKT_P09_Sky.png");
     background->getTransform().setScale(glm::vec3(10.0f, 10.0f, 0)); // Adjust the scale to fit the screen
     background->getTransform().setPosition(glm::vec3(0.0f, 0.0f, 0.0f));
     objectsList.emplace(objectsList.begin(), background);
 
-    ParallaxObject* spaceShip = new ParallaxObject(5, 3.5f, 500.0f, false, player);
+    ParallaxObject* spaceShip = new ParallaxObject(5, 3.5f, 500.0f, false, player, true);
     spaceShip->setTexture("../Resource/Texture/OutskirtParallax/OSKT_P08_Spaceship.png");
     spaceShip->getTransform().setScale(glm::vec3(10.0f, 10.0f, 0));
     objectsList.push_back(spaceShip);
 
-    ParallaxObject* Mountain1 = new ParallaxObject(5, 3.5f, 400.0f, false, player);
+    ParallaxObject* Mountain1 = new ParallaxObject(5, 3.5f, 400.0f, false, player, true);
     Mountain1->setTexture("../Resource/Texture/OutskirtParallax/OSKT_P06_Mountain01.png");
     Mountain1->getTransform().setScale(glm::vec3(10.0f, 10.0f, 0));
     objectsList.push_back(Mountain1);
 
-    ParallaxObject* Mountain2 = new ParallaxObject(5, 3.5f, 350.0f, false, player);
+    ParallaxObject* Mountain2 = new ParallaxObject(5, 3.5f, 350.0f, false, player, true);
     Mountain2->setTexture("../Resource/Texture/OutskirtParallax/OSKT_P07_Mountain02.png");
     Mountain2->getTransform().setScale(glm::vec3(10.0f, 10.0f, 0));
     objectsList.push_back(Mountain2);
 
-    ParallaxObject* MidGround1 = new ParallaxObject(5, 3.5f, 200.0f, false, player);
+    ParallaxObject* MidGround1 = new ParallaxObject(5, 3.5f, 200.0f, false, player, true);
     MidGround1->setTexture("../Resource/Texture/OutskirtParallax/OSKT_P05_MidGround01.png");
     MidGround1->getTransform().setScale(glm::vec3(10.0f, 10.0f, 0));
     objectsList.push_back(MidGround1);
 
-    ParallaxObject* MidGround2 = new ParallaxObject(5, 3.5f, 100.0f, false, player);
+    ParallaxObject* MidGround2 = new ParallaxObject(5, 3.5f, 100.0f, false, player, true);
     MidGround2->setTexture("../Resource/Texture/OutskirtParallax/OSKT_P04_MidGround02.png");
     MidGround2->getTransform().setScale(glm::vec3(10.0f, 10.0f, 0));
     objectsList.push_back(MidGround2);
 
-    ParallaxObject* MidGround3 = new ParallaxObject(5, 3.5f, 50.0f, false, player);
+    ParallaxObject* MidGround3 = new ParallaxObject(5, 3.5f, 50.0f, false, player, true);
     MidGround3->setTexture("../Resource/Texture/OutskirtParallax/OSKT_P03_MidGround03.png");
     MidGround3->getTransform().setScale(glm::vec3(10.0f, 10.0f, 0));
     objectsList.push_back(MidGround3);
@@ -66,12 +66,12 @@ void LevelEnemTest::levelInit() {
     mapLoader.appendDataToScene(objectsList, player);
     /////////////////////////////
 
-    ParallaxObject* Ground = new ParallaxObject(5, 3.5f, 10.0f, false, player);
+    ParallaxObject* Ground = new ParallaxObject(5, 3.5f, 10.0f, false, player, true);
     Ground->setTexture("../Resource/Texture/OutskirtParallax/OSKT_P02_Ground.png");
     Ground->getTransform().setScale(glm::vec3(10.0f, 10.0f, 0));
     objectsList.push_back(Ground);
 
-    ParallaxObject* Fog = new ParallaxObject(5, 3.5f, 0.0f, false, player);
+    ParallaxObject* Fog = new ParallaxObject(5, 3.5f, 0.0f, false, player, true);
     Fog->setTexture("../Resource/Texture/OutskirtParallax/OSKT_P01_Fog.png");
     Fog->getTransform().setScale(glm::vec3(10.0f, 10.0f, 0));
 
