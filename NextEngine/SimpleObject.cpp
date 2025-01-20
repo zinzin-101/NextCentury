@@ -20,6 +20,10 @@ void SimpleObject::setColor(float r, float g, float b) {
 	color = glm::vec3(r, g, b);
 }
 
+void SimpleObject::setColor(glm::vec3 color) {
+	this->color = color;
+}
+
 void SimpleObject::render(glm::mat4 globalModelTransform) {
 	SquareMeshVbo *squareMesh = dynamic_cast<SquareMeshVbo *> (GameEngine::getInstance()->getRenderer()->getMesh(SquareMeshVbo::MESH_NAME));
 

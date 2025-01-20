@@ -11,6 +11,7 @@ public:
 	SimpleObject(string name);
 	~SimpleObject();
 	void setColor(float r, float g, float b);
-	void render(glm::mat4 globalModelTransform);
+	void setColor(glm::vec3 color);
+	virtual void render(glm::mat4 globalModelTransform);
 };
 
