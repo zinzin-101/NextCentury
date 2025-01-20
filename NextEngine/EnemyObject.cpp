@@ -2,6 +2,7 @@
 #include "GameEngine.h"
 #include "PlayerObject.h"
 #include "ProjectileObject.h"
+//#include "ParticleSystem.h" // temporary testing
 #include <iostream>
 
 EnemyObject::EnemyObject(EnemyInfo& enemyInfo) : LivingEntity(enemyInfo.name, enemyInfo.health) {
@@ -240,6 +241,9 @@ void EnemyObject::updateBehavior(list<DrawableObject*>& objectsList) {
 					glm::vec2 velocity((targetPos.x > this->getTransform().getPosition().x) ? 5 : -5, 0);
 					ProjectileObject<PlayerObject>* projectile = new ProjectileObject<PlayerObject>(this, damage, this->getTransform().getPosition(), velocity, 5);
 					objectsList.emplace_back(projectile);
+					/// test ///
+					//ParticleSystem* ps = projectile->getEmitter();
+					//objectsList.emplace_back(ps);
 				}
 			}
 		}

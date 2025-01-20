@@ -57,10 +57,12 @@ DrawableObject::DrawableObject(string name) {
 DrawableObject::~DrawableObject() {
 	if (physics != nullptr) {
 		delete physics;
+		physics = nullptr;
 	}
 
 	if (collider != nullptr) {
 		delete collider;
+		collider = nullptr;
 	}
 }
 
@@ -146,6 +148,7 @@ void DrawableObject::processCollider() {
 
 	for (pair<Collider*, Collider::CollisionState> pair : colliderMap) {
 		Collider* col = pair.first;
+
 		Collider::CollisionState state = pair.second;
 		switch (state) {
 			case Collider::ENTER:
