@@ -75,7 +75,9 @@ void Level::updateObjects(list<DrawableObject*>& objectsList) {
             itr--;
             continue;
         }
+    }
 
+    for (DrawableObject* obj : objectsList) {
         if (obj->getIsActive()) {
             obj->update(objectsList);
         }

@@ -57,10 +57,12 @@ DrawableObject::DrawableObject(string name) {
 DrawableObject::~DrawableObject() {
 	if (physics != nullptr) {
 		delete physics;
+		physics = nullptr;
 	}
 
 	if (collider != nullptr) {
 		delete collider;
+		collider = nullptr;
 	}
 }
 
