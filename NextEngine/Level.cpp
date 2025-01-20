@@ -67,6 +67,14 @@ void Level::startObjects(list<DrawableObject*>& objectsList) {
 }
 
 void Level::updateObjects(list<DrawableObject*>& objectsList) {
+    for (DrawableObject* obj : objectsList) {
+        if (obj->getIsActive()) {
+            obj->update(objectsList);
+        }
+    }
+
+    handleObjectCollision(objectsList);
+    
     for (std::list<DrawableObject*>::iterator itr = objectsList.begin(); itr != objectsList.end(); itr++) {
         DrawableObject* obj = *itr;
         if (obj->getMarkedForDelete()) {
@@ -76,12 +84,4 @@ void Level::updateObjects(list<DrawableObject*>& objectsList) {
             continue;
         }
     }
-
-    for (DrawableObject* obj : objectsList) {
-        if (obj->getIsActive()) {
-            obj->update(objectsList);
-        }
-    }
-
-    handleObjectCollision(objectsList);
 }

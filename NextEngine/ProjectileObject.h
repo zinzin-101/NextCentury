@@ -25,7 +25,7 @@ class ProjectileObject : public SimpleObject { // change later to TexturedObject
 		virtual void onCollisionEnter(Collider* collider);
 
 		/// test ///
-		ParticleSystem* getEmitter();
+		virtual void render(glm::mat4 globalModelTransform);
 		~ProjectileObject();
 };
 
@@ -41,25 +41,15 @@ ProjectileObject<TargetEntity>::ProjectileObject(LivingEntity* owner, int damage
 	(lifespan <= 0.0f) ? canDespawn = false : canDespawn = true;
 
 	/// test ///
-	emitter = nullptr;
 	particleProps = ParticleProperties(this->transform.getPosition(), glm::normalize(this->physics->getVelocity()), glm::vec2(1.0f, 1.0f), glm::vec3(),
 		0.2f, 0.1f, 0.05f, 1.0f);
-}
-
-template <class TargetEntity>
-ParticleSystem* ProjectileObject<TargetEntity>::getEmitter() {
-	if (emitter != nullptr) {
-		return emitter;
-	}
-
 	emitter = new ParticleSystem();
-	return emitter;
 }
 
 template <class TargetEntity>
 ProjectileObject<TargetEntity>::~ProjectileObject() {
 	if (emitter != nullptr) {
-		destroyObject(emitter);
+		delete emitter;
 	}
 }
 
@@ -87,11 +77,25 @@ void ProjectileObject<TargetEntity>::update(std::list<DrawableObject*>& objectsL
 }
 
 template <class TargetEntity>
+void ProjectileObject<TargetEntity>::render(glm::mat4 globalModelTransform) {
+	SimpleObject::render(globalModelTransform);
+
+	if (emitter != nullptr) {
+		emitter->render(globalModelTransform);
+	}
+}
+
+template <class TargetEntity>
 void ProjectileObject<TargetEntity>::onCollisionEnter(Collider* collider) {
 	DrawableObject* obj = collider->getObject();
 	TargetEntity* entity = dynamic_cast<TargetEntity*>(obj);
 
 	if (entity != NULL) {
+
+		if (!entity->getCanTakeDamage()) {
+			return;
+		}
+
 		entity->takeDamage(damage);
 		destroyObject(this);
 		return;

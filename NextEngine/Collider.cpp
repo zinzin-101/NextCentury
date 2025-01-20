@@ -18,6 +18,14 @@ Collider::Collider(DrawableObject* object, float width, float height) : object(o
 	collisionFlag = 0;
 }
 
+Collider::~Collider() {
+	for (pair<Collider*, CollisionState> pair : collisionMap) {
+		Collider* col = pair.first;
+		std::map<Collider*, CollisionState>& otherMap = col->getCollisionMap();
+		otherMap.erase(this);
+	}
+}
+
 void Collider::setEnableCollision(bool value) {
 	enableCollision = value;
 }

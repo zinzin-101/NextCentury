@@ -25,11 +25,15 @@ void LivingEntity::setCanTakeDamage(bool value) {
     canTakeDamage = value;
 }
 
-int LivingEntity::getHealth() {
+int LivingEntity::getHealth() const {
     return health;
 }
 
-bool LivingEntity::getIsDead() {
+bool LivingEntity::getCanTakeDamage() const {
+    return canTakeDamage;
+}
+
+bool LivingEntity::getIsDead() const {
     return isDead;
 }
 
@@ -137,11 +141,11 @@ void LivingEntity::takeDamage(int damage) {
     }
 }
 
-bool LivingEntity::getIsStun() {
+bool LivingEntity::getIsStun() const {
     return isStun;
 }
 
-bool LivingEntity::getIsFacingRight() {
+bool LivingEntity::getIsFacingRight() const {
     return isFacingRight;
 }
 

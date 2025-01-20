@@ -148,6 +148,7 @@ void DrawableObject::processCollider() {
 
 	for (pair<Collider*, Collider::CollisionState> pair : colliderMap) {
 		Collider* col = pair.first;
+
 		Collider::CollisionState state = pair.second;
 		switch (state) {
 			case Collider::ENTER:

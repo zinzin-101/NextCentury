@@ -144,3 +144,8 @@ void PlayerObject::attack() {
     attackCooldown = 1.0f; 
     std::cout << "Player attacked!" << std::endl;
 }
+
+/// debugging ///
+void PlayerObject::onTriggerEnter(Collider* collider) {
+    //std::cout << "player enters: " << collider->getObject()->getName() << std::endl;
+}

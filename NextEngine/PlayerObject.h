@@ -44,4 +44,7 @@ class PlayerObject : public LivingEntity {
         void move(glm::vec2 direction);
         void jump();
         void dodge();
+
+        /// debugging ///
+        virtual void onTriggerEnter(Collider* collider);
 };
