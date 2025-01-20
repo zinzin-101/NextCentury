@@ -86,6 +86,11 @@ void ParallaxObject::update(list<DrawableObject*>& objectsList) {
 		}
 		else if (playerPos.x - this->getTransform().getPosition().x < 5) {
 			offsetLoop += -10.3f;
+		if (playerPos.x + 1.5f - this->getTransform().getPosition().x > 1.0f) {
+			offsetLoop += 8.0f;
+		}
+		else if (playerPos.x + 1.5f - this->getTransform().getPosition().x < 1.0f) {
+			offsetLoop -= 8.0f;
 		}
 		this->getTransform().setPosition(glm::vec3(newPos.x + offsetLoop, startPos.y, startPos.z));
 		//cout << this->getTransform().getPosition().x;
