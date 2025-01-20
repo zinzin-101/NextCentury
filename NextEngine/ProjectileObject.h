@@ -25,7 +25,7 @@ class ProjectileObject : public SimpleObject { // change later to TexturedObject
 		virtual void onCollisionEnter(Collider* collider);
 
 		/// test ///
-		ParticleSystem* getEmitter() const;
+		ParticleSystem* getEmitter();
 		~ProjectileObject();
 };
 
@@ -43,17 +43,24 @@ ProjectileObject<TargetEntity>::ProjectileObject(LivingEntity* owner, int damage
 	/// test ///
 	emitter = nullptr;
 	particleProps = ParticleProperties(this->transform.getPosition(), glm::normalize(this->physics->getVelocity()), glm::vec2(1.0f, 1.0f), glm::vec3(),
-		1.2f, 0.8f, 0.2f, 1.0f);
+		0.2f, 0.1f, 0.05f, 1.0f);
 }
 
 template <class TargetEntity>
-ParticleSystem* ProjectileObject<TargetEntity>::getEmitter() const {
-	return this->emitter;
+ParticleSystem* ProjectileObject<TargetEntity>::getEmitter() {
+	if (emitter != nullptr) {
+		return emitter;
+	}
+
+	emitter = new ParticleSystem();
+	return emitter;
 }
 
 template <class TargetEntity>
 ProjectileObject<TargetEntity>::~ProjectileObject() {
-	destroyObject(emitter);
+	if (emitter != nullptr) {
+		destroyObject(emitter);
+	}
 }
 
 template <class TargetEntity>

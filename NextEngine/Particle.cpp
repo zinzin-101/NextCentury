@@ -2,6 +2,7 @@
 
 Particle::Particle() {
 	this->addPhysicsComponent();
+	this->getPhysicsComponent()->setEnableGravity(false);
 	lifespan = 1.0f;
 	lifeRemaining = 0.0f;
 	initSize = 1.0f;
