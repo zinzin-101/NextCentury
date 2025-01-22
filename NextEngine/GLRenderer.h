@@ -40,7 +40,7 @@ protected:
     void setMeshAttribId(MeshVbo* shape);
     Camera camera;
     bool isViewportEnabled;
-    float zoomRatio = 3;
+    float zoomRatio = 200;
 public:
 
     GLRenderer(int w, int h);

@@ -27,7 +27,7 @@ ParallaxObject::ParallaxObject(float z, bool vertical, PlayerObject* player, boo
 		loopObject = nullptr;
 	}
 }
-
+// I use this one
 ParallaxObject::ParallaxObject(float x,float y,float z, bool vertical, PlayerObject* player, bool loopable) : TexturedObject() {
 	cout << "parallax created" << endl;
 	this->z = z;
@@ -36,10 +36,11 @@ ParallaxObject::ParallaxObject(float x,float y,float z, bool vertical, PlayerObj
 	this->setName("parallax");
 	this->player = player;
 	this->loopable = loopable;
+	this->getTransform().setScale(glm::vec3(640.0f, 436.0f, 0.0f)); // MUST CHANGE TO "SET SCALE TO RESOLUTION" not this magic number
 	if (loopable) {
-		loopObject = new ParallaxObject(x, y, z, this->vertical, this->player, false); // must be false or else.... infinite loop naa
+		loopObject = new ParallaxObject(x + 640.0f/* THIS OFF SET SHOULD BE Picture size FIX CAM */, y, z, this->vertical, this->player, false); // must be false or else.... infinite loop naa
 		//loopObject->getTransform().setPosition(glm::vec3(this->getTransform().getPosition().x + 10.3f, this->getTransform().getPosition().y, 0));
-		loopObject->getTransform().setScale(glm::vec3(10.0f, 10.0f, 0.0f));
+		//loopObject->getTransform().setScale(glm::vec3(10.0f, 10.0f, 0.0f));
 		cout << "loop created" << endl;
 	}
 	else {
@@ -80,18 +81,13 @@ void ParallaxObject::update(list<DrawableObject*>& objectsList) {
 
 	glm::vec3 newPos = startPos + (travelDistance * parallaxFactor);
 	//cout << newPos.x << " " << newPos.y << " " << newPos.z << endl;
+	if (playerPos.x + 1.5f - this->getTransform().getPosition().x > 1.0f) {
+		offsetLoop += 640.0f;
+	}
+	else if (playerPos.x + 1.5f - this->getTransform().getPosition().x < 1.0f) {
+		offsetLoop -= 640.0f;
+	}
 	if (!vertical) {
-		if (playerPos.x - this->getTransform().getPosition().x > 5) {
-			offsetLoop += 10.3f;
-		}
-		else if (playerPos.x - this->getTransform().getPosition().x < 5) {
-			offsetLoop += -10.3f;
-		if (playerPos.x + 1.5f - this->getTransform().getPosition().x > 1.0f) {
-			offsetLoop += 8.0f;
-		}
-		else if (playerPos.x + 1.5f - this->getTransform().getPosition().x < 1.0f) {
-			offsetLoop -= 8.0f;
-		}
 		this->getTransform().setPosition(glm::vec3(newPos.x + offsetLoop, startPos.y, startPos.z));
 		//cout << this->getTransform().getPosition().x;
 	}
@@ -113,6 +109,7 @@ void ParallaxObject::setTexture(string path) {
 		loopObject->setTexture(path);
 	}
 }
+
 void ParallaxObject::initAnimation(int row, int column) {
 	TexturedObject::initAnimation(row, column);
 }

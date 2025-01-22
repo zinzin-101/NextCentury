@@ -33,7 +33,7 @@ void GameEngine::init(int width, int height) {
 
 	renderer = new GLRenderer(width, height);
 	renderer->initGL("../Resource/Shader/vertext.shd", "../Resource/Shader/fragment.shd");
-	setDrawArea(-8, 8, -4.5, 4.5);
+	setDrawArea(-8, 8, -4.5, 4.5);/*(-1 * width/2, width/2, -1 * height/2, height/2);*/
 	setBackgroundColor(1.0f, 1.0f, 200.0f / 255);
 
 	stateController = new GameStateController();
