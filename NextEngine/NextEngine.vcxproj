@@ -232,7 +232,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>../Resource/glew/include;../Resource/glm;../Resource/SDL2-2.0.5/include;../Resource/sdl_mixer/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../Resource/glew/include;../Resource/glm;../Resource/SDL2-2.0.5/include;../Resource/sdl_mixer/include;../Resource/SDL2_ttf/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -240,7 +240,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>../Resource/glew/lib/Release/Win32;../Resource/SDL2-2.0.5/lib/x86;../Resource/sdl_mixer/lib/x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>../Resource/glew/lib/Release/Win32;../Resource/SDL2-2.0.5/lib/x86;../Resource/sdl_mixer/lib/x86;../Resource/SDL2_ttf/lib/x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>SDL2main.lib;SDL2.lib;opengl32.lib;glew32.lib;glew32s.lib;SDL2_image.lib;SDL2_mixer.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
