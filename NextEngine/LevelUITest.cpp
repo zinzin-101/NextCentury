@@ -14,7 +14,7 @@ void LevelUITest::levelLoad() {
 }
 
 void LevelUITest::levelInit() {
-
+    UIobject = new UI();
 
     // Initialize the background
     background = new TexturedObject();
@@ -35,12 +35,13 @@ void LevelUITest::levelInit() {
     objectsList.push_back(player);
     
     // Initialize the player's health bar
-    healthBar = new SimpleObject(); 
+    /*healthBar = new SimpleObject(); 
     healthBar->setColor(1.0f, 0.0f, 0.0f);
     healthBar->getTransform().setScale(glm::vec3(2.0f, 0.2f, 0.0f));
     healthBar->getTransform().setPosition(glm::vec3(player->getTransform().getPosition().x,
         player->getTransform().getPosition().y + 1.0f, 0.0f));
-    objectsList.push_back(healthBar);
+    objectsList.push_back(healthBar);*/
+    UIobject->initUI(objectsList);
 
 
     // Initialize Enemy
@@ -97,9 +98,9 @@ void LevelUITest::levelUpdate() {
     // Update health bar based on player's current health
     float healthPercentage = static_cast<float>(player->getHealth()) / 100;
     float healthBarWidth = healthPercentage * 2.0f;
-    healthBar->getTransform().setScale(glm::vec3(healthBarWidth, 0.2f, 0.0f)); 
+    //healthBar->getTransform().setScale(glm::vec3(healthBarWidth, 0.2f, 0.0f)); 
     float offsetX = (2.0f - healthBarWidth) / 2.0f;
-    healthBar->getTransform().setPosition(glm::vec3(playerPosition.x - offsetX, playerPosition.y + 1.5f, 0.0f)); 
+    //healthBar->getTransform().setPosition(glm::vec3(playerPosition.x - offsetX, playerPosition.y + 1.5f, 0.0f)); 
 
     // Check collision between player and enemy
     for (DrawableObject* obj : objectsList) {
@@ -112,7 +113,7 @@ void LevelUITest::levelUpdate() {
             }
         }
     }
-
+    UIobject->updateUI(*player);
     // Update attack hitbox
     glm::vec3 playerPos = player->getTransform().getPosition();
     attackHitbox->getTransform().setPosition(glm::vec3(playerPos.x + 1.0f, playerPos.y, playerPos.z));

@@ -9,15 +9,17 @@
 #include "EnemyObject.h"
 #include "Audio.h"
 #include "ParallaxObject.h"
+#include "UI.h"
 
 class Level
 {
 private:
     list<DrawableObject*> objectsList;
     PlayerObject* player;
+    UI* UIobject;
 
 public:
-    SimpleObject* healthBar = nullptr;
+    //SimpleObject* healthBar = nullptr;
     virtual void levelLoad();
     virtual void levelInit();
     virtual void levelUpdate();
