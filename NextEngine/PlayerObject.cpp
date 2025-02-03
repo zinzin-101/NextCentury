@@ -56,11 +56,11 @@ void PlayerObject::jump() {
         return;
     }
 
-    bool grounded = collider->getCollisionFlag() && COLLISION_DOWN;
+    bool grounded = collider->getCollisionFlag() & COLLISION_DOWN;
     if (grounded) {
-        glm::vec2 vel = physics->getVelocity();
-        vel.y = PlayerStat::JUMP_HEIGHT;
-        physics->setVelocity(vel);
+        glm::vec2 vel = this->physics->getVelocity();
+        vel.y = PlayerStat::JUMP_VELOCITY;
+        this->physics->setVelocity(vel);
     }
 }
 
@@ -124,9 +124,25 @@ void PlayerObject::updateBehavior(list<DrawableObject*>& objectsList) {
     }
 
     // Handle movement
-    vel.x = moveDirection.x * PlayerStat::MOVE_SPEED;
-    this->physics->setVelocity(vel);
-    moveDirection.x = 0.0f; // Reset move direction for the next frame
+    this->physics->addVelocity(glm::vec2(moveDirection.x * PlayerStat::ACCEL_SPEED * dt, 0.0f));
+    vel = this->physics->getVelocity();
+    if (abs(vel.x) > PlayerStat::MOVE_SPEED) {
+        vel.x = PlayerStat::MOVE_SPEED * moveDirection.x;
+        this->physics->setVelocity(vel);
+    }
+
+    vel = this->physics->getVelocity();
+    if (vel.x != 0.0f && moveDirection.x == 0.0f) {
+        float dragDir = vel.x > 0.0f ? -1 : 1;
+        this->physics->addVelocity(glm::vec2(dragDir * PlayerStat::DECEL_SPEED * dt, 0.0f));
+        float newVel = this->physics->getVelocity().x;
+
+        if ((vel.x < 0) != (newVel < 0)) {
+            this->physics->setVelocity(glm::vec2(0.0f, vel.y));
+        }
+    }
+    
+    moveDirection.x = 0.0f; // Reset move direction for next frame
 }
 
 

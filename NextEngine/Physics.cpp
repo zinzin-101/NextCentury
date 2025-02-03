@@ -36,6 +36,10 @@ void Physics::addForce(glm::vec2 f) {
 	acceleration += f / mass;
 }
 
+void Physics::addVelocity(glm::vec2 vel) {
+	velocity += vel;
+}
+
 void Physics::setDrag(float drag) {
 	if (drag < 0 || drag > 1) {
 		std::cout << "Drag must be within the range of 0-1" << std::endl;

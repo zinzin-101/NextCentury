@@ -29,6 +29,7 @@ class Physics {
 		void setGravity(glm::vec2 g);
 		void setMass(float m);
 		void addForce(glm::vec2 f);
+		void addVelocity(glm::vec2 vel);
 		void setDrag(float drag);
 		void applyGravity();
 		void update(Transform& transform);

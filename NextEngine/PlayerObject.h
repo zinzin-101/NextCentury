@@ -11,10 +11,10 @@ namespace PlayerStat {
     constexpr float HITBOX_ACTIVE_TIME = 0.5f;
 
     constexpr float MOVE_SPEED = 5.0f;
-    constexpr float ACCEL_SPEED = 7.5f;
+    constexpr float ACCEL_SPEED = 2000.0f;
     constexpr float DECEL_SPEED = 10.0f;
 
-    constexpr float JUMP_HEIGHT = 25.0f;
+    constexpr float JUMP_VELOCITY = 25.0f;
 }
 
 class EnemyObject;

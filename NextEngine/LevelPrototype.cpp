@@ -206,7 +206,7 @@ void LevelPrototype::initPlayer(PlayerObject*& player, PlayerInfo playerInfo) {
     else {
         player->setName(playerInfo.name);
         player->setHealth(playerInfo.health);
-        player->setMovementInfo(playerInfo.movementInfo);
+        //player->setMovementInfo(playerInfo.movementInfo);
         player->setDamage(playerInfo.damage);
     }
 
