@@ -74,7 +74,7 @@ void PlayerObject::dodge() {
 }
 
 void PlayerObject::start(list<DrawableObject*>& objectsList) {
-    attackHitbox = new DamageCollider<EnemyObject>(this, damage, PlayerStat::HITBOX_ACTIVE_TIME);
+    attackHitbox = new DamageCollider<EnemyObject>(this, damage, PlayerStat::ATTACK_HITBOX_ACTIVE_TIME);
     //attackHitbox = new DamageCollider<EnemyObject>(this, damage, 2.5f);
     attackHitbox->setActive(false);
     attackHitbox->setFollowOwner(true);
