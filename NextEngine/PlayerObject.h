@@ -9,7 +9,7 @@ namespace PlayerStat {
     constexpr float DODGE_COOLDOWN = 1.0f;
     constexpr float DODGE_DURATION = 0.1f;
 
-    constexpr float HITBOX_ACTIVE_TIME = 0.5f;
+    constexpr float ATTACK_HITBOX_ACTIVE_TIME = 0.5f;
 
     constexpr float MOVE_SPEED = 5.0f;
     constexpr float ACCEL_SPEED = 2000.0f;
