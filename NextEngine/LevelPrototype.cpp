@@ -76,6 +76,7 @@ void LevelPrototype::levelInit() {
     ray = new RayObject(player->getTransform().getPosition(), glm::vec3(-1, 0, 0), 1);
     objectsList.emplace_back(ray);
     ray->setDrawCollider(true);
+    ray->setName("ray");
 }
 
 void LevelPrototype::levelUpdate() {

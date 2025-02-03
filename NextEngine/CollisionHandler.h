@@ -13,7 +13,6 @@ bool checkCollisionRay(RayObject* ray1, Collider* col2, Transform& t2);
 bool checkCollisionPoint(Collider* col, Transform& t, glm::vec2 point);
 void updateCollisionState(Collider* col1, Collider* col2, bool collided);
 void handleObjectCollision(list<DrawableObject*>& objects);
-void handleObjectCollision(list<DrawableObject*>& objects, void (*triggerFunction)(DrawableObject*, DrawableObject*));
 void resolveCollision(DrawableObject* obj1, DrawableObject* obj2);
 
 template <class T>

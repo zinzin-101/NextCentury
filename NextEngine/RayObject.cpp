@@ -3,6 +3,7 @@
 
 RayObject::RayObject(glm::vec3 pos, glm::vec3 dir, float length): origin(pos), length(length) {
 	this->addColliderComponent();
+	this->getColliderComponent()->setTrigger(true);
 	dir = glm::normalize(dir);
 	this->dir = dir;
 }
