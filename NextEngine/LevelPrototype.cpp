@@ -73,7 +73,7 @@ void LevelPrototype::levelInit() {
     //marker->getColliderComponent()->getTransform().setScale(2.0f);
     //marker->getColliderComponent()->setDimension(50, 50);
 
-    ray = new RayObject(player->getTransform().getPosition(), glm::vec3(-1, 0, 0), 1);
+    ray = new RayObject(player->getTransform().getPosition(), glm::vec3(1, 1, 0), 4);
     objectsList.emplace_back(ray);
     ray->setDrawCollider(true);
     ray->setName("ray");

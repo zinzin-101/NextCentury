@@ -33,45 +33,48 @@ bool checkCollisionRay(RayObject* ray1, Collider* col2, Transform& t2) {
 	glm::vec3 pos1 = globalT1.getPosition() + ray1->getRayOrigin();
 	glm::vec3 endPoint = pos1 + (ray1->getRayDirection() * ray1->getRayLength());
 
-	return checkCollisionPoint(col2, t2, pos1) ||
-		checkCollisionPoint(col2, t2, endPoint);
+	bool isInside = checkCollisionPoint(col2, t2, pos1) || checkCollisionPoint(col2, t2, endPoint);
 
-	//float x1 = pos1.x;
-	//float y1 = pos1.y;
-	//float x2 = endPoint.x;
-	//float y2 = endPoint.y;
-	//
-	//Transform globalT2 = col2->getGlobalTransform(t2);
-	//glm::vec3 pos2 = globalT2.getPosition();
-	//float halfWidth2 = abs(globalT2.getScale().x * col2->getWidth() / 2.0f);
-	//float halfHeight2 = abs(globalT2.getScale().y * col2->getHeight() / 2.0f);
+	if (isInside) {
+		return true;
+	}
 
-	//glm::vec3 up(0, halfHeight2, 0);
-	//glm::vec3 right(halfWidth2, 0, 0);
+	float x1 = pos1.x;
+	float y1 = pos1.y;
+	float x2 = endPoint.x;
+	float y2 = endPoint.y;
+	
+	Transform globalT2 = col2->getGlobalTransform(t2);
+	glm::vec3 pos2 = globalT2.getPosition();
+	float halfWidth2 = abs(globalT2.getScale().x * col2->getWidth() / 2.0f);
+	float halfHeight2 = abs(globalT2.getScale().y * col2->getHeight() / 2.0f);
 
-	//glm::vec3 points[4] = {
-	//	pos2 - right + up,
-	//	pos2 + right + up,
-	//	pos2 + right - up,
-	//	pos2 - right - up
-	//};
+	glm::vec3 up(0, halfHeight2, 0);
+	glm::vec3 right(halfWidth2, 0, 0);
 
-	//for (int i = 0; i < 4; i++) {
-	//	float x3 = points[i].x;
-	//	float y3 = points[i].y;
-	//	float x4 = points[(i + 1) % 4].x;
-	//	float y4 = points[(i + 1) % 4].y;
+	glm::vec3 points[4] = {
+		pos2 - right + up,
+		pos2 + right + up,
+		pos2 + right - up,
+		pos2 - right - up
+	};
 
-	//	// Line intersection formula
-	//	float t = ((x1 - x3) * (y3 - y4) - (y1 - y3) * (x3 - x4)) / ((x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4));
-	//	float u = -((x1 - x2) * (y1 - y3) - (y1 - y2) * (x1 - x3)) / ((x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4));
+	for (int i = 0; i < 4; i++) {
+		float x3 = points[i].x;
+		float y3 = points[i].y;
+		float x4 = points[(i + 1) % 4].x;
+		float y4 = points[(i + 1) % 4].y;
 
-	//	if (0.0f <= t && t <= 1.0f && 0.0f <= u && u <= 1.0f) {
-	//		return true;
-	//	}
-	//}
+		// Line intersection formula
+		float t = ((x1 - x3) * (y3 - y4) - (y1 - y3) * (x3 - x4)) / ((x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4));
+		float u = -((x1 - x2) * (y1 - y3) - (y1 - y2) * (x1 - x3)) / ((x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4));
 
-	//return false;
+		if (0.0f <= t && t <= 1.0f && 0.0f <= u && u <= 1.0f) {
+			return true;
+		}
+	}
+
+	return false;
 }
 
 bool checkCollisionPoint(Collider* col, Transform& t, glm::vec2 point) {
