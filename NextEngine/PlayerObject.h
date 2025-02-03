@@ -1,14 +1,21 @@
 #pragma once
 #include "DamageCollider.h"
 #include "LivingEntity.h"
-#include "MovementInfo.h"
 #include "PlayerInfo.h"
 #include <list>
 
-constexpr float DODGE_VELOCITY = 50.0f;
-constexpr float DODGE_COOLDOWN = 1.0f;
-constexpr float DODGE_DURATION = 0.05f;
-constexpr float HITBOX_ACTIVE_TIME = 0.5f;
+namespace PlayerStat {
+    constexpr float DODGE_VELOCITY = 50.0f;
+    constexpr float DODGE_COOLDOWN = 1.0f;
+    constexpr float DODGE_DURATION = 0.05f;
+    constexpr float HITBOX_ACTIVE_TIME = 0.5f;
+
+    constexpr float MOVE_SPEED = 5.0f;
+    constexpr float ACCEL_SPEED = 7.5f;
+    constexpr float DECEL_SPEED = 10.0f;
+
+    constexpr float JUMP_HEIGHT = 25.0f;
+}
 
 class EnemyObject;
 
@@ -17,8 +24,6 @@ class PlayerObject : public LivingEntity {
         DamageCollider<EnemyObject>* attackHitbox;
         float attackCooldown;  
         int damage;
-
-        MovementInfo movementInfo;
     
         bool isDodging;
         bool canDodge;
@@ -38,8 +43,6 @@ class PlayerObject : public LivingEntity {
 
         virtual void start(list<DrawableObject*>& objectsList);
         virtual void updateBehavior(list<DrawableObject*>& objectsList);
-
-        void setMovementInfo(MovementInfo movementInfo);
 
         void move(glm::vec2 direction);
         void jump();
