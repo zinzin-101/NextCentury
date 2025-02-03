@@ -56,6 +56,7 @@
     <ClCompile Include="Physics.cpp" />
     <ClCompile Include="PlayerObject.cpp" />
     <ClCompile Include="Random.cpp" />
+    <ClCompile Include="RayObject.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="SimpleObject.cpp" />
     <ClCompile Include="SquareBorderMesh.cpp" />
@@ -109,6 +110,7 @@
     <ClInclude Include="PlayerObject.h" />
     <ClInclude Include="ProjectileObject.h" />
     <ClInclude Include="Random.h" />
+    <ClInclude Include="RayObject.h" />
     <ClInclude Include="SaveSystem.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="SimpleObject.h" />

@@ -9,6 +9,7 @@ class LevelPrototype : public Level {
         list<DrawableObject*> objectsList;
         PlayerObject* player;
         SimpleObject* marker;
+        RayObject* ray;
         MapLoader mapLoader;
 
         bool viewMarker;

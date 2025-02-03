@@ -28,6 +28,48 @@ bool checkCollision(Collider* col1, Transform& t1, Collider* col2, Transform& t2
 	return collided;
 }
 
+bool checkCollisionRay(RayObject* ray1, Collider* col2, Transform& t2) {
+	Transform globalT1 = ray1->getTransform();
+	glm::vec3 pos1 = globalT1.getPosition() + ray1->getRayOrigin();
+	glm::vec3 endPoint = pos1 + (ray1->getRayDirection() * ray1->getRayLength());
+	float x1 = pos1.x;
+	float y1 = pos1.y;
+	float x2 = endPoint.x;
+	float y2 = endPoint.y;
+	
+	Transform globalT2 = col2->getGlobalTransform(t2);
+	glm::vec3 pos2 = globalT2.getPosition();
+	float halfWidth2 = abs(globalT2.getScale().x * col2->getWidth() / 2.0f);
+	float halfHeight2 = abs(globalT2.getScale().y * col2->getHeight() / 2.0f);
+
+	glm::vec3 up(0, halfHeight2, 0);
+	glm::vec3 right(halfWidth2, 0, 0);
+
+	glm::vec3 points[4] = {
+		pos2 - right + up,
+		pos2 + right + up,
+		pos2 - right - up,
+		pos2 + right - up
+	};
+
+	for (int i = 0; i < 3; i++) {
+		float x3 = points[i].x;
+		float y3 = points[i].y;
+		float x4 = points[i+1].x;
+		float y4 = points[i+1].y;
+
+		// Line intersection formula
+		float t = ((x1 - x3) * (y3 - y4) - (y1 - y3) * (x3 - x4)) / ((x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4));
+		float u = -((x1 - x2) * (y1 - y3) - (y1 - y2) * (x1 - x3)) / ((x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4));
+
+		if (0.0f <= t && t <= 1.0f && 0.0f <= u && u <= 1.0f) {
+			return true;
+		}
+	}
+
+	return false;
+}
+
 bool checkCollisionPoint(Collider* col, Transform& t, glm::vec2 point) {
 	Transform globalT = col->getGlobalTransform(t);
 	glm::vec3 pos = globalT.getPosition();
@@ -67,7 +109,6 @@ void updateCollisionState(Collider* col1, Collider* col2, bool collided) {
 	}
 }
 
-
 void handleObjectCollision(list<DrawableObject*>& objects) {
 	for (list<DrawableObject*>::iterator i = objects.begin(); i != objects.end(); i++) {
 
@@ -80,9 +121,16 @@ void handleObjectCollision(list<DrawableObject*>& objects) {
 				continue;
 			}
 
+
 			DrawableObject* obj1 = *i;
 			DrawableObject* obj2 = *j;
 
+			RayObject* ray1 = dynamic_cast<RayObject*>(obj1);
+			RayObject* ray2 = dynamic_cast<RayObject*>(obj2);
+			if (ray2 != NULL) {
+				continue;
+			}
+			
 			Collider* col1 = obj1->getColliderComponent();
 			Collider* col2 = obj2->getColliderComponent();
 
@@ -118,6 +166,9 @@ void handleObjectCollision(list<DrawableObject*>& objects) {
 
 					t1.translate(dir);
 				}
+			}
+			else if (ray1 != NULL) {
+				collided = checkCollisionRay(ray1, col1, t2);
 			}
 			else {
 				collided = checkCollision(col1, t1, col2, t2);

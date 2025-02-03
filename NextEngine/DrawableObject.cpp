@@ -1,6 +1,7 @@
 #include "DrawableObject.h"
 #include "TexturedObject.h"
 #include "GameEngine.h"
+#include "RayObject.h"
 #include "SquareBorderMesh.h"
 #include "SquareMeshVbo.h"
 
@@ -198,6 +199,12 @@ void DrawableObject::drawCollider() {
 	}
 
 	if (!canDrawCollider) {
+		return;
+	}
+
+	RayObject* ray = dynamic_cast<RayObject*>(this);
+
+	if (ray != NULL) {
 		return;
 	}
 
