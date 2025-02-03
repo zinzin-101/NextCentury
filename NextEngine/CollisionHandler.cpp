@@ -48,15 +48,15 @@ bool checkCollisionRay(RayObject* ray1, Collider* col2, Transform& t2) {
 	glm::vec3 points[4] = {
 		pos2 - right + up,
 		pos2 + right + up,
-		pos2 - right - up,
-		pos2 + right - up
+		pos2 + right - up,
+		pos2 - right - up
 	};
 
-	for (int i = 0; i < 3; i++) {
+	for (int i = 0; i < 4; i++) {
 		float x3 = points[i].x;
 		float y3 = points[i].y;
-		float x4 = points[i+1].x;
-		float y4 = points[i+1].y;
+		float x4 = points[(i + 1) % 4].x;
+		float y4 = points[(i + 1) % 4].y;
 
 		// Line intersection formula
 		float t = ((x1 - x3) * (y3 - y4) - (y1 - y3) * (x3 - x4)) / ((x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4));
