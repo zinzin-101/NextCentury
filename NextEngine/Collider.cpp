@@ -1,5 +1,6 @@
 #include "Collider.h"
 #include "DrawableObject.h"
+#include "RayObject.h"
 //#include "CollisionHandler.h"
 
 Collider::Collider(DrawableObject* object) : object(object), width(1), height(1) {
@@ -16,6 +17,19 @@ Collider::Collider(DrawableObject* object, float width, float height) : object(o
 	transform = Transform();
 
 	collisionFlag = 0;
+}
+
+Collider::~Collider() {
+	for (pair<Collider*, CollisionState> pair : collisionMap) {
+		Collider* col = pair.first;
+		std::map<Collider*, CollisionState>& otherMap = col->getCollisionMap();
+
+		if (otherMap.count(this) == 0) {
+			continue;
+		}
+
+		otherMap.erase(this);
+	}
 }
 
 void Collider::setEnableCollision(bool value) {

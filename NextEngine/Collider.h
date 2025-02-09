@@ -33,6 +33,7 @@ class Collider {
 
 		Collider(DrawableObject* object);
 		Collider(DrawableObject* object, float width, float height);
+		~Collider();
 		void setEnableCollision(bool value);
 		void setTrigger(bool value);
 		void setTransform(const Transform& transform);

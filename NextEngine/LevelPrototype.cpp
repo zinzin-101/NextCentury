@@ -1,5 +1,6 @@
 #include "CollisionHandler.h"
 #include "EnemyObject.h"
+#include "RayObject.h"
 #include "LevelPrototype.h"
 
 static ostream& operator<<(ostream& out, glm::vec3 pos);
@@ -64,20 +65,25 @@ void LevelPrototype::levelInit() {
 
     player->setHealth(100);
     viewMarker = false;
-    marker->addColliderComponent();
+    //marker->addColliderComponent();
     //marker->addPhysicsComponent();
     //marker->getPhysicsComponent()->setEnableGravity(false);
-    marker->getColliderComponent()->setTrigger(true);
-    marker->setDrawCollider(true);
+    //marker->getColliderComponent()->setTrigger(true);
+    //marker->setDrawCollider(true);
     //marker->getColliderComponent()->getTransform().setScale(2.0f);
     //marker->getColliderComponent()->setDimension(50, 50);
+
+    ray = new RayObject(player->getTransform().getPosition(), glm::vec3(1, 1, 0), 4);
+    objectsList.emplace_back(ray);
+    ray->setDrawCollider(true);
+    ray->setName("ray");
 }
 
 void LevelPrototype::levelUpdate() {
     updateObjects(objectsList);
     glm::vec3 followPos = viewMarker ? marker->getTransform().getPosition() : player->getTransform().getPosition();
     GameEngine::getInstance()->getRenderer()->updateCamera(followPos);
-
+    ray->getTransform().setPosition(marker->getTransform().getPosition());
     // Update health bar position and size
     float healthPercentage = static_cast<float>(player->getHealth()) / 100;
     float healthBarWidth = healthPercentage * 2.0f;
@@ -201,7 +207,7 @@ void LevelPrototype::initPlayer(PlayerObject*& player, PlayerInfo playerInfo) {
     else {
         player->setName(playerInfo.name);
         player->setHealth(playerInfo.health);
-        player->setMovementInfo(playerInfo.movementInfo);
+        //player->setMovementInfo(playerInfo.movementInfo);
         player->setDamage(playerInfo.damage);
     }
 

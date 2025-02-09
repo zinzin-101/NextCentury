@@ -5,7 +5,7 @@
 constexpr float ATTACK_DURATION = 0.2f; // Duration for the attack collider to be active
 constexpr float ATTACK_COOLDOWN = 0.5f; // Cooldown between attacks
 
-PlayerObject::PlayerObject(PlayerInfo& playerInfo) : LivingEntity(playerInfo.name, playerInfo.health), movementInfo(playerInfo.movementInfo) {
+PlayerObject::PlayerObject(PlayerInfo& playerInfo) : LivingEntity(playerInfo.name, playerInfo.health) {
     this->damage = playerInfo.damage;
 
     setTexture("../Resource/Texture/SIZENextCentury_Player_Idle-Sheet.png");
@@ -41,10 +41,6 @@ void PlayerObject::setDamage(int damage) {
     attackHitbox->setDamage(this->damage);
 }
 
-void PlayerObject::setMovementInfo(MovementInfo movementInfo) {
-    this->movementInfo = movementInfo;
-}
-
 void PlayerObject::move(glm::vec2 direction) {
     if (isDodging) {
         return;
@@ -60,11 +56,11 @@ void PlayerObject::jump() {
         return;
     }
 
-    bool grounded = collider->getCollisionFlag() && COLLISION_DOWN;
+    bool grounded = collider->getCollisionFlag() & COLLISION_DOWN;
     if (grounded) {
-        glm::vec2 vel = physics->getVelocity();
-        vel.y = movementInfo.jumpVelocity;
-        physics->setVelocity(vel);
+        glm::vec2 vel = this->physics->getVelocity();
+        vel.y = PlayerStat::JUMP_VELOCITY;
+        this->physics->setVelocity(vel);
     }
 }
 
@@ -78,7 +74,7 @@ void PlayerObject::dodge() {
 }
 
 void PlayerObject::start(list<DrawableObject*>& objectsList) {
-    attackHitbox = new DamageCollider<EnemyObject>(this, damage, HITBOX_ACTIVE_TIME);
+    attackHitbox = new DamageCollider<EnemyObject>(this, damage, PlayerStat::ATTACK_HITBOX_ACTIVE_TIME);
     //attackHitbox = new DamageCollider<EnemyObject>(this, damage, 2.5f);
     attackHitbox->setActive(false);
     attackHitbox->setFollowOwner(true);
@@ -104,14 +100,14 @@ void PlayerObject::updateBehavior(list<DrawableObject*>& objectsList) {
         canDodge = false;
         setCanTakeDamage(false);
 
-        glm::vec2 dodgeVelocity = isFacingRight ? glm::vec2(DODGE_VELOCITY, vel.y) : glm::vec2(-DODGE_VELOCITY, vel.y);
+        glm::vec2 dodgeVelocity = isFacingRight ? glm::vec2(PlayerStat::DODGE_VELOCITY, vel.y) : glm::vec2(-PlayerStat::DODGE_VELOCITY, vel.y);
         this->physics->setVelocity(dodgeVelocity);
 
         dodgeTimeElapsed += dt;
 
-        if (dodgeTimeElapsed >= DODGE_DURATION) {
+        if (dodgeTimeElapsed >= PlayerStat::DODGE_DURATION) {
             isDodging = false;
-            dodgeCooldownLeft = DODGE_COOLDOWN;
+            dodgeCooldownLeft = PlayerStat::DODGE_COOLDOWN;
         }
 
         return;
@@ -128,9 +124,25 @@ void PlayerObject::updateBehavior(list<DrawableObject*>& objectsList) {
     }
 
     // Handle movement
-    vel.x = moveDirection.x * movementInfo.speed;
-    this->physics->setVelocity(vel);
-    moveDirection.x = 0.0f; // Reset move direction for the next frame
+    this->physics->addVelocity(glm::vec2(moveDirection.x * PlayerStat::ACCEL_SPEED * dt, 0.0f));
+    vel = this->physics->getVelocity();
+    if (abs(vel.x) > PlayerStat::MOVE_SPEED) {
+        vel.x = PlayerStat::MOVE_SPEED * moveDirection.x;
+        this->physics->setVelocity(vel);
+    }
+
+    vel = this->physics->getVelocity();
+    if (vel.x != 0.0f && moveDirection.x == 0.0f) {
+        float dragDir = vel.x > 0.0f ? -1 : 1;
+        this->physics->addVelocity(glm::vec2(dragDir * PlayerStat::DECEL_SPEED * dt, 0.0f));
+        float newVel = this->physics->getVelocity().x;
+
+        if ((vel.x < 0) != (newVel < 0)) {
+            this->physics->setVelocity(glm::vec2(0.0f, vel.y));
+        }
+    }
+    
+    moveDirection.x = 0.0f; // Reset move direction for next frame
 }
 
 
@@ -143,4 +155,9 @@ void PlayerObject::attack() {
 
     attackCooldown = 1.0f; 
     std::cout << "Player attacked!" << std::endl;
+}
+
+/// debugging ///
+void PlayerObject::onTriggerEnter(Collider* collider) {
+    //std::cout << "player enters: " << collider->getObject()->getName() << std::endl;
 }

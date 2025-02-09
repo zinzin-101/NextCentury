@@ -1,6 +1,7 @@
 #include "DrawableObject.h"
 #include "TexturedObject.h"
 #include "GameEngine.h"
+#include "RayObject.h"
 #include "SquareBorderMesh.h"
 #include "SquareMeshVbo.h"
 
@@ -57,10 +58,12 @@ DrawableObject::DrawableObject(string name) {
 DrawableObject::~DrawableObject() {
 	if (physics != nullptr) {
 		delete physics;
+		physics = nullptr;
 	}
 
 	if (collider != nullptr) {
 		delete collider;
+		collider = nullptr;
 	}
 }
 
@@ -146,6 +149,7 @@ void DrawableObject::processCollider() {
 
 	for (pair<Collider*, Collider::CollisionState> pair : colliderMap) {
 		Collider* col = pair.first;
+
 		Collider::CollisionState state = pair.second;
 		switch (state) {
 			case Collider::ENTER:
@@ -195,6 +199,12 @@ void DrawableObject::drawCollider() {
 	}
 
 	if (!canDrawCollider) {
+		return;
+	}
+
+	RayObject* ray = dynamic_cast<RayObject*>(this);
+
+	if (ray != NULL) {
 		return;
 	}
 
