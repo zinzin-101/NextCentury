@@ -235,12 +235,13 @@ void resolveCollision(DrawableObject* obj1, DrawableObject* obj2) {
 	glm::vec3 pos2 = globalT2.getPosition();
 	glm::vec3 lastPos = obj1->getPhysicsComponent()->getLastPosition();
 
+	glm::vec3 scale1 = globalT1.getScale();
+	float halfWidth1 = abs(scale1.x) * col1->getWidth() / 2.0f;
+	float halfHeight1 = abs(scale1.y) * col1->getHeight() / 2.0f;
 
-	float halfWidth1 = globalT1.getScale().x * col1->getWidth() / 2.0f;
-	float halfHeight1 = globalT1.getScale().y * col1->getHeight() / 2.0f;
-
-	float halfWidth2 = globalT2.getScale().x * col2->getWidth() / 2.0f;
-	float halfHeight2 = globalT2.getScale().y * col2->getHeight() / 2.0f;
+	glm::vec3 scale2 = globalT2.getScale();
+	float halfWidth2 = abs(scale2.x) * col2->getWidth() / 2.0f;
+	float halfHeight2 = abs(scale2.y) * col2->getHeight() / 2.0f;
 
 	float distX = abs(pos2.x - pos1.x);
 	float distY = abs(pos2.y - pos1.y);
