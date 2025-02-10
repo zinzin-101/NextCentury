@@ -22,11 +22,11 @@ void ParticleSystem::updateParticlePool(unsigned int startIndex, unsigned int en
 	for (unsigned int i = startIndex; i <= endIndex; i++) {
 		Particle& particle = particlePool[i];
 		
-		if (!particle.getIsActive())
+		if (!particle.getIsActive()) {
 			continue;
+		}
 
-		if (particle.getLifeRemaining() <= 0.0f)
-		{
+		if (particle.getLifeRemaining() <= 0.0f) {
 			particle.setActive(false);
 			continue;
 		}
