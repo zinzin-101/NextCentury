@@ -19,32 +19,35 @@ ParallaxObject::ParallaxObject(float z, bool vertical, PlayerObject* player, boo
 	this->player = player;
 	this->loopable = loopable;
 	if (loopable) {
-		loopObject = new ParallaxObject(this->z, this->vertical, this->player, false); // must be false or else.... infinite loop naa
-		loopObject->getTransform().setPosition(glm::vec3(this->getTransform().getPosition().x + 5, this->getTransform().getPosition().y, 0));
+		loopObjectR = new ParallaxObject(this->z, this->vertical, this->player, false); // must be false or else.... infinite loop naa
+		loopObjectR->getTransform().setPosition(glm::vec3(this->getTransform().getPosition().x + 5, this->getTransform().getPosition().y, 0));
 		cout << "loop created1" << endl;
 	}
 	else {
-		loopObject = nullptr;
+		loopObjectR = nullptr;
 	}
 }
 // I use this one
 ParallaxObject::ParallaxObject(float x,float y,float z, bool vertical, PlayerObject* player, bool loopable) : TexturedObject() {
 	cout << "parallax created" << endl;
+	this->getTransform().setScale(glm::vec3(1585.3f, 1080.0f, 0.0f)); // MUST CHANGE TO "SET SCALE TO RESOLUTION" not this magic number
 	this->z = z;
 	this->vertical = vertical;
 	startPos = glm::vec3(x, y, z);
 	this->setName("parallax");
 	this->player = player;
 	this->loopable = loopable;
-	this->getTransform().setScale(glm::vec3(640.0f, 436.0f, 0.0f)); // MUST CHANGE TO "SET SCALE TO RESOLUTION" not this magic number
+	
 	if (loopable) {
-		loopObject = new ParallaxObject(x + 640.0f/* THIS OFF SET SHOULD BE Picture size FIX CAM */, y, z, this->vertical, this->player, false); // must be false or else.... infinite loop naa
+		loopObjectR = new ParallaxObject(x + (1585.3f + z)/* THIS OFF SET SHOULD BE Picture size FIX CAM */, y, z, this->vertical, this->player, false); // must be false or else.... infinite loop naa
+		loopObjectL = new ParallaxObject(x - (1585.3f + z)/* THIS OFF SET SHOULD BE Picture size FIX CAM */, y, z, this->vertical, this->player, false);
 		//loopObject->getTransform().setPosition(glm::vec3(this->getTransform().getPosition().x + 10.3f, this->getTransform().getPosition().y, 0));
 		//loopObject->getTransform().setScale(glm::vec3(10.0f, 10.0f, 0.0f));
 		cout << "loop created" << endl;
 	}
 	else {
-		loopObject = nullptr;
+		loopObjectR = nullptr;
+		loopObjectL = nullptr;
 	}
 }
 
@@ -81,12 +84,14 @@ void ParallaxObject::update(list<DrawableObject*>& objectsList) {
 
 	glm::vec3 newPos = startPos + (travelDistance * parallaxFactor);
 	//cout << newPos.x << " " << newPos.y << " " << newPos.z << endl;
-	if (playerPos.x + 1.5f - this->getTransform().getPosition().x > 1.0f) {
-		offsetLoop += 640.0f;
+
+	if (playerPos.x - this->getTransform().getPosition().x > -50.0f) {
+		offsetLoop += 2377.9f;
 	}
-	else if (playerPos.x + 1.5f - this->getTransform().getPosition().x < 1.0f) {
-		offsetLoop -= 640.0f;
+	else if (playerPos.x - this->getTransform().getPosition().x < 50.0f) {
+		offsetLoop -= 2377.9f;
 	}
+
 	if (!vertical) {
 		this->getTransform().setPosition(glm::vec3(newPos.x + offsetLoop, startPos.y, startPos.z));
 		//cout << this->getTransform().getPosition().x;
@@ -96,9 +101,11 @@ void ParallaxObject::update(list<DrawableObject*>& objectsList) {
 		//cout << this->getTransform().getPosition().x;
 	}
 	
+	
 	// check loop
 	if (loopable) {
-		loopObject->update(objectsList);
+		loopObjectR->update(objectsList);
+		loopObjectL->update(objectsList);
 	}
 	return;
 }
@@ -106,7 +113,8 @@ void ParallaxObject::update(list<DrawableObject*>& objectsList) {
 void ParallaxObject::setTexture(string path) {
 	TexturedObject::setTexture(path);
 	if (loopable) {
-		loopObject->setTexture(path);
+		loopObjectR->setTexture(path);
+		loopObjectL->setTexture(path);
 	}
 }
 
@@ -116,7 +124,8 @@ void ParallaxObject::initAnimation(int row, int column) {
 void ParallaxObject::render(glm::mat4 globalModelTransform) {
 	TexturedObject::render(globalModelTransform);
 	if (loopable) {
-		loopObject->render(globalModelTransform);
+		loopObjectR->render(globalModelTransform);
+		loopObjectL->render(globalModelTransform);
 	}
 }
 Animation* ParallaxObject::getAnimationComponent() {
@@ -127,7 +136,10 @@ bool ParallaxObject::isAnimated() {
 }
 
 ParallaxObject::~ParallaxObject() {
-	if (loopObject != nullptr) {
-		delete loopObject;
+	if (loopObjectR != nullptr) {
+		delete loopObjectR;
+	}
+	if (loopObjectL != nullptr) {
+		delete loopObjectL;
 	}
 }
