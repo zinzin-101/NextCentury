@@ -208,7 +208,7 @@ void EnemyObject::updateState(glm::vec3 targetPos) {
 		return;
 	}
 
-	if (isPlayerInAttackRange(targetPos)) {
+	if (isPlayerInAttackRange(targetPos) && attackingCooldownTimer <= 0.0f && canAttack) {
 		currentState = ATTACKING;
 	}
 	else if (isPlayerInAggroRange(targetPos)) {
@@ -236,6 +236,11 @@ void EnemyObject::updateBehavior(list<DrawableObject*>& objectsList) {
 		moveTowards(targetPos);
 		updateState(targetPos);
 	}
+	// debug
+	Animation::State animState = getAnimationComponent()->getCurrentAnimationState();
+	std::cout << "current enemy state: " << currentState << std::endl;
+	std::cout << "current state: " << animState.name << std::endl;
+	std::cout << "is playing: " << getAnimationComponent()->getIsPlaying() << std::endl;
 
 	// Manage attack and hitbox activation
 	if (currentState == ATTACKING) {

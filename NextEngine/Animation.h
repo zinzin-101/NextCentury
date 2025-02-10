@@ -86,4 +86,5 @@ class Animation {
 
 		int getCurrentFrame() const;
 		bool getIsPlaying() const;
+		State getCurrentAnimationState() const;
 };

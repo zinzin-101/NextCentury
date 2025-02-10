@@ -136,3 +136,7 @@ int Animation::getCurrentFrame() const {
 bool Animation::getIsPlaying() const {
 	return isPlaying;
 }
+
+Animation::State Animation::getCurrentAnimationState() const {
+	return currentState;
+}
