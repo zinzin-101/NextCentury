@@ -1,5 +1,6 @@
 #pragma once
 #include "GameEngine.h"
+#include "InputManager.h"
 #include "SquareMeshVbo.h"
 #include "SquareBorderMesh.h"
 #include "SimpleObject.h"
@@ -26,6 +27,7 @@ public:
     virtual void levelUnload();
 
     virtual void handleKey(char key);
+    virtual void handleKey(InputManager& input);
     virtual void handleMouse(int type, int x, int y);
     virtual void handleAnalogStick(int type, float amount);
 

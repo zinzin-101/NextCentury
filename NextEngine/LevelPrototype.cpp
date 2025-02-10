@@ -150,28 +150,46 @@ void LevelPrototype::levelUnload() {
     //cout << "Unload Level" << endl;
 }
 
-void LevelPrototype::handleKey(char key) {
+void LevelPrototype::handleKey(InputManager& input) {
     float dt = GameEngine::getInstance()->getTime()->getDeltaTime();
+    if (input.getButton(SDLK_SPACE)) player->jump();
+    if (input.getButton(SDLK_a)) player->move(glm::vec2(-1, 0));;
+    if (input.getButton(SDLK_d)) player->move(glm::vec2(1, 0));;
+    if (input.getButtonDown(SDLK_LSHIFT)) player->dodge();
+    if (input.getButton(SDLK_UP)) marker->getTransform().translate(glm::vec3(0, 10, 0) * dt);;
+    if (input.getButton(SDLK_DOWN)) marker->getTransform().translate(glm::vec3(0, -10, 0) * dt);;
+    if (input.getButton(SDLK_LEFT)) marker->getTransform().translate(glm::vec3(-10, 0, 0) * dt);;
+    if (input.getButton(SDLK_RIGHT)) marker->getTransform().translate(glm::vec3(10, 0, 0) * dt);;
+    if (input.getButtonDown(SDLK_f)) GameEngine::getInstance()->getRenderer()->toggleViewport();;
+    if (input.getButtonDown(SDLK_c)) player->getColliderComponent()->setTrigger(!player->getColliderComponent()->isTrigger());
+    if (input.getButtonDown(SDLK_g)) viewMarker = !viewMarker;
+    if (input.getButtonDown(SDLK_r)) GameEngine::getInstance()->getStateController()->gameStateNext = GameState::GS_RESTART;
+    if (input.getButtonDown(SDLK_e)) GameEngine::getInstance()->getStateController()->gameStateNext = GameState::GS_LEVEL1;
+    if (input.getButton(SDLK_z)) GameEngine::getInstance()->getRenderer()->increaseZoomRatio(0.1f);
+    if (input.getButton(SDLK_x)) GameEngine::getInstance()->getRenderer()->decreaseZoomRatio(0.1f);
+    if (input.getButtonDown(SDLK_k)) player->attack();
     //cout << dt << endl;
-    switch (key) {
-    case ' ': player->jump(); break;
-    case 'a': player->move(glm::vec2(-1, 0)); break;
-    case 'd': player->move(glm::vec2(1, 0)); break;
-    case '!': player->dodge(); break;
-    case '9': marker->getTransform().translate(glm::vec3(0, 10, 0) * dt); break;
-    case '0': marker->getTransform().translate(glm::vec3(0, -10, 0) * dt); break;
-    case '-': marker->getTransform().translate(glm::vec3(-10, 0, 0) * dt); break;
-    case '=': marker->getTransform().translate(glm::vec3(10, 0, 0) * dt); break;
-    case 'f': GameEngine::getInstance()->getRenderer()->toggleViewport(); break;
-    case 'c': player->getColliderComponent()->setTrigger(!player->getColliderComponent()->isTrigger()); break;
-    //case 'c': DrawableObject::destroyObject(marker); break;
-    case 'g': viewMarker = !viewMarker; break;
-    case 'r': GameEngine::getInstance()->getStateController()->gameStateNext = GameState::GS_RESTART; ; break;
-    case 'e': GameEngine::getInstance()->getStateController()->gameStateNext = GameState::GS_LEVEL1; ; break;
-    case 'z': GameEngine::getInstance()->getRenderer()->increaseZoomRatio(0.1f); break;
-    case 'x': GameEngine::getInstance()->getRenderer()->decreaseZoomRatio(0.1f); break;
-    case 'k': player->attack(); break;
-    }
+    // 
+    //switch (key) {
+    //case ' ': player->jump(); break;
+    //case 'a': player->move(glm::vec2(-1, 0)); break;
+    //case 'd': player->move(glm::vec2(1, 0)); break;
+    //case '!': player->dodge(); break;
+    //case '9': marker->getTransform().translate(glm::vec3(0, 10, 0) * dt); break;
+    //case '0': marker->getTransform().translate(glm::vec3(0, -10, 0) * dt); break;
+    //case '-': marker->getTransform().translate(glm::vec3(-10, 0, 0) * dt); break;
+    //case '=': marker->getTransform().translate(glm::vec3(10, 0, 0) * dt); break;
+    //case 'f': GameEngine::getInstance()->getRenderer()->toggleViewport(); break;
+    //case 'c': player->getColliderComponent()->setTrigger(!player->getColliderComponent()->isTrigger()); break;
+    ////case 'c': DrawableObject::destroyObject(marker); break;
+    //case 'g': viewMarker = !viewMarker; break;
+    //case 'r': GameEngine::getInstance()->getStateController()->gameStateNext = GameState::GS_RESTART; ; break;
+    //case 'e': GameEngine::getInstance()->getStateController()->gameStateNext = GameState::GS_LEVEL1; ; break;
+    //case 'z': GameEngine::getInstance()->getRenderer()->increaseZoomRatio(0.1f); break;
+    //case 'x': GameEngine::getInstance()->getRenderer()->decreaseZoomRatio(0.1f); break;
+    //case 'k': player->attack(); break;
+    //}
+
 }
 
 void LevelPrototype::handleMouse(int type, int x, int y) {

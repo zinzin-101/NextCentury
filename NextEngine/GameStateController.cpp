@@ -65,6 +65,10 @@ void GameStateController::unloadLevel() {
 	currentLevel->levelUnload();
 }
 
+void GameStateController::handleKeyLevel(InputManager& input) {
+	currentLevel->handleKey(input);
+}
+
 void GameStateController::handleKeyLevel(char key) {
 	currentLevel->handleKey(key);
 }

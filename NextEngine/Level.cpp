@@ -41,6 +41,10 @@ void Level::handleKey(char key) {
     /// Will be implemented in inherited level when used ///
 }
 
+void Level::handleKey(InputManager& input) {
+    /// Will be implemented in inherited level when used ///
+}
+
 void Level::handleMouse(int type, int x, int y) {
     /// Will be implemented in inherited level when used ///
 }
