@@ -108,6 +108,10 @@ void updateCollisionState(Collider* col1, Collider* col2, bool collided) {
 	if (found) {
 		if (colMap1[col2] == Collider::EXIT) {
 			colMap1.erase(col2);
+
+			std::map<Collider*, Collider::CollisionState>& colMap2 = col2->getCollisionMap();
+			colMap2.erase(col1);
+
 			return;
 		}
 
