@@ -13,13 +13,19 @@ EnemyObject::EnemyObject(EnemyInfo& enemyInfo) : LivingEntity(enemyInfo.name, en
 	this->damage = enemyInfo.damage;
 	currentState = IDLE;
 
-	setTexture("../Resource/Texture/incineratorSizeFlip.png");
-	initAnimation(6, 2);
+	//setTexture("../Resource/Texture/incineratorSizeFlip.png");
+	setTexture("../Resource/Texture/PlaceHolder.png");
+	//initAnimation(6, 2);
+	initAnimation(9, 2);
 	addColliderComponent();
 	addPhysicsComponent();
 	targetEntity = nullptr;
-	getAnimationComponent()->addState("Idle", 0, 6);
-	getAnimationComponent()->addState("Attacking", 1, 5);
+	//getAnimationComponent()->addState("Idle", 0, 6);
+	//getAnimationComponent()->addState("Moving", 1, 5);
+	//getAnimationComponent()->addState("Attacking", 1, 5);
+	getAnimationComponent()->addState("Idle", 1, 1, true);
+	getAnimationComponent()->addState("Moving", 1, 3, true);
+	getAnimationComponent()->addState("Attacking", 0, 3, false);
 	getAnimationComponent()->setState("Idle");
 
 	//attackHitbox = new SimpleObject();
@@ -33,6 +39,11 @@ EnemyObject::EnemyObject(EnemyInfo& enemyInfo) : LivingEntity(enemyInfo.name, en
 	hitboxActiveTime = 0.5f;
 	attackingCooldownTimer = 0.0f;
 	canAttack = true;
+
+	/// Test ///
+	isAttacking = false;
+	attackFrameStart = 1;
+	attackFrameEnd = 1;
 }
 
 EnemyObject::~EnemyObject() {
@@ -107,6 +118,7 @@ void EnemyObject::setCanAttack(bool value) {
 
 void EnemyObject::attack() {
 	attackHitbox->trigger(transform.getPosition());
+	attackHitbox->setCanDecreaseTime(false);
 
 	attackCooldown = 1.0f;
 	std::cout << "Enemy attacked!" << std::endl;
@@ -137,13 +149,19 @@ void EnemyObject::moveTowards(glm::vec3 targetPos) {
 		//cout << "jump" << endl;
 	}
 
-	if (targetPos.x > currentPos.x + attackRange ||
-		targetPos.x < currentPos.x - attackRange) {
+	if (glm::length(currentPos - targetPos) <= attackRange) {
+		glm::vec2 vel = physics->getVelocity();
+		this->physics->setVelocity(glm::vec2(0, vel.y));
+		return;
+	}
+
+	if (targetPos.x < currentPos.x + aggroRange &&
+		targetPos.x > currentPos.x - aggroRange) {
 		float moveAmount = targetPos.x - currentPos.x;
 		moveAmount = moveAmount > 0 ? 1 : -1;
 		moveAmount *= movementInfo.speed;
 		newVelocity.x = moveAmount;
-		getAnimationComponent()->setState("Attacking");
+		getAnimationComponent()->setState("Moving");
 	}
 	else {
 		newVelocity.x = 0.0f;
@@ -184,9 +202,17 @@ void EnemyObject::start(list<DrawableObject*>& objectsList) {
 }
 
 void EnemyObject::updateState(glm::vec3 targetPos) {
-	if (isPlayerInAggroRange(targetPos)) {
-		currentState = ATTACKING;
 
+	if (isAttacking) {
+		currentState = ATTACKING;
+		return;
+	}
+
+	if (isPlayerInAttackRange(targetPos)) {
+		currentState = ATTACKING;
+	}
+	else if (isPlayerInAggroRange(targetPos)) {
+		currentState = AGGRO;
 	}
 	else if (this->getIsStun()) {
 		currentState = STUNNED;
@@ -204,55 +230,76 @@ void EnemyObject::updateBehavior(list<DrawableObject*>& objectsList) {
 		targetPos = targetEntity->getTransform().getPosition();
 
 		glm::vec3 currentPos = this->transform.getPosition();
-		if (targetPos.x >= currentPos.x) {
-			isFacingRight = true;
-			this->transform.setScale(1, 1);
-		}
-		else {
-			isFacingRight = false;
-			this->transform.setScale(-1, 1);
-		}
 
-		updateState(targetPos);
+		isFacingRight = targetPos.x >= currentPos.x;
+
 		moveTowards(targetPos);
+		updateState(targetPos);
 	}
 
 	// Manage attack and hitbox activation
 	if (currentState == ATTACKING) {
 		if (attackingCooldownTimer <= 0.0f) {
+			if (canAttack) {
+				attackingCooldownTimer = attackCooldown;
+				if (isAttacking) {
+
+					if (getAnimationComponent()->getCurrentFrame() == attackFrameStart) {
+						attack();
+					}
+
+					if (getAnimationComponent()->getCurrentFrame() > attackFrameEnd) {
+						attackHitbox->setActive(false);
+					}
+
+					if (!getAnimationComponent()->getIsPlaying()) {
+						isAttacking = false;
+						getAnimationComponent()->setState("Idle");
+					}
+				}
+				else {
+					isAttacking = true;
+
+					this->getAnimationComponent()->setState("Attacking");
+				}
+			}
 			//activateHitbox();
-			attackingCooldownTimer = attackCooldown;
-			this->getAnimationComponent()->setState("Attacking");
+			
 			//std::cout << "Enemy attacks!" << std::endl;
 
 			// Deal damage to the player if within attack range
-			if (targetEntity != nullptr && canAttack) {
-				if (isPlayerInAttackRange(targetEntity->getTransform().getPosition())) {
-					//player->takeDamage(10); // Subtract 10 health points
-					//std::cout << player->getName() << " took 10 damage!" << std::endl;
-					
-					//attack();
-					std::cout << this->getName() << " attacked" << std::endl;
-				}
-				else {
-					Transform targetTranform = targetEntity->getTransform();
-					glm::vec3 targetPos = targetTranform.getPosition();
+			//if (targetEntity != nullptr && canAttack) {
+			//	if (isPlayerInAttackRange(targetEntity->getTransform().getPosition())) {
+			//		//player->takeDamage(10); // Subtract 10 health points
+			//		//std::cout << player->getName() << " took 10 damage!" << std::endl;
+			//		
+			//		//attack();
+			//		std::cout << this->getName() << " attacked" << std::endl;
+			//	}
+			//	else {
+			//		Transform targetTranform = targetEntity->getTransform();
+			//		glm::vec3 targetPos = targetTranform.getPosition();
 
-					glm::vec2 velocity((targetPos.x > this->getTransform().getPosition().x) ? 5 : -5, 0);
-					ProjectileObject<PlayerObject>* projectile = new ProjectileObject<PlayerObject>(this, damage, this->getTransform().getPosition(), velocity, 5);
-					objectsList.emplace_back(projectile);
-					/// test ///
-					//ParticleSystem* ps = projectile->getEmitter();
-					//objectsList.emplace_back(ps);
-				}
-			}
+			//		//glm::vec2 velocity((targetPos.x > this->getTransform().getPosition().x) ? 5 : -5, 0);
+			//		//ProjectileObject<PlayerObject>* projectile = new ProjectileObject<PlayerObject>(this, damage, this->getTransform().getPosition(), velocity, 5);
+			//		//objectsList.emplace_back(projectile);
+
+			//		/// test ///
+			//		//ParticleSystem* ps = projectile->getEmitter();
+			//		//objectsList.emplace_back(ps);
+			//	}
+			//}
 		}
-		else {
-			attackingCooldownTimer -= dt;
-		}
+	}
+	else if (currentState == AGGRO) {
+		getAnimationComponent()->setState("Moving");
 	}
 	else if (currentState == IDLE) {
 		getAnimationComponent()->setState("Idle");
+	}
+
+	if (!isAttacking) {
+		attackingCooldownTimer -= dt;
 	}
 
 	// Handle hitbox timer
@@ -267,7 +314,7 @@ void EnemyObject::updateBehavior(list<DrawableObject*>& objectsList) {
 	if (currentState == STUNNED) {
 		std::cout << "Enemy stunned!" << std::endl;
 	}
-	else if (currentState == IDLE) {
+	/*else if (currentState == IDLE) {
 		this->getAnimationComponent()->setState("Idle");
-	}
+	}*/
 }

@@ -10,6 +10,9 @@ PlayerObject::PlayerObject(PlayerInfo& playerInfo) : LivingEntity(playerInfo.nam
 
     setTexture("../Resource/Texture/SIZENextCentury_Player_Idle-Sheet.png");
     initAnimation(6, 1);
+
+    getAnimationComponent()->addState("Idle", 0, 6, true);
+
     getTransform().setScale(1, 1);
     addColliderComponent();
     addPhysicsComponent();
@@ -21,6 +24,7 @@ PlayerObject::PlayerObject(PlayerInfo& playerInfo) : LivingEntity(playerInfo.nam
     dodgeCooldownLeft = 0.0f;
     canDodge = true;
     isDodging = false;
+    canMove = true;
 
     attackCooldown = ATTACK_COOLDOWN;
     attackHitbox = nullptr;
@@ -43,6 +47,10 @@ void PlayerObject::setDamage(int damage) {
 
 void PlayerObject::move(glm::vec2 direction) {
     if (isDodging) {
+        return;
+    }
+
+    if (!canMove) {
         return;
     }
 
@@ -81,6 +89,8 @@ void PlayerObject::start(list<DrawableObject*>& objectsList) {
     attackHitbox->setFollowOffset(glm::vec3(0.5f, 0, 0));
     attackHitbox->getColliderComponent()->setWidth(1.5f);
     objectsList.emplace_back(attackHitbox);
+
+    this->getAnimationComponent()->setState("Idle");
 }
 
 void PlayerObject::updateBehavior(list<DrawableObject*>& objectsList) {
@@ -157,7 +167,6 @@ void PlayerObject::attack() {
     std::cout << "Player attacked!" << std::endl;
 }
 
-/// debugging ///
 void PlayerObject::onTriggerEnter(Collider* collider) {
-    //std::cout << "player enters: " << collider->getObject()->getName() << std::endl;
+
 }

@@ -19,10 +19,11 @@ class Animation {
 			/// @param name the name of the state
 			/// @param row the number of row in the source file of the animation
 			/// @param frameCount the number of frames in the animation
-			State(string name, int row, int frameCount) : name(name), row(row), frameCount(frameCount) {}
+			State(string name, int row, int frameCount, bool canLoop) : name(name), row(row), frameCount(frameCount), canLoop(canLoop) {}
 			string name;
 			int row;
 			int frameCount;
+			bool canLoop;
 		};
 
 	private:
@@ -38,7 +39,9 @@ class Animation {
 		float offsetX;
 		float offsetY;
 		float timeRateKeep = 0.0f;
-		float timeRate = 0.12f;
+		float timeRate = 1.12f;
+		bool isPlaying;
+		bool isPaused;
 
 	public:
 		//Animator
@@ -47,7 +50,7 @@ class Animation {
 		/// @param name is the name of the state
 		/// @param row is the number of row in the source file of the animation
 		/// @param frameCount is the number of frames in the animation
-		void addState(string name, int row, int frameCount);
+		void addState(string name, int row, int frameCount, bool canLoop);
 
 		/// @brief This function sets the current state of the animation
 		/// The function plays a new animation that is defined by the name of the state.
@@ -79,4 +82,8 @@ class Animation {
 		
 		/// @brief This function sets the current frame to the random frame of the current animation
 		void setRandomFrame();
+		void setPaused(bool value);
+
+		int getCurrentFrame() const;
+		bool getIsPlaying() const;
 };
