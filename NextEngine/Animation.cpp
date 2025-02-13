@@ -84,11 +84,15 @@ void Animation::setState(string name) {
 		return;
 	}
 	State nextState = states[name];
-	if (nextState.name != currentState.name && currentState.canLoop) {
+	if (nextState.name != currentState.name) {
 		currentFrame = 0;
+		isPlaying = true;
 	}
 
-	isPlaying = true;
+	if (!nextState.canLoop && currentFrame >= nextState.frameCount) { // handling isPlaying for non looping state
+		isPlaying = false;
+	}
+
 	currentState = states[name];
 }
 
