@@ -25,7 +25,7 @@ EnemyObject::EnemyObject(EnemyInfo& enemyInfo) : LivingEntity(enemyInfo.name, en
 	//getAnimationComponent()->addState("Attacking", 1, 5);
 	getAnimationComponent()->addState("Idle", 1, 1, true);
 	getAnimationComponent()->addState("Moving", 1, 3, true);
-	getAnimationComponent()->addState("Attacking", 0, 3, false);
+	getAnimationComponent()->addState("Attacking", 0, 9, false);
 	getAnimationComponent()->setState("Idle");
 
 	//attackHitbox = new SimpleObject();
@@ -42,8 +42,8 @@ EnemyObject::EnemyObject(EnemyInfo& enemyInfo) : LivingEntity(enemyInfo.name, en
 
 	/// Test ///
 	isAttacking = false;
-	attackFrameStart = 1;
-	attackFrameEnd = 1;
+	attackFrameStart = 3;
+	attackFrameEnd = 5;
 }
 
 EnemyObject::~EnemyObject() {
@@ -169,8 +169,7 @@ void EnemyObject::updateState() {
 
 	if (prevState == State::ATTACKING) {
 		Animation::State animState = getAnimationComponent()->getCurrentAnimationState();
-		bool isAttackAnimPlaying = getAnimationComponent()->getIsPlaying();
-		if (animState.name == "Attacking" && isAttackAnimPlaying) {
+		if (animState.name == "Attacking" && animState.isPlaying) {
 			return;
 		}
 	}
@@ -201,6 +200,11 @@ void EnemyObject::updateBehavior(list<DrawableObject*>& objectsList) {
 	
 	float distance = getDistanceFromTarget();
 
+	// Resetting movement
+	glm::vec2 vel = getPhysicsComponent()->getVelocity();
+	vel.x = 0.0f;
+	getPhysicsComponent()->setVelocity(vel);
+
 	switch (currentState) {
 		case IDLE:
 			getAnimationComponent()->setState("Idle");
@@ -220,6 +224,7 @@ void EnemyObject::updateBehavior(list<DrawableObject*>& objectsList) {
 			getAnimationComponent()->setState("Attacking");
 			
 			int currentAnimFrame = getAnimationComponent()->getCurrentFrame();
+			
 			if (currentAnimFrame == attackFrameStart) {
 				startAttack();
 				break;

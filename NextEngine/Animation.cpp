@@ -89,11 +89,12 @@ void Animation::setState(string name) {
 		isPlaying = true;
 	}
 
+	currentState = states[name];
+
 	if (!nextState.canLoop && currentFrame >= nextState.frameCount) { // handling isPlaying for non looping state
 		isPlaying = false;
+		currentState.isPlaying = false;
 	}
-
-	currentState = states[name];
 }
 
 void Animation::updateCurrentState() {
@@ -110,6 +111,7 @@ void Animation::updateCurrentState() {
 		}
 		else {
 			currentFrame = currentState.frameCount - 1;
+			currentState.isPlaying = false;
 			isPlaying = false;
 		}
 	}

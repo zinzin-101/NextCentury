@@ -19,11 +19,12 @@ class Animation {
 			/// @param name the name of the state
 			/// @param row the number of row in the source file of the animation
 			/// @param frameCount the number of frames in the animation
-			State(string name, int row, int frameCount, bool canLoop) : name(name), row(row), frameCount(frameCount), canLoop(canLoop) {}
+			State(string name, int row, int frameCount, bool canLoop) : name(name), row(row), frameCount(frameCount), canLoop(canLoop), isPlaying(canLoop) {}
 			string name;
 			int row;
 			int frameCount;
 			bool canLoop;
+			bool isPlaying;
 		};
 
 	private:
@@ -39,7 +40,7 @@ class Animation {
 		float offsetX;
 		float offsetY;
 		float timeRateKeep = 0.0f;
-		float timeRate = 1.12f;
+		float timeRate = 0.5f;
 		bool isPlaying;
 		bool isPaused;
 
