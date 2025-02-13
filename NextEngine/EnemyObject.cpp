@@ -42,8 +42,8 @@ EnemyObject::EnemyObject(EnemyInfo& enemyInfo) : LivingEntity(enemyInfo.name, en
 
 	/// Test ///
 	isAttacking = false;
-	attackFrameStart = 3;
-	attackFrameEnd = 5;
+	attackFrameStart = 4;
+	attackFrameEnd = 6;
 }
 
 EnemyObject::~EnemyObject() {
