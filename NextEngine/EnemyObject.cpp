@@ -193,6 +193,8 @@ void EnemyObject::updateState() {
 	}
 
 	currentState = State::ATTACKING;
+	// facing target
+	isFacingRight = this->getTransform().getPosition().x < targetEntity->getTransform().getPosition().x;
 }
 
 void EnemyObject::updateBehavior(list<DrawableObject*>& objectsList) {
