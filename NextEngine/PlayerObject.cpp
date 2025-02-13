@@ -9,7 +9,7 @@ PlayerObject::PlayerObject(PlayerInfo& playerInfo) : LivingEntity(playerInfo.nam
     this->damage = playerInfo.damage;
 
     setTexture("../Resource/Texture/SIZENextCentury_Player_Idle-Sheet.png");
-    initAnimation(6, 1);
+    initAnimation(1, 6);
 
     getAnimationComponent()->addState("Idle", 0, 6, true);
 

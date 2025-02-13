@@ -84,7 +84,7 @@ void LevelEnemTest::levelInit() {
     cout << "player pos: " << player->getTransform().getPosition() << endl;
     player->setName("Player");
     player->setTexture("../Resource/Texture/SIZENextCentury_Player_Idle-Sheet.png");
-    player->initAnimation(6, 1);
+    player->initAnimation(1, 6);
     player->getTransform().setScale(1, 1);
 
     EnemyInfo enemyInfo;
@@ -94,7 +94,7 @@ void LevelEnemTest::levelInit() {
     EnemyObject* enemy = new EnemyObject(enemyInfo);
     enemy->setTexture("../Resource/Texture/incineratorSizeFlip.png");
     enemy->setName("enem");
-    enemy->initAnimation(6, 2);
+    enemy->initAnimation(2, 6);
     enemy->getAnimationComponent()->addState("Idle", 0, 6, true);
     enemy->getAnimationComponent()->addState("Attacking", 1, 5, true);
     enemy->getTransform().setPosition(glm::vec3(8.0f, 1.0f, 0.0f));

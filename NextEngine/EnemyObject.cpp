@@ -16,7 +16,7 @@ EnemyObject::EnemyObject(EnemyInfo& enemyInfo) : LivingEntity(enemyInfo.name, en
 	//setTexture("../Resource/Texture/incineratorSizeFlip.png");
 	setTexture("../Resource/Texture/PlaceHolder.png");
 	//initAnimation(6, 2);
-	initAnimation(9, 2);
+	initAnimation(2, 9);
 	addColliderComponent();
 	addPhysicsComponent();
 	targetEntity = nullptr;
@@ -131,6 +131,8 @@ void EnemyObject::moveTowardsTarget() {
 	moveAmount *= movementInfo.speed;
 	newVelocity.x = moveAmount;
 
+	isFacingRight = currentPos.x < targetPos.x;
+
 	this->physics->setVelocity(newVelocity);
 
 	glm::vec2 vel = this->physics->getVelocity();
@@ -211,7 +213,7 @@ void EnemyObject::updateBehavior(list<DrawableObject*>& objectsList) {
 			break;
 
 		case AGGRO:
-			if (distance <= attackCooldownTimer) {
+			if (distance <= attackRange) {
 				getAnimationComponent()->setState("Idle");
 			}
 			else {
@@ -236,5 +238,9 @@ void EnemyObject::updateBehavior(list<DrawableObject*>& objectsList) {
 			}
 
 			break;
+	}
+
+	if (attackCooldownTimer > 0.0f) {
+		attackCooldownTimer -= dt;
 	}
 }
