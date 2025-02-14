@@ -69,6 +69,8 @@ void LevelEnemTest::levelInit() {
     //Ground->getTransform().setScale(glm::vec3(640.0f, 436.0f, 0));
     objectsList.push_back(Ground);
 
+
+
     /////////////////////////////
     mapLoader.readData("mapEnemTest.txt");
     mapLoader.appendDataToScene(objectsList, player);
@@ -83,11 +85,7 @@ void LevelEnemTest::levelInit() {
         cout << "player not null" << endl;
     }
 
-    cout << "player pos: " << player->getTransform().getPosition() << endl;
-    player->setName("Player");
-    player->setTexture("../Resource/Texture/SIZENextCentury_Player_Idle-Sheet.png");
-    player->initAnimation(6, 1);
-    player->getTransform().setScale(186, 186);
+
 
     EnemyInfo enemyInfo;
     enemyInfo.health = 10;
@@ -111,11 +109,14 @@ void LevelEnemTest::levelInit() {
     //enemy->setCurrentState();
 
     startObjects(objectsList);
+    this->initPlayer(player, PlayerInfo());
+    cout << "player pos: " << player->getTransform().getPosition() << endl;
+    
     mapLoader.offsetMap(objectsList, glm::vec3(-800.0f, -445.0f, 0.0f));
 }
 void LevelEnemTest::levelUpdate() {
     updateObjects(objectsList);
-
+    player->getTransform().setScale(186, 186);
     for (DrawableObject* obj : objectsList) {
         obj->update(objectsList);
     }

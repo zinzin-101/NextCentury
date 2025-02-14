@@ -33,4 +33,6 @@ public:
 
     virtual void startObjects(list<DrawableObject*>& objectsList);
     virtual void updateObjects(list<DrawableObject*>& objectsList);
+
+    virtual void initPlayer(PlayerObject*& player, PlayerInfo playerInfo);
 };
