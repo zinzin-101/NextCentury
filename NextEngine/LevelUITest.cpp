@@ -81,7 +81,7 @@ void LevelUITest::levelInit() {
     objectsList.push_back(attackHitbox);
 
     quitButton = new Button("Test","test");
-    quitButton->setColor(255,255,255);
+    quitButton->setState(Button::ButtonState::NORMAL);
 
 
     objectsList.push_back(quitButton);

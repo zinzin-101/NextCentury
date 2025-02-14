@@ -4,6 +4,7 @@
 #include "DrawableObject.h"
 #include "Collider.h"
 #include "SimpleObject.h"
+#include "TextObject.h"
 #include "InputManager.h"
 #include "TextObject.h"
 #include <functional>
@@ -11,7 +12,7 @@
 #include "CollisionHandler.h"
 
 /// @brief This class provides a button to be used as a UI
-class Button : public DrawableObject {
+class Button : public SimpleObject,public TextObject {
 public:
     /// @brief This defines the possible states that a Button can have
     enum class ButtonState {

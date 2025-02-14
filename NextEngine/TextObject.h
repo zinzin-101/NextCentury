@@ -5,7 +5,7 @@
 #include "gtc/type_ptr.hpp"
 #include <SDL_ttf.h>
 
-class TextObject :public DrawableObject
+class TextObject : virtual public DrawableObject
 {
 private:
 	unsigned int texture;

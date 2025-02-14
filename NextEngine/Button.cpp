@@ -1,7 +1,6 @@
 #include "Button.h"
 #include "GameEngine.h"
 
-extern InputManager* inputManager;
 
 Button::Button()
     : DrawableObject("Unnamed Button"), label(""), state(ButtonState::NORMAL), isHovered(false), isPressed(false), color(glm::vec3(1.0f, 1.0f, 1.0f)) {
