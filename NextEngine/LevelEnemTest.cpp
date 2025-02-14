@@ -27,56 +27,57 @@ void LevelEnemTest::levelInit() {
     //audio->playMusicByIndex(1, 0);
     ////////////////////////////////////
 
-    //ParallaxObject* background = new ParallaxObject(0.0f ,0.0f, 0.0f, false, player, true);
-    //background->setTexture("../Resource/Texture/OutskirtParallax/OSKT_P09_Sky.png");
-    ////background->getTransform().setScale(glm::vec3(640.0f, 436.0f, 0)); // Adjust the scale to fit the screen
-    ////background->getTransform().setPosition(glm::vec3(0.0f, 0.0f, 0.0f));
-    //objectsList.emplace(objectsList.begin(), background);
+    ParallaxObject* background = new ParallaxObject(0.0f ,0.0f, 550.0f, false, player, true);
+    background->setTexture("../Resource/Texture/OutskirtParallax/OSKT_P09_Sky.png");
+    //background->getTransform().setScale(glm::vec3(640.0f, 436.0f, 0)); // Adjust the scale to fit the screen
+    //background->getTransform().setPosition(glm::vec3(0.0f, 0.0f, 0.0f));
+    objectsList.emplace(objectsList.begin(), background);
 
-    //ParallaxObject* spaceShip = new ParallaxObject(0.0f, 0.0f, 0.0f, false, player, true);
-    //spaceShip->setTexture("../Resource/Texture/OutskirtParallax/OSKT_P08_Spaceship.png");
-    ////spaceShip->getTransform().setScale(glm::vec3(640.0f, 436.0f, 0));
-    //objectsList.push_back(spaceShip);
+    ParallaxObject* spaceShip = new ParallaxObject(0.0f, 0.0f, 450.0f, false, player, true);
+    spaceShip->setTexture("../Resource/Texture/OutskirtParallax/OSKT_P08_Spaceship.png");
+    //spaceShip->getTransform().setScale(glm::vec3(640.0f, 436.0f, 0));
+    objectsList.push_back(spaceShip);
 
-    //ParallaxObject* Mountain1 = new ParallaxObject(0.0f, 0.0f, 0.0f, false, player, true);
-    //Mountain1->setTexture("../Resource/Texture/OutskirtParallax/OSKT_P06_Mountain01.png");
-    ////Mountain1->getTransform().setScale(glm::vec3(640.0f, 436.0f, 0));
-    //objectsList.push_back(Mountain1);
+    ParallaxObject* Mountain1 = new ParallaxObject(0.0f, 0.0f, 350.0f, false, player, true);
+    Mountain1->setTexture("../Resource/Texture/OutskirtParallax/OSKT_P06_Mountain01.png");
+    //Mountain1->getTransform().setScale(glm::vec3(640.0f, 436.0f, 0));
+    objectsList.push_back(Mountain1);
 
-    //ParallaxObject* Mountain2 = new ParallaxObject(0.0f, 0.0f, 0.0f, false, player, true);
-    //Mountain2->setTexture("../Resource/Texture/OutskirtParallax/OSKT_P07_Mountain02.png");
-    ////Mountain2->getTransform().setScale(glm::vec3(640.0f, 436.0f, 0));
-    //objectsList.push_back(Mountain2);
+    ParallaxObject* Mountain2 = new ParallaxObject(0.0f, 0.0f, 200.0f, false, player, true);
+    Mountain2->setTexture("../Resource/Texture/OutskirtParallax/OSKT_P07_Mountain02.png");
+    //Mountain2->getTransform().setScale(glm::vec3(640.0f, 436.0f, 0));
+    objectsList.push_back(Mountain2);
 
-    //ParallaxObject* MidGround1 = new ParallaxObject(0.0f, 0.0f, 0.0f, false, player, true);
-    //MidGround1->setTexture("../Resource/Texture/OutskirtParallax/OSKT_P05_MidGround01.png");
-    ////MidGround1->getTransform().setScale(glm::vec3(640.0f, 436.0f, 0));
-    //objectsList.push_back(MidGround1);
+    ParallaxObject* MidGround1 = new ParallaxObject(0.0f, 0.0f, 150.0f, false, player, true);
+    MidGround1->setTexture("../Resource/Texture/OutskirtParallax/OSKT_P05_MidGround01.png");
+    //MidGround1->getTransform().setScale(glm::vec3(640.0f, 436.0f, 0));
+    objectsList.push_back(MidGround1);
 
-    //ParallaxObject* MidGround2 = new ParallaxObject(0.0f, 0.0f, 0.0f, false, player, true);
-    //MidGround2->setTexture("../Resource/Texture/OutskirtParallax/OSKT_P04_MidGround02.png");
-    ////MidGround2->getTransform().setScale(glm::vec3(640.0f, 436.0f, 0));
-    //objectsList.push_back(MidGround2);
+    ParallaxObject* MidGround2 = new ParallaxObject(0.0f, 0.0f, 80.0f, false, player, true);
+    MidGround2->setTexture("../Resource/Texture/OutskirtParallax/OSKT_P04_MidGround02.png");
+    //MidGround2->getTransform().setScale(glm::vec3(640.0f, 436.0f, 0));
+    objectsList.push_back(MidGround2);
 
-    ParallaxObject* MidGround3 = new ParallaxObject(0.0f, 0.0f, 500.0f, false, player, true);
+    //Midground3
+    ParallaxObject* MidGround3 = new ParallaxObject(0.0f, 0.0f, 50.0f, false, player, true);
     MidGround3->setTexture("../Resource/Texture/OutskirtParallax/OSKT_P03_MidGround03.png");
     //MidGround3->getTransform().setScale(glm::vec3(640.0f, 436.0f, 0));
     objectsList.push_back(MidGround3);
+
+    ParallaxObject* Ground = new ParallaxObject(0.0f, 0.0f, 0.0f, false, player, true);
+    Ground->setTexture("../Resource/Texture/OutskirtParallax/OSKT_P02_Ground.png");
+    //Ground->getTransform().setScale(glm::vec3(640.0f, 436.0f, 0));
+    objectsList.push_back(Ground);
 
     /////////////////////////////
     mapLoader.readData("mapEnemTest.txt");
     mapLoader.appendDataToScene(objectsList, player);
     /////////////////////////////
 
-    //ParallaxObject* Ground = new ParallaxObject(0.0f, 0.0f, 0.0f, false, player, true);
-    //Ground->setTexture("../Resource/Texture/OutskirtParallax/OSKT_P02_Ground.png");
-    ////Ground->getTransform().setScale(glm::vec3(640.0f, 436.0f, 0));
-    //objectsList.push_back(Ground);
-
-    //ParallaxObject* Fog = new ParallaxObject(0.0f, 0.0f, 0.0f, false, player, true);
-    //Fog->setTexture("../Resource/Texture/OutskirtParallax/OSKT_P01_Fog.png");
-    ////Fog->getTransform().setScale(glm::vec3(640.0f, 436.0f, 0));
-    //objectsList.push_back(Fog);
+    ParallaxObject* Fog = new ParallaxObject(0.0f, 0.0f, 100.0f, false, player, true);
+    Fog->setTexture("../Resource/Texture/OutskirtParallax/OSKT_P01_Fog.png");
+    //Fog->getTransform().setScale(glm::vec3(640.0f, 436.0f, 0));
+    objectsList.push_back(Fog);
 
     if (player != nullptr) {
         cout << "player not null" << endl;
@@ -86,7 +87,7 @@ void LevelEnemTest::levelInit() {
     player->setName("Player");
     player->setTexture("../Resource/Texture/SIZENextCentury_Player_Idle-Sheet.png");
     player->initAnimation(6, 1);
-    player->getTransform().setScale(1, 1);
+    player->getTransform().setScale(186, 186);
 
     EnemyInfo enemyInfo;
     enemyInfo.health = 10;
@@ -110,6 +111,7 @@ void LevelEnemTest::levelInit() {
     //enemy->setCurrentState();
 
     startObjects(objectsList);
+    mapLoader.offsetMap(objectsList, glm::vec3(-800.0f, -445.0f, 0.0f));
 }
 void LevelEnemTest::levelUpdate() {
     updateObjects(objectsList);

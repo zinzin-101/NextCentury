@@ -30,7 +30,7 @@ ParallaxObject::ParallaxObject(float z, bool vertical, PlayerObject* player, boo
 // I use this one
 ParallaxObject::ParallaxObject(float x,float y,float z, bool vertical, PlayerObject* player, bool loopable) : TexturedObject() {
 	cout << "parallax created" << endl;
-	this->getTransform().setScale(glm::vec3(1585.3f, 1080.0f, 0.0f)); // MUST CHANGE TO "SET SCALE TO RESOLUTION" not this magic number
+	this->getTransform().setScale(glm::vec3(1920.0f, 1308.0f, 0.0f)); // MUST CHANGE TO "SET SCALE TO RESOLUTION" not this magic number
 	this->z = z;
 	this->vertical = vertical;
 	startPos = glm::vec3(x, y, z);
@@ -39,8 +39,8 @@ ParallaxObject::ParallaxObject(float x,float y,float z, bool vertical, PlayerObj
 	this->loopable = loopable;
 	
 	if (loopable) {
-		loopObjectR = new ParallaxObject(x + (1585.3f + z)/* THIS OFF SET SHOULD BE Picture size FIX CAM */, y, z, this->vertical, this->player, false); // must be false or else.... infinite loop naa
-		loopObjectL = new ParallaxObject(x - (1585.3f + z)/* THIS OFF SET SHOULD BE Picture size FIX CAM */, y, z, this->vertical, this->player, false);
+		loopObjectR = new ParallaxObject(x + (1920.0f)/* THIS OFF SET SHOULD BE Picture size FIX CAM */, y, z, this->vertical, this->player, false); // must be false or else.... infinite loop naa
+		loopObjectL = new ParallaxObject(x - (1920.0f)/* THIS OFF SET SHOULD BE Picture size FIX CAM */, y, z, this->vertical, this->player, false);
 		//loopObject->getTransform().setPosition(glm::vec3(this->getTransform().getPosition().x + 10.3f, this->getTransform().getPosition().y, 0));
 		//loopObject->getTransform().setScale(glm::vec3(10.0f, 10.0f, 0.0f));
 		cout << "loop created" << endl;
@@ -79,17 +79,23 @@ void ParallaxObject::update(list<DrawableObject*>& objectsList) {
 		plane = nearPlane;
 	}
 	float clippingPlane = camPos.z + plane;
-
+	
 	float parallaxFactor = abs(distanceFromPlayer) / clippingPlane;
 
-	glm::vec3 newPos = startPos + (travelDistance * parallaxFactor);
+	//glm::vec3 newPos = startPos + (travelDistance * parallaxFactor);
+
+	glm::vec3 newPos = startPos + (playerPos * parallaxFactor);
+	//if (loopable) {
+	//	cout << "CAM" << << endl;
+	//}
+	
 	//cout << newPos.x << " " << newPos.y << " " << newPos.z << endl;
 
 	if (playerPos.x - this->getTransform().getPosition().x > -50.0f) {
-		offsetLoop += 2377.9f;
+		offsetLoop += 2880.0f;
 	}
 	else if (playerPos.x - this->getTransform().getPosition().x < 50.0f) {
-		offsetLoop -= 2377.9f;
+		offsetLoop -= 2880.0f;
 	}
 
 	if (!vertical) {
