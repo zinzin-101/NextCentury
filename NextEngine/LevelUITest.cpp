@@ -80,6 +80,13 @@ void LevelUITest::levelInit() {
     attackHitbox->setDrawCollider(true);
     objectsList.push_back(attackHitbox);
 
+    quitButton = new Button("Test","test");
+    quitButton->setColor(255,255,255);
+
+
+    objectsList.push_back(quitButton);
+
+
 
 
     player->setHealth(100);
