@@ -12,6 +12,9 @@ Animation::Animation(unsigned int& texture): texture(texture) {
 
 	rowCount = 1;
 	colCount = 1;
+
+	isPlaying = true;
+	isPaused = false;
 }
 
 void Animation::render(glm::mat4 globalModelTransform, Transform& transform) {
@@ -66,12 +69,12 @@ void Animation::setFrame(int row, int column) {
 	offsetY = (1.0f / this->colCount) * row;
 }
 
-void Animation::addState(string name, int row, int frameCount) {
+void Animation::addState(string name, int row, int frameCount, bool canLoop) {
 	if (states.find(name) != states.end()) {
 		cout << "Error state: '" << name << "' already exists" << endl;
 		return;
 	}
-	State newState(name, row, frameCount);
+	State newState(name, row, frameCount, canLoop);
 	states[name] = newState;
 }
 
@@ -81,16 +84,32 @@ void Animation::setState(string name) {
 		return;
 	}
 	State nextState = states[name];
-	if (nextState.name != currentState.name) {
+	if (nextState.name != currentState.name && currentState.canLoop) {
 		currentFrame = 0;
 	}
+
+	isPlaying = true;
 	currentState = states[name];
 }
 
 void Animation::updateCurrentState() {
-	if (currentFrame >= currentState.frameCount) {
-		currentFrame = 0;
+	if (isPaused) {
+		setFrame(currentState.row, currentFrame);
+		isPlaying = false;
+		return;
 	}
+
+	if (currentFrame >= currentState.frameCount) {
+		if (currentState.canLoop) {
+			currentFrame = 0;
+			isPlaying = true;
+		}
+		else {
+			currentFrame = currentState.frameCount - 1;
+			isPlaying = false;
+		}
+	}
+
 	float dt = GameEngine::getInstance()->getTime()->getDeltaTime();
 	timeRateKeep += dt;
 
@@ -104,4 +123,16 @@ void Animation::updateCurrentState() {
 void Animation::setRandomFrame() {
 	currentFrame = std::rand() % currentState.frameCount;
 	setFrame(currentState.row, currentFrame);
+}
+
+void Animation::setPaused(bool value) {
+	isPaused = value;
+}
+
+int Animation::getCurrentFrame() const {
+	return currentFrame;
+}
+
+bool Animation::getIsPlaying() const {
+	return isPlaying;
 }

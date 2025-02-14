@@ -13,6 +13,7 @@ class EnemyObject : public LivingEntity {
 protected:
     enum State {
         IDLE,
+        AGGRO,
         ATTACKING,
         STUNNED
     };
@@ -29,8 +30,11 @@ protected:
     int damage;
 
     MovementInfo movementInfo;
-
     LivingEntity* targetEntity;
+
+    bool isAttacking;
+    int attackFrameStart;
+    int attackFrameEnd;
 
 public:
     EnemyObject(EnemyInfo& enemyInfo);

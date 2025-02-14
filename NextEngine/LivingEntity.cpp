@@ -152,6 +152,9 @@ bool LivingEntity::getIsFacingRight() const {
 void LivingEntity::update(list<DrawableObject*>& objectsList) {
     updateBehavior(objectsList);
     DrawableObject::update(objectsList);
+
+    isFacingRight ? this->transform.setScale(1, 1) : this->transform.setScale(-1, 1);
+
     applyStatus(GameEngine::getInstance()->getTime()->getDeltaTime());
 }
 

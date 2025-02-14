@@ -14,9 +14,11 @@ class DamageCollider : public ColliderObject {
 		LivingEntity* owner;
 
 		float timeRemaining;
+		bool canDecreaseTimeRemaining;
 
 		bool followOwner;
 		glm::vec3 followOffset;
+
 
 	public:
 		DamageCollider(LivingEntity* owner, int damage, float lifespan);
@@ -31,6 +33,7 @@ class DamageCollider : public ColliderObject {
 		void setOwner(LivingEntity* owner);
 		void setFollowOwner(bool value);
 		void setFollowOffset(glm::vec3 offset);
+		void setCanDecreaseTime(bool value);
 
 		virtual void render(glm::mat4 globalModelTransform);
 };
@@ -43,6 +46,7 @@ DamageCollider<TargetEntityType>::DamageCollider(LivingEntity* owner, int damage
 	this->setActive(false);
 	this->followOwner = false;
 	this->setDrawCollider(true); // for debug
+	this->canDecreaseTimeRemaining = true;
 }
 
 template <class TargetEntityType>
@@ -56,7 +60,7 @@ void DamageCollider<TargetEntityType>::update(std::list<DrawableObject*>& object
 		this->transform.setPosition(pos);
 	}
 
-	if (timeRemaining > 0.0f) {
+	if (timeRemaining > 0.0f && canDecreaseTimeRemaining) {
 		//std::cout << "hitbox active" << std::endl;
 		timeRemaining -= GameEngine::getInstance()->getTime()->getDeltaTime();
 		if (timeRemaining <= 0.0f) {
@@ -116,6 +120,11 @@ void DamageCollider<TargetEntityType>::setFollowOwner(bool value) {
 template <class TargetEntityType>
 void DamageCollider<TargetEntityType>::setFollowOffset(glm::vec3 offset) {
 	followOffset = offset;
+}
+
+template <class TargetEntityType>
+void DamageCollider<TargetEntityType>::setCanDecreaseTime(bool value) {
+	canDecreaseTimeRemaining = value;
 }
 
 template <class TargetEntityType>

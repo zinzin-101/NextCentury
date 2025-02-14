@@ -41,6 +41,10 @@ void Level::handleKey(char key) {
     /// Will be implemented in inherited level when used ///
 }
 
+void Level::handleKey(InputManager& input) {
+    /// Will be implemented in inherited level when used ///
+}
+
 void Level::handleMouse(int type, int x, int y) {
     /// Will be implemented in inherited level when used ///
 }
@@ -74,7 +78,7 @@ void Level::updateObjects(list<DrawableObject*>& objectsList) {
     }
 
     handleObjectCollision(objectsList);
-    
+
     for (std::list<DrawableObject*>::iterator itr = objectsList.begin(); itr != objectsList.end(); itr++) {
         DrawableObject* obj = *itr;
         if (obj->getMarkedForDelete()) {

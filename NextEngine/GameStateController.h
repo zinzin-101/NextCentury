@@ -1,6 +1,7 @@
 #pragma once
 
 #include "GameStateList.h"
+#include "InputManager.h"
 
 class Level;
 
@@ -22,6 +23,7 @@ public:
 	void drawLevel();
 	void freelevel();
 	void unloadLevel();
+	void handleKeyLevel(InputManager& input);
 	void handleKeyLevel(char key);
 	void handleMouseLevel(int type, int x, int y);
 	void handleAnalogLevel(int type, float amount);

@@ -72,25 +72,25 @@ void RayObject::render(glm::mat4 globalModelTransform) {
 }
 
 void RayObject::onCollisionEnter(Collider* collider) {
-	std::cout << "ray collide enter: " << collider->getObject()->getName() << std::endl;
+
 }
 
 void RayObject::onCollisionStay(Collider* collider) {
-	std::cout << "ray collide stay: " << collider->getObject()->getName() << std::endl;
+
 }
 
 void RayObject::onCollisionExit(Collider* collider) {
-	std::cout << "ray collider exit: " << collider->getObject()->getName() << std::endl;
+
 }
 
 void RayObject::onTriggerEnter(Collider* collider) {
-	std::cout << "ray trigger enter: " << collider->getObject()->getName() << std::endl;
+
 }
 
 void RayObject::onTriggerStay(Collider* collider) {
-	std::cout << "ray trigger stay: " << collider->getObject()->getName() << std::endl;
+
 }
 
 void RayObject::onTriggerExit(Collider* collider) {
-	std::cout << "ray trigger exit: " << collider->getObject()->getName() << std::endl;
+
 }
