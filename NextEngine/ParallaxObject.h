@@ -12,7 +12,8 @@ private:
 	float nearPlane = 0.3f;
 	float farPlane = 300.0f;
 	bool loopable;
-	ParallaxObject* loopObject;
+	ParallaxObject* loopObjectR;
+	ParallaxObject* loopObjectL;
 	float offsetLoop = 0;
 
 public:
