@@ -8,13 +8,13 @@ using namespace std;
 Animation::Animation(unsigned int& texture): texture(texture) {
 	offsetX = 0;
 	offsetY = 0;
-	currentFrame = 0;
 
 	rowCount = 1;
 	colCount = 1;
 
-	isPlaying = true;
 	isPaused = false;
+
+	currentState = nullptr;
 }
 
 void Animation::render(glm::mat4 globalModelTransform, Transform& transform) {
@@ -51,8 +51,8 @@ void Animation::render(glm::mat4 globalModelTransform, Transform& transform) {
 		glUniform1i(renderModeId, 2);
 		glUniform1f(offsetXId, offsetX);
 		glUniform1f(offsetYId, offsetY);
-		glUniform1f(scaleXId, 1.0f / this->rowCount); // bigger scale zoom out, small scale zoom in
-		glUniform1f(scaleYId, 1.0f / this->colCount);
+		glUniform1f(scaleXId, 1.0f / this->colCount); // bigger scale zoom out, small scale zoom in
+		glUniform1f(scaleYId, 1.0f / this->rowCount);
 		glBindTexture(GL_TEXTURE_2D, texture);
 		squareMesh->render();
 
@@ -65,8 +65,8 @@ void Animation::setDimension(int row, int col) {
 }
 
 void Animation::setFrame(int row, int column) {
-	offsetX = (1.0f / this->rowCount) * column; // MA BRAIN SWITCH ROW AND COLUMN SO I SWITCH EM HERE
-	offsetY = (1.0f / this->colCount) * row;
+	offsetX = (1.0f / this->colCount) * column; // MA BRAIN SWITCH ROW AND COLUMN SO I SWITCH EM HERE
+	offsetY = (1.0f / this->rowCount) * row;
 }
 
 void Animation::addState(string name, int row, int frameCount, bool canLoop) {
@@ -76,6 +76,10 @@ void Animation::addState(string name, int row, int frameCount, bool canLoop) {
 	}
 	State newState(name, row, frameCount, canLoop);
 	states[name] = newState;
+
+	if (states.size() == 1) {
+		currentState = &states[name];
+	}
 }
 
 void Animation::setState(string name) {
@@ -83,30 +87,33 @@ void Animation::setState(string name) {
 		cout << "Error state: " << name << " does not exist" << endl;
 		return;
 	}
-	State nextState = states[name];
-	if (nextState.name != currentState.name && currentState.canLoop) {
-		currentFrame = 0;
-	}
 
-	isPlaying = true;
-	currentState = states[name];
+	State* nextState = &states[name];
+	if (nextState->name != currentState->name || currentState == nullptr) {
+		nextState->currentFrame = 0;
+		nextState->isPlaying = true;
+		currentState = nextState;
+		return;
+	}
 }
 
 void Animation::updateCurrentState() {
-	if (isPaused) {
-		setFrame(currentState.row, currentFrame);
-		isPlaying = false;
+	if (currentState == nullptr) {
 		return;
 	}
 
-	if (currentFrame >= currentState.frameCount) {
-		if (currentState.canLoop) {
-			currentFrame = 0;
-			isPlaying = true;
+	if (isPaused) {
+		setFrame(currentState->row, currentState->currentFrame);
+		return;
+	}
+
+	if (currentState->currentFrame >= currentState->frameCount) {
+		if (currentState->canLoop) {
+			currentState->currentFrame = 0;
 		}
 		else {
-			currentFrame = currentState.frameCount - 1;
-			isPlaying = false;
+			currentState->currentFrame = currentState->frameCount - 1;
+			currentState->isPlaying = false;
 		}
 	}
 
@@ -114,15 +121,15 @@ void Animation::updateCurrentState() {
 	timeRateKeep += dt;
 
 	if (timeRateKeep > timeRate) { // Will need to change to frame I think
-		setFrame(currentState.row, currentFrame);
-		currentFrame++;
+		setFrame(currentState->row, currentState->currentFrame);
+		currentState->currentFrame++;
 		timeRateKeep = 0.0f;
 	}
 }
 
 void Animation::setRandomFrame() {
-	currentFrame = std::rand() % currentState.frameCount;
-	setFrame(currentState.row, currentFrame);
+	int randomFrame = std::rand() % currentState->frameCount;
+	setFrame(currentState->row, randomFrame);
 }
 
 void Animation::setPaused(bool value) {
@@ -130,9 +137,13 @@ void Animation::setPaused(bool value) {
 }
 
 int Animation::getCurrentFrame() const {
-	return currentFrame;
+	return currentState->currentFrame;
 }
 
 bool Animation::getIsPlaying() const {
-	return isPlaying;
+	return currentState->isPlaying;
+}
+
+Animation::State Animation::getCurrentAnimationState() const {
+	return *currentState;
 }

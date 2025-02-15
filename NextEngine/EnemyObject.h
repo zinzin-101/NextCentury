@@ -10,68 +10,69 @@ template <class T>
 class DamageCollider;
 
 class EnemyObject : public LivingEntity {
-protected:
-    enum State {
-        IDLE,
-        AGGRO,
-        ATTACKING,
-        STUNNED
-    };
-    DamageCollider<PlayerObject>* attackHitbox;
-    float hitboxActiveTime;
-    //float hitboxTimer;
+    public:
+        enum State {
+            IDLE,
+            AGGRO,
+            ATTACKING,
+            STUNNED
+        };
 
-    State currentState;
-    float aggroRange;
-    float attackRange;
-    float attackCooldown;
-    float attackingCooldownTimer;
-    bool canAttack;
-    int damage;
+    protected:
+        DamageCollider<PlayerObject>* attackHitbox;
+        float hitboxActiveTime;
+        //float hitboxTimer;
 
-    MovementInfo movementInfo;
-    LivingEntity* targetEntity;
+        State currentState;
+        float aggroRange;
+        float attackRange;
+        float attackCooldown;
+        float attackCooldownTimer;
+        bool canAttack;
+        int damage;
 
-    bool isAttacking;
-    int attackFrameStart;
-    int attackFrameEnd;
+        MovementInfo movementInfo;
+        LivingEntity* targetEntity;
 
-public:
-    EnemyObject(EnemyInfo& enemyInfo);
-    void setCurrentState(State state);
-    State getCurrentState();
+        bool isAttacking;
+        int attackFrameStart;
+        int attackFrameEnd;
 
-    /*SimpleObject* getHitbox() const;
+        float getDistanceFromTarget() const;
+        virtual void moveTowardsTarget();
+        void startAttack();
+        void endAttack();
 
-    void activateHitbox();
-    void deactivateHitbox();
-    bool isHitboxActive() const;*/
+    public:
+        EnemyObject(EnemyInfo& enemyInfo);
+        void setCurrentState(State state);
+        State getCurrentState();
 
-    virtual void moveTowards(glm::vec3 targetPos);
+        /*SimpleObject* getHitbox() const;
 
-    void findTarget(std::string name, std::list<DrawableObject*>& objectList);
-    void setTarget(LivingEntity* target);
+        void activateHitbox();
+        void deactivateHitbox();
+        bool isHitboxActive() const;*/
 
-    void setAttackCooldown(float cooldown);
-    float getAttackCooldown() const;
+        void findTarget(std::string name, std::list<DrawableObject*>& objectList);
+        void setTarget(LivingEntity* target);
 
-    bool isPlayerInAttackRange(glm::vec3 targetPos);
-    bool isPlayerInAggroRange(glm::vec3 targetPos);
+        void setAttackCooldown(float cooldown);
+        float getAttackCooldown() const;
 
-    void setMovementInfo(MovementInfo movementInfo);
-    void setAggroRange(float range);
-    void setAttackRange(float range);
-    void setDamage(int damage);
-    float getAggroRange() const;
-    float getAttackRange() const;
+        void setMovementInfo(MovementInfo movementInfo);
+        void setAggroRange(float range);
+        void setAttackRange(float range);
+        void setDamage(int damage);
+        float getAggroRange() const;
+        float getAttackRange() const;
 
-    void setCanAttack(bool value);
-    void attack();
+        void setCanAttack(bool value);
 
-    virtual void start(list<DrawableObject*>& objectsList);
-    void updateState(glm::vec3 targetPos);
-    virtual void updateBehavior(list<DrawableObject*>& objectsList);
+        virtual void start(list<DrawableObject*>& objectsList);
+        void updateState();
+        virtual void updateBehavior(list<DrawableObject*>& objectsList);
 
 
-    ~EnemyObject();
+        ~EnemyObject();
 };

@@ -25,13 +25,13 @@ class Transform {
 		void rotateRad(float rad);
 		void rotateDeg(float deg);
 		void rotate(float angle);
-		Transform getGlobalTransform(Transform& objectTransform);
-		glm::vec3 getPosition();
-		float getRotationRad();
-		float getRotationDeg();
-		float getRotation();
-		glm::vec3 getScale();
-		glm::mat4 getTransformMat4();
+		Transform getGlobalTransform(Transform& objectTransform) const;
+		glm::vec3 getPosition() const;
+		float getRotationRad() const;
+		float getRotationDeg() const;
+		float getRotation() const;
+		glm::vec3 getScale() const;
+		glm::mat4 getTransformMat4() const;
 		
 		Transform operator+(const Transform& other);
 		Transform operator-(const Transform& other);
