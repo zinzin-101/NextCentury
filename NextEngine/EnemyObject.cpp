@@ -42,7 +42,7 @@ EnemyObject::EnemyObject(EnemyInfo& enemyInfo) : LivingEntity(enemyInfo.name, en
 
 	/// Test ///
 	isAttacking = false;
-	attackFrameStart = 4;
+	attackFrameStart = 3;
 	attackFrameEnd = 6;
 }
 
@@ -98,11 +98,12 @@ void EnemyObject::startAttack() {
 	attackHitbox->trigger(transform.getPosition());
 	attackHitbox->setCanDecreaseTime(false);
 
-	attackCooldownTimer = attackCooldown;
+	//attackCooldownTimer = attackCooldown;
 	std::cout << "Enemy attacked!" << std::endl;
 }
 
 void EnemyObject::endAttack() {
+	attackCooldownTimer = attackCooldown;
 	attackHitbox->setActive(false);
 }
 
@@ -229,12 +230,12 @@ void EnemyObject::updateBehavior(list<DrawableObject*>& objectsList) {
 			
 			int currentAnimFrame = getAnimationComponent()->getCurrentFrame();
 			
-			if (currentAnimFrame == attackFrameStart) {
+			if (currentAnimFrame == attackFrameStart + 1) {
 				startAttack();
 				break;
 			}
 
-			if (currentAnimFrame == attackFrameEnd) {
+			if (currentAnimFrame == attackFrameEnd + 1) {
 				endAttack();
 				break;
 			}

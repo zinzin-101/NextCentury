@@ -16,7 +16,7 @@ void LevelPrototype::levelLoad() {
 }
 
 void LevelPrototype::levelInit() {
-    EnemyInfo enemyInfo = EnemyInfo("EnemyNormal", 5, MovementInfo(3, 25), 20, 1.0f, 1.0f, 1);
+    EnemyInfo enemyInfo = EnemyInfo("EnemyNormal", 5, MovementInfo(3, 25), 20, 1.0f, 3.0f, 1);
     mapLoader.addEnemyType(EnemyType::NORMAL, enemyInfo);
     map<EnemyType, EnemyInfo>& enemyMap = mapLoader.getEnemyTypeMap();
     for (auto pair : enemyMap) {
