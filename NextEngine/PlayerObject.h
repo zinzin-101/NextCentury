@@ -13,6 +13,7 @@ namespace PlayerStat {
     constexpr float TIME_TO_RESET_COMBO = 1.5f;
     constexpr float ATTACK_COOLDOWN = 0.2f;
     constexpr float LAST_COMBO_COOLDOWN = 0.5f;
+    constexpr float ATTACK_DASH_VELOCITY = 1.0f;
     constexpr int COMBO_DAMAGE_1 = 1;
     constexpr int COMBO_DAMAGE_2 = 2;
     constexpr int COMBO_DAMAGE_3 = 3;

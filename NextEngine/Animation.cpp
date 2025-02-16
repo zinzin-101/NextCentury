@@ -93,6 +93,9 @@ void Animation::setState(string name) {
 		nextState->currentFrame = 0;
 		nextState->isPlaying = true;
 		currentState = nextState;
+
+		setFrame(currentState->row, currentState->currentFrame + currentState->startCol);
+
 		return;
 	}
 }
@@ -120,7 +123,7 @@ void Animation::updateCurrentState() {
 	float dt = GameEngine::getInstance()->getTime()->getDeltaTime();
 	timeRateKeep += dt;
 
-	if (timeRateKeep > timeRate) { // Will need to change to frame I think
+	if (timeRateKeep > timeRate) {
 		setFrame(currentState->row, currentState->currentFrame + currentState->startCol);
 		currentState->currentFrame++;
 		timeRateKeep = 0.0f;

@@ -110,6 +110,7 @@ void PlayerObject::updateBehavior(list<DrawableObject*>& objectsList) {
     }
 
     if (isInAttackState) {
+
         this->getPhysicsComponent()->setVelocity(glm::vec2(0.0f, vel.y));
         this->getPhysicsComponent()->setAcceleration(glm::vec2(0.0f, 0.0f));
         
@@ -150,7 +151,6 @@ void PlayerObject::updateBehavior(list<DrawableObject*>& objectsList) {
         }
 
         return;
-
     }
 
     currentCombo = PlayerCombo::NONE;
