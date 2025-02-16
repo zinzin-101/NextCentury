@@ -36,7 +36,7 @@ EnemyObject::EnemyObject(EnemyInfo& enemyInfo) : LivingEntity(enemyInfo.name, en
 
 	/*deactivateHitbox();*/
 	attackHitbox = nullptr;
-	hitboxActiveTime = 0.5f;
+	//hitboxActiveTime = 0.5f;
 	attackCooldownTimer = 0.0f;
 	canAttack = true;
 
@@ -159,7 +159,7 @@ void EnemyObject::setTarget(LivingEntity* target) {
 }
 
 void EnemyObject::start(list<DrawableObject*>& objectsList) {
-	attackHitbox = new DamageCollider<PlayerObject>(this, damage, hitboxActiveTime);
+	attackHitbox = new DamageCollider<PlayerObject>(this, damage, -1);
 	attackHitbox->setActive(false);
 	attackHitbox->setFollowOwner(true);
 	attackHitbox->setFollowOffset(glm::vec3(0.5f, 0, 0));

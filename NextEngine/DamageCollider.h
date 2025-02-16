@@ -60,6 +60,10 @@ void DamageCollider<TargetEntityType>::update(std::list<DrawableObject*>& object
 		this->transform.setPosition(pos);
 	}
 
+	if (lifespan <= 0.0f) {
+		return;
+	}
+
 	if (timeRemaining > 0.0f && canDecreaseTimeRemaining) {
 		//std::cout << "hitbox active" << std::endl;
 		timeRemaining -= GameEngine::getInstance()->getTime()->getDeltaTime();

@@ -41,7 +41,7 @@ class Animation {
 		float offsetX;
 		float offsetY;
 		float timeRateKeep = 0.0f;
-		float timeRate = 0.25f;
+		float timeRate = 0.4f;
 		bool isPaused;
 
 	public:

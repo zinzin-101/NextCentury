@@ -20,7 +20,7 @@ class EnemyObject : public LivingEntity {
 
     protected:
         DamageCollider<PlayerObject>* attackHitbox;
-        float hitboxActiveTime;
+        //float hitboxActiveTime;
         //float hitboxTimer;
 
         State currentState;
