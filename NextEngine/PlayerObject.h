@@ -10,11 +10,11 @@ namespace PlayerStat {
     constexpr float DODGE_DURATION = 0.1f;
 
     //constexpr float ATTACK_HITBOX_ACTIVE_TIME = 0.5f;
-    constexpr float TIME_TO_RESET_COMBO = 1.5f;
+    constexpr float TIME_TO_RESET_COMBO = 2.0f;
     constexpr float ATTACK_COOLDOWN = 0.2f;
     constexpr float LAST_COMBO_COOLDOWN = 1.0f;
     constexpr float ATTACK_DASH_VELOCITY = 2.0f;
-    constexpr float AFTER_ATTACK_MOVE_DELAY_TIME = 0.4f;
+    constexpr float AFTER_ATTACK_MOVE_DELAY_TIME = 0.8f;
     constexpr int COMBO_DAMAGE_1 = 1;
     constexpr int COMBO_DAMAGE_2 = 2;
     constexpr int COMBO_DAMAGE_3 = 3;

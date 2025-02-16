@@ -37,7 +37,6 @@ PlayerObject::PlayerObject(PlayerInfo& playerInfo) : LivingEntity(playerInfo.nam
     comboFrame[PlayerCombo::SECOND] = Combo(2, 3);
     comboFrame[PlayerCombo::THIRD] = Combo(2, 3);
     currentCombo = PlayerCombo::NONE;
-    isCurrentAttackFacingRight = true;
     timeBetweenLastAttack = 0.0f;
 
     timeToResetComboRemaining = 0.0f;
@@ -60,13 +59,11 @@ void PlayerObject::setDamage(int damage) {
 }
 
 void PlayerObject::move(glm::vec2 direction) {
-    if (isDodging || isAttacking) {
-        return;
-    }
-
-    isFacingRight = direction.x > 0.0f ? true : false;
-
     this->moveDirection.x += direction.x;
+
+    if (this->moveDirection.x != 0.0f) {
+        this->moveDirection.x /= abs(this->moveDirection.x);
+    }
 }
 
 void PlayerObject::jump() {
@@ -154,9 +151,9 @@ void PlayerObject::updateBehavior(list<DrawableObject*>& objectsList) {
         timeBetweenLastAttack += dt;
 
         if (moveDirection.x != 0.0f && timeBetweenLastAttack >= PlayerStat::AFTER_ATTACK_MOVE_DELAY_TIME) {
-            canMove = true;
             moveDirection.x = 0.0f;
             this->getAnimationComponent()->setState("Idle");
+            canMove = true;
             isInAttackState = false;
 
             return;
@@ -164,8 +161,8 @@ void PlayerObject::updateBehavior(list<DrawableObject*>& objectsList) {
 
         if (timeToResetComboRemaining <= 0.0f) {
             this->getAnimationComponent()->setState("Idle");
-            currentCombo = PlayerCombo::NONE;
             canMove = true;
+            currentCombo = PlayerCombo::NONE;
             isInAttackState = false;
         }
 
@@ -204,6 +201,8 @@ void PlayerObject::updateBehavior(list<DrawableObject*>& objectsList) {
 
     // Handle movement
     if (canMove) {
+        isFacingRight = moveDirection.x > 0.0f ? true : false;
+
         this->physics->addVelocity(glm::vec2(moveDirection.x * PlayerStat::ACCEL_SPEED * dt, 0.0f));
         vel = this->physics->getVelocity();
         if (abs(vel.x) > PlayerStat::MOVE_SPEED) {
@@ -238,6 +237,8 @@ void PlayerObject::attack() {
     isInAttackState = true;
     isAttacking = true;
 
+    isFacingRight = moveDirection.x > 0.0f ? true : false;
+
     glm::vec2 vel = this->getPhysicsComponent()->getVelocity();
     vel.x = PlayerStat::ATTACK_DASH_VELOCITY;
     vel.x *= isFacingRight ? 1.0f : -1.0f;
@@ -250,7 +251,6 @@ void PlayerObject::attack() {
             currentCombo = PlayerCombo::FIRST;
             this->getAnimationComponent()->setState("Combo1");
             attackHitbox->setDamage(PlayerStat::COMBO_DAMAGE_1);
-            isCurrentAttackFacingRight = isFacingRight;
             break;
 
         case PlayerCombo::FIRST:
@@ -269,7 +269,6 @@ void PlayerObject::attack() {
             currentCombo = PlayerCombo::FIRST;
             this->getAnimationComponent()->setState("Combo1");
             attackHitbox->setDamage(PlayerStat::COMBO_DAMAGE_1);
-            isCurrentAttackFacingRight = isFacingRight;
             break;
     }
 }
