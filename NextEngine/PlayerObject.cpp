@@ -37,6 +37,8 @@ PlayerObject::PlayerObject(PlayerInfo& playerInfo) : LivingEntity(playerInfo.nam
     comboFrame[PlayerCombo::SECOND] = Combo(2, 3);
     comboFrame[PlayerCombo::THIRD] = Combo(2, 3);
     currentCombo = PlayerCombo::NONE;
+    isCurrentAttackFacingRight = true;
+    timeBetweenLastAttack = 0.0f;
 
     timeToResetComboRemaining = 0.0f;
     attackHitbox = nullptr;
@@ -149,12 +151,14 @@ void PlayerObject::updateBehavior(list<DrawableObject*>& objectsList) {
         }
 
         timeToResetComboRemaining -= dt;
+        timeBetweenLastAttack += dt;
 
-        if (moveDirection.x != 0.0f) {
-            this->getAnimationComponent()->setState("Idle");
-            moveDirection.x /= abs(moveDirection.x);
+        if (moveDirection.x != 0.0f && timeBetweenLastAttack >= PlayerStat::AFTER_ATTACK_MOVE_DELAY_TIME) {
             canMove = true;
+            moveDirection.x = 0.0f;
+            this->getAnimationComponent()->setState("Idle");
             isInAttackState = false;
+
             return;
         }
 
@@ -239,11 +243,14 @@ void PlayerObject::attack() {
     vel.x *= isFacingRight ? 1.0f : -1.0f;
     this->getPhysicsComponent()->setVelocity(glm::vec2(vel));
 
+    timeBetweenLastAttack = 0.0f;
+
     switch (currentCombo) {
         case PlayerCombo::NONE:
             currentCombo = PlayerCombo::FIRST;
             this->getAnimationComponent()->setState("Combo1");
             attackHitbox->setDamage(PlayerStat::COMBO_DAMAGE_1);
+            isCurrentAttackFacingRight = isFacingRight;
             break;
 
         case PlayerCombo::FIRST:
@@ -262,6 +269,7 @@ void PlayerObject::attack() {
             currentCombo = PlayerCombo::FIRST;
             this->getAnimationComponent()->setState("Combo1");
             attackHitbox->setDamage(PlayerStat::COMBO_DAMAGE_1);
+            isCurrentAttackFacingRight = isFacingRight;
             break;
     }
 }

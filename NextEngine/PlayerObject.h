@@ -12,8 +12,9 @@ namespace PlayerStat {
     //constexpr float ATTACK_HITBOX_ACTIVE_TIME = 0.5f;
     constexpr float TIME_TO_RESET_COMBO = 1.5f;
     constexpr float ATTACK_COOLDOWN = 0.2f;
-    constexpr float LAST_COMBO_COOLDOWN = 0.5f;
+    constexpr float LAST_COMBO_COOLDOWN = 1.0f;
     constexpr float ATTACK_DASH_VELOCITY = 2.0f;
+    constexpr float AFTER_ATTACK_MOVE_DELAY_TIME = 0.4f;
     constexpr int COMBO_DAMAGE_1 = 1;
     constexpr int COMBO_DAMAGE_2 = 2;
     constexpr int COMBO_DAMAGE_3 = 3;
@@ -45,6 +46,7 @@ class PlayerObject : public LivingEntity {
 
         Combo comboFrame[3];
         PlayerCombo currentCombo;
+        bool isCurrentAttackFacingRight;
         float timeToResetComboRemaining;
         void startAttack();
         void endAttack();
@@ -54,14 +56,13 @@ class PlayerObject : public LivingEntity {
         float attackCooldownRemaining;
         bool isAttacking;
         bool isInAttackState;
+        float timeBetweenLastAttack;
     
         bool isDodging;
         bool canDodge;
         bool canMove;
         float dodgeTimeElapsed;
         float dodgeCooldownLeft;
-
-        void handleMovement(glm::vec3 moveDir);
     
         glm::vec3 moveDirection;
 
