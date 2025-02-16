@@ -41,7 +41,8 @@ class Animation {
 		float offsetX;
 		float offsetY;
 		float timeRateKeep = 0.0f;
-		float timeRate = 0.4f;
+		float timeRate = 0.12f;
+		//float timeRate = 0.4f; // for testing
 		bool isPaused;
 
 	public:
@@ -88,4 +89,5 @@ class Animation {
 		int getCurrentFrame() const;
 		bool getIsPlaying() const;
 		State getCurrentAnimationState() const;
+		float getTimeRate() const;
 };

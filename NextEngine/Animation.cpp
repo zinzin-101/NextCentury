@@ -150,3 +150,7 @@ bool Animation::getIsPlaying() const {
 Animation::State Animation::getCurrentAnimationState() const {
 	return *currentState;
 }
+
+float Animation::getTimeRate() const {
+	return timeRate;
+}

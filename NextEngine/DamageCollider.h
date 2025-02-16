@@ -92,6 +92,9 @@ void DamageCollider<TargetEntityType>::trigger(glm::vec3 pos) {
 	timeRemaining = lifespan;
 	this->transform.setPosition(pos);
 	this->setActive(true);
+
+	// debug //
+	std::cout << "damage: " << damage << std::endl;
 }
 
 template <class TargetEntityType>

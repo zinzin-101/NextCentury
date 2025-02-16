@@ -56,7 +56,7 @@ void LevelPrototype::levelInit() {
         EnemyObject* enemy = dynamic_cast<EnemyObject*>(obj);
         if (enemy != NULL) {
             enemy->setTarget(player);
-            enemy->setHealth(15);
+            enemy->setHealth(6);
             //enemy->setCanAttack(false); // debug
             enemy->setDrawCollider(true); // for debugging
             cout << "enemy found" << endl;

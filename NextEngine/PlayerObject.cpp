@@ -110,10 +110,21 @@ void PlayerObject::updateBehavior(list<DrawableObject*>& objectsList) {
     }
 
     if (isInAttackState) {
+        canMove = false;
 
-        this->getPhysicsComponent()->setVelocity(glm::vec2(0.0f, vel.y));
-        this->getPhysicsComponent()->setAcceleration(glm::vec2(0.0f, 0.0f));
-        
+        float decreaseSpeed = PlayerStat::ATTACK_DASH_VELOCITY / static_cast<float>(comboFrame[currentCombo].allowNextComboFrame + 1);
+        decreaseSpeed *= dt;
+
+        if (vel.x != 0.0f) {
+            if (isFacingRight) {
+                this->getPhysicsComponent()->addVelocity(glm::vec2(-decreaseSpeed, 0.0f));
+            }
+            else {
+                this->getPhysicsComponent()->addVelocity(glm::vec2(decreaseSpeed, 0.0f));
+            }
+        }
+
+
         Animation::State currentState = this->getAnimationComponent()->getCurrentAnimationState();
         int currentFrame = currentState.currentFrame;
 
@@ -128,6 +139,9 @@ void PlayerObject::updateBehavior(list<DrawableObject*>& objectsList) {
 
         if (currentFrame == comboFrame[currentCombo].allowNextComboFrame + 1) {
             endAttack();
+            vel = this->getPhysicsComponent()->getVelocity();
+            this->getPhysicsComponent()->setVelocity(glm::vec2(0.0f, vel.y));
+
             attackCooldownRemaining = currentCombo == PlayerCombo::THIRD ? PlayerStat::LAST_COMBO_COOLDOWN : PlayerStat::ATTACK_COOLDOWN;
             timeToResetComboRemaining = currentCombo == PlayerCombo::THIRD ? PlayerStat::LAST_COMBO_COOLDOWN : PlayerStat::TIME_TO_RESET_COMBO;
             isAttacking = false;
@@ -137,17 +151,16 @@ void PlayerObject::updateBehavior(list<DrawableObject*>& objectsList) {
         timeToResetComboRemaining -= dt;
 
         if (moveDirection.x != 0.0f) {
-            moveDirection.x /= abs(moveDirection.x);
-            this->getAnimationComponent()->setState("Idle");
+            //moveDirection.x = 0.0f;
+            canMove = true;
             isInAttackState = false;
             return;
         }
 
         if (timeToResetComboRemaining <= 0.0f) {
             currentCombo = PlayerCombo::NONE;
-            isAttacking = false;
+            canMove = true;
             isInAttackState = false;
-            this->getAnimationComponent()->setState("Idle");
         }
 
         return;
@@ -206,7 +219,7 @@ void PlayerObject::updateBehavior(list<DrawableObject*>& objectsList) {
 }
 
 void PlayerObject::attack() {
-    if (isAttacking || isDodging || !canMove) {
+    if (isAttacking || isDodging) {
         return;
     }
 
@@ -216,6 +229,11 @@ void PlayerObject::attack() {
 
     isInAttackState = true;
     isAttacking = true;
+
+    glm::vec2 vel = this->getPhysicsComponent()->getVelocity();
+    vel.x = PlayerStat::ATTACK_DASH_VELOCITY;
+    vel.x *= isFacingRight ? 1.0f : -1.0f;
+    this->getPhysicsComponent()->setVelocity(glm::vec2(vel));
 
     switch (currentCombo) {
         case PlayerCombo::NONE:
