@@ -29,6 +29,7 @@ PlayerObject::PlayerObject(PlayerInfo& playerInfo) : LivingEntity(playerInfo.nam
     canDodge = true;
     isDodging = false;
     canMove = true;
+    canChangeFacingDirection = true;
 
     isAttacking = false;
     isInAttackState = false;
@@ -63,6 +64,10 @@ void PlayerObject::move(glm::vec2 direction) {
 
     if (this->moveDirection.x != 0.0f) {
         this->moveDirection.x /= abs(this->moveDirection.x);
+    
+        if (canChangeFacingDirection) {
+            isFacingRight = moveDirection.x >= 0.0f ? true : false;
+        }
     }
 }
 
@@ -170,6 +175,7 @@ void PlayerObject::updateBehavior(list<DrawableObject*>& objectsList) {
     }
 
     currentCombo = PlayerCombo::NONE;
+    canChangeFacingDirection = true;
     this->getAnimationComponent()->setState("Idle");
 
     if (isDodging) {
@@ -201,8 +207,6 @@ void PlayerObject::updateBehavior(list<DrawableObject*>& objectsList) {
 
     // Handle movement
     if (canMove) {
-        isFacingRight = moveDirection.x > 0.0f ? true : false;
-
         this->physics->addVelocity(glm::vec2(moveDirection.x * PlayerStat::ACCEL_SPEED * dt, 0.0f));
         vel = this->physics->getVelocity();
         if (abs(vel.x) > PlayerStat::MOVE_SPEED) {
@@ -236,8 +240,9 @@ void PlayerObject::attack() {
 
     isInAttackState = true;
     isAttacking = true;
+    canChangeFacingDirection = false;
 
-    isFacingRight = moveDirection.x > 0.0f ? true : false;
+    isFacingRight = moveDirection.x >= 0.0f ? true : false;
 
     glm::vec2 vel = this->getPhysicsComponent()->getVelocity();
     vel.x = PlayerStat::ATTACK_DASH_VELOCITY;

@@ -61,6 +61,7 @@ class PlayerObject : public LivingEntity {
         bool isDodging;
         bool canDodge;
         bool canMove;
+        bool canChangeFacingDirection;
         float dodgeTimeElapsed;
         float dodgeCooldownLeft;
     
