@@ -23,9 +23,9 @@ EnemyObject::EnemyObject(EnemyInfo& enemyInfo) : LivingEntity(enemyInfo.name, en
 	//getAnimationComponent()->addState("Idle", 0, 6);
 	//getAnimationComponent()->addState("Moving", 1, 5);
 	//getAnimationComponent()->addState("Attacking", 1, 5);
-	getAnimationComponent()->addState("Idle", 1, 1, true);
-	getAnimationComponent()->addState("Moving", 1, 3, true);
-	getAnimationComponent()->addState("Attacking", 0, 9, false);
+	getAnimationComponent()->addState("Idle", 1, 6, 3, true);
+	getAnimationComponent()->addState("Moving", 1, 0, 3, true);
+	getAnimationComponent()->addState("Attacking", 0, 0, 9, false);
 	getAnimationComponent()->setState("Idle");
 
 	//attackHitbox = new SimpleObject();

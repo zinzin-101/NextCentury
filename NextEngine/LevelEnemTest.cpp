@@ -95,8 +95,8 @@ void LevelEnemTest::levelInit() {
     enemy->setTexture("../Resource/Texture/incineratorSizeFlip.png");
     enemy->setName("enem");
     enemy->initAnimation(2, 6);
-    enemy->getAnimationComponent()->addState("Idle", 0, 6, true);
-    enemy->getAnimationComponent()->addState("Attacking", 1, 5, true);
+    enemy->getAnimationComponent()->addState("Idle", 0, 0, 6, true);
+    enemy->getAnimationComponent()->addState("Attacking", 1, 0, 5, true);
     enemy->getTransform().setPosition(glm::vec3(8.0f, 1.0f, 0.0f));
     enemy->addColliderComponent();
     enemy->addPhysicsComponent();

@@ -11,7 +11,7 @@ PlayerObject::PlayerObject(PlayerInfo& playerInfo) : LivingEntity(playerInfo.nam
     setTexture("../Resource/Texture/SIZENextCentury_Player_Idle-Sheet.png");
     initAnimation(1, 6);
 
-    getAnimationComponent()->addState("Idle", 0, 6, true);
+    getAnimationComponent()->addState("Idle", 0, 0, 6, true);
 
     getTransform().setScale(1, 1);
     addColliderComponent();
