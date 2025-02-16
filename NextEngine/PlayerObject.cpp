@@ -58,7 +58,7 @@ void PlayerObject::setDamage(int damage) {
 }
 
 void PlayerObject::move(glm::vec2 direction) {
-    if (isDodging || !canMove || isAttacking) {
+    if (isDodging || isAttacking) {
         return;
     }
 
@@ -151,13 +151,15 @@ void PlayerObject::updateBehavior(list<DrawableObject*>& objectsList) {
         timeToResetComboRemaining -= dt;
 
         if (moveDirection.x != 0.0f) {
-            //moveDirection.x = 0.0f;
+            this->getAnimationComponent()->setState("Idle");
+            moveDirection.x /= abs(moveDirection.x);
             canMove = true;
             isInAttackState = false;
             return;
         }
 
         if (timeToResetComboRemaining <= 0.0f) {
+            this->getAnimationComponent()->setState("Idle");
             currentCombo = PlayerCombo::NONE;
             canMove = true;
             isInAttackState = false;
@@ -197,21 +199,23 @@ void PlayerObject::updateBehavior(list<DrawableObject*>& objectsList) {
     }
 
     // Handle movement
-    this->physics->addVelocity(glm::vec2(moveDirection.x * PlayerStat::ACCEL_SPEED * dt, 0.0f));
-    vel = this->physics->getVelocity();
-    if (abs(vel.x) > PlayerStat::MOVE_SPEED) {
-        vel.x = PlayerStat::MOVE_SPEED * moveDirection.x;
-        this->physics->setVelocity(vel);
-    }
+    if (canMove) {
+        this->physics->addVelocity(glm::vec2(moveDirection.x * PlayerStat::ACCEL_SPEED * dt, 0.0f));
+        vel = this->physics->getVelocity();
+        if (abs(vel.x) > PlayerStat::MOVE_SPEED) {
+            vel.x = PlayerStat::MOVE_SPEED * moveDirection.x;
+            this->physics->setVelocity(vel);
+        }
 
-    vel = this->physics->getVelocity();
-    if (vel.x != 0.0f && moveDirection.x == 0.0f) {
-        float dragDir = vel.x > 0.0f ? -1 : 1;
-        this->physics->addVelocity(glm::vec2(dragDir * PlayerStat::DECEL_SPEED * dt, 0.0f));
-        float newVel = this->physics->getVelocity().x;
+        vel = this->physics->getVelocity();
+        if (vel.x != 0.0f && moveDirection.x == 0.0f) {
+            float dragDir = vel.x > 0.0f ? -1 : 1;
+            this->physics->addVelocity(glm::vec2(dragDir * PlayerStat::DECEL_SPEED * dt, 0.0f));
+            float newVel = this->physics->getVelocity().x;
 
-        if ((vel.x < 0) != (newVel < 0)) {
-            this->physics->setVelocity(glm::vec2(0.0f, vel.y));
+            if ((vel.x < 0) != (newVel < 0)) {
+                this->physics->setVelocity(glm::vec2(0.0f, vel.y));
+            }
         }
     }
     
