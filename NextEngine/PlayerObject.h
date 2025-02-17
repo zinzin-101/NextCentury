@@ -15,6 +15,7 @@ namespace PlayerStat {
     constexpr float LAST_COMBO_COOLDOWN = 1.0f;
     constexpr float ATTACK_DASH_VELOCITY = 2.0f;
     constexpr float AFTER_ATTACK_MOVE_DELAY_TIME = 0.8f;
+    constexpr float DURATION_TO_START_HEAVY_ATTACK = 0.5f;
     constexpr int COMBO_DAMAGE_1 = 1;
     constexpr int COMBO_DAMAGE_2 = 2;
     constexpr int COMBO_DAMAGE_3 = 3;
@@ -51,6 +52,11 @@ class PlayerObject : public LivingEntity {
         void startAttack();
         void endAttack();
 
+        enum PlayerHeavyCharge {
+            LEVEL_1,
+            LEVEL_2
+        };
+
         DamageCollider<EnemyObject>* attackHitbox;
         int damage;
         float attackCooldownRemaining;
@@ -71,7 +77,8 @@ class PlayerObject : public LivingEntity {
         PlayerObject(PlayerInfo& playerInfo);
         ~PlayerObject();
 
-        void attack();
+        void normalAttack();
+        void heavyAttack(float duration);
 
         int getDamage() const;
         void setDamage(int damage);

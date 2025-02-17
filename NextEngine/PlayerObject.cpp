@@ -229,7 +229,7 @@ void PlayerObject::updateBehavior(list<DrawableObject*>& objectsList) {
     moveDirection.x = 0.0f; // Reset move direction for next frame
 }
 
-void PlayerObject::attack() {
+void PlayerObject::normalAttack() {
     if (isAttacking || isDodging) {
         return;
     }
@@ -278,6 +278,10 @@ void PlayerObject::attack() {
             attackHitbox->setDamage(PlayerStat::COMBO_DAMAGE_1);
             break;
     }
+}
+
+void PlayerObject::heavyAttack(float duration) {
+
 }
 
 void PlayerObject::startAttack() {

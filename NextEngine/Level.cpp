@@ -45,6 +45,20 @@ void Level::handleKey(InputManager& input) {
     /// Will be implemented in inherited level when used ///
 }
 
+void Level::processKey(InputManager& input, SDL_Keycode key) {
+    float dt = GameEngine::getInstance()->getTime()->getDeltaTime();
+
+    if (input.getButtonDown(SDLK_k)) {
+        keyHeldDuration[SDLK_k] = 0.0f;
+        return;
+    }
+
+    if (input.getButton(SDLK_k)) {
+        keyHeldDuration[SDLK_k] += dt;
+        return;
+    }
+}
+
 void Level::handleMouse(int type, int x, int y) {
     /// Will be implemented in inherited level when used ///
 }

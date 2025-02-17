@@ -152,6 +152,12 @@ void LevelPrototype::levelUnload() {
 
 void LevelPrototype::handleKey(InputManager& input) {
     float dt = GameEngine::getInstance()->getTime()->getDeltaTime();
+
+    /// Process key ///
+    // add key that requires hold duration here
+    processKey(input, SDLK_k);
+
+    // handle event here
     if (input.getButton(SDLK_SPACE)) player->jump();
     if (input.getButton(SDLK_a)) player->move(glm::vec2(-1, 0));;
     if (input.getButton(SDLK_d)) player->move(glm::vec2(1, 0));;
@@ -167,7 +173,20 @@ void LevelPrototype::handleKey(InputManager& input) {
     if (input.getButtonDown(SDLK_e)) GameEngine::getInstance()->getStateController()->gameStateNext = GameState::GS_LEVEL1;
     if (input.getButton(SDLK_z)) GameEngine::getInstance()->getRenderer()->increaseZoomRatio(0.1f);
     if (input.getButton(SDLK_x)) GameEngine::getInstance()->getRenderer()->decreaseZoomRatio(0.1f);
-    if (input.getButtonDown(SDLK_k)) player->attack();
+
+    /// Use processed key here ///
+    if (keyHeldDuration[SDLK_k] < PlayerStat::DURATION_TO_START_HEAVY_ATTACK) {
+        if (input.getButtonUp(SDLK_k)) {
+            player->normalAttack();
+        }
+    }
+    else {
+        if (input.getButtonUp(SDLK_k)) {
+            player->heavyAttack(keyHeldDuration[SDLK_k]);
+        }
+    }
+
+
     //cout << dt << endl;
     // 
     //switch (key) {
