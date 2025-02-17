@@ -184,6 +184,9 @@ void LevelPrototype::handleKey(InputManager& input) {
         if (input.getButtonUp(SDLK_k)) {
             player->heavyAttack(keyHeldDuration[SDLK_k]);
         }
+        else if (input.getButton(SDLK_k)) {
+            player->startHeavyAttack();
+        }
     }
 
 

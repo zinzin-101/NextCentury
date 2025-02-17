@@ -16,9 +16,13 @@ namespace PlayerStat {
     constexpr float ATTACK_DASH_VELOCITY = 2.0f;
     constexpr float AFTER_ATTACK_MOVE_DELAY_TIME = 0.8f;
     constexpr float DURATION_TO_START_HEAVY_ATTACK = 0.5f;
-    constexpr int COMBO_DAMAGE_1 = 1;
-    constexpr int COMBO_DAMAGE_2 = 2;
-    constexpr int COMBO_DAMAGE_3 = 3;
+    constexpr int COMBO_DAMAGE_1 = 10;
+    constexpr int COMBO_DAMAGE_2 = 12;
+    constexpr int COMBO_DAMAGE_3 = 15;
+    constexpr float CHARGE_DAMAGE_MULTIPLIER_1 = 1.2f;
+    constexpr float CHARGE_DAMAGE_MULTIPLIER_2 = 1.5f;
+    constexpr float HEAVY_ATTACK_COOLDOWN_1 = 0.5f;
+    constexpr float HEAVY_ATTACK_COOLDOWN_2 = 0.8f;
 
     constexpr float MOVE_SPEED = 5.0f;
     constexpr float ACCEL_SPEED = 2000.0f;
@@ -38,24 +42,32 @@ class PlayerObject : public LivingEntity {
             NONE
         };
 
-        struct Combo {
-            int startAttackFrame;
-            int allowNextComboFrame;
-            Combo(): startAttackFrame(0), allowNextComboFrame(0) {}
-            Combo(int startAttackFrame, int allowNextComboFrame) : startAttackFrame(startAttackFrame), allowNextComboFrame(allowNextComboFrame) {}
+        enum PlayerHeavyCharge {
+            LEVEL_1,
+            LEVEL_2,
+            LEVEL_0
         };
 
-        Combo comboFrame[3];
+        struct AttackFrame {
+            int startAttackFrame;
+            int allowNextComboFrame;
+            AttackFrame(): startAttackFrame(0), allowNextComboFrame(0) {}
+            AttackFrame(int startAttackFrame, int allowNextComboFrame) : startAttackFrame(startAttackFrame), allowNextComboFrame(allowNextComboFrame) {}
+        };
+
+        int baseDamage[3];
+        AttackFrame comboFrame[3];
         PlayerCombo currentCombo;
         bool isCurrentAttackFacingRight;
         float timeToResetComboRemaining;
         void startAttack();
         void endAttack();
 
-        enum PlayerHeavyCharge {
-            LEVEL_1,
-            LEVEL_2
-        };
+        float damageMultiplier[2];
+        float heavyAttackCooldown[2];
+        AttackFrame heavyAttackFrame[2];
+        PlayerHeavyCharge currentHeavyCharge;
+        bool isInHeavyAttack;
 
         DamageCollider<EnemyObject>* attackHitbox;
         int damage;
@@ -79,6 +91,7 @@ class PlayerObject : public LivingEntity {
 
         void normalAttack();
         void heavyAttack(float duration);
+        void startHeavyAttack();
 
         int getDamage() const;
         void setDamage(int damage);

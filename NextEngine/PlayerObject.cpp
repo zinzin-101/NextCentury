@@ -8,8 +8,8 @@
 PlayerObject::PlayerObject(PlayerInfo& playerInfo) : LivingEntity(playerInfo.name, playerInfo.health) {
     this->damage = playerInfo.damage;
 
-    setTexture("../Resource/Texture/playertest.png");
-    initAnimation(4, 6);
+    setTexture("../Resource/Texture/playertest2.png");
+    initAnimation(7, 6);
 
     getAnimationComponent()->addState("Idle", 0, 0, 6, true);
 
@@ -17,12 +17,17 @@ PlayerObject::PlayerObject(PlayerInfo& playerInfo) : LivingEntity(playerInfo.nam
     getAnimationComponent()->addState("Combo2", 2, 0, 6, false);
     getAnimationComponent()->addState("Combo3", 3, 0, 6, false);
 
+    getAnimationComponent()->addState("Charging", 4, 0, 6, false);
+    getAnimationComponent()->addState("Charge1", 5, 0, 6, false);
+    getAnimationComponent()->addState("Charge2", 6, 0, 6, false);
+
     getTransform().setScale(1, 1);
     addColliderComponent();
     addPhysicsComponent();
 
     moveDirection = glm::vec3();
     isFacingRight = true;
+    isCurrentAttackFacingRight = isFacingRight;
 
     dodgeTimeElapsed = 0.0f;
     dodgeCooldownLeft = 0.0f;
@@ -34,11 +39,28 @@ PlayerObject::PlayerObject(PlayerInfo& playerInfo) : LivingEntity(playerInfo.nam
     isAttacking = false;
     isInAttackState = false;
     attackCooldownRemaining = 0.0f;
-    comboFrame[PlayerCombo::FIRST] = Combo(2, 3);
-    comboFrame[PlayerCombo::SECOND] = Combo(2, 3);
-    comboFrame[PlayerCombo::THIRD] = Combo(2, 3);
+
+    baseDamage[PlayerCombo::FIRST] = PlayerStat::COMBO_DAMAGE_1;
+    baseDamage[PlayerCombo::SECOND] = PlayerStat::COMBO_DAMAGE_2;
+    baseDamage[PlayerCombo::THIRD] = PlayerStat::COMBO_DAMAGE_3;
+
+    comboFrame[PlayerCombo::FIRST] = AttackFrame(2, 3);
+    comboFrame[PlayerCombo::SECOND] = AttackFrame(2, 3);
+    comboFrame[PlayerCombo::THIRD] = AttackFrame(2, 3);
+
     currentCombo = PlayerCombo::NONE;
     timeBetweenLastAttack = 0.0f;
+
+    damageMultiplier[PlayerHeavyCharge::LEVEL_1] = PlayerStat::CHARGE_DAMAGE_MULTIPLIER_1;
+    damageMultiplier[PlayerHeavyCharge::LEVEL_2] = PlayerStat::CHARGE_DAMAGE_MULTIPLIER_2;
+
+    heavyAttackCooldown[PlayerHeavyCharge::LEVEL_1] = PlayerStat::HEAVY_ATTACK_COOLDOWN_1;
+    heavyAttackCooldown[PlayerHeavyCharge::LEVEL_2] = PlayerStat::HEAVY_ATTACK_COOLDOWN_2;
+
+    heavyAttackFrame[PlayerHeavyCharge::LEVEL_1] = AttackFrame(2, 3);
+    heavyAttackFrame[PlayerHeavyCharge::LEVEL_2] = AttackFrame(2, 3);
+    currentHeavyCharge = PlayerHeavyCharge::LEVEL_0;
+    isInHeavyAttack = false;
 
     timeToResetComboRemaining = 0.0f;
     attackHitbox = nullptr;
@@ -113,6 +135,55 @@ void PlayerObject::updateBehavior(list<DrawableObject*>& objectsList) {
         attackCooldownRemaining -= dt;
     }
 
+    if (isInHeavyAttack) {
+        canMove = false;
+        Animation::State currentState = this->getAnimationComponent()->getCurrentAnimationState();
+
+        if (isAttacking) {
+            float decreaseSpeed = PlayerStat::ATTACK_DASH_VELOCITY / static_cast<float>(comboFrame[currentCombo].allowNextComboFrame + 1);
+            decreaseSpeed *= dt;
+
+            int currentFrame = currentState.currentFrame;
+
+            if (currentFrame < heavyAttackFrame[currentHeavyCharge].startAttackFrame + 1) {
+                return;
+            }
+
+            if (currentFrame == heavyAttackFrame[currentHeavyCharge].startAttackFrame + 1) {
+                startAttack();
+                return;
+            }
+
+            if (currentFrame == heavyAttackFrame[currentHeavyCharge].allowNextComboFrame + 1) {
+                endAttack();
+                vel = this->getPhysicsComponent()->getVelocity();
+                this->getPhysicsComponent()->setVelocity(glm::vec2(0.0f, vel.y));
+                attackCooldownRemaining = heavyAttackCooldown[currentHeavyCharge];
+                return;
+            }
+
+            if (attackCooldownRemaining <= 0.0f) {
+                isAttacking = false;
+                isInHeavyAttack = false;
+                isInAttackState = false;
+                canMove = true;
+                currentCombo = PlayerCombo::NONE;
+                this->getAnimationComponent()->setState("Idle");
+                return;
+            }
+
+            return;
+        }
+
+        this->getPhysicsComponent()->setVelocity(glm::vec2(0.0f, vel.y));
+
+        if (!currentState.isPlaying) {
+            currentHeavyCharge = PlayerHeavyCharge::LEVEL_2;
+        }
+
+        return;
+    }
+
     if (isInAttackState) {
         canMove = false;
 
@@ -156,7 +227,7 @@ void PlayerObject::updateBehavior(list<DrawableObject*>& objectsList) {
         timeBetweenLastAttack += dt;
 
         if (moveDirection.x != 0.0f && timeBetweenLastAttack >= PlayerStat::AFTER_ATTACK_MOVE_DELAY_TIME) {
-            moveDirection.x = 0.0f;
+            //moveDirection.x = 0.0f;
             this->getAnimationComponent()->setState("Idle");
             canMove = true;
             isInAttackState = false;
@@ -257,31 +328,53 @@ void PlayerObject::normalAttack() {
         case PlayerCombo::NONE:
             currentCombo = PlayerCombo::FIRST;
             this->getAnimationComponent()->setState("Combo1");
-            attackHitbox->setDamage(PlayerStat::COMBO_DAMAGE_1);
             break;
 
         case PlayerCombo::FIRST:
             currentCombo = PlayerCombo::SECOND;
             this->getAnimationComponent()->setState("Combo2");
-            attackHitbox->setDamage(PlayerStat::COMBO_DAMAGE_2);
             break;
 
         case PlayerCombo::SECOND:
             currentCombo = PlayerCombo::THIRD;
             this->getAnimationComponent()->setState("Combo3");
-            attackHitbox->setDamage(PlayerStat::COMBO_DAMAGE_3);
             break;
 
         case PlayerCombo::THIRD:
             currentCombo = PlayerCombo::FIRST;
             this->getAnimationComponent()->setState("Combo1");
-            attackHitbox->setDamage(PlayerStat::COMBO_DAMAGE_1);
             break;
     }
+
+    attackHitbox->setDamage(baseDamage[currentCombo]);
 }
 
 void PlayerObject::heavyAttack(float duration) {
+    isAttacking = true;
+    canChangeFacingDirection = false;
 
+    if (moveDirection.x != 0.0f) {
+        isFacingRight = moveDirection.x >= 0.0f ? true : false;
+    }
+
+    glm::vec2 vel = this->getPhysicsComponent()->getVelocity();
+    vel.x = PlayerStat::ATTACK_DASH_VELOCITY;
+    vel.x *= isFacingRight ? 1.0f : -1.0f;
+    this->getPhysicsComponent()->setVelocity(glm::vec2(vel));
+
+    timeBetweenLastAttack = 0.0f;
+    
+    switch (currentHeavyCharge) {
+        case PlayerHeavyCharge::LEVEL_1:
+            this->getAnimationComponent()->setState("Charge1");
+            break;
+
+        case PlayerHeavyCharge::LEVEL_2:
+            this->getAnimationComponent()->setState("Charge2");
+            break;
+    }
+
+    attackHitbox->setDamage(baseDamage[currentCombo] * damageMultiplier[currentHeavyCharge]);
 }
 
 void PlayerObject::startAttack() {
@@ -290,6 +383,24 @@ void PlayerObject::startAttack() {
 
 void PlayerObject::endAttack() {
     attackHitbox->setActive(false);
+}
+
+void PlayerObject::startHeavyAttack() {
+    if (isAttacking || isDodging) {
+        return;
+    }
+
+    if (attackCooldownRemaining > 0.0f) {
+        return;
+    }
+
+    isInHeavyAttack = true;
+    this->getAnimationComponent()->setState("Charging");
+    currentHeavyCharge = PlayerHeavyCharge::LEVEL_1;
+
+    if (currentCombo == PlayerCombo::NONE) {
+        currentCombo = PlayerCombo::FIRST;
+    }
 }
 
 void PlayerObject::onTriggerEnter(Collider* collider) {
