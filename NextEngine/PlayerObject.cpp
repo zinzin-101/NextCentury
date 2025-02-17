@@ -242,7 +242,9 @@ void PlayerObject::attack() {
     isAttacking = true;
     canChangeFacingDirection = false;
 
-    isFacingRight = moveDirection.x >= 0.0f ? true : false;
+    if (moveDirection.x != 0.0f) {
+        isFacingRight = moveDirection.x >= 0.0f ? true : false;
+    }
 
     glm::vec2 vel = this->getPhysicsComponent()->getVelocity();
     vel.x = PlayerStat::ATTACK_DASH_VELOCITY;
