@@ -28,7 +28,6 @@ private:
     bool isHovered;
     bool isPressed;
     glm::vec3 color;
-    Collider* collider;
     TextObject textObject;  
     TextObject* buttonText;  
 
