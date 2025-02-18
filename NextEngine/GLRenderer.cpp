@@ -341,7 +341,7 @@ void GLRenderer::drawCameraOutline() {
 
 void GLRenderer::updateViewport() {
     glm::vec3 cameraPosition = camera.getPosition();
-    cameraPosition.y += 190;
+    //cameraPosition.y += 190;
     float aspectRatio = static_cast<float>(winWidth) / winHeight;
     float left = cameraPosition.x - zoomRatio * aspectRatio;
     float right = cameraPosition.x + zoomRatio * aspectRatio;
