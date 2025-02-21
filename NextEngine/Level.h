@@ -10,6 +10,7 @@
 #include "EnemyObject.h"
 #include "Audio.h"
 #include "ParallaxObject.h"
+#include "TextObject.h"
 
 class Level
 {

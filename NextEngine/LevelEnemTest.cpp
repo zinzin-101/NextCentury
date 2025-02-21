@@ -113,6 +113,12 @@ void LevelEnemTest::levelInit() {
     cout << "player pos: " << player->getTransform().getPosition() << endl;
     
     mapLoader.offsetMap(objectsList, glm::vec3(-800.0f, -445.0f, 0.0f));
+
+    TextObject* txt = new TextObject();
+    SDL_Color colr = { 255, 255, 255 };
+    txt->loadText("YAMUM", colr, 16);
+    objectsList.push_back(txt);
+
 }
 void LevelEnemTest::levelUpdate() {
     updateObjects(objectsList);
