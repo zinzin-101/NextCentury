@@ -89,3 +89,18 @@ void Level::updateObjects(list<DrawableObject*>& objectsList) {
         }
     }
 }
+
+void Level::initPlayer(PlayerObject*& player, PlayerInfo playerInfo) {
+    if (player == nullptr) {
+        player = new PlayerObject(playerInfo);
+        objectsList.emplace_back(player);
+    }
+    else {
+        player->setName(playerInfo.name);
+        player->setHealth(playerInfo.health);
+        //player->setMovementInfo(playerInfo.movementInfo);
+        player->setDamage(playerInfo.damage);
+    }
+
+    player->setDrawCollider(true); // for debugging
+}

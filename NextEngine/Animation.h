@@ -19,18 +19,19 @@ class Animation {
 			/// @param name the name of the state
 			/// @param row the number of row in the source file of the animation
 			/// @param frameCount the number of frames in the animation
-			State(string name, int row, int frameCount, bool canLoop) : name(name), row(row), frameCount(frameCount), canLoop(canLoop) {}
+			State(string name, int row, int frameCount, bool canLoop) : name(name), row(row), frameCount(frameCount), currentFrame(0), canLoop(canLoop), isPlaying(canLoop) {}
 			string name;
 			int row;
 			int frameCount;
+			int currentFrame;
 			bool canLoop;
+			bool isPlaying;
 		};
 
 	private:
 		//Animator
 		map<string, State> states;
-		State currentState;
-		int currentFrame;
+		State* currentState;
 
 		// Animation
 		unsigned int& texture;
@@ -39,8 +40,7 @@ class Animation {
 		float offsetX;
 		float offsetY;
 		float timeRateKeep = 0.0f;
-		float timeRate = 1.12f;
-		bool isPlaying;
+		float timeRate = 0.12f;
 		bool isPaused;
 
 	public:
@@ -86,4 +86,5 @@ class Animation {
 
 		int getCurrentFrame() const;
 		bool getIsPlaying() const;
+		State getCurrentAnimationState() const;
 };

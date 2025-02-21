@@ -59,23 +59,23 @@ void Transform::scales(float scaleX, float scaleY) {
 	this->scale.y *= scaleY;
 }
 
-glm::vec3 Transform::getPosition() {
+glm::vec3 Transform::getPosition() const {
 	return this->position;
 }
 
-float Transform::getRotationRad() {
+float Transform::getRotationRad() const {
 	return this->rotation;
 }
 
-float Transform::getRotationDeg() {
+float Transform::getRotationDeg() const {
 	float degrees = glm::degrees(rotation);
 	return degrees;
 }
 
-float Transform::getRotation() {
+float Transform::getRotation() const {
 	return getRotationDeg();
 }
-glm::vec3 Transform::getScale() {
+glm::vec3 Transform::getScale() const {
 	return this->scale;
 }
 
@@ -101,7 +101,7 @@ void Transform::rotate(float angle) {
 	rotateDeg(angle);
 }
 
-Transform Transform::getGlobalTransform(Transform& objectTransform) {
+Transform Transform::getGlobalTransform(Transform& objectTransform) const {
 	Transform globalTransform(
 		this->position + objectTransform.position,
 		this->rotation + objectTransform.rotation,
@@ -111,7 +111,7 @@ Transform Transform::getGlobalTransform(Transform& objectTransform) {
 	return globalTransform;
 }
 
-glm::mat4 Transform::getTransformMat4() {
+glm::mat4 Transform::getTransformMat4() const {
 	glm::mat4 _transform = glm::mat4(1.0);
 	_transform = glm::translate(_transform, glm::vec3(position.x, position.y, 0));
 	_transform = glm::rotate(_transform, rotation, glm::vec3(0, 0, 1));
