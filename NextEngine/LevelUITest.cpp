@@ -15,6 +15,7 @@ void LevelUITest::levelLoad() {
 
 void LevelUITest::levelInit() {
     UIobject = new UI();
+    
 
     // Initialize the background
     background = new TexturedObject();
@@ -80,9 +81,9 @@ void LevelUITest::levelInit() {
     attackHitbox->setDrawCollider(true);
     objectsList.push_back(attackHitbox);
 
-    quitButton = new Button("Test","test");
+    quitButton = new Button();
     quitButton->setState(Button::ButtonState::NORMAL);
-
+    
 
     objectsList.push_back(quitButton);
 
@@ -98,16 +99,11 @@ void LevelUITest::levelInit() {
 
 void LevelUITest::levelUpdate() {
     //updateObjects(objectsList);
+    mouseX = GameEngine::getInstance()->getInputHandler()->getMouseX();
+    mouseY = GameEngine::getInstance()->getInputHandler()->getMouseY();
 
     glm::vec3 playerPosition = player->getTransform().getPosition();
     GameEngine::getInstance()->getRenderer()->updateCamera(playerPosition);
-
-    // Update health bar based on player's current health
-    float healthPercentage = static_cast<float>(player->getHealth()) / 100;
-    float healthBarWidth = healthPercentage * 2.0f;
-    //healthBar->getTransform().setScale(glm::vec3(healthBarWidth, 0.2f, 0.0f)); 
-    float offsetX = (2.0f - healthBarWidth) / 2.0f;
-    //healthBar->getTransform().setPosition(glm::vec3(playerPosition.x - offsetX, playerPosition.y + 1.5f, 0.0f)); 
 
     // Check collision between player and enemy
     for (DrawableObject* obj : objectsList) {
@@ -121,12 +117,22 @@ void LevelUITest::levelUpdate() {
         }
     }
     UIobject->updateUI(*player);
+    bool ishovering = false;
+    if (quitButton->getTransform().getPosition().x && quitButton->getTransform().getPosition().y == mouseX && mouseY) {
+        ishovering = true;
+    }
+    else {
+        ishovering = false;
+    }
+    quitButton->handleMouseInput(mouseX, mouseY,ishovering);
+    
+    
     // Update attack hitbox
     glm::vec3 playerPos = player->getTransform().getPosition();
     attackHitbox->getTransform().setPosition(glm::vec3(playerPos.x + 1.0f, playerPos.y, playerPos.z));
 
     if (isHitboxActive) {
-        hitboxTimer += GameEngine::getInstance()->getTime()->getDeltaTime(); // Increment timer by delta time
+        hitboxTimer += GameEngine::getInstance()->getTime()->getDeltaTime(); 
         if (hitboxTimer >= 0.2f) {
             isHitboxActive = false;
             attackHitbox->getColliderComponent()->setEnableCollision(false);

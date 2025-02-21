@@ -3,9 +3,9 @@
 
 
 Button::Button()
-    : DrawableObject("Unnamed Button"), label(""), state(ButtonState::NORMAL), isHovered(false), isPressed(false), color(glm::vec3(1.0f, 1.0f, 1.0f)) {
+    : SimpleObject("Unnamed Button"), label(""), state(ButtonState::NORMAL), isHovered(false), isPressed(false), color(glm::vec3(1.0f, 1.0f, 1.0f)) {
     glm::vec2 size = this->getTransform().getScale();
-    collider = new Collider(this, size.x, size.y);
+    this->addColliderComponent();
     collider->setEnableCollision(true);
     color = glm::vec3(1, 1, 1);
 
@@ -14,7 +14,7 @@ Button::Button()
 }
 
 Button::Button(std::string name, std::string label)
-    : DrawableObject(name), label(label), state(ButtonState::NORMAL), isHovered(false), isPressed(false), color(glm::vec3(1.0f, 1.0f, 1.0f)) {
+    : SimpleObject(name), label(label), state(ButtonState::NORMAL), isHovered(false), isPressed(false), color(glm::vec3(1.0f, 1.0f, 1.0f)) {
     glm::vec2 size = this->getTransform().getScale();
     collider = new Collider(this, size.x, size.y);
     collider->setEnableCollision(true);
@@ -47,7 +47,7 @@ void Button::setOnHoverCallback(std::function<void()> callback) {
     onHover = callback;
 }
 
-void Button::handleMouseInput(int mouseX, int mouseY, bool isMousePressed) {
+void Button::handleMouseInput(int mouseX, int mouseY,bool isMousePressed) {
     glm::vec2 mousePosition(mouseX, mouseY);
     bool inside = collider->isEnable() && checkCollisionPoint(collider, this->getTransform(), mousePosition);
 
@@ -56,16 +56,19 @@ void Button::handleMouseInput(int mouseX, int mouseY, bool isMousePressed) {
             isHovered = true;
             state = ButtonState::HOVERED;
             if (onHover) onHover();
+            cout << "hover" << endl;
         }
 
         if (isMousePressed) {
             isPressed = true;
             state = ButtonState::PRESSED;
+            cout << "press" << endl;
         }
         else if (isPressed) {
             isPressed = false;
             state = ButtonState::RELEASED;
             if (onClick) onClick();
+            cout << "release" << endl;
         }
     }
     else {
@@ -127,6 +130,6 @@ void Button::render(glm::mat4 globalModelTransform) {
     }
 
     // Render text
-    glm::mat4 textMatrix = glm::translate(currentMatrix, glm::vec3(0, 0, 0.1f)); // Slight offset to render on top
-    textObject.render(textMatrix);
+   // glm::mat4 textMatrix = glm::translate(currentMatrix, glm::vec3(0, 0, 0.1f)); // Slight offset to render on top
+    //textObject.render(textMatrix);
 }

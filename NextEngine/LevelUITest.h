@@ -16,6 +16,7 @@ private:
     float hitboxTimer = 0.0f;
     MapLoader mapLoader;
     UI* UIobject;
+    int mouseX, mouseY;
     
 
 public:
