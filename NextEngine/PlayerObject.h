@@ -103,6 +103,8 @@ class PlayerObject : public LivingEntity {
         void jump();
         void dodge();
 
+        bool getCanMove() const;
+
         /// debugging ///
         virtual void onTriggerEnter(Collider* collider);
 };

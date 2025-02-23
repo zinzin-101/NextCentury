@@ -403,6 +403,10 @@ void PlayerObject::startHeavyAttack() {
     }
 }
 
+bool PlayerObject::getCanMove() const {
+    return canMove;
+}
+
 void PlayerObject::onTriggerEnter(Collider* collider) {
 
 }

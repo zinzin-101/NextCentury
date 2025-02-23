@@ -155,13 +155,15 @@ void LevelPrototype::handleKey(InputManager& input) {
 
     /// Process key ///
     // add key that requires hold duration here
-    processKey(input, SDLK_k);
+    processHeldKey(input, SDLK_k);
+
+    // add key that requires buffering here
+    processKeyBuffer(input, SDLK_LSHIFT);
 
     // handle event here
     if (input.getButton(SDLK_SPACE)) player->jump();
     if (input.getButton(SDLK_a)) player->move(glm::vec2(-1, 0));;
     if (input.getButton(SDLK_d)) player->move(glm::vec2(1, 0));;
-    if (input.getButtonDown(SDLK_LSHIFT)) player->dodge();
     if (input.getButton(SDLK_UP)) marker->getTransform().translate(glm::vec3(0, 10, 0) * dt);;
     if (input.getButton(SDLK_DOWN)) marker->getTransform().translate(glm::vec3(0, -10, 0) * dt);;
     if (input.getButton(SDLK_LEFT)) marker->getTransform().translate(glm::vec3(-10, 0, 0) * dt);;
@@ -187,6 +189,11 @@ void LevelPrototype::handleKey(InputManager& input) {
         else if (input.getButton(SDLK_k)) {
             player->startHeavyAttack();
         }
+    }
+
+    if (keyBuffer[SDLK_LSHIFT] > 0 && player->getCanMove()) {
+        clearKeyBuffer(SDLK_LSHIFT);
+        player->dodge();
     }
 
 
