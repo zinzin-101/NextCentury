@@ -227,7 +227,7 @@ void PlayerObject::updateBehavior(list<DrawableObject*>& objectsList) {
         timeBetweenLastAttack += dt;
 
         if (moveDirection.x != 0.0f && timeBetweenLastAttack >= PlayerStat::AFTER_ATTACK_MOVE_DELAY_TIME) {
-            //moveDirection.x = 0.0f;
+            moveDirection.x = 0.0f;
             this->getAnimationComponent()->setState("Idle");
             canMove = true;
             isInAttackState = false;
