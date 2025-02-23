@@ -162,13 +162,14 @@ void LevelPrototype::handleKey(InputManager& input) {
 
     // handle event here
     if (input.getButton(SDLK_SPACE)) player->jump();
-    if (input.getButton(SDLK_a)) player->move(glm::vec2(-1, 0));;
-    if (input.getButton(SDLK_d)) player->move(glm::vec2(1, 0));;
+    if (input.getButton(SDLK_a)) player->move(glm::vec2(-1, 0));
+    if (input.getButton(SDLK_d)) player->move(glm::vec2(1, 0));
+    if (input.getButtonDown(SDLK_j)) player->parryAttack();
     if (input.getButton(SDLK_UP)) marker->getTransform().translate(glm::vec3(0, 10, 0) * dt);;
-    if (input.getButton(SDLK_DOWN)) marker->getTransform().translate(glm::vec3(0, -10, 0) * dt);;
-    if (input.getButton(SDLK_LEFT)) marker->getTransform().translate(glm::vec3(-10, 0, 0) * dt);;
-    if (input.getButton(SDLK_RIGHT)) marker->getTransform().translate(glm::vec3(10, 0, 0) * dt);;
-    if (input.getButtonDown(SDLK_f)) GameEngine::getInstance()->getRenderer()->toggleViewport();;
+    if (input.getButton(SDLK_DOWN)) marker->getTransform().translate(glm::vec3(0, -10, 0) * dt);
+    if (input.getButton(SDLK_LEFT)) marker->getTransform().translate(glm::vec3(-10, 0, 0) * dt);
+    if (input.getButton(SDLK_RIGHT)) marker->getTransform().translate(glm::vec3(10, 0, 0) * dt);
+    if (input.getButtonDown(SDLK_f)) GameEngine::getInstance()->getRenderer()->toggleViewport();
     if (input.getButtonDown(SDLK_c)) player->getColliderComponent()->setTrigger(!player->getColliderComponent()->isTrigger());
     if (input.getButtonDown(SDLK_g)) viewMarker = !viewMarker;
     if (input.getButtonDown(SDLK_r)) GameEngine::getInstance()->getStateController()->gameStateNext = GameState::GS_RESTART;

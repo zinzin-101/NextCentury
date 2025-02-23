@@ -1,3 +1,4 @@
+#include "DamageCollider.h"
 #include "EnemyObject.h"
 #include "GameEngine.h"
 #include "PlayerObject.h"
@@ -99,7 +100,7 @@ void EnemyObject::startAttack() {
 	attackHitbox->setCanDecreaseTime(false);
 
 	//attackCooldownTimer = attackCooldown;
-	std::cout << "Enemy attacked!" << std::endl;
+	//std::cout << "Enemy attacked!" << std::endl;
 }
 
 void EnemyObject::endAttack() {

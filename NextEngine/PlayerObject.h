@@ -1,5 +1,4 @@
 #pragma once
-#include "DamageCollider.h"
 #include "LivingEntity.h"
 #include "PlayerInfo.h"
 #include <list>
@@ -32,6 +31,9 @@ namespace PlayerStat {
 }
 
 class EnemyObject;
+
+template <class T>
+class DamageCollider;
 
 class PlayerObject : public LivingEntity {
     private:
@@ -69,6 +71,9 @@ class PlayerObject : public LivingEntity {
         PlayerHeavyCharge currentHeavyCharge;
         bool isInHeavyAttack;
 
+        AttackFrame parryFrame;
+        bool isParrying;
+        
         DamageCollider<EnemyObject>* attackHitbox;
         int damage;
         float attackCooldownRemaining;
@@ -91,6 +96,8 @@ class PlayerObject : public LivingEntity {
 
         void normalAttack();
         void heavyAttack(float duration);
+        void parryAttack();
+
         void startHeavyAttack();
 
         int getDamage() const;
@@ -104,6 +111,7 @@ class PlayerObject : public LivingEntity {
         void dodge();
 
         bool getCanMove() const;
+        bool getIsParrying() const;
 
         /// debugging ///
         virtual void onTriggerEnter(Collider* collider);

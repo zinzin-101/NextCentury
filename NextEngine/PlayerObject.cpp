@@ -1,4 +1,5 @@
 // PlayerObject.cpp
+#include "DamageCollider.h"
 #include "PlayerObject.h"
 #include "GameEngine.h"
 
@@ -8,8 +9,8 @@
 PlayerObject::PlayerObject(PlayerInfo& playerInfo) : LivingEntity(playerInfo.name, playerInfo.health) {
     this->damage = playerInfo.damage;
 
-    setTexture("../Resource/Texture/playertest2.png");
-    initAnimation(7, 6);
+    setTexture("../Resource/Texture/playertest3.png");
+    initAnimation(8, 6);
 
     getAnimationComponent()->addState("Idle", 0, 0, 6, true);
 
@@ -20,6 +21,8 @@ PlayerObject::PlayerObject(PlayerInfo& playerInfo) : LivingEntity(playerInfo.nam
     getAnimationComponent()->addState("Charging", 4, 0, 6, false);
     getAnimationComponent()->addState("Charge1", 5, 0, 6, false);
     getAnimationComponent()->addState("Charge2", 6, 0, 6, false);
+
+    getAnimationComponent()->addState("Parrying", 7, 0, 6, false);
 
     getTransform().setScale(1, 1);
     addColliderComponent();
@@ -61,6 +64,9 @@ PlayerObject::PlayerObject(PlayerInfo& playerInfo) : LivingEntity(playerInfo.nam
     heavyAttackFrame[PlayerHeavyCharge::LEVEL_2] = AttackFrame(2, 3);
     currentHeavyCharge = PlayerHeavyCharge::LEVEL_0;
     isInHeavyAttack = false;
+
+    parryFrame = AttackFrame(2, 3);
+    isParrying = false;
 
     timeToResetComboRemaining = 0.0f;
     attackHitbox = nullptr;
@@ -135,6 +141,38 @@ void PlayerObject::updateBehavior(list<DrawableObject*>& objectsList) {
         attackCooldownRemaining -= dt;
     }
 
+    if (isParrying) {
+        canMove = false;
+
+        vel = this->getPhysicsComponent()->getVelocity();
+        this->getPhysicsComponent()->setVelocity(glm::vec2(0.0f, vel.y));
+
+        Animation::State currentState = this->getAnimationComponent()->getCurrentAnimationState();
+        int currentFrame = currentState.currentFrame;
+
+        if (currentFrame < parryFrame.startAttackFrame + 1) {
+            return;
+        }
+
+        if (currentFrame == parryFrame.startAttackFrame + 1) {
+            startAttack();
+            return;
+        }
+
+        if (currentFrame == parryFrame.allowNextComboFrame + 1) {
+            endAttack();
+            attackCooldownRemaining = PlayerStat::ATTACK_COOLDOWN;
+            return;
+        }
+
+        if (!currentState.isPlaying) {
+            canMove = true;
+            isParrying = false;
+            moveDirection.x = 0.0f;
+        }
+        return;
+    }
+
     if (isInHeavyAttack) {
         canMove = false;
         Animation::State currentState = this->getAnimationComponent()->getCurrentAnimationState();
@@ -198,7 +236,6 @@ void PlayerObject::updateBehavior(list<DrawableObject*>& objectsList) {
                 this->getPhysicsComponent()->addVelocity(glm::vec2(decreaseSpeed, 0.0f));
             }
         }
-
 
         Animation::State currentState = this->getAnimationComponent()->getCurrentAnimationState();
         int currentFrame = currentState.currentFrame;
@@ -377,6 +414,27 @@ void PlayerObject::heavyAttack(float duration) {
     attackHitbox->setDamage(baseDamage[currentCombo] * damageMultiplier[currentHeavyCharge]);
 }
 
+void PlayerObject::parryAttack() {
+    if (isParrying || isDodging) {
+        return;
+    }
+
+    if (attackCooldownRemaining > 0.0f) {
+        return;
+    }
+
+    canChangeFacingDirection = false;
+
+    if (moveDirection.x != 0.0f) {
+        isFacingRight = moveDirection.x >= 0.0f ? true : false;
+    }
+
+    this->getAnimationComponent()->setState("Parrying");
+    isParrying = true;
+
+    attackHitbox->setDamage(0);
+}
+
 void PlayerObject::startAttack() {
     attackHitbox->trigger(transform.getPosition());
 }
@@ -405,6 +463,10 @@ void PlayerObject::startHeavyAttack() {
 
 bool PlayerObject::getCanMove() const {
     return canMove;
+}
+
+bool PlayerObject::getIsParrying() const {
+    return isParrying;
 }
 
 void PlayerObject::onTriggerEnter(Collider* collider) {
