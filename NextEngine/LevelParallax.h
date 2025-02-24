@@ -11,7 +11,7 @@ class LevelParallax : public Level
 {
 private:
     list<DrawableObject*> objectsList;
-    SimpleObject* player;
+    PlayerObject* player;
     ParallaxObject* spaceShip;
     ParallaxObject* midGround;
     float zoomRatio = 0.05f;
