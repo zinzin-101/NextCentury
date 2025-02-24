@@ -65,16 +65,16 @@ void Animation::setDimension(int row, int col) {
 }
 
 void Animation::setFrame(int row, int column) {
-	offsetX = (1.0f / this->colCount) * column; // MA BRAIN SWITCH ROW AND COLUMN SO I SWITCH EM HERE
+	offsetX = (1.0f / this->colCount) * column;
 	offsetY = (1.0f / this->rowCount) * row;
 }
 
-void Animation::addState(string name, int row, int frameCount, bool canLoop) {
+void Animation::addState(string name, int row, int startCol, int frameCount, bool canLoop) {
 	if (states.find(name) != states.end()) {
 		cout << "Error state: '" << name << "' already exists" << endl;
 		return;
 	}
-	State newState(name, row, frameCount, canLoop);
+	State newState(name, row, startCol, frameCount, canLoop);
 	states[name] = newState;
 
 	if (states.size() == 1) {
@@ -93,6 +93,9 @@ void Animation::setState(string name) {
 		nextState->currentFrame = 0;
 		nextState->isPlaying = true;
 		currentState = nextState;
+
+		setFrame(currentState->row, currentState->currentFrame + currentState->startCol);
+
 		return;
 	}
 }
@@ -120,8 +123,8 @@ void Animation::updateCurrentState() {
 	float dt = GameEngine::getInstance()->getTime()->getDeltaTime();
 	timeRateKeep += dt;
 
-	if (timeRateKeep > timeRate) { // Will need to change to frame I think
-		setFrame(currentState->row, currentState->currentFrame);
+	if (timeRateKeep > timeRate) {
+		setFrame(currentState->row, currentState->currentFrame + currentState->startCol);
 		currentState->currentFrame++;
 		timeRateKeep = 0.0f;
 	}
@@ -146,4 +149,8 @@ bool Animation::getIsPlaying() const {
 
 Animation::State Animation::getCurrentAnimationState() const {
 	return *currentState;
+}
+
+float Animation::getTimeRate() const {
+	return timeRate;
 }

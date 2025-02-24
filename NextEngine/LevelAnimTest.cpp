@@ -20,10 +20,10 @@ void LevelAnimTest::levelInit() {
 	obj->setTexture("../Resource/Texture/dog.png");
 	obj->getTransform().setScale(glm::vec3(1.5f, -1.5f,0));
 	obj->initAnimation(4, 4);
-	obj->getAnimationComponent()->addState("down", 0, 4, true);
-	obj->getAnimationComponent()->addState("left", 1, 4, true);
-	obj->getAnimationComponent()->addState("right", 2, 4, true);
-	obj->getAnimationComponent()->addState("up", 3, 4, true);
+	obj->getAnimationComponent()->addState("down", 0, 0, 4, true);
+	obj->getAnimationComponent()->addState("left", 1, 0, 4, true);
+	obj->getAnimationComponent()->addState("right", 2, 0, 4, true);
+	obj->getAnimationComponent()->addState("up", 3, 0, 4, true);
 	objectsList.push_back(obj);
 
 	player = obj;

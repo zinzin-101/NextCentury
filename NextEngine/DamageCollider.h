@@ -24,6 +24,7 @@ class DamageCollider : public ColliderObject {
 		DamageCollider(LivingEntity* owner, int damage, float lifespan);
 		virtual void update(std::list<DrawableObject*>& objectsList);
 		virtual void onCollisionEnter(Collider* collider);
+		virtual void onTriggerEnter(Collider* collider);
 
 		void trigger(glm::vec3 pos);
 		void trigger(glm::vec3 pos, glm::vec3 offset);
@@ -34,6 +35,8 @@ class DamageCollider : public ColliderObject {
 		void setFollowOwner(bool value);
 		void setFollowOffset(glm::vec3 offset);
 		void setCanDecreaseTime(bool value);
+
+		LivingEntity* getOwner() const;
 
 		virtual void render(glm::mat4 globalModelTransform);
 };
@@ -60,6 +63,10 @@ void DamageCollider<TargetEntityType>::update(std::list<DrawableObject*>& object
 		this->transform.setPosition(pos);
 	}
 
+	if (lifespan <= 0.0f) {
+		return;
+	}
+
 	if (timeRemaining > 0.0f && canDecreaseTimeRemaining) {
 		//std::cout << "hitbox active" << std::endl;
 		timeRemaining -= GameEngine::getInstance()->getTime()->getDeltaTime();
@@ -79,7 +86,23 @@ void DamageCollider<TargetEntityType>::onCollisionEnter(Collider* collider) {
 
 	if (entity != NULL) {
 		entity->takeDamage(damage);
-		std::cout << entity->getName() << " took " << damage << " damage" << std::endl;
+		//std::cout << entity->getName() << " took " << damage << " damage" << std::endl;
+	}
+}
+
+template <class TargetEntityType>
+void DamageCollider<TargetEntityType>::onTriggerEnter(Collider* collider) { // for handling parrying from player
+	DrawableObject* obj = collider->getObject();
+	DamageCollider<EnemyObject>* damageCollider = dynamic_cast<DamageCollider<EnemyObject>*>(obj);
+
+	if (damageCollider != NULL) {
+		PlayerObject* player = dynamic_cast<PlayerObject*>(damageCollider->getOwner());
+		if (player != NULL) {
+			if (player->getIsParrying()) {
+				// implement stun later
+				std::cout << owner->getName() << " got parried" << std::endl;
+			}
+		}
 	}
 }
 
@@ -88,6 +111,9 @@ void DamageCollider<TargetEntityType>::trigger(glm::vec3 pos) {
 	timeRemaining = lifespan;
 	this->transform.setPosition(pos);
 	this->setActive(true);
+
+	// debug //
+	//std::cout << "damage: " << damage << std::endl;
 }
 
 template <class TargetEntityType>
@@ -125,6 +151,11 @@ void DamageCollider<TargetEntityType>::setFollowOffset(glm::vec3 offset) {
 template <class TargetEntityType>
 void DamageCollider<TargetEntityType>::setCanDecreaseTime(bool value) {
 	canDecreaseTimeRemaining = value;
+}
+
+template <class TargetEntityType>
+LivingEntity* DamageCollider<TargetEntityType>::getOwner() const {
+	return owner;
 }
 
 template <class TargetEntityType>
