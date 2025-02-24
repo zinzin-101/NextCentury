@@ -8,7 +8,6 @@ namespace PlayerStat {
     constexpr float DODGE_COOLDOWN = 1.0f;
     constexpr float DODGE_DURATION = 0.1f;
 
-    //constexpr float ATTACK_HITBOX_ACTIVE_TIME = 0.5f;
     constexpr float TIME_TO_RESET_COMBO = 2.0f;
     constexpr float ATTACK_COOLDOWN = 0.2f;
     constexpr float LAST_COMBO_COOLDOWN = 1.0f;
@@ -80,13 +79,20 @@ class PlayerObject : public LivingEntity {
         bool isAttacking;
         bool isInAttackState;
         float timeBetweenLastAttack;
-    
+
+        void handleNormalAttack();
+        void handleHeavyAttack();
+        void handleParryAttack();
+
         bool isDodging;
         bool canDodge;
         bool canMove;
         bool canChangeFacingDirection;
         float dodgeTimeElapsed;
         float dodgeCooldownLeft;
+
+        void handleDodging();
+        void handleMovement();
     
         glm::vec3 moveDirection;
 
