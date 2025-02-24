@@ -16,6 +16,7 @@ class Level
 {
 private:
     list<DrawableObject*> objectsList;
+    list<DrawableObject*> UIobjectsList;
     PlayerObject* player;
     UI* UIobject;
 

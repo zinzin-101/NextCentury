@@ -20,8 +20,8 @@ void LevelUITest::levelInit() {
     // Initialize the background
     background = new TexturedObject();
     background->setTexture("../Resource/Texture/TestBG.png");
-    background->getTransform().setScale(glm::vec3(8.0f, 6.0f, 0)); // Adjust the scale to fit the screen
-    background->getTransform().setPosition(glm::vec3(0.0f, 0.0f, 0.0f)); // Ensure it's behind other objects
+    background->getTransform().setScale(glm::vec3(8.0f, 6.0f, 0)); 
+    background->getTransform().setPosition(glm::vec3(0.0f, 0.0f, 0.0f)); 
     objectsList.push_back(background);
 
     // Initialize the player
@@ -42,7 +42,7 @@ void LevelUITest::levelInit() {
     healthBar->getTransform().setPosition(glm::vec3(player->getTransform().getPosition().x,
         player->getTransform().getPosition().y + 1.0f, 0.0f));
     objectsList.push_back(healthBar);*/
-    UIobject->initUI(objectsList);
+    UIobject->initUI(UIobjectsList);
 
 
     // Initialize Enemy
@@ -81,15 +81,6 @@ void LevelUITest::levelInit() {
     attackHitbox->setDrawCollider(true);
     objectsList.push_back(attackHitbox);
 
-    quitButton = new Button();
-    quitButton->setState(Button::ButtonState::NORMAL);
-    
-
-    objectsList.push_back(quitButton);
-
-
-
-
     player->setHealth(100);
     isHitboxActive = false;
 
@@ -116,15 +107,8 @@ void LevelUITest::levelUpdate() {
             }
         }
     }
-    UIobject->updateUI(*player);
-    bool ishovering = false;
-    if (quitButton->getTransform().getPosition().x && quitButton->getTransform().getPosition().y == mouseX && mouseY) {
-        ishovering = true;
-    }
-    else {
-        ishovering = false;
-    }
-    quitButton->handleMouseInput(mouseX, mouseY,ishovering);
+    glm::vec3 camPos = GameEngine::getInstance()->getRenderer()->getCamPos();
+    UIobject->updateUI(*player,camPos);
     
     
     // Update attack hitbox
@@ -177,6 +161,16 @@ void LevelUITest::levelDraw() {
             renderList.push_back(obj);
         }
     }
+    for (DrawableObject* obj : UIobjectsList) {
+        if (obj == attackHitbox) {
+            if (isHitboxActive) {
+                renderList.push_back(attackHitbox);
+            }
+        }
+        else {
+            renderList.push_back(obj);
+        }
+    }
 
     GameEngine::getInstance()->render(renderList);
 }
@@ -185,6 +179,10 @@ void LevelUITest::levelFree() {
         delete obj;
     }
     objectsList.clear();
+    for (DrawableObject* obj : UIobjectsList) {
+        delete obj;
+    }
+    UIobjectsList.clear();
 }
 
 void LevelUITest::levelUnload() {
@@ -229,15 +227,6 @@ void LevelUITest::handleMouse(int type, int x, int y) {
 
     // Set player position based on mouse click
     //player->getTransform().setPosition(glm::vec3(realX, realY, 0));
-
-    if (checkCollisionPoint(player->getColliderComponent(), player->getTransform(), glm::vec2(realX, realY))) {
-        cout << "detected" << endl;
-    }
-
-    if (checkCollisionPoint(quitButton->getColliderComponent(), quitButton->getTransform(), glm::vec2(realX, realY))) {
-        quitButton->setState(Button::ButtonState::PRESSED);
-    }
-
 }
 
 void LevelUITest::handleAnalogStick(int type, float amount) {

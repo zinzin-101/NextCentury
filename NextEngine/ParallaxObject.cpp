@@ -66,7 +66,7 @@ void ParallaxObject::update(list<DrawableObject*>& objectsList) {
 		cout << "Null player" << endl;
 		return;
 	}
-	glm::vec3 camPos = GameEngine::getInstance()->getRenderer()->camPos();
+	glm::vec3 camPos = GameEngine::getInstance()->getRenderer()->getCamPos();
 	glm::vec3 playerPos = player->getTransform().getPosition();
 
 	glm::vec3 travelDistance = camPos - startPos;

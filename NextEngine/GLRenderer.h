@@ -77,7 +77,7 @@ public:
     void updateCamera(const glm::vec3& playerPosition);
     void applyViewMatrix();
     void render(list<DrawableObject*>& objList);
-    glm::vec3 camPos();
+    glm::vec3 getCamPos();
 
     void drawCameraOutline();
     
