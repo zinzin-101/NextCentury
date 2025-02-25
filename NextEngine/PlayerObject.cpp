@@ -13,7 +13,7 @@ PlayerObject::PlayerObject(PlayerInfo& playerInfo) : LivingEntity(playerInfo.nam
 
     getAnimationComponent()->addState("Idle", 0, 6, true);
 
-    getTransform().setScale(1, 1);
+    //getTransform().setScale(50.0f, 50.0f);
     addColliderComponent();
     addPhysicsComponent();
 

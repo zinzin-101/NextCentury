@@ -16,6 +16,9 @@ void LevelPrototype::levelLoad() {
 }
 
 void LevelPrototype::levelInit() {
+    GameEngine::getInstance()->getRenderer()->setClearColor(0.2, 0.2, 0.2);
+    //GameEngine::getInstance()->setDrawArea(-960.0f, 960.0f, -540.0f, 540.0f);
+
     EnemyInfo enemyInfo = EnemyInfo("EnemyNormal", 5, MovementInfo(3, 25), 20, 1.0f, 1.0f, 1);
     mapLoader.addEnemyType(EnemyType::NORMAL, enemyInfo);
     map<EnemyType, EnemyInfo>& enemyMap = mapLoader.getEnemyTypeMap();
@@ -77,6 +80,8 @@ void LevelPrototype::levelInit() {
     objectsList.emplace_back(ray);
     ray->setDrawCollider(true);
     ray->setName("ray");
+
+    
 }
 
 void LevelPrototype::levelUpdate() {

@@ -13,7 +13,7 @@
 
 using namespace std;
 
-constexpr float MAP_SCALE = 0.5f;
+constexpr float MAP_SCALE = 192.0f;
 
 class MapLoader {
 	private:
