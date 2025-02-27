@@ -157,18 +157,21 @@ void LevelPrototype::handleKey(InputManager& input) {
 
     /// Process key ///
     // add key that requires hold duration here
-    processKey(input, SDLK_k);
+    processHeldKey(input, SDLK_k);
+
+    // add key that requires buffering here
+    processKeyBuffer(input, SDLK_LSHIFT);
 
     // handle event here
     if (input.getButton(SDLK_SPACE)) player->jump();
-    if (input.getButton(SDLK_a)) player->move(glm::vec2(-1, 0));;
-    if (input.getButton(SDLK_d)) player->move(glm::vec2(1, 0));;
-    if (input.getButtonDown(SDLK_LSHIFT)) player->dodge();
+    if (input.getButton(SDLK_a)) player->move(glm::vec2(-1, 0));
+    if (input.getButton(SDLK_d)) player->move(glm::vec2(1, 0));
+    if (input.getButtonDown(SDLK_j)) player->parryAttack();
     if (input.getButton(SDLK_UP)) marker->getTransform().translate(glm::vec3(0, 10, 0) * dt);;
-    if (input.getButton(SDLK_DOWN)) marker->getTransform().translate(glm::vec3(0, -10, 0) * dt);;
-    if (input.getButton(SDLK_LEFT)) marker->getTransform().translate(glm::vec3(-10, 0, 0) * dt);;
-    if (input.getButton(SDLK_RIGHT)) marker->getTransform().translate(glm::vec3(10, 0, 0) * dt);;
-    if (input.getButtonDown(SDLK_f)) GameEngine::getInstance()->getRenderer()->toggleViewport();;
+    if (input.getButton(SDLK_DOWN)) marker->getTransform().translate(glm::vec3(0, -10, 0) * dt);
+    if (input.getButton(SDLK_LEFT)) marker->getTransform().translate(glm::vec3(-10, 0, 0) * dt);
+    if (input.getButton(SDLK_RIGHT)) marker->getTransform().translate(glm::vec3(10, 0, 0) * dt);
+    if (input.getButtonDown(SDLK_f)) GameEngine::getInstance()->getRenderer()->toggleViewport();
     if (input.getButtonDown(SDLK_c)) player->getColliderComponent()->setTrigger(!player->getColliderComponent()->isTrigger());
     if (input.getButtonDown(SDLK_g)) viewMarker = !viewMarker;
     if (input.getButtonDown(SDLK_r)) GameEngine::getInstance()->getStateController()->gameStateNext = GameState::GS_RESTART;
@@ -189,6 +192,11 @@ void LevelPrototype::handleKey(InputManager& input) {
         else if (input.getButton(SDLK_k)) {
             player->startHeavyAttack();
         }
+    }
+
+    if (keyBuffer[SDLK_LSHIFT] > 0 && player->getCanMove()) {
+        clearKeyBuffer(SDLK_LSHIFT);
+        player->dodge();
     }
 
 

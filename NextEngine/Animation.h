@@ -8,6 +8,10 @@
 
 using namespace std;
 
+namespace AnimationData {
+	constexpr float DEFAULT_TIME_PER_FRAME = 0.12f;
+}
+
 class Animation {
 	public:
 		/// @brief The struct for an animation state
@@ -40,8 +44,8 @@ class Animation {
 		int colCount;
 		float offsetX;
 		float offsetY;
-		float timeRateKeep = 0.0f;
-		float timeRate = 0.12f;
+		float timeSinceLastFrame;
+		float timePerFrame;
 		//float timeRate = 0.4f; // for testing
 		bool isPaused;
 
@@ -81,6 +85,8 @@ class Animation {
 		/// @param row is the row of the frame
 		/// @param col is the column of the frame
 		void setDimension(int row, int col);
+
+		void setTimePerFrame(float t);
 		
 		/// @brief This function sets the current frame to the random frame of the current animation
 		void setRandomFrame();

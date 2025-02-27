@@ -249,7 +249,7 @@ void resolveCollision(DrawableObject* obj1, DrawableObject* obj2) {
 	float intersectedX = halfWidth1 + halfWidth2 - distX;
 	float intersectedY = halfHeight1 + halfHeight2 - distY;
 
-	glm::vec3 dir = lastPos - pos2;
+	glm::vec3 dir = (lastPos + col1->getTransform().getPosition()) - pos2;
 	dir.x /= halfWidth1 * 2.0f + halfWidth2 * 2.0f;
 	dir.y /= halfHeight1 * 2.0f + halfHeight2 * 2.0f;
 
@@ -303,6 +303,7 @@ void resolveCollision(DrawableObject* obj1, DrawableObject* obj2) {
 	//}
 
 	phys1->setVelocity(vel1);
-	t1.setPosition(newPos1);
+	//t1.setPosition(newPos1);
+	t1.setPosition(newPos1 - col1->getTransform().getPosition());
 	phys1->setLastPosition(pos1);
 }

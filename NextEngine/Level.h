@@ -19,6 +19,7 @@ private:
 
 protected:
     map<SDL_Keycode, float> keyHeldDuration;
+    map<SDL_Keycode, int> keyBuffer;
 
 public:
     SimpleObject* healthBar = nullptr;
@@ -31,7 +32,9 @@ public:
 
     virtual void handleKey(char key);
     virtual void handleKey(InputManager& input);
-    void processKey(InputManager& input, SDL_Keycode key);
+    void processHeldKey(InputManager& input, SDL_Keycode key);
+    void processKeyBuffer(InputManager& input, SDL_Keycode key);
+    void clearKeyBuffer(SDL_Keycode key);
     virtual void handleMouse(int type, int x, int y);
     virtual void handleAnalogStick(int type, float amount);
 

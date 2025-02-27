@@ -1,5 +1,4 @@
 #pragma once
-#include "DamageCollider.h"
 #include "LivingEntity.h"
 #include "PlayerInfo.h"
 #include <list>
@@ -9,7 +8,6 @@ namespace PlayerStat {
     constexpr float DODGE_COOLDOWN = 1.0f;
     constexpr float DODGE_DURATION = 0.1f;
 
-    //constexpr float ATTACK_HITBOX_ACTIVE_TIME = 0.5f;
     constexpr float TIME_TO_RESET_COMBO = 2.0f;
     constexpr float ATTACK_COOLDOWN = 0.2f;
     constexpr float LAST_COMBO_COOLDOWN = 1.0f;
@@ -32,6 +30,9 @@ namespace PlayerStat {
 }
 
 class EnemyObject;
+
+template <class T>
+class DamageCollider;
 
 class PlayerObject : public LivingEntity {
     private:
@@ -69,19 +70,29 @@ class PlayerObject : public LivingEntity {
         PlayerHeavyCharge currentHeavyCharge;
         bool isInHeavyAttack;
 
+        AttackFrame parryFrame;
+        bool isParrying;
+        
         DamageCollider<EnemyObject>* attackHitbox;
         int damage;
         float attackCooldownRemaining;
         bool isAttacking;
         bool isInAttackState;
         float timeBetweenLastAttack;
-    
+
+        void handleNormalAttack();
+        void handleHeavyAttack();
+        void handleParryAttack();
+
         bool isDodging;
         bool canDodge;
         bool canMove;
         bool canChangeFacingDirection;
         float dodgeTimeElapsed;
         float dodgeCooldownLeft;
+
+        void handleDodging();
+        void handleMovement();
     
         glm::vec3 moveDirection;
 
@@ -91,6 +102,8 @@ class PlayerObject : public LivingEntity {
 
         void normalAttack();
         void heavyAttack(float duration);
+        void parryAttack();
+
         void startHeavyAttack();
 
         int getDamage() const;
@@ -102,6 +115,9 @@ class PlayerObject : public LivingEntity {
         void move(glm::vec2 direction);
         void jump();
         void dodge();
+
+        bool getCanMove() const;
+        bool getIsParrying() const;
 
         /// debugging ///
         virtual void onTriggerEnter(Collider* collider);
