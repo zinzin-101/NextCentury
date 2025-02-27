@@ -118,6 +118,7 @@ class PlayerObject : public LivingEntity {
 
         bool getCanMove() const;
         bool getIsParrying() const;
+        DamageCollider<EnemyObject>* getDamageCollider() const;
 
         /// debugging ///
         virtual void onTriggerEnter(Collider* collider);

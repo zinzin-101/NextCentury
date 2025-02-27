@@ -78,7 +78,8 @@ void LevelPrototype::levelInit() {
     ray->setDrawCollider(true);
     ray->setName("ray");
 
-    
+    player->getTransform().scales(1.5);
+    player->getColliderComponent()->getTransform().translate(0.0f, -0.25f);
 }
 
 void LevelPrototype::levelUpdate() {

@@ -496,6 +496,10 @@ bool PlayerObject::getIsParrying() const {
     return isParrying;
 }
 
+DamageCollider<EnemyObject>* PlayerObject::getDamageCollider() const {
+    return attackHitbox;
+}
+
 void PlayerObject::onTriggerEnter(Collider* collider) {
 
 }
