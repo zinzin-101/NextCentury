@@ -19,7 +19,7 @@ void LevelEnemTest::levelLoad() {
 
 void LevelEnemTest::levelInit() {
     GameEngine::getInstance()->getRenderer()->setClearColor(0.2, 0.2, 0.2);
-    GameEngine::getInstance()->setDrawArea(-960.0f, 960.0f, -540.0f, 540.0f);  // IMPORTANT ORTHO IS NOW 1920 / 1080 (I ALSO PUT IT BACK TO 16/9 IN LEVEL FREE() )
+    //GameEngine::getInstance()->setDrawArea(-960.0f, 960.0f, -540.0f, 540.0f);  // IMPORTANT ORTHO IS NOW 1920 / 1080 (I ALSO PUT IT BACK TO 16/9 IN LEVEL FREE() )
 
     AudioEngine* auds = new AudioEngine();
     auds->init("../Resource/Audio/SoundEffect", "../Resource/Audio/Music");
@@ -60,7 +60,7 @@ void LevelEnemTest::levelInit() {
 
     //Midground3
     ParallaxObject* MidGround3 = new ParallaxObject(0.0f, 0.0f, 50.0f, false, player, true);
-    MidGround3->setTexture("../Resource/Texture/OutskirtParallax/OSKT_P03_MidGround03.png");
+    MidGround3->setTexture("../Resource/Texture/OutskirtParallax/Mid3.png");
     //MidGround3->getTransform().setScale(glm::vec3(640.0f, 436.0f, 0));
     objectsList.push_back(MidGround3);
 
@@ -111,13 +111,13 @@ void LevelEnemTest::levelInit() {
     this->initPlayer(player, PlayerInfo());
     cout << "player pos: " << player->getTransform().getPosition() << endl;
 
-    mapLoader.offsetMap(objectsList, glm::vec3(-800.0f, -588.0f, 0.0f));
+    //mapLoader.offsetMap(objectsList, glm::vec3(-800.0f, -588.0f, 0.0f));
 
 }
 void LevelEnemTest::levelUpdate() {
 
     updateObjects(objectsList);
-    cout << "render player" << player->getTransform().getScale().x << player->getTransform().getScale().y << player->getTransform().getScale().z << endl;
+    //cout << "render player" << player->getTransform().getScale().x << player->getTransform().getScale().y << player->getTransform().getScale().z << endl;
 
 
     for (DrawableObject* obj : objectsList) {
@@ -136,7 +136,7 @@ void LevelEnemTest::levelDraw() {
 }
 
 void LevelEnemTest::levelFree() {
-    GameEngine::getInstance()->setDrawArea(-8.0f, 8.0f, -4.5f, 4.5f);
+    //GameEngine::getInstance()->setDrawArea(-8.0f, 8.0f, -4.5f, 4.5f);
     for (DrawableObject* obj : objectsList) {
         delete obj;
     }
@@ -155,8 +155,8 @@ void LevelEnemTest::handleKey(char key) {
     case ' ': if (player->getColliderComponent()->getCollisionFlag() && COLLISION_DOWN) player->getPhysicsComponent()->setVelocity(glm::vec2(0, 25)); break;
     case 'w': player->getTransform().translate(glm::vec3(0, 5, 0) * dt); break;
     case 's': player->getTransform().translate(glm::vec3(0, -5, 0) * dt); break;
-    case 'a': player->getTransform().translate(glm::vec3(-500, 0, 0) * dt); break;
-    case 'd': player->getTransform().translate(glm::vec3(500, 0, 0) * dt); break;
+    case 'a': player->getTransform().translate(glm::vec3(-5, 0, 0) * dt); break;
+    case 'd': player->getTransform().translate(glm::vec3(5, 0, 0) * dt); break;
         //case 'f': enemy->addStatus(LivingEntity::Status(LivingEntity::MOODENG, 1.f)); break;
     case 'f': GameEngine::getInstance()->getRenderer()->toggleViewport(); break;
     case 'c': player->getColliderComponent()->setTrigger(!player->getColliderComponent()->isTrigger()); break;
@@ -164,8 +164,8 @@ void LevelEnemTest::handleKey(char key) {
     case 'q': GameEngine::getInstance()->getStateController()->gameStateNext = GameState::GS_QUIT; ; break;
     case 'r': GameEngine::getInstance()->getStateController()->gameStateNext = GameState::GS_RESTART; ; break;
     case 'e': GameEngine::getInstance()->getStateController()->gameStateNext = GameState::GS_LEVEL2; ; break;
-    case 'z': GameEngine::getInstance()->getRenderer()->increaseZoomRatio(10.0f); break;
-    case 'x': GameEngine::getInstance()->getRenderer()->decreaseZoomRatio(10.0f); break;
+    case 'z': GameEngine::getInstance()->getRenderer()->increaseZoomRatio(0.1f); break;
+    case 'x': GameEngine::getInstance()->getRenderer()->decreaseZoomRatio(0.1f); break;
     case '1': loadMap(mapLoader, 1, objectsList, player); break;
     case '2': loadMap(mapLoader, 2, objectsList, player); break;
     case '3': loadMap(mapLoader, 3, objectsList, player); break;

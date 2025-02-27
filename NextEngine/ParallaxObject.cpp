@@ -30,7 +30,7 @@ ParallaxObject::ParallaxObject(float z, bool vertical, PlayerObject* player, boo
 // I use this one
 ParallaxObject::ParallaxObject(float x,float y,float z, bool vertical, PlayerObject* player, bool loopable) : TexturedObject() {
 	cout << "parallax created" << endl;
-	this->getTransform().setScale(glm::vec3(1920.0f, 1308.0f, 0.0f)); // MUST CHANGE TO "SET SCALE TO RESOLUTION" not this magic number
+	this->getTransform().setScale(glm::vec3(16.0f, 10.9f, 0.0f)); // MUST CHANGE TO "SET SCALE TO RESOLUTION" not this magic number
 	this->z = z;
 	this->vertical = vertical;
 	startPos = glm::vec3(x, y, z);
@@ -39,12 +39,12 @@ ParallaxObject::ParallaxObject(float x,float y,float z, bool vertical, PlayerObj
 	this->loopable = loopable;
 	
 	if (loopable) {
-		loopObjectR = new ParallaxObject(x + (1920.0f)/* THIS OFF SET SHOULD BE Picture size FIX CAM */, y, z, this->vertical, this->player, false); // must be false or else.... infinite loop naa
-		loopObjectL = new ParallaxObject(x - (1920.0f)/* THIS OFF SET SHOULD BE Picture size FIX CAM */, y, z, this->vertical, this->player, false);
+		loopObjectR = new ParallaxObject(x + (16.0f)/* THIS OFF SET SHOULD BE Picture size FIX CAM */, y, z, this->vertical, this->player, false); // must be false or else.... infinite loop naa
+		loopObjectL = new ParallaxObject(x - (16.0f)/* THIS OFF SET SHOULD BE Picture size FIX CAM */, y, z, this->vertical, this->player, false);
 		//loopObject->getTransform().setPosition(glm::vec3(this->getTransform().getPosition().x + 10.3f, this->getTransform().getPosition().y, 0));
 		//loopObject->getTransform().setScale(glm::vec3(10.0f, 10.0f, 0.0f));
 		cout << "loop created" << endl;
-		this->offsetLoop = 9.0f;
+		//this->offsetLoop = 9.0f;
 	}
 	else {
 		loopObjectR = nullptr;
@@ -92,11 +92,11 @@ void ParallaxObject::update(list<DrawableObject*>& objectsList) {
 	
 	//cout << newPos.x << " " << newPos.y << " " << newPos.z << endl;
 
-	if (playerPos.x - this->getTransform().getPosition().x > -50.0f) {
-		offsetLoop += 2880.0f;
+	if (playerPos.x - this->getTransform().getPosition().x > -0.4f) {
+		offsetLoop += 24.0f;
 	}
-	else if (playerPos.x - this->getTransform().getPosition().x < 50.0f) {
-		offsetLoop -= 2880.0f;
+	else if (playerPos.x - this->getTransform().getPosition().x < 0.4f) {
+		offsetLoop -= 24.0f;
 	}
 
 	if (!vertical) {
@@ -114,6 +114,7 @@ void ParallaxObject::update(list<DrawableObject*>& objectsList) {
 		loopObjectR->update(objectsList);
 		loopObjectL->update(objectsList);
 	}
+	cout << "parX : " << this->getTransform().getPosition().x << endl;
 	return;
 }
 
