@@ -21,7 +21,7 @@ PlayerObject::PlayerObject(PlayerInfo& playerInfo) : LivingEntity(playerInfo.nam
     getAnimationComponent()->addState("Charge1", 5, 0, 6, false);
     getAnimationComponent()->addState("Charge2", 6, 0, 6, false);
 
-    getTransform().setScale(1, 1);
+    //getTransform().setScale(50.0f, 50.0f);
     addColliderComponent();
     addPhysicsComponent();
 

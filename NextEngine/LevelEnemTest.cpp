@@ -14,7 +14,7 @@ void LevelEnemTest::levelLoad() {
     SquareBorderMesh* border = new SquareBorderMesh();
     border->loadData();
     GameEngine::getInstance()->addMesh(SquareBorderMesh::MESH_NAME, border);
-    
+
 }
 
 void LevelEnemTest::levelInit() {
@@ -27,7 +27,7 @@ void LevelEnemTest::levelInit() {
     //audio->playMusicByIndex(1, 0);
     ////////////////////////////////////
 
-    ParallaxObject* background = new ParallaxObject(0.0f ,0.0f, 550.0f, false, player, true);
+    ParallaxObject* background = new ParallaxObject(0.0f, 0.0f, 550.0f, false, player, true);
     background->setTexture("../Resource/Texture/OutskirtParallax/OSKT_P09_Sky.png");
     //background->getTransform().setScale(glm::vec3(640.0f, 436.0f, 0)); // Adjust the scale to fit the screen
     //background->getTransform().setPosition(glm::vec3(0.0f, 0.0f, 0.0f));
@@ -75,7 +75,6 @@ void LevelEnemTest::levelInit() {
     mapLoader.readData("mapEnemTest.txt");
     mapLoader.appendDataToScene(objectsList, player);
     /////////////////////////////
-
     ParallaxObject* Fog = new ParallaxObject(0.0f, 0.0f, 100.0f, false, player, true);
     Fog->setTexture("../Resource/Texture/OutskirtParallax/OSKT_P01_Fog.png");
     //Fog->getTransform().setScale(glm::vec3(640.0f, 436.0f, 0));
@@ -111,12 +110,16 @@ void LevelEnemTest::levelInit() {
     startObjects(objectsList);
     this->initPlayer(player, PlayerInfo());
     cout << "player pos: " << player->getTransform().getPosition() << endl;
-    
-    mapLoader.offsetMap(objectsList, glm::vec3(-800.0f, -445.0f, 0.0f));
+
+    mapLoader.offsetMap(objectsList, glm::vec3(-800.0f, -588.0f, 0.0f));
+
 }
 void LevelEnemTest::levelUpdate() {
+
     updateObjects(objectsList);
-    player->getTransform().setScale(186, 186);
+    cout << "render player" << player->getTransform().getScale().x << player->getTransform().getScale().y << player->getTransform().getScale().z << endl;
+
+
     for (DrawableObject* obj : objectsList) {
         obj->update(objectsList);
     }
@@ -154,7 +157,7 @@ void LevelEnemTest::handleKey(char key) {
     case 's': player->getTransform().translate(glm::vec3(0, -5, 0) * dt); break;
     case 'a': player->getTransform().translate(glm::vec3(-500, 0, 0) * dt); break;
     case 'd': player->getTransform().translate(glm::vec3(500, 0, 0) * dt); break;
-    //case 'f': enemy->addStatus(LivingEntity::Status(LivingEntity::MOODENG, 1.f)); break;
+        //case 'f': enemy->addStatus(LivingEntity::Status(LivingEntity::MOODENG, 1.f)); break;
     case 'f': GameEngine::getInstance()->getRenderer()->toggleViewport(); break;
     case 'c': player->getColliderComponent()->setTrigger(!player->getColliderComponent()->isTrigger()); break;
     case 'g': player->getPhysicsComponent()->setEnableGravity(!player->getPhysicsComponent()->isGravityEnable()); break;
@@ -175,14 +178,14 @@ void LevelEnemTest::handleMouse(int type, int x, int y) {
 }
 
 void LevelEnemTest::handleAnalogStick(int type, float amount) {
-    
+
     if (type == 0) { // x axis
         player->getTransform().translate(glm::vec3(0.3 * amount, 0, 0));
     }
     else if (type == 1) { // y axis
         player->getTransform().translate(glm::vec3(0, -0.3 * amount, 0));
     }
-    
+
 }
 
 static void loadMap(MapLoader& loader, int i, list<DrawableObject*>& objList, PlayerObject*& player) {

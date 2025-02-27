@@ -77,6 +77,8 @@ void LevelPrototype::levelInit() {
     objectsList.emplace_back(ray);
     ray->setDrawCollider(true);
     ray->setName("ray");
+
+    
 }
 
 void LevelPrototype::levelUpdate() {

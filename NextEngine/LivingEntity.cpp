@@ -153,7 +153,10 @@ void LivingEntity::update(list<DrawableObject*>& objectsList) {
     updateBehavior(objectsList);
     DrawableObject::update(objectsList);
 
-    isFacingRight ? this->transform.setScale(1, 1) : this->transform.setScale(-1, 1);
+    glm::vec3 currentScale = this->transform.getScale();
+    currentScale.x = abs(currentScale.x);
+    isFacingRight ? this->transform.setScale(currentScale.x, currentScale.y) : this->transform.setScale(-currentScale.x, currentScale.y);
+
 
     applyStatus(GameEngine::getInstance()->getTime()->getDeltaTime());
 }
