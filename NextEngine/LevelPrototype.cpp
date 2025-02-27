@@ -16,7 +16,7 @@ void LevelPrototype::levelLoad() {
 }
 
 void LevelPrototype::levelInit() {
-    EnemyInfo enemyInfo = EnemyInfo("EnemyNormal", 5, MovementInfo(3, 25), 20, 1.0f, 1.0f, 1);
+    EnemyInfo enemyInfo = EnemyInfo("EnemyNormal", 5, MovementInfo(3, 25), 20, 1.0f, 3.0f, 1);
     mapLoader.addEnemyType(EnemyType::NORMAL, enemyInfo);
     map<EnemyType, EnemyInfo>& enemyMap = mapLoader.getEnemyTypeMap();
     for (auto pair : enemyMap) {
@@ -56,7 +56,7 @@ void LevelPrototype::levelInit() {
         EnemyObject* enemy = dynamic_cast<EnemyObject*>(obj);
         if (enemy != NULL) {
             enemy->setTarget(player);
-            enemy->setHealth(15);
+            enemy->setHealth(6);
             //enemy->setCanAttack(false); // debug
             enemy->setDrawCollider(true); // for debugging
             cout << "enemy found" << endl;
@@ -152,6 +152,12 @@ void LevelPrototype::levelUnload() {
 
 void LevelPrototype::handleKey(InputManager& input) {
     float dt = GameEngine::getInstance()->getTime()->getDeltaTime();
+
+    /// Process key ///
+    // add key that requires hold duration here
+    processKey(input, SDLK_k);
+
+    // handle event here
     if (input.getButton(SDLK_SPACE)) player->jump();
     if (input.getButton(SDLK_a)) player->move(glm::vec2(-1, 0));;
     if (input.getButton(SDLK_d)) player->move(glm::vec2(1, 0));;
@@ -167,7 +173,23 @@ void LevelPrototype::handleKey(InputManager& input) {
     if (input.getButtonDown(SDLK_e)) GameEngine::getInstance()->getStateController()->gameStateNext = GameState::GS_LEVEL1;
     if (input.getButton(SDLK_z)) GameEngine::getInstance()->getRenderer()->increaseZoomRatio(0.1f);
     if (input.getButton(SDLK_x)) GameEngine::getInstance()->getRenderer()->decreaseZoomRatio(0.1f);
-    if (input.getButtonDown(SDLK_k)) player->attack();
+
+    /// Use processed key here ///
+    if (keyHeldDuration[SDLK_k] < PlayerStat::DURATION_TO_START_HEAVY_ATTACK) {
+        if (input.getButtonUp(SDLK_k)) {
+            player->normalAttack();
+        }
+    }
+    else {
+        if (input.getButtonUp(SDLK_k)) {
+            player->heavyAttack(keyHeldDuration[SDLK_k]);
+        }
+        else if (input.getButton(SDLK_k)) {
+            player->startHeavyAttack();
+        }
+    }
+
+
     //cout << dt << endl;
     // 
     //switch (key) {

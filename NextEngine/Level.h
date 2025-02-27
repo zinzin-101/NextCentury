@@ -17,6 +17,9 @@ private:
     list<DrawableObject*> objectsList;
     PlayerObject* player;
 
+protected:
+    map<SDL_Keycode, float> keyHeldDuration;
+
 public:
     SimpleObject* healthBar = nullptr;
     virtual void levelLoad();
@@ -28,6 +31,7 @@ public:
 
     virtual void handleKey(char key);
     virtual void handleKey(InputManager& input);
+    void processKey(InputManager& input, SDL_Keycode key);
     virtual void handleMouse(int type, int x, int y);
     virtual void handleAnalogStick(int type, float amount);
 

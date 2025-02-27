@@ -23,9 +23,9 @@ EnemyObject::EnemyObject(EnemyInfo& enemyInfo) : LivingEntity(enemyInfo.name, en
 	//getAnimationComponent()->addState("Idle", 0, 6);
 	//getAnimationComponent()->addState("Moving", 1, 5);
 	//getAnimationComponent()->addState("Attacking", 1, 5);
-	getAnimationComponent()->addState("Idle", 1, 1, true);
-	getAnimationComponent()->addState("Moving", 1, 3, true);
-	getAnimationComponent()->addState("Attacking", 0, 9, false);
+	getAnimationComponent()->addState("Idle", 1, 6, 3, true);
+	getAnimationComponent()->addState("Moving", 1, 0, 3, true);
+	getAnimationComponent()->addState("Attacking", 0, 0, 9, false);
 	getAnimationComponent()->setState("Idle");
 
 	//attackHitbox = new SimpleObject();
@@ -36,13 +36,13 @@ EnemyObject::EnemyObject(EnemyInfo& enemyInfo) : LivingEntity(enemyInfo.name, en
 
 	/*deactivateHitbox();*/
 	attackHitbox = nullptr;
-	hitboxActiveTime = 0.5f;
+	//hitboxActiveTime = 0.5f;
 	attackCooldownTimer = 0.0f;
 	canAttack = true;
 
 	/// Test ///
 	isAttacking = false;
-	attackFrameStart = 4;
+	attackFrameStart = 3;
 	attackFrameEnd = 6;
 }
 
@@ -98,11 +98,12 @@ void EnemyObject::startAttack() {
 	attackHitbox->trigger(transform.getPosition());
 	attackHitbox->setCanDecreaseTime(false);
 
-	attackCooldownTimer = attackCooldown;
+	//attackCooldownTimer = attackCooldown;
 	std::cout << "Enemy attacked!" << std::endl;
 }
 
 void EnemyObject::endAttack() {
+	attackCooldownTimer = attackCooldown;
 	attackHitbox->setActive(false);
 }
 
@@ -158,7 +159,7 @@ void EnemyObject::setTarget(LivingEntity* target) {
 }
 
 void EnemyObject::start(list<DrawableObject*>& objectsList) {
-	attackHitbox = new DamageCollider<PlayerObject>(this, damage, hitboxActiveTime);
+	attackHitbox = new DamageCollider<PlayerObject>(this, damage, -1);
 	attackHitbox->setActive(false);
 	attackHitbox->setFollowOwner(true);
 	attackHitbox->setFollowOffset(glm::vec3(0.5f, 0, 0));
@@ -229,12 +230,12 @@ void EnemyObject::updateBehavior(list<DrawableObject*>& objectsList) {
 			
 			int currentAnimFrame = getAnimationComponent()->getCurrentFrame();
 			
-			if (currentAnimFrame == attackFrameStart) {
+			if (currentAnimFrame == attackFrameStart + 1) {
 				startAttack();
 				break;
 			}
 
-			if (currentAnimFrame == attackFrameEnd) {
+			if (currentAnimFrame == attackFrameEnd + 1) {
 				endAttack();
 				break;
 			}
