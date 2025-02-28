@@ -3,6 +3,7 @@
 #include <list>
 #include "Button.h"
 #include "GameEngine.h"
+#include "InputManager.h"
 #include "SimpleObject.h"
 #include "PlayerObject.h"
 
@@ -12,6 +13,7 @@ public:
     void initUI(std::list<DrawableObject*>& objectsList);
     void updateUI(PlayerObject& playerObject, glm::vec3 camPos);
     void handleInput(char key);
+    void handleInput(SDL_Keycode key);
     ~UI();
 
 private:

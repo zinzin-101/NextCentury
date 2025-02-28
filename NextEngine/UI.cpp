@@ -59,6 +59,58 @@ void UI::updateUI(PlayerObject& playerObject, glm::vec3 camPos) {
     
 }
 
+void UI::handleInput(SDL_Keycode key) {
+    if (buttons.empty()) {
+        std::cout << "buttons is empty" << std::endl;
+        return;
+    }
+
+    // Debugging key press
+    std::cout << "Key received in UI::handleInput: " << key << std::endl;
+
+    if (key == SDLK_a) {
+        std::cout << "Pressed A. Current Index: " << selectedButtonIndex << std::endl;
+
+        // Reset previous button color to white before changing selection
+        buttons[selectedButtonIndex]->setFocused(false);
+        buttons[selectedButtonIndex]->setColor(1.0f, 1.0f, 1.0f); // White
+
+        // Move selection left
+        selectedButtonIndex = (selectedButtonIndex - 1 + buttons.size()) % buttons.size();
+
+        // Highlight new selected button
+        buttons[selectedButtonIndex]->setFocused(true);
+        buttons[selectedButtonIndex]->setColor(1.0f, 1.0f, 0.0f); // Yellow
+
+        std::cout << "New Index after A: " << selectedButtonIndex << std::endl;
+    }
+
+    if (key == SDLK_d) {
+        std::cout << "Pressed D. Current Index: " << selectedButtonIndex << std::endl;
+
+        // Reset previous button color to white before changing selection
+        buttons[selectedButtonIndex]->setFocused(false);
+        buttons[selectedButtonIndex]->setColor(1.0f, 1.0f, 1.0f); // White
+
+        // Move selection right
+        selectedButtonIndex = (selectedButtonIndex + 1) % buttons.size();
+
+        // Highlight new selected button
+        buttons[selectedButtonIndex]->setFocused(true);
+        buttons[selectedButtonIndex]->setColor(1.0f, 1.0f, 0.0f); // Yellow
+
+        std::cout << "New Index after D: " << selectedButtonIndex << std::endl;
+    }
+
+    if (key == SDLK_RETURN || key == SDLK_SPACE) { // Enter or Space
+        buttons[selectedButtonIndex]->handleKeyboardInput(SDLK_RETURN, true);
+    }
+
+    if (key == SDLK_RETURN || key == SDLK_SPACE) {
+        buttons[selectedButtonIndex]->handleKeyboardInput(SDLK_RETURN, false);
+    }
+}
+
 void UI::handleInput(char key) {
     if (buttons.empty()) {
         std::cout << "buttons is empty" << std::endl;
@@ -111,8 +163,10 @@ void UI::handleInput(char key) {
     }
 }
 UI::~UI() {
-    for (auto* obj : buttons) {
-        delete obj;
-    }
+    /*for (auto* obj : buttons) {
+        if (obj != nullptr) {
+            delete obj;
+        }
+    }*/ // No need to delete buttons because you deleted them in the level cpp
 }
 

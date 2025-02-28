@@ -159,6 +159,10 @@ void LevelUITest::levelFree() {
         delete obj;
     }
     UIobjectsList.clear();
+
+    if (UIobject != nullptr) {
+        delete UIobject;
+    }
 }
 
 void LevelUITest::levelUnload() {
@@ -167,15 +171,22 @@ void LevelUITest::levelUnload() {
     //cout << "Unload Level" << endl;
 }
 
+void LevelUITest::handleKey(InputManager& input) {
+    if (input.getButtonDown(SDLK_a)) UIobject->handleInput(SDLK_a);
+    if (input.getButtonDown(SDLK_d)) UIobject->handleInput(SDLK_d);
+    if (input.getButtonDown(SDLK_RETURN)) UIobject->handleInput(SDLK_RETURN);
+    if (input.getButtonDown(SDLK_SPACE)) UIobject->handleInput(SDLK_SPACE);
+}
+
 void LevelUITest::handleKey(char key) {
     //std::cout << "Key pressed: " << key << std::endl;
-    UIobject->handleInput(key);
+    //UIobject->handleInput(key);
     float dt = GameEngine::getInstance()->getTime()->getDeltaTime();
     switch (key) {
     case 'w': player->getTransform().translate(glm::vec3(0, 5, 0) * dt); break;
     case 's': player->getTransform().translate(glm::vec3(0, -5, 0) * dt); break;
-    case 'a': player->getTransform().translate(glm::vec3(-5, 0, 0) * dt); break;
-    case 'd': player->getTransform().translate(glm::vec3(5, 0, 0) * dt); break;
+    //case 'a': player->getTransform().translate(glm::vec3(-5, 0, 0) * dt); break;
+    //case 'd': player->getTransform().translate(glm::vec3(5, 0, 0) * dt); break;
     case 'r': GameEngine::getInstance()->getStateController()->gameStateNext = GameState::GS_RESTART; break;
     case 'f': GameEngine::getInstance()->getRenderer()->toggleViewport(); break;
     case 'e': GameEngine::getInstance()->getStateController()->gameStateNext = (GameState)((GameEngine::getInstance()->getStateController()->gameStateCurr + 1) % 3); break;
