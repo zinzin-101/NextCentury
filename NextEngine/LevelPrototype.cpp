@@ -95,10 +95,16 @@ void LevelPrototype::levelInit() {
         EnemyObject* enemy = dynamic_cast<EnemyObject*>(obj);
         if (enemy != NULL) {
             enemy->setTarget(player);
-            enemy->setHealth(6);
+            enemy->setHealth(37);
             //enemy->setCanAttack(false); // debug
             enemy->setDrawCollider(true); // for debugging
             cout << "enemy found" << endl;
+
+            enemy->getTransform().scales(2);
+            enemy->getColliderComponent()->getTransform().translate(0.0f, -1.0f);
+            enemy->getColliderComponent()->setDimension(0.5f, 0.5f);
+            enemy->getDamageCollider()->setFollowOffset(glm::vec3(1.0f, -1.0f, 0));
+            enemy->getDamageCollider()->getTransform().scales(2);
         }
     }
 
@@ -122,6 +128,8 @@ void LevelPrototype::levelInit() {
     player->getColliderComponent()->setDimension(0.5f, 0.5f);
     player->getDamageCollider()->setFollowOffset(glm::vec3(1.0f, -1.0f, 0));
     player->getDamageCollider()->getTransform().scales(2);
+
+    GameEngine::getInstance()->getRenderer()->toggleViewport();
 }
 
 void LevelPrototype::levelUpdate() {

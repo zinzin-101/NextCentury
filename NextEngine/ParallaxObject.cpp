@@ -110,7 +110,7 @@ void ParallaxObject::update(list<DrawableObject*>& objectsList) {
 		//cout << this->getTransform().getPosition().x;
 	}
 	
-	cout << "Ppos" << this->getTransform().getPosition().x << endl;
+	//cout << "Ppos" << this->getTransform().getPosition().x << endl;
 
 	// check loop
 	if (loopable) {
