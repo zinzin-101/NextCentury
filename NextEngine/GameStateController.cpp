@@ -28,13 +28,13 @@ void GameStateController::loadLevel() {
 	cout << gameStateCurr << endl;
 	switch (gameStateCurr) {
 		case GameState::GS_LEVEL1:
-			currentLevel = new LevelParallax();
+			currentLevel = new LevelPrototype();
 			break;
 		case GameState::GS_LEVEL2:
 			currentLevel = new LevelUITest();
 			break;
-		case GameState::GS_COL_TEST:
-			cout << "in" << endl;
+		case GameState::GS_LEVEL3:
+			//cout << "in" << endl;
 			currentLevel = new LevelPrototype();
 			break;
 		default:

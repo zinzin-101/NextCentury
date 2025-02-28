@@ -45,6 +45,7 @@ PlayerObject::PlayerObject(PlayerInfo& playerInfo) : LivingEntity(playerInfo.nam
     groundedFrameNum = 4;
     canMove = true;
     canChangeFacingDirection = true;
+    lastXDirection = 1.0f;
 
     isAttacking = false;
     isInAttackState = false;
@@ -134,6 +135,7 @@ void PlayerObject::dodge() {
     }
 
     isDodging = true;
+    canChangeFacingDirection = false;
     dodgeTimeElapsed = 0.0f;
 }
 
@@ -174,6 +176,7 @@ void PlayerObject::updateBehavior(list<DrawableObject*>& objectsList) {
 
     currentCombo = PlayerCombo::NONE;
     canChangeFacingDirection = true;
+
     //this->getAnimationComponent()->setState("Idle");
 
     if (isJumping) {
@@ -195,11 +198,15 @@ void PlayerObject::updateBehavior(list<DrawableObject*>& objectsList) {
 
         setCanTakeDamage(true);
     }
-
+    
     if (canMove) {
         handleMovement();
     }
-    
+
+    if (moveDirection.x != 0.0f) {
+        lastXDirection = moveDirection.x;
+    }
+
     moveDirection.x = 0.0f; // Reset move direction for next frame
 }
 
@@ -333,18 +340,21 @@ void PlayerObject::startHeavyAttack() {
 void PlayerObject::handleDodging() {
     this->getAnimationComponent()->setState("Dodging");
 
+    canChangeFacingDirection = false;
+
     float dt = GameEngine::getInstance()->getTime()->getDeltaTime();
     glm::vec2 vel = this->getPhysicsComponent()->getVelocity();
     canDodge = false;
     setCanTakeDamage(false);
 
-    glm::vec2 dodgeVelocity = isFacingRight ? glm::vec2(PlayerStat::DODGE_VELOCITY, vel.y) : glm::vec2(-PlayerStat::DODGE_VELOCITY, vel.y);
+    glm::vec2 dodgeVelocity = glm::vec2(abs(PlayerStat::DODGE_VELOCITY) * lastXDirection, vel.y);
     this->physics->setVelocity(dodgeVelocity);
 
     dodgeTimeElapsed += dt;
 
     if (dodgeTimeElapsed >= PlayerStat::DODGE_DURATION) {
         isDodging = false;
+        canChangeFacingDirection = true;
         dodgeCooldownLeft = PlayerStat::DODGE_COOLDOWN;
     }
 }

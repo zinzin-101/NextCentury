@@ -85,7 +85,8 @@ class PlayerObject : public LivingEntity {
         void handleNormalAttack();
         void handleHeavyAttack();
         void handleParryAttack();
-
+        
+        float lastXDirection;
         bool isDodging;
         bool canDodge;
         float dodgeTimeElapsed;

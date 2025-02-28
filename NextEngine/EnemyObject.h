@@ -4,6 +4,9 @@
 #include "MovementInfo.h"
 #include <list>
 
+/// test ///
+#include "ParticleSystem.h"
+
 class PlayerObject;
 
 template <class T>
@@ -74,6 +77,11 @@ class EnemyObject : public LivingEntity {
         virtual void updateBehavior(list<DrawableObject*>& objectsList);
 
         DamageCollider<PlayerObject>* getDamageCollider() const;
+
+        /// For debugging ///
+        ParticleSystem* emitter;
+        ParticleSystem* getEmitter() { return emitter; };
+        virtual void render(glm::mat4 globalModelTransform) { TexturedObject::render(glm::mat4()); emitter->render(glm::mat4()); };
 
         ~EnemyObject();
 };

@@ -44,11 +44,19 @@ EnemyObject::EnemyObject(EnemyInfo& enemyInfo) : LivingEntity(enemyInfo.name, en
 	isAttacking = false;
 	attackFrameStart = 2;
 	attackFrameEnd = 4;
+
+	/// testing ///
+	emitter = new ParticleSystem();
 }
 
 EnemyObject::~EnemyObject() {
 	if (attackHitbox != nullptr) {
 		destroyObject(attackHitbox);
+	}
+
+	/// testing ///
+	if (emitter != nullptr) {
+		delete emitter;
 	}
 }
 
@@ -201,6 +209,10 @@ void EnemyObject::updateState() {
 }
 
 void EnemyObject::updateBehavior(list<DrawableObject*>& objectsList) {
+	/// testing ///
+	emitter->update(objectsList);
+	///
+
 	float dt = GameEngine::getInstance()->getTime()->getDeltaTime();
 	
 	updateState();

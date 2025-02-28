@@ -3,8 +3,12 @@
 #include "EnemyObject.h"
 #include "GameEngine.h"
 #include "LivingEntity.h"
+#include "ParticleProperties.h"
 #include "PlayerObject.h"
 #include "SquareBorderMesh.h"
+
+/// testing ///
+#include "random.h";
 
 template <class TargetEntityType>
 class DamageCollider : public ColliderObject {
@@ -101,6 +105,16 @@ void DamageCollider<TargetEntityType>::onTriggerEnter(Collider* collider) { // f
 			if (player->getIsParrying()) {
 				// implement stun later
 				std::cout << owner->getName() << " got parried" << std::endl;
+
+				EnemyObject* enemyObj = dynamic_cast<EnemyObject*>(this->getOwner());
+
+				if (enemyObj != NULL) {
+					for (int i = 0; i < 5; i++) {
+						ParticleProperties particleProps = ParticleProperties(enemyObj->getTransform().getPosition(), 5.0f * glm::vec2(Random::Float(), Random::Float()), glm::vec2(1.0f, 1.0f), glm::vec3(0.8f, 0, 0),
+							0.5f, 0.2f, 0.05f, 1.0f);
+						enemyObj->getEmitter()->emit(particleProps);
+					}
+				}
 			}
 		}
 	}

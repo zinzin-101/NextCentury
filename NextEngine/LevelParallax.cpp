@@ -18,18 +18,20 @@ void LevelParallax::levelLoad() {
 }
 
 void LevelParallax::levelInit() {
-    PlayerInfo* pinf = new PlayerInfo();
-    player = new PlayerObject(*pinf);
+
+
+    PlayerInfo pinf = PlayerInfo();
+    player = new PlayerObject(pinf);
 
 
     if (player != nullptr) {
         cout << "player not null" << endl;
     }
 
-    TextObject* txt = new TextObject();
+    /*TextObject* txt = new TextObject();
     SDL_Color black = { 0, 0, 0 };
     txt->loadText("Them text", black, 72);
-    objectsList.push_back(txt);
+    objectsList.push_back(txt);*/
 
 }
 void LevelParallax::levelUpdate() {
@@ -60,6 +62,8 @@ void LevelParallax::levelFree() {
 
 void LevelParallax::levelUnload() {
     GameEngine::getInstance()->clearMesh();
+    GameEngine::getInstance()->getRenderer()->setClearColor(0.1f, 0.1f, 0.1f);
+
     //cout << "Unload Level" << endl;
 }
 

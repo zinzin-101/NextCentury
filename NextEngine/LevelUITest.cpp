@@ -163,6 +163,7 @@ void LevelUITest::levelFree() {
 
 void LevelUITest::levelUnload() {
     GameEngine::getInstance()->clearMesh();
+    GameEngine::getInstance()->getRenderer()->setClearColor(0.1f, 0.1f, 0.1f);
     //cout << "Unload Level" << endl;
 }
 
@@ -177,7 +178,7 @@ void LevelUITest::handleKey(char key) {
     case 'd': player->getTransform().translate(glm::vec3(5, 0, 0) * dt); break;
     case 'r': GameEngine::getInstance()->getStateController()->gameStateNext = GameState::GS_RESTART; break;
     case 'f': GameEngine::getInstance()->getRenderer()->toggleViewport(); break;
-    case 'e': GameEngine::getInstance()->getStateController()->gameStateNext = GameState::GS_COL_TEST; break;
+    case 'e': GameEngine::getInstance()->getStateController()->gameStateNext = (GameState)((GameEngine::getInstance()->getStateController()->gameStateCurr + 1) % 3); break;
     case 'z': GameEngine::getInstance()->getRenderer()->increaseZoomRatio(zoomRatio); break;
     case 'x': GameEngine::getInstance()->getRenderer()->decreaseZoomRatio(zoomRatio); break;
     case 'h': player->takeDamage(1); break;
