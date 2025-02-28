@@ -41,7 +41,6 @@ EnemyObject::EnemyObject(EnemyInfo& enemyInfo) : LivingEntity(enemyInfo.name, en
 	attackCooldownTimer = 0.0f;
 	canAttack = true;
 
-	/// Test ///
 	isAttacking = false;
 	attackFrameStart = 2;
 	attackFrameEnd = 4;
@@ -123,10 +122,12 @@ void EnemyObject::moveTowardsTarget() {
 	glm::vec2 newVelocity = this->physics->getVelocity();
 
 	bool grounded = this->collider->getCollisionFlag() & COLLISION_DOWN;
-	if (targetPos.y > currentPos.y + this->collider->getHeight() * 0.5f && grounded) {
-		newVelocity.y = movementInfo.jumpVelocity;
-		//cout << "jump" << endl;
-	}
+
+	/// Disable jumping
+	//if (targetPos.y > currentPos.y + this->collider->getHeight() * 0.5f && grounded) {
+	//	newVelocity.y = movementInfo.jumpVelocity;
+	//	//cout << "jump" << endl;
+	//}
 	
 	float moveAmount = targetPos.x - currentPos.x;
 	moveAmount = moveAmount > 0 ? 1 : -1;
