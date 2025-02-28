@@ -14,7 +14,7 @@ PlayerObject::PlayerObject(PlayerInfo& playerInfo) : LivingEntity(playerInfo.nam
 
     getAnimationComponent()->addState("Idle", 0, 0, 6, true);
     getAnimationComponent()->addState("Walking", 10, 0, 6, true);
-    getAnimationComponent()->addState("Jumping", 9, 0, 6, false);
+    getAnimationComponent()->addState("Jumping", 9, 0, 6, false, 0.2f);
 
     getAnimationComponent()->addState("Dodging", 8, 0, 6, false, PlayerStat::DODGE_DURATION / 6.0f);
 
@@ -40,6 +40,9 @@ PlayerObject::PlayerObject(PlayerInfo& playerInfo) : LivingEntity(playerInfo.nam
     dodgeCooldownLeft = 0.0f;
     canDodge = true;
     isDodging = false;
+    isJumping = false;
+    midAirFrameNum = 3;
+    groundedFrameNum = 4;
     canMove = true;
     canChangeFacingDirection = true;
 
@@ -104,16 +107,25 @@ void PlayerObject::move(glm::vec2 direction) {
 }
 
 void PlayerObject::jump() {
-    if (isDodging || !canMove) {
+    if (isDodging || !canMove || isJumping) {
         return;
     }
 
     bool grounded = collider->getCollisionFlag() & COLLISION_DOWN;
-    if (grounded) {
-        glm::vec2 vel = this->physics->getVelocity();
-        vel.y = PlayerStat::JUMP_VELOCITY;
-        this->physics->setVelocity(vel);
+    if (!grounded) {
+        return;
     }
+
+    glm::vec2 vel = this->physics->getVelocity();
+    vel.y = PlayerStat::JUMP_VELOCITY;
+
+    if (moveDirection.x != 0.0f) {
+        vel.x = moveDirection.x * PlayerStat::MOVE_SPEED;
+    }
+
+    this->physics->setVelocity(vel);
+    isJumping = true;
+    this->getAnimationComponent()->setState("Jumping");
 }
 
 void PlayerObject::dodge() {
@@ -163,6 +175,11 @@ void PlayerObject::updateBehavior(list<DrawableObject*>& objectsList) {
     currentCombo = PlayerCombo::NONE;
     canChangeFacingDirection = true;
     //this->getAnimationComponent()->setState("Idle");
+
+    if (isJumping) {
+        handleJumpMovement();
+        return;
+    }
 
     if (isDodging) {
         handleDodging();
@@ -355,6 +372,41 @@ void PlayerObject::handleMovement() {
             this->physics->setVelocity(glm::vec2(0.0f, vel.y));
         }
     }
+}
+
+void PlayerObject::handleJumpMovement() {
+    bool grounded = this->getColliderComponent()->getCollisionFlag() & COLLISION_DOWN;
+    Animation::State& currentState = this->getAnimationComponent()->getCurrentAnimationStateRef();
+    
+    float dt = GameEngine::getInstance()->getTime()->getDeltaTime();
+    glm::vec2 vel = this->getPhysicsComponent()->getVelocity();
+    vel.x += moveDirection.x * PlayerStat::AIR_ACCEL * dt;
+
+    if (abs(vel.x) > PlayerStat::MOVE_SPEED) {
+        vel.x = (abs(vel.x) / vel.x) * PlayerStat::MOVE_SPEED;
+    }
+
+    this->getPhysicsComponent()->setVelocity(vel);
+    
+    moveDirection.x = 0.0f;
+    
+    if (currentState.currentFrame < midAirFrameNum && !grounded) {
+        return;
+    }
+
+    if (grounded) {
+        if (currentState.currentFrame < groundedFrameNum) {
+            currentState.currentFrame = groundedFrameNum;
+        }
+
+        if (!currentState.isPlaying) {
+            isJumping = false;
+        }
+
+        return;
+    }
+
+    currentState.currentFrame = midAirFrameNum;
 }
 
 void PlayerObject::handleNormalAttack() {

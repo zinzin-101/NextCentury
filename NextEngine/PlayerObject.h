@@ -25,6 +25,8 @@ namespace PlayerStat {
     constexpr float MOVE_SPEED = 5.0f;
     constexpr float ACCEL_SPEED = 2000.0f;
     constexpr float DECEL_SPEED = 10.0f;
+    constexpr float AIR_ACCEL = 10.0f;
+
 
     constexpr float JUMP_VELOCITY = 25.0f;
 }
@@ -86,13 +88,20 @@ class PlayerObject : public LivingEntity {
 
         bool isDodging;
         bool canDodge;
-        bool canMove;
-        bool canChangeFacingDirection;
         float dodgeTimeElapsed;
         float dodgeCooldownLeft;
-
+        
         void handleDodging();
+
+        bool isJumping;
+        int midAirFrameNum;
+        int groundedFrameNum;
+        bool canMove;
+        bool canChangeFacingDirection;
+
         void handleMovement();
+        void handleJumpMovement();
+
     
         glm::vec3 moveDirection;
 

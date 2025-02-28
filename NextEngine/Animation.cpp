@@ -173,6 +173,10 @@ Animation::State Animation::getCurrentAnimationState() const {
 	return *currentState;
 }
 
+Animation::State& Animation::getCurrentAnimationStateRef() {
+	return *currentState;
+}
+
 float Animation::getTimeRate() const {
 	return timePerFrame;
 }
