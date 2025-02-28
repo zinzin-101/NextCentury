@@ -73,6 +73,7 @@ class EnemyObject : public LivingEntity {
         void updateState();
         virtual void updateBehavior(list<DrawableObject*>& objectsList);
 
+        DamageCollider<PlayerObject>* getDamageCollider() const;
 
         ~EnemyObject();
 };

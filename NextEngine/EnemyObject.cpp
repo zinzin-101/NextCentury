@@ -248,3 +248,7 @@ void EnemyObject::updateBehavior(list<DrawableObject*>& objectsList) {
 		attackCooldownTimer -= dt;
 	}
 }
+
+DamageCollider<PlayerObject>* EnemyObject::getDamageCollider() const {
+	return attackHitbox;
+}

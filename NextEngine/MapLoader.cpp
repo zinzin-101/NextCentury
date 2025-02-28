@@ -2,6 +2,7 @@
 #include <cstdlib>
 #include <fstream>
 #include <iostream>
+#include "DamageCollider.h"
 
 using namespace std;
 
@@ -233,6 +234,8 @@ void MapLoader::loadDataToScene(list<DrawableObject*>& objectList, PlayerObject*
 				EnemyObject* enemyObj = new EnemyObject(enemyTypeMap[EnemyType::NORMAL]);
 				enemyObj->getTransform() = objProperty.transform * MAP_SCALE;
 				enemyObj->getColliderComponent()->setDimension(1, 1);
+				//enemyObj->getDamageCollider()->setFollowOffset(glm::vec3(1.0f, -1.0f, 0)); ///////////
+				//enemyObj->getDamageCollider()->getTransform().scales(2);
 				
 				obj = enemyObj;
 				
@@ -318,6 +321,8 @@ void MapLoader::appendDataToScene(list<DrawableObject*>& objectList, PlayerObjec
 			EnemyObject* enemyObj = new EnemyObject(enemyTypeMap[EnemyType::NORMAL]);
 			enemyObj->getTransform() = objProperty.transform * MAP_SCALE;
 			enemyObj->getColliderComponent()->setDimension(1, 1);
+			//enemyObj->getDamageCollider()->setFollowOffset(glm::vec3(1.0f, -1.0f, 0)); ///////////
+			//enemyObj->getDamageCollider()->getTransform().scales(2);
 
 			obj = enemyObj;
 

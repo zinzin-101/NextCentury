@@ -85,18 +85,20 @@ void ParallaxObject::update(list<DrawableObject*>& objectsList) {
 
 	//glm::vec3 newPos = startPos + (travelDistance * parallaxFactor);
 
-	glm::vec3 newPos = startPos + (playerPos * parallaxFactor);
+	glm::vec3 newPos = startPos  + (playerPos * parallaxFactor);
 	//if (loopable) {
 	//	cout << "CAM" << << endl;
 	//}
 	
 	//cout << newPos.x << " " << newPos.y << " " << newPos.z << endl;
 
-	if (playerPos.x - this->getTransform().getPosition().x > -0.4f) {
-		offsetLoop += 24.0f;
-	}
-	else if (playerPos.x - this->getTransform().getPosition().x < 0.4f) {
-		offsetLoop -= 24.0f;
+	if (abs(camPos.x - this->getTransform().getPosition().x) > 32.0f) {
+		if (camPos.x < this->getTransform().getPosition().x) {
+			offsetLoop -= 48.0f;
+		}
+		else {
+			offsetLoop += 48.0f;
+		}
 	}
 
 	if (!vertical) {
@@ -108,13 +110,14 @@ void ParallaxObject::update(list<DrawableObject*>& objectsList) {
 		//cout << this->getTransform().getPosition().x;
 	}
 	
-	
+	cout << "Ppos" << this->getTransform().getPosition().x << endl;
+
 	// check loop
 	if (loopable) {
 		loopObjectR->update(objectsList);
 		loopObjectL->update(objectsList);
 	}
-	cout << "parX : " << this->getTransform().getPosition().x << endl;
+	//cout << "parX : " << this->getTransform().getPosition().x << endl;
 	return;
 }
 

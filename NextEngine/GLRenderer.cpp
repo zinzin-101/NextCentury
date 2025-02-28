@@ -340,15 +340,17 @@ void GLRenderer::drawCameraOutline() {
 }
 
 void GLRenderer::updateViewport() {
+    //camera.setPosition(glm::vec3(camera.getPosition().x, camera.getPosition().y, -100.0f));
     glm::vec3 cameraPosition = camera.getPosition();
     //cameraPosition.y += 190;
     float aspectRatio = static_cast<float>(winWidth) / winHeight;
     float left = cameraPosition.x - zoomRatio * aspectRatio;
     float right = cameraPosition.x + zoomRatio * aspectRatio;
-    float bottom = cameraPosition.y - zoomRatio;
-    float top = cameraPosition.y + zoomRatio;
+    float bottom = cameraPosition.y  - zoomRatio;
+    float top = cameraPosition.y  + zoomRatio;
 
-    setOrthoProjection(left, right, bottom, top);
+    setOrthoProjection(cameraPosition.x + -8,cameraPosition.x + 8, cameraPosition.y + -4.5, cameraPosition.y + 4.5);
+    //setOrthoProjection(left, right, bottom, top);
 }
 void GLRenderer::toggleViewport() {
     isViewportEnabled = !isViewportEnabled; 

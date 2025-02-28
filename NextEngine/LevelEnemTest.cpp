@@ -84,7 +84,7 @@ void LevelEnemTest::levelInit() {
         cout << "player not null" << endl;
     }
 
-
+    
 
     EnemyInfo enemyInfo;
     enemyInfo.health = 10;
