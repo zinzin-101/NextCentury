@@ -14,10 +14,12 @@ void LevelEnemTest::levelLoad() {
     SquareBorderMesh* border = new SquareBorderMesh();
     border->loadData();
     GameEngine::getInstance()->addMesh(SquareBorderMesh::MESH_NAME, border);
+
 }
 
 void LevelEnemTest::levelInit() {
     GameEngine::getInstance()->getRenderer()->setClearColor(0.2, 0.2, 0.2);
+    //GameEngine::getInstance()->setDrawArea(-960.0f, 960.0f, -540.0f, 540.0f);  // IMPORTANT ORTHO IS NOW 1920 / 1080 (I ALSO PUT IT BACK TO 16/9 IN LEVEL FREE() )
 
     AudioEngine* auds = new AudioEngine();
     auds->init("../Resource/Audio/SoundEffect", "../Resource/Audio/Music");
@@ -25,67 +27,64 @@ void LevelEnemTest::levelInit() {
     //audio->playMusicByIndex(1, 0);
     ////////////////////////////////////
 
-    ParallaxObject* background = new ParallaxObject(5,3.5f,700.0f, false, player, true);
+    ParallaxObject* background = new ParallaxObject(0.0f, 0.0f, 550.0f, false, player, true);
     background->setTexture("../Resource/Texture/OutskirtParallax/OSKT_P09_Sky.png");
-    background->getTransform().setScale(glm::vec3(10.0f, 10.0f, 0)); // Adjust the scale to fit the screen
-    background->getTransform().setPosition(glm::vec3(0.0f, 0.0f, 0.0f));
+    //background->getTransform().setScale(glm::vec3(640.0f, 436.0f, 0)); // Adjust the scale to fit the screen
+    //background->getTransform().setPosition(glm::vec3(0.0f, 0.0f, 0.0f));
     objectsList.emplace(objectsList.begin(), background);
 
-    ParallaxObject* spaceShip = new ParallaxObject(5, 3.5f, 500.0f, false, player, true);
+    ParallaxObject* spaceShip = new ParallaxObject(0.0f, 0.0f, 450.0f, false, player, true);
     spaceShip->setTexture("../Resource/Texture/OutskirtParallax/OSKT_P08_Spaceship.png");
-    spaceShip->getTransform().setScale(glm::vec3(10.0f, 10.0f, 0));
+    //spaceShip->getTransform().setScale(glm::vec3(640.0f, 436.0f, 0));
     objectsList.push_back(spaceShip);
 
-    ParallaxObject* Mountain1 = new ParallaxObject(5, 3.5f, 400.0f, false, player, true);
+    ParallaxObject* Mountain1 = new ParallaxObject(0.0f, 0.0f, 350.0f, false, player, true);
     Mountain1->setTexture("../Resource/Texture/OutskirtParallax/OSKT_P06_Mountain01.png");
-    Mountain1->getTransform().setScale(glm::vec3(10.0f, 10.0f, 0));
+    //Mountain1->getTransform().setScale(glm::vec3(640.0f, 436.0f, 0));
     objectsList.push_back(Mountain1);
 
-    ParallaxObject* Mountain2 = new ParallaxObject(5, 3.5f, 350.0f, false, player, true);
+    ParallaxObject* Mountain2 = new ParallaxObject(0.0f, 0.0f, 200.0f, false, player, true);
     Mountain2->setTexture("../Resource/Texture/OutskirtParallax/OSKT_P07_Mountain02.png");
-    Mountain2->getTransform().setScale(glm::vec3(10.0f, 10.0f, 0));
+    //Mountain2->getTransform().setScale(glm::vec3(640.0f, 436.0f, 0));
     objectsList.push_back(Mountain2);
 
-    ParallaxObject* MidGround1 = new ParallaxObject(5, 3.5f, 200.0f, false, player, true);
+    ParallaxObject* MidGround1 = new ParallaxObject(0.0f, 0.0f, 150.0f, false, player, true);
     MidGround1->setTexture("../Resource/Texture/OutskirtParallax/OSKT_P05_MidGround01.png");
-    MidGround1->getTransform().setScale(glm::vec3(10.0f, 10.0f, 0));
+    //MidGround1->getTransform().setScale(glm::vec3(640.0f, 436.0f, 0));
     objectsList.push_back(MidGround1);
 
-    ParallaxObject* MidGround2 = new ParallaxObject(5, 3.5f, 100.0f, false, player, true);
+    ParallaxObject* MidGround2 = new ParallaxObject(0.0f, 0.0f, 80.0f, false, player, true);
     MidGround2->setTexture("../Resource/Texture/OutskirtParallax/OSKT_P04_MidGround02.png");
-    MidGround2->getTransform().setScale(glm::vec3(10.0f, 10.0f, 0));
+    //MidGround2->getTransform().setScale(glm::vec3(640.0f, 436.0f, 0));
     objectsList.push_back(MidGround2);
 
-    ParallaxObject* MidGround3 = new ParallaxObject(5, 3.5f, 50.0f, false, player, true);
-    MidGround3->setTexture("../Resource/Texture/OutskirtParallax/OSKT_P03_MidGround03.png");
-    MidGround3->getTransform().setScale(glm::vec3(10.0f, 10.0f, 0));
+    //Midground3
+    ParallaxObject* MidGround3 = new ParallaxObject(0.0f, 0.0f, 50.0f, false, player, true);
+    MidGround3->setTexture("../Resource/Texture/OutskirtParallax/Mid3.png");
+    //MidGround3->getTransform().setScale(glm::vec3(640.0f, 436.0f, 0));
     objectsList.push_back(MidGround3);
+
+    ParallaxObject* Ground = new ParallaxObject(0.0f, 0.0f, 0.0f, false, player, true);
+    Ground->setTexture("../Resource/Texture/OutskirtParallax/OSKT_P02_Ground.png");
+    //Ground->getTransform().setScale(glm::vec3(640.0f, 436.0f, 0));
+    objectsList.push_back(Ground);
+
+
 
     /////////////////////////////
     mapLoader.readData("mapEnemTest.txt");
     mapLoader.appendDataToScene(objectsList, player);
     /////////////////////////////
-
-    ParallaxObject* Ground = new ParallaxObject(5, 3.5f, 10.0f, false, player, true);
-    Ground->setTexture("../Resource/Texture/OutskirtParallax/OSKT_P02_Ground.png");
-    Ground->getTransform().setScale(glm::vec3(10.0f, 10.0f, 0));
-    objectsList.push_back(Ground);
-
-    ParallaxObject* Fog = new ParallaxObject(5, 3.5f, 0.0f, false, player, true);
+    ParallaxObject* Fog = new ParallaxObject(0.0f, 0.0f, 100.0f, false, player, true);
     Fog->setTexture("../Resource/Texture/OutskirtParallax/OSKT_P01_Fog.png");
-    Fog->getTransform().setScale(glm::vec3(10.0f, 10.0f, 0));
-
+    //Fog->getTransform().setScale(glm::vec3(640.0f, 436.0f, 0));
     objectsList.push_back(Fog);
 
     if (player != nullptr) {
         cout << "player not null" << endl;
     }
 
-    cout << "player pos: " << player->getTransform().getPosition() << endl;
-    player->setName("Player");
-    player->setTexture("../Resource/Texture/SIZENextCentury_Player_Idle-Sheet.png");
-    player->initAnimation(1, 6);
-    player->getTransform().setScale(1, 1);
+
 
     EnemyInfo enemyInfo;
     enemyInfo.health = 10;
@@ -109,9 +108,17 @@ void LevelEnemTest::levelInit() {
     //enemy->setCurrentState();
 
     startObjects(objectsList);
+    this->initPlayer(player, PlayerInfo());
+    cout << "player pos: " << player->getTransform().getPosition() << endl;
+
+    //mapLoader.offsetMap(objectsList, glm::vec3(-800.0f, -588.0f, 0.0f));
+
 }
 void LevelEnemTest::levelUpdate() {
+
     updateObjects(objectsList);
+    //cout << "render player" << player->getTransform().getScale().x << player->getTransform().getScale().y << player->getTransform().getScale().z << endl;
+
 
     for (DrawableObject* obj : objectsList) {
         obj->update(objectsList);
@@ -129,6 +136,7 @@ void LevelEnemTest::levelDraw() {
 }
 
 void LevelEnemTest::levelFree() {
+    //GameEngine::getInstance()->setDrawArea(-8.0f, 8.0f, -4.5f, 4.5f);
     for (DrawableObject* obj : objectsList) {
         delete obj;
     }
@@ -149,7 +157,7 @@ void LevelEnemTest::handleKey(char key) {
     case 's': player->getTransform().translate(glm::vec3(0, -5, 0) * dt); break;
     case 'a': player->getTransform().translate(glm::vec3(-5, 0, 0) * dt); break;
     case 'd': player->getTransform().translate(glm::vec3(5, 0, 0) * dt); break;
-    //case 'f': enemy->addStatus(LivingEntity::Status(LivingEntity::MOODENG, 1.f)); break;
+        //case 'f': enemy->addStatus(LivingEntity::Status(LivingEntity::MOODENG, 1.f)); break;
     case 'f': GameEngine::getInstance()->getRenderer()->toggleViewport(); break;
     case 'c': player->getColliderComponent()->setTrigger(!player->getColliderComponent()->isTrigger()); break;
     case 'g': player->getPhysicsComponent()->setEnableGravity(!player->getPhysicsComponent()->isGravityEnable()); break;
@@ -170,14 +178,14 @@ void LevelEnemTest::handleMouse(int type, int x, int y) {
 }
 
 void LevelEnemTest::handleAnalogStick(int type, float amount) {
-    
+
     if (type == 0) { // x axis
         player->getTransform().translate(glm::vec3(0.3 * amount, 0, 0));
     }
     else if (type == 1) { // y axis
         player->getTransform().translate(glm::vec3(0, -0.3 * amount, 0));
     }
-    
+
 }
 
 static void loadMap(MapLoader& loader, int i, list<DrawableObject*>& objList, PlayerObject*& player) {

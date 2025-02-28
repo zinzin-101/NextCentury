@@ -130,4 +130,5 @@ void Level::initPlayer(PlayerObject*& player, PlayerInfo playerInfo) {
     }
 
     player->setDrawCollider(true); // for debugging
+    //player->getTransform().setScale(glm::vec3(500.0f, 500.0f , 1.0f));
 }

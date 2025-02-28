@@ -15,6 +15,9 @@ Animation::Animation(unsigned int& texture): texture(texture) {
 	isPaused = false;
 
 	currentState = nullptr;
+
+	timeSinceLastFrame = 0.0f;
+	timePerFrame = AnimationData::DEFAULT_TIME_PER_FRAME;
 }
 
 void Animation::render(glm::mat4 globalModelTransform, Transform& transform) {
@@ -62,6 +65,10 @@ void Animation::render(glm::mat4 globalModelTransform, Transform& transform) {
 void Animation::setDimension(int row, int col) {
 	this->rowCount = row;
 	this->colCount = col;
+}
+
+void Animation::setTimePerFrame(float t) {
+	timePerFrame = t;
 }
 
 void Animation::setFrame(int row, int column) {
@@ -121,12 +128,12 @@ void Animation::updateCurrentState() {
 	}
 
 	float dt = GameEngine::getInstance()->getTime()->getDeltaTime();
-	timeRateKeep += dt;
+	timeSinceLastFrame += dt;
 
-	if (timeRateKeep > timeRate) {
+	if (timeSinceLastFrame > timePerFrame) {
 		setFrame(currentState->row, currentState->currentFrame + currentState->startCol);
 		currentState->currentFrame++;
-		timeRateKeep = 0.0f;
+		timeSinceLastFrame = 0.0f;
 	}
 }
 
@@ -152,5 +159,5 @@ Animation::State Animation::getCurrentAnimationState() const {
 }
 
 float Animation::getTimeRate() const {
-	return timeRate;
+	return timePerFrame;
 }

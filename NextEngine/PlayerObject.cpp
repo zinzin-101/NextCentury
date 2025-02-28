@@ -24,7 +24,7 @@ PlayerObject::PlayerObject(PlayerInfo& playerInfo) : LivingEntity(playerInfo.nam
 
     getAnimationComponent()->addState("Parrying", 7, 0, 6, false);
 
-    getTransform().setScale(1, 1);
+    //getTransform().setScale(1, 1);
     addColliderComponent();
     addPhysicsComponent();
 
@@ -142,143 +142,17 @@ void PlayerObject::updateBehavior(list<DrawableObject*>& objectsList) {
     }
 
     if (isParrying) {
-        canMove = false;
-
-        vel = this->getPhysicsComponent()->getVelocity();
-        this->getPhysicsComponent()->setVelocity(glm::vec2(0.0f, vel.y));
-
-        Animation::State currentState = this->getAnimationComponent()->getCurrentAnimationState();
-        int currentFrame = currentState.currentFrame;
-
-        if (currentFrame < parryFrame.startAttackFrame + 1) {
-            return;
-        }
-
-        if (currentFrame == parryFrame.startAttackFrame + 1) {
-            startAttack();
-            return;
-        }
-
-        if (currentFrame == parryFrame.allowNextComboFrame + 1) {
-            endAttack();
-            attackCooldownRemaining = PlayerStat::ATTACK_COOLDOWN;
-            return;
-        }
-
-        if (!currentState.isPlaying) {
-            canMove = true;
-            isParrying = false;
-            moveDirection.x = 0.0f;
-        }
+        handleParryAttack();
         return;
     }
 
     if (isInHeavyAttack) {
-        canMove = false;
-        Animation::State currentState = this->getAnimationComponent()->getCurrentAnimationState();
-
-        if (isAttacking) {
-            float decreaseSpeed = PlayerStat::ATTACK_DASH_VELOCITY / static_cast<float>(comboFrame[currentCombo].allowNextComboFrame + 1);
-            decreaseSpeed *= dt;
-
-            int currentFrame = currentState.currentFrame;
-
-            if (currentFrame < heavyAttackFrame[currentHeavyCharge].startAttackFrame + 1) {
-                return;
-            }
-
-            if (currentFrame == heavyAttackFrame[currentHeavyCharge].startAttackFrame + 1) {
-                startAttack();
-                return;
-            }
-
-            if (currentFrame == heavyAttackFrame[currentHeavyCharge].allowNextComboFrame + 1) {
-                endAttack();
-                vel = this->getPhysicsComponent()->getVelocity();
-                this->getPhysicsComponent()->setVelocity(glm::vec2(0.0f, vel.y));
-                attackCooldownRemaining = heavyAttackCooldown[currentHeavyCharge];
-                return;
-            }
-
-            if (attackCooldownRemaining <= 0.0f) {
-                isAttacking = false;
-                isInHeavyAttack = false;
-                isInAttackState = false;
-                canMove = true;
-                currentCombo = PlayerCombo::NONE;
-                this->getAnimationComponent()->setState("Idle");
-                return;
-            }
-
-            return;
-        }
-
-        this->getPhysicsComponent()->setVelocity(glm::vec2(0.0f, vel.y));
-
-        if (!currentState.isPlaying) {
-            currentHeavyCharge = PlayerHeavyCharge::LEVEL_2;
-        }
-
+        handleHeavyAttack();
         return;
     }
 
     if (isInAttackState) {
-        canMove = false;
-
-        float decreaseSpeed = PlayerStat::ATTACK_DASH_VELOCITY / static_cast<float>(comboFrame[currentCombo].allowNextComboFrame + 1);
-        decreaseSpeed *= dt;
-
-        if (vel.x != 0.0f) {
-            if (isFacingRight) {
-                this->getPhysicsComponent()->addVelocity(glm::vec2(-decreaseSpeed, 0.0f));
-            }
-            else {
-                this->getPhysicsComponent()->addVelocity(glm::vec2(decreaseSpeed, 0.0f));
-            }
-        }
-
-        Animation::State currentState = this->getAnimationComponent()->getCurrentAnimationState();
-        int currentFrame = currentState.currentFrame;
-
-        if (currentFrame < comboFrame[currentCombo].startAttackFrame + 1) {
-            return;
-        }
-
-        if (currentFrame == comboFrame[currentCombo].startAttackFrame + 1) {
-            startAttack();
-            return;
-        }
-
-        if (currentFrame == comboFrame[currentCombo].allowNextComboFrame + 1) {
-            endAttack();
-            vel = this->getPhysicsComponent()->getVelocity();
-            this->getPhysicsComponent()->setVelocity(glm::vec2(0.0f, vel.y));
-
-            attackCooldownRemaining = currentCombo == PlayerCombo::THIRD ? PlayerStat::LAST_COMBO_COOLDOWN : PlayerStat::ATTACK_COOLDOWN;
-            timeToResetComboRemaining = currentCombo == PlayerCombo::THIRD ? PlayerStat::LAST_COMBO_COOLDOWN : PlayerStat::TIME_TO_RESET_COMBO;
-            isAttacking = false;
-            return;
-        }
-
-        timeToResetComboRemaining -= dt;
-        timeBetweenLastAttack += dt;
-
-        if (moveDirection.x != 0.0f && timeBetweenLastAttack >= PlayerStat::AFTER_ATTACK_MOVE_DELAY_TIME) {
-            moveDirection.x = 0.0f;
-            this->getAnimationComponent()->setState("Idle");
-            canMove = true;
-            isInAttackState = false;
-
-            return;
-        }
-
-        if (timeToResetComboRemaining <= 0.0f) {
-            this->getAnimationComponent()->setState("Idle");
-            canMove = true;
-            currentCombo = PlayerCombo::NONE;
-            isInAttackState = false;
-        }
-
+        handleNormalAttack();
         return;
     }
 
@@ -287,19 +161,7 @@ void PlayerObject::updateBehavior(list<DrawableObject*>& objectsList) {
     this->getAnimationComponent()->setState("Idle");
 
     if (isDodging) {
-        canDodge = false;
-        setCanTakeDamage(false);
-
-        glm::vec2 dodgeVelocity = isFacingRight ? glm::vec2(PlayerStat::DODGE_VELOCITY, vel.y) : glm::vec2(-PlayerStat::DODGE_VELOCITY, vel.y);
-        this->physics->setVelocity(dodgeVelocity);
-
-        dodgeTimeElapsed += dt;
-
-        if (dodgeTimeElapsed >= PlayerStat::DODGE_DURATION) {
-            isDodging = false;
-            dodgeCooldownLeft = PlayerStat::DODGE_COOLDOWN;
-        }
-
+        handleDodging();
         return;
     }
     else {
@@ -313,32 +175,15 @@ void PlayerObject::updateBehavior(list<DrawableObject*>& objectsList) {
         setCanTakeDamage(true);
     }
 
-    // Handle movement
     if (canMove) {
-        this->physics->addVelocity(glm::vec2(moveDirection.x * PlayerStat::ACCEL_SPEED * dt, 0.0f));
-        vel = this->physics->getVelocity();
-        if (abs(vel.x) > PlayerStat::MOVE_SPEED) {
-            vel.x = PlayerStat::MOVE_SPEED * moveDirection.x;
-            this->physics->setVelocity(vel);
-        }
-
-        vel = this->physics->getVelocity();
-        if (vel.x != 0.0f && moveDirection.x == 0.0f) {
-            float dragDir = vel.x > 0.0f ? -1 : 1;
-            this->physics->addVelocity(glm::vec2(dragDir * PlayerStat::DECEL_SPEED * dt, 0.0f));
-            float newVel = this->physics->getVelocity().x;
-
-            if ((vel.x < 0) != (newVel < 0)) {
-                this->physics->setVelocity(glm::vec2(0.0f, vel.y));
-            }
-        }
+        handleMovement();
     }
     
     moveDirection.x = 0.0f; // Reset move direction for next frame
 }
 
 void PlayerObject::normalAttack() {
-    if (isAttacking || isDodging) {
+    if (isAttacking || isParrying || isDodging) {
         return;
     }
 
@@ -415,13 +260,17 @@ void PlayerObject::heavyAttack(float duration) {
 }
 
 void PlayerObject::parryAttack() {
-    if (isParrying || isDodging) {
+    if (isParrying || isDodging || isAttacking || isInHeavyAttack) {
         return;
     }
 
     if (attackCooldownRemaining > 0.0f) {
         return;
     }
+
+    isAttacking = false;
+    isInAttackState = false;
+    currentCombo = PlayerCombo::NONE;
 
     canChangeFacingDirection = false;
 
@@ -444,7 +293,7 @@ void PlayerObject::endAttack() {
 }
 
 void PlayerObject::startHeavyAttack() {
-    if (isAttacking || isDodging) {
+    if (isAttacking || isParrying || isDodging) {
         return;
     }
 
@@ -460,6 +309,184 @@ void PlayerObject::startHeavyAttack() {
         currentCombo = PlayerCombo::FIRST;
     }
 }
+void PlayerObject::handleDodging() {
+    float dt = GameEngine::getInstance()->getTime()->getDeltaTime();
+    glm::vec2 vel = this->getPhysicsComponent()->getVelocity();
+    canDodge = false;
+    setCanTakeDamage(false);
+
+    glm::vec2 dodgeVelocity = isFacingRight ? glm::vec2(PlayerStat::DODGE_VELOCITY, vel.y) : glm::vec2(-PlayerStat::DODGE_VELOCITY, vel.y);
+    this->physics->setVelocity(dodgeVelocity);
+
+    dodgeTimeElapsed += dt;
+
+    if (dodgeTimeElapsed >= PlayerStat::DODGE_DURATION) {
+        isDodging = false;
+        dodgeCooldownLeft = PlayerStat::DODGE_COOLDOWN;
+    }
+}
+
+void PlayerObject::handleMovement() {
+    float dt = GameEngine::getInstance()->getTime()->getDeltaTime();
+    glm::vec2 vel = this->getPhysicsComponent()->getVelocity();
+    
+    this->physics->addVelocity(glm::vec2(moveDirection.x * PlayerStat::ACCEL_SPEED * dt, 0.0f));
+    vel = this->physics->getVelocity();
+    if (abs(vel.x) > PlayerStat::MOVE_SPEED) {
+        vel.x = PlayerStat::MOVE_SPEED * moveDirection.x;
+        this->physics->setVelocity(vel);
+    }
+
+    vel = this->physics->getVelocity();
+    if (vel.x != 0.0f && moveDirection.x == 0.0f) {
+        float dragDir = vel.x > 0.0f ? -1 : 1;
+        this->physics->addVelocity(glm::vec2(dragDir * PlayerStat::DECEL_SPEED * dt, 0.0f));
+        float newVel = this->physics->getVelocity().x;
+
+        if ((vel.x < 0) != (newVel < 0)) {
+            this->physics->setVelocity(glm::vec2(0.0f, vel.y));
+        }
+    }
+}
+
+void PlayerObject::handleNormalAttack() {
+    float dt = GameEngine::getInstance()->getTime()->getDeltaTime();
+    glm::vec2 vel = this->getPhysicsComponent()->getVelocity();
+    canMove = false;
+    float decreaseSpeed = PlayerStat::ATTACK_DASH_VELOCITY / static_cast<float>(comboFrame[currentCombo].allowNextComboFrame + 1);
+    decreaseSpeed *= dt;
+
+    if (vel.x != 0.0f) {
+        if (isFacingRight) {
+            this->getPhysicsComponent()->addVelocity(glm::vec2(-decreaseSpeed, 0.0f));
+        }
+        else {
+            this->getPhysicsComponent()->addVelocity(glm::vec2(decreaseSpeed, 0.0f));
+        }
+    }
+
+    Animation::State currentState = this->getAnimationComponent()->getCurrentAnimationState();
+    int currentFrame = currentState.currentFrame;
+
+    if (currentFrame < comboFrame[currentCombo].startAttackFrame + 1) {
+        return;
+    }
+
+    if (currentFrame == comboFrame[currentCombo].startAttackFrame + 1) {
+        startAttack();
+        return;
+    }
+
+    if (currentFrame == comboFrame[currentCombo].allowNextComboFrame + 1) {
+        endAttack();
+        vel = this->getPhysicsComponent()->getVelocity();
+        this->getPhysicsComponent()->setVelocity(glm::vec2(0.0f, vel.y));
+
+        attackCooldownRemaining = currentCombo == PlayerCombo::THIRD ? PlayerStat::LAST_COMBO_COOLDOWN : PlayerStat::ATTACK_COOLDOWN;
+        timeToResetComboRemaining = currentCombo == PlayerCombo::THIRD ? PlayerStat::LAST_COMBO_COOLDOWN : PlayerStat::TIME_TO_RESET_COMBO;
+        isAttacking = false;
+        return;
+    }
+
+    timeToResetComboRemaining -= dt;
+    timeBetweenLastAttack += dt;
+
+    if (moveDirection.x != 0.0f && timeBetweenLastAttack >= PlayerStat::AFTER_ATTACK_MOVE_DELAY_TIME) {
+        moveDirection.x = 0.0f;
+        this->getAnimationComponent()->setState("Idle");
+        canMove = true;
+        isInAttackState = false;
+
+        return;
+    }
+
+    if (timeToResetComboRemaining <= 0.0f) {
+        this->getAnimationComponent()->setState("Idle");
+        canMove = true;
+        currentCombo = PlayerCombo::NONE;
+        isInAttackState = false;
+    }
+}
+void PlayerObject::handleHeavyAttack() {
+    float dt = GameEngine::getInstance()->getTime()->getDeltaTime();
+    glm::vec2 vel = this->getPhysicsComponent()->getVelocity();
+    canMove = false;
+    Animation::State currentState = this->getAnimationComponent()->getCurrentAnimationState();
+
+    if (isAttacking) {
+        float decreaseSpeed = PlayerStat::ATTACK_DASH_VELOCITY / static_cast<float>(comboFrame[currentCombo].allowNextComboFrame + 1);
+        decreaseSpeed *= dt;
+
+        int currentFrame = currentState.currentFrame;
+
+        if (currentFrame < heavyAttackFrame[currentHeavyCharge].startAttackFrame + 1) {
+            return;
+        }
+
+        if (currentFrame == heavyAttackFrame[currentHeavyCharge].startAttackFrame + 1) {
+            startAttack();
+            return;
+        }
+
+        if (currentFrame == heavyAttackFrame[currentHeavyCharge].allowNextComboFrame + 1) {
+            endAttack();
+            vel = this->getPhysicsComponent()->getVelocity();
+            this->getPhysicsComponent()->setVelocity(glm::vec2(0.0f, vel.y));
+            attackCooldownRemaining = heavyAttackCooldown[currentHeavyCharge];
+            return;
+        }
+
+        if (attackCooldownRemaining <= 0.0f) {
+            isAttacking = false;
+            isInHeavyAttack = false;
+            isInAttackState = false;
+            canMove = true;
+            currentCombo = PlayerCombo::NONE;
+            this->getAnimationComponent()->setState("Idle");
+            return;
+        }
+
+        return;
+    }
+
+    this->getPhysicsComponent()->setVelocity(glm::vec2(0.0f, vel.y));
+
+    if (!currentState.isPlaying) {
+        currentHeavyCharge = PlayerHeavyCharge::LEVEL_2;
+    }
+
+}
+void PlayerObject::handleParryAttack() {
+    canMove = false;
+    currentCombo = PlayerCombo::NONE;
+
+    glm::vec2 vel = this->getPhysicsComponent()->getVelocity();
+    this->getPhysicsComponent()->setVelocity(glm::vec2(0.0f, vel.y));
+
+    Animation::State currentState = this->getAnimationComponent()->getCurrentAnimationState();
+    int currentFrame = currentState.currentFrame;
+
+    if (currentFrame < parryFrame.startAttackFrame + 1) {
+        return;
+    }
+
+    if (currentFrame == parryFrame.startAttackFrame + 1) {
+        startAttack();
+        return;
+    }
+
+    if (currentFrame == parryFrame.allowNextComboFrame + 1) {
+        endAttack();
+        attackCooldownRemaining = PlayerStat::ATTACK_COOLDOWN;
+        return;
+    }
+
+    if (!currentState.isPlaying) {
+        canMove = true;
+        isParrying = false;
+        moveDirection.x = 0.0f;
+    }
+}
 
 bool PlayerObject::getCanMove() const {
     return canMove;
@@ -467,6 +494,10 @@ bool PlayerObject::getCanMove() const {
 
 bool PlayerObject::getIsParrying() const {
     return isParrying;
+}
+
+DamageCollider<EnemyObject>* PlayerObject::getDamageCollider() const {
+    return attackHitbox;
 }
 
 void PlayerObject::onTriggerEnter(Collider* collider) {
