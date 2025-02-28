@@ -126,6 +126,8 @@ class PlayerObject : public LivingEntity {
         void jump();
         void dodge();
 
+        void setLastXDirection(float xDirection);
+
         bool getCanMove() const;
         bool getIsParrying() const;
         DamageCollider<EnemyObject>* getDamageCollider() const;

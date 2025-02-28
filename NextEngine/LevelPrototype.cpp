@@ -177,7 +177,7 @@ void LevelPrototype::levelUpdate() {
             //attackHitbox->getTransform().setPosition(glm::vec3(enemyPos.x + 1.0f, enemyPos.y, enemyPos.z));
 
             if (enemy->getHealth() <= 0) {
-                /*delete enemy;  
+                /*delete enemy;
                 it = objectsList.erase(it);  */
                 DrawableObject::destroyObject(enemy);
                 //continue;  
@@ -265,6 +265,14 @@ void LevelPrototype::handleKey(InputManager& input) {
 
     if (keyBuffer[SDLK_LSHIFT] > 0 && player->getCanMove()) {
         clearKeyBuffer(SDLK_LSHIFT);
+
+        if (input.getButton(SDLK_a)){
+            player->setLastXDirection(-1.0f);
+        }
+        else if (input.getButton(SDLK_d)) {
+            player->setLastXDirection(1.0f);
+        }
+
         player->dodge();
     }
 

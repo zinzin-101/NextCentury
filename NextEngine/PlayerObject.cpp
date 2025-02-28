@@ -136,6 +136,9 @@ void PlayerObject::dodge() {
 
     isDodging = true;
     canChangeFacingDirection = false;
+
+    isFacingRight = lastXDirection > 0.0f;
+
     dodgeTimeElapsed = 0.0f;
 }
 
@@ -568,6 +571,12 @@ bool PlayerObject::getIsParrying() const {
 
 DamageCollider<EnemyObject>* PlayerObject::getDamageCollider() const {
     return attackHitbox;
+}
+
+void PlayerObject::setLastXDirection(float xDirection) {
+    if (xDirection != 0.0f) {
+        lastXDirection = abs(xDirection) / xDirection;
+    }
 }
 
 void PlayerObject::onTriggerEnter(Collider* collider) {
