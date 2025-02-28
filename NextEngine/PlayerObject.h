@@ -4,9 +4,9 @@
 #include <list>
 
 namespace PlayerStat {
-    constexpr float DODGE_VELOCITY = 20.0f;
+    constexpr float DODGE_VELOCITY = 8.0f;
     constexpr float DODGE_COOLDOWN = 1.0f;
-    constexpr float DODGE_DURATION = 0.1f;
+    constexpr float DODGE_DURATION = 0.8f;
 
     constexpr float TIME_TO_RESET_COMBO = 2.0f;
     constexpr float ATTACK_COOLDOWN = 0.2f;

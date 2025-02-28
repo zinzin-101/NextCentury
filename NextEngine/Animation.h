@@ -10,6 +10,7 @@ using namespace std;
 
 namespace AnimationData {
 	constexpr float DEFAULT_TIME_PER_FRAME = 0.12f;
+	//constexpr float DEFAULT_TIME_PER_FRAME = 0.5f;
 }
 
 class Animation {
@@ -23,7 +24,8 @@ class Animation {
 			/// @param name the name of the state
 			/// @param row the number of row in the source file of the animation
 			/// @param frameCount the number of frames in the animation
-			State(string name, int row, int startCol, int frameCount, bool canLoop) : name(name), row(row), startCol(startCol), frameCount(frameCount), currentFrame(0), canLoop(canLoop), isPlaying(canLoop) {}
+			State(string name, int row, int startCol, int frameCount, bool canLoop, float timePerFrame) : name(name), row(row), startCol(startCol), 
+				frameCount(frameCount), currentFrame(0), canLoop(canLoop), isPlaying(canLoop), timePerFrame(timePerFrame) {}
 			string name;
 			int row;
 			int startCol;
@@ -31,6 +33,7 @@ class Animation {
 			int currentFrame;
 			bool canLoop;
 			bool isPlaying;
+			float timePerFrame;
 		};
 
 	private:
@@ -46,7 +49,6 @@ class Animation {
 		float offsetY;
 		float timeSinceLastFrame;
 		float timePerFrame;
-		//float timeRate = 0.4f; // for testing
 		bool isPaused;
 
 	public:
@@ -57,6 +59,7 @@ class Animation {
 		/// @param row is the number of row in the source file of the animation
 		/// @param frameCount is the number of frames in the animation
 		void addState(string name, int row, int startCol, int frameCount, bool canLoop);
+		void addState(string name, int row, int startCol, int frameCount, bool canLoop, float customTimePerFrame);
 
 		/// @brief This function sets the current state of the animation
 		/// The function plays a new animation that is defined by the name of the state.

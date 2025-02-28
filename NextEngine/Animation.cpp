@@ -81,13 +81,27 @@ void Animation::addState(string name, int row, int startCol, int frameCount, boo
 		cout << "Error state: '" << name << "' already exists" << endl;
 		return;
 	}
-	State newState(name, row, startCol, frameCount, canLoop);
+	State newState(name, row, startCol, frameCount, canLoop, timePerFrame);
 	states[name] = newState;
 
 	if (states.size() == 1) {
 		currentState = &states[name];
 	}
 }
+
+void Animation::addState(string name, int row, int startCol, int frameCount, bool canLoop, float customTimePerFrame) {
+	if (states.find(name) != states.end()) {
+		cout << "Error state: '" << name << "' already exists" << endl;
+		return;
+	}
+	State newState(name, row, startCol, frameCount, canLoop, customTimePerFrame);
+	states[name] = newState;
+
+	if (states.size() == 1) {
+		currentState = &states[name];
+	}
+}
+
 
 void Animation::setState(string name) {
 	if (states.find(name) == states.end()) {
@@ -100,6 +114,7 @@ void Animation::setState(string name) {
 		nextState->currentFrame = 0;
 		nextState->isPlaying = true;
 		currentState = nextState;
+		timeSinceLastFrame = 0.0f;
 
 		setFrame(currentState->row, currentState->currentFrame + currentState->startCol);
 
@@ -130,7 +145,7 @@ void Animation::updateCurrentState() {
 	float dt = GameEngine::getInstance()->getTime()->getDeltaTime();
 	timeSinceLastFrame += dt;
 
-	if (timeSinceLastFrame > timePerFrame) {
+	if (timeSinceLastFrame > currentState->timePerFrame) {
 		setFrame(currentState->row, currentState->currentFrame + currentState->startCol);
 		currentState->currentFrame++;
 		timeSinceLastFrame = 0.0f;

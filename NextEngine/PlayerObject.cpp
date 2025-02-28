@@ -9,10 +9,14 @@
 PlayerObject::PlayerObject(PlayerInfo& playerInfo) : LivingEntity(playerInfo.name, playerInfo.health) {
     this->damage = playerInfo.damage;
 
-    setTexture("../Resource/Texture/playertest3.png");
-    initAnimation(8, 6);
+    setTexture("../Resource/Texture/playertest5.png");
+    initAnimation(11, 6);
 
     getAnimationComponent()->addState("Idle", 0, 0, 6, true);
+    getAnimationComponent()->addState("Walking", 10, 0, 6, true);
+    getAnimationComponent()->addState("Jumping", 9, 0, 6, false);
+
+    getAnimationComponent()->addState("Dodging", 8, 0, 6, false, PlayerStat::DODGE_DURATION / 6.0f);
 
     getAnimationComponent()->addState("Combo1", 1, 0, 6, false);
     getAnimationComponent()->addState("Combo2", 2, 0, 6, false);
@@ -158,7 +162,7 @@ void PlayerObject::updateBehavior(list<DrawableObject*>& objectsList) {
 
     currentCombo = PlayerCombo::NONE;
     canChangeFacingDirection = true;
-    this->getAnimationComponent()->setState("Idle");
+    //this->getAnimationComponent()->setState("Idle");
 
     if (isDodging) {
         handleDodging();
@@ -310,6 +314,8 @@ void PlayerObject::startHeavyAttack() {
     }
 }
 void PlayerObject::handleDodging() {
+    this->getAnimationComponent()->setState("Dodging");
+
     float dt = GameEngine::getInstance()->getTime()->getDeltaTime();
     glm::vec2 vel = this->getPhysicsComponent()->getVelocity();
     canDodge = false;
@@ -336,6 +342,8 @@ void PlayerObject::handleMovement() {
         vel.x = PlayerStat::MOVE_SPEED * moveDirection.x;
         this->physics->setVelocity(vel);
     }
+
+    vel.x == 0.0f ? this->getAnimationComponent()->setState("Idle") : this->getAnimationComponent()->setState("Walking");
 
     vel = this->physics->getVelocity();
     if (vel.x != 0.0f && moveDirection.x == 0.0f) {
