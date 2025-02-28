@@ -6,15 +6,18 @@ class LevelUITest : public Level
 {
 private:
     list<DrawableObject*> objectsList;
+    list<DrawableObject*> UIobjectsList;
     PlayerObject* player;
     EnemyObject* enemy;
     TexturedObject* background;
     float zoomRatio = 0.05f;
-    Button* quitButton;
+    
     SimpleObject* attackHitbox;
     bool isHitboxActive = false;
     float hitboxTimer = 0.0f;
     MapLoader mapLoader;
+    UI* UIobject;
+    int mouseX, mouseY;
     
 
 public:

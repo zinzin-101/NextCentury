@@ -14,13 +14,13 @@ void LevelUITest::levelLoad() {
 }
 
 void LevelUITest::levelInit() {
-
-
+    UIobject = new UI();
+    
     // Initialize the background
     background = new TexturedObject();
     background->setTexture("../Resource/Texture/TestBG.png");
-    background->getTransform().setScale(glm::vec3(8.0f, 6.0f, 0)); // Adjust the scale to fit the screen
-    background->getTransform().setPosition(glm::vec3(0.0f, 0.0f, 0.0f)); // Ensure it's behind other objects
+    background->getTransform().setScale(glm::vec3(8.0f, 6.0f, 0)); 
+    background->getTransform().setPosition(glm::vec3(0.0f, 0.0f, 0.0f)); 
     objectsList.push_back(background);
 
     // Initialize the player
@@ -33,17 +33,9 @@ void LevelUITest::levelInit() {
     player->addPhysicsComponent();
     player->setDrawCollider(true);
     objectsList.push_back(player);
-    
-    // Initialize the player's health bar
-    healthBar = new SimpleObject(); 
-    healthBar->setColor(1.0f, 0.0f, 0.0f);
-    healthBar->getTransform().setScale(glm::vec3(2.0f, 0.2f, 0.0f));
-    healthBar->getTransform().setPosition(glm::vec3(player->getTransform().getPosition().x,
-        player->getTransform().getPosition().y + 1.0f, 0.0f));
-    objectsList.push_back(healthBar);
 
+    UIobject->initUI(UIobjectsList);
 
-    // Initialize Enemy
     EnemyInfo enemyInfo;
     enemyInfo.health = 10;
     enemyInfo.aggroRange = 80;
@@ -56,21 +48,6 @@ void LevelUITest::levelInit() {
     enemy->setTarget(player);
     objectsList.push_back(enemy);
 
-    
-
-    // Initialize other objects
-    /*SimpleObject* obj2 = new SimpleObject();
-    obj2->setColor(0.0, 0.0, 1.0);
-    obj2->getTransform().setPosition(glm::vec3(2.0f, 2.0f, 0.0f));
-    objectsList.push_back(obj2);
-
-    SimpleObject* obj3 = new SimpleObject();
-    obj3->setColor(0.0, 0.0, 1.0);
-    obj3->getTransform().setPosition(glm::vec3(-2.0f, -2.0f, 0.0f));
-    objectsList.push_back(obj3);*/
-
-    
-
     attackHitbox = new SimpleObject();
     attackHitbox->setColor(1.0f, 0.0f, 0.0f); 
     attackHitbox->getTransform().setScale(glm::vec3(1.0f, 1.0f, 1.0f)); 
@@ -78,8 +55,6 @@ void LevelUITest::levelInit() {
     attackHitbox->getColliderComponent()->setEnableCollision(false); 
     attackHitbox->setDrawCollider(true);
     objectsList.push_back(attackHitbox);
-
-
 
     player->setHealth(100);
     isHitboxActive = false;
@@ -90,16 +65,11 @@ void LevelUITest::levelInit() {
 
 void LevelUITest::levelUpdate() {
     //updateObjects(objectsList);
+    mouseX = GameEngine::getInstance()->getInputHandler()->getMouseX();
+    mouseY = GameEngine::getInstance()->getInputHandler()->getMouseY();
 
     glm::vec3 playerPosition = player->getTransform().getPosition();
     GameEngine::getInstance()->getRenderer()->updateCamera(playerPosition);
-
-    // Update health bar based on player's current health
-    float healthPercentage = static_cast<float>(player->getHealth()) / 100;
-    float healthBarWidth = healthPercentage * 2.0f;
-    healthBar->getTransform().setScale(glm::vec3(healthBarWidth, 0.2f, 0.0f)); 
-    float offsetX = (2.0f - healthBarWidth) / 2.0f;
-    healthBar->getTransform().setPosition(glm::vec3(playerPosition.x - offsetX, playerPosition.y + 1.5f, 0.0f)); 
 
     // Check collision between player and enemy
     for (DrawableObject* obj : objectsList) {
@@ -112,13 +82,17 @@ void LevelUITest::levelUpdate() {
             }
         }
     }
+    glm::vec3 camPos = GameEngine::getInstance()->getRenderer()->getCamPos();
+    UIobject->updateUI(*player,camPos);
+    
+    
 
     // Update attack hitbox
     glm::vec3 playerPos = player->getTransform().getPosition();
     attackHitbox->getTransform().setPosition(glm::vec3(playerPos.x + 1.0f, playerPos.y, playerPos.z));
 
     if (isHitboxActive) {
-        hitboxTimer += GameEngine::getInstance()->getTime()->getDeltaTime(); // Increment timer by delta time
+        hitboxTimer += GameEngine::getInstance()->getTime()->getDeltaTime(); 
         if (hitboxTimer >= 0.2f) {
             isHitboxActive = false;
             attackHitbox->getColliderComponent()->setEnableCollision(false);
@@ -163,6 +137,16 @@ void LevelUITest::levelDraw() {
             renderList.push_back(obj);
         }
     }
+    for (DrawableObject* obj : UIobjectsList) {
+        if (obj == attackHitbox) {
+            if (isHitboxActive) {
+                renderList.push_back(attackHitbox);
+            }
+        }
+        else {
+            renderList.push_back(obj);
+        }
+    }
 
     GameEngine::getInstance()->render(renderList);
 }
@@ -171,6 +155,10 @@ void LevelUITest::levelFree() {
         delete obj;
     }
     objectsList.clear();
+    for (DrawableObject* obj : UIobjectsList) {
+        delete obj;
+    }
+    UIobjectsList.clear();
 }
 
 void LevelUITest::levelUnload() {
@@ -179,7 +167,8 @@ void LevelUITest::levelUnload() {
 }
 
 void LevelUITest::handleKey(char key) {
-    std::cout << "Key pressed: " << key << std::endl;
+    //std::cout << "Key pressed: " << key << std::endl;
+    UIobject->handleInput(key);
     float dt = GameEngine::getInstance()->getTime()->getDeltaTime();
     switch (key) {
     case 'w': player->getTransform().translate(glm::vec3(0, 5, 0) * dt); break;
@@ -207,23 +196,7 @@ void LevelUITest::handleKey(char key) {
 }
 
 void LevelUITest::handleMouse(int type, int x, int y) {
-    // Convert screen coordinates to world coordinates for 2D
-    float realX = static_cast<float>(x) / GameEngine::getInstance()->getWindowWidth() * 2 - 1;
-    float realY = 1 - static_cast<float>(y) / GameEngine::getInstance()->getWindowHeight() * 2;
-
-    std::cout << "X : " << realX << " Y : " << realY << std::endl;
-
-    // Set player position based on mouse click
-    //player->getTransform().setPosition(glm::vec3(realX, realY, 0));
-
-    if (checkCollisionPoint(player->getColliderComponent(), player->getTransform(), glm::vec2(realX, realY))) {
-        cout << "detected" << endl;
-    }
-
-    if (checkCollisionPoint(quitButton->getColliderComponent(), quitButton->getTransform(), glm::vec2(realX, realY))) {
-        quitButton->setState(Button::ButtonState::PRESSED);
-    }
-
+    std::cout << "Mouse Click at: X = " << x << " Y = " << y << std::endl;
 }
 
 void LevelUITest::handleAnalogStick(int type, float amount) {

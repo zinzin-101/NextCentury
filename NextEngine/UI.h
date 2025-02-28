@@ -1,6 +1,21 @@
 #pragma once
-#include "TexturedObject.h"
+#include <vector>
+#include <list>
+#include "Button.h"
+#include "GameEngine.h"
+#include "SimpleObject.h"
+#include "PlayerObject.h"
 
-class UI : public TexturedObject {
+class UI {
+public:
+    UI();
+    void initUI(std::list<DrawableObject*>& objectsList);
+    void updateUI(PlayerObject& playerObject, glm::vec3 camPos);
+    void handleInput(char key);
+    ~UI();
 
+private:
+    std::vector<Button*> buttons;
+    SimpleObject* healthBar;
+    int selectedButtonIndex;
 };

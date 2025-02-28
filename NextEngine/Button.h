@@ -1,16 +1,19 @@
 #pragma once
 
+#include "SquareMeshVbo.h"
 #include "DrawableObject.h"
 #include "Collider.h"
-#include "InputManager.h"  
+#include "SimpleObject.h"
+#include "TextObject.h"
+#include "InputManager.h"
+#include "TextObject.h"
 #include <functional>
 #include <iostream>
-#include "CollisionHandler.h" 
+#include "CollisionHandler.h"
 
-/// @brief This class provides a button to be used as a UI
-class Button : public DrawableObject {
+class Button : public SimpleObject {
 public:
-    /// @brief This defines the possible states that a Button can have
+   
     enum class ButtonState {
         NORMAL,
         HOVERED,
@@ -20,21 +23,22 @@ public:
 
 private:
     ButtonState state;
-    string label;
+    std::string label;
     bool isHovered;
     bool isPressed;
-
-    Collider* collider;
+    bool isFocused;
+    glm::vec3 color;
+    TextObject textObject;
 
     std::function<void()> onClick;
     std::function<void()> onHover;
 
 public:
     Button();
-    Button(string name, string label);
+    Button(std::string name, std::string label);
 
-    string getLabel() const;
-    void setLabel(const string& newLabel);
+    std::string getLabel() const;
+    void setLabel(const std::string& newLabel);
 
     ButtonState getState() const;
     void setState(ButtonState newState);
@@ -42,9 +46,12 @@ public:
     void setOnClickCallback(std::function<void()> callback);
     void setOnHoverCallback(std::function<void()> callback);
 
-    void handleMouseInput(int mouseX, int mouseY, bool isMousePressed);
+    void setFocused(bool focused);
+    bool getFocused() const;
+    void handleKeyboardInput(int key, bool isKeyPressed);
 
-    // Override render() to make Button a non-abstract class
-    //void render(glm::mat4 globalModelTransform) override;
+    void setColor(float r, float g, float b);
+    void setColor(glm::vec3 color);
+
+    void render(glm::mat4 globalModelTransform) override;
 };
-

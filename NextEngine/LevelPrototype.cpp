@@ -84,12 +84,12 @@ void LevelPrototype::levelInit() {
         }
     }
 
-    healthBar = new SimpleObject();
+   /* healthBar = new SimpleObject();
     healthBar->setColor(1.0f, 0.0f, 0.0f);
     healthBar->getTransform().setScale(glm::vec3(2.0f, 0.2f, 0.0f));
     healthBar->getTransform().setPosition(glm::vec3(player->getTransform().getPosition().x,
         player->getTransform().getPosition().y + 1.0f, 0.0f));
-    objectsList.push_back(healthBar);
+    objectsList.push_back(healthBar);*/
 
     for (DrawableObject* obj : objectsList) {
         EnemyObject* enemy = dynamic_cast<EnemyObject*>(obj);
@@ -140,9 +140,9 @@ void LevelPrototype::levelUpdate() {
     // Update health bar position and size
     float healthPercentage = static_cast<float>(player->getHealth()) / 100;
     float healthBarWidth = healthPercentage * 2.0f;
-    healthBar->getTransform().setScale(glm::vec3(healthBarWidth, 0.2f, 0.0f));
+    //healthBar->getTransform().setScale(glm::vec3(healthBarWidth, 0.2f, 0.0f));
     float offsetX = (2.0f - healthBarWidth) / 2.0f;
-    healthBar->getTransform().setPosition(glm::vec3(player->getTransform().getPosition().x - offsetX, player->getTransform().getPosition().y + 0.7f, 0.0f));
+    //healthBar->getTransform().setPosition(glm::vec3(player->getTransform().getPosition().x - offsetX, player->getTransform().getPosition().y + 0.7f, 0.0f));
 
     // Handle player's attack hitbox
     //if (player->isHitboxActive()) {

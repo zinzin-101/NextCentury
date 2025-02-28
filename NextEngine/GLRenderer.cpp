@@ -357,6 +357,6 @@ void GLRenderer::toggleViewport() {
     std::cout << "Viewport updating is now " << (isViewportEnabled ? "enabled" : "disabled") << std::endl;
 }
 
-glm::vec3 GLRenderer::camPos() {
+glm::vec3 GLRenderer::getCamPos() {
     return camera.getPosition();
 }
