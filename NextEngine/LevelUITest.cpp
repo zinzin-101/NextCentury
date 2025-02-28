@@ -16,7 +16,6 @@ void LevelUITest::levelLoad() {
 void LevelUITest::levelInit() {
     UIobject = new UI();
     
-
     // Initialize the background
     background = new TexturedObject();
     background->setTexture("../Resource/Texture/TestBG.png");
@@ -34,18 +33,9 @@ void LevelUITest::levelInit() {
     player->addPhysicsComponent();
     player->setDrawCollider(true);
     objectsList.push_back(player);
-    
-    // Initialize the player's health bar
-    /*healthBar = new SimpleObject(); 
-    healthBar->setColor(1.0f, 0.0f, 0.0f);
-    healthBar->getTransform().setScale(glm::vec3(2.0f, 0.2f, 0.0f));
-    healthBar->getTransform().setPosition(glm::vec3(player->getTransform().getPosition().x,
-        player->getTransform().getPosition().y + 1.0f, 0.0f));
-    objectsList.push_back(healthBar);*/
+
     UIobject->initUI(UIobjectsList);
 
-
-    // Initialize Enemy
     EnemyInfo enemyInfo;
     enemyInfo.health = 10;
     enemyInfo.aggroRange = 80;
@@ -57,21 +47,6 @@ void LevelUITest::levelInit() {
     enemy->setDrawCollider(true);
     enemy->setTarget(player);
     objectsList.push_back(enemy);
-
-    
-
-    // Initialize other objects
-    /*SimpleObject* obj2 = new SimpleObject();
-    obj2->setColor(0.0, 0.0, 1.0);
-    obj2->getTransform().setPosition(glm::vec3(2.0f, 2.0f, 0.0f));
-    objectsList.push_back(obj2);
-
-    SimpleObject* obj3 = new SimpleObject();
-    obj3->setColor(0.0, 0.0, 1.0);
-    obj3->getTransform().setPosition(glm::vec3(-2.0f, -2.0f, 0.0f));
-    objectsList.push_back(obj3);*/
-
-    
 
     attackHitbox = new SimpleObject();
     attackHitbox->setColor(1.0f, 0.0f, 0.0f); 
@@ -111,6 +86,7 @@ void LevelUITest::levelUpdate() {
     UIobject->updateUI(*player,camPos);
     
     
+
     // Update attack hitbox
     glm::vec3 playerPos = player->getTransform().getPosition();
     attackHitbox->getTransform().setPosition(glm::vec3(playerPos.x + 1.0f, playerPos.y, playerPos.z));
@@ -191,7 +167,8 @@ void LevelUITest::levelUnload() {
 }
 
 void LevelUITest::handleKey(char key) {
-    std::cout << "Key pressed: " << key << std::endl;
+    //std::cout << "Key pressed: " << key << std::endl;
+    UIobject->handleInput(key);
     float dt = GameEngine::getInstance()->getTime()->getDeltaTime();
     switch (key) {
     case 'w': player->getTransform().translate(glm::vec3(0, 5, 0) * dt); break;
@@ -219,14 +196,7 @@ void LevelUITest::handleKey(char key) {
 }
 
 void LevelUITest::handleMouse(int type, int x, int y) {
-    // Convert screen coordinates to world coordinates for 2D
-    float realX = static_cast<float>(x) / GameEngine::getInstance()->getWindowWidth() * 2 - 1;
-    float realY = 1 - static_cast<float>(y) / GameEngine::getInstance()->getWindowHeight() * 2;
-
-    std::cout << "X : " << realX << " Y : " << realY << std::endl;
-
-    // Set player position based on mouse click
-    //player->getTransform().setPosition(glm::vec3(realX, realY, 0));
+    std::cout << "Mouse Click at: X = " << x << " Y = " << y << std::endl;
 }
 
 void LevelUITest::handleAnalogStick(int type, float amount) {
