@@ -68,6 +68,29 @@ void Level::processKeyBuffer(InputManager& input, SDL_Keycode key) {
     }
 }
 
+void Level::processHeldMouse(InputManager& input, unsigned int mouse) {
+    float dt = GameEngine::getInstance()->getTime()->getDeltaTime();
+
+    if (input.getMouseButtonDown(mouse)) {
+        mouseHeldDuration[mouse] = 0.0f;
+        return;
+    }
+
+    if (input.getMouseButton(mouse)) {
+        mouseHeldDuration[mouse] += dt;
+        return;
+    }
+}
+
+void Level::processMouseBuffer(InputManager& input, unsigned int mouse) {
+    float dt = GameEngine::getInstance()->getTime()->getDeltaTime();
+
+    if (input.getButtonDown(mouse)) {
+        mouseBuffer[mouse]++;
+        return;
+    }
+}
+
 void Level::clearKeyBuffer(SDL_Keycode key) {
     keyBuffer[key] = 0;
 }

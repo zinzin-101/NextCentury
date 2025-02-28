@@ -200,6 +200,7 @@ void LevelPrototype::levelFree() {
 
 void LevelPrototype::levelUnload() {
     GameEngine::getInstance()->clearMesh();
+    GameEngine::getInstance()->getRenderer()->setClearColor(0.1f, 0.1f, 0.1f);
     //cout << "Unload Level" << endl;
 }
 
@@ -209,6 +210,7 @@ void LevelPrototype::handleKey(InputManager& input) {
     /// Process key ///
     // add key that requires hold duration here
     processHeldKey(input, SDLK_k);
+    processHeldMouse(input, SDL_BUTTON_LEFT);
 
     // add key that requires buffering here
     processKeyBuffer(input, SDLK_LSHIFT);
@@ -218,6 +220,7 @@ void LevelPrototype::handleKey(InputManager& input) {
     if (input.getButton(SDLK_a)) player->move(glm::vec2(-1, 0));
     if (input.getButton(SDLK_d)) player->move(glm::vec2(1, 0));
     if (input.getButtonDown(SDLK_j)) player->parryAttack();
+    if (input.getMouseButtonDown(SDL_BUTTON_RIGHT)) player->parryAttack();
     if (input.getButton(SDLK_UP)) marker->getTransform().translate(glm::vec3(0, 10, 0) * dt);;
     if (input.getButton(SDLK_DOWN)) marker->getTransform().translate(glm::vec3(0, -10, 0) * dt);
     if (input.getButton(SDLK_LEFT)) marker->getTransform().translate(glm::vec3(-10, 0, 0) * dt);
@@ -226,7 +229,8 @@ void LevelPrototype::handleKey(InputManager& input) {
     if (input.getButtonDown(SDLK_c)) player->getColliderComponent()->setTrigger(!player->getColliderComponent()->isTrigger());
     if (input.getButtonDown(SDLK_g)) viewMarker = !viewMarker;
     if (input.getButtonDown(SDLK_r)) GameEngine::getInstance()->getStateController()->gameStateNext = GameState::GS_RESTART;
-    if (input.getButtonDown(SDLK_e)) GameEngine::getInstance()->getStateController()->gameStateNext = GameState::GS_LEVEL1;
+    //if (input.getButtonDown(SDLK_e)) GameEngine::getInstance()->getStateController()->gameStateNext = GameState::GS_LEVEL1;
+    if (input.getButtonDown(SDLK_e)) GameEngine::getInstance()->getStateController()->gameStateNext = (GameState)((GameEngine::getInstance()->getStateController()->gameStateCurr + 1) % 3);
     if (input.getButton(SDLK_z)) GameEngine::getInstance()->getRenderer()->increaseZoomRatio(0.1f);
     if (input.getButton(SDLK_x)) GameEngine::getInstance()->getRenderer()->decreaseZoomRatio(0.1f);
 
@@ -241,6 +245,20 @@ void LevelPrototype::handleKey(InputManager& input) {
             player->heavyAttack(keyHeldDuration[SDLK_k]);
         }
         else if (input.getButton(SDLK_k)) {
+            player->startHeavyAttack();
+        }
+    }
+
+    if (mouseHeldDuration[SDL_BUTTON_LEFT] < PlayerStat::DURATION_TO_START_HEAVY_ATTACK) {
+        if (input.getMouseButtonUp(SDL_BUTTON_LEFT)) {
+            player->normalAttack();
+        }
+    }
+    else {
+        if (input.getMouseButtonUp(SDL_BUTTON_LEFT)) {
+            player->heavyAttack(mouseHeldDuration[SDL_BUTTON_LEFT]);
+        }
+        else if (input.getMouseButton(SDL_BUTTON_LEFT)) {
             player->startHeavyAttack();
         }
     }
