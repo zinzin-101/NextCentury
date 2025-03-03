@@ -1,12 +1,12 @@
 #include "CollisionHandler.h"
 #include "EnemyObject.h"
 #include "RayObject.h"
-#include "LevelPrototype.h"
+#include "LevelPrototypeNMMN.h"
 #include "DamageCollider.h"
 
 static ostream& operator<<(ostream& out, glm::vec3 pos);
 
-void LevelPrototype::levelLoad() {
+void LevelPrototypeNMMN::levelLoad() {
     SquareMeshVbo* square = new SquareMeshVbo();
     square->loadData();
     GameEngine::getInstance()->addMesh(SquareMeshVbo::MESH_NAME, square);
@@ -16,7 +16,7 @@ void LevelPrototype::levelLoad() {
     GameEngine::getInstance()->addMesh(SquareBorderMesh::MESH_NAME, border);
 }
 
-void LevelPrototype::levelInit() {
+void LevelPrototypeNMMN::levelInit() {
     //GameEngine::getInstance()->setDrawArea(-8.0f, 960.0f, -540.0f, 540.0f);
     EnemyInfo enemyInfo = EnemyInfo("EnemyNormal", 5, MovementInfo(3, 25), 30, 3.0f, 2.0f, 1.0f);
     mapLoader.addEnemyType(EnemyType::NORMAL, enemyInfo);
@@ -129,12 +129,15 @@ void LevelPrototype::levelInit() {
     player->getDamageCollider()->getTransform().scales(2);
 
     GameEngine::getInstance()->getRenderer()->toggleViewport();
+    GameEngine::getInstance()->getRenderer()->getCamera()->setTarget(player);
+    GameEngine::getInstance()->getRenderer()->getCamera()->setOffset(glm::vec3(0.0f, 1.0f, 0.0f)); // offset X rn should be 0 (or else camera deadzone won't work)
 }
 
-void LevelPrototype::levelUpdate() {
+void LevelPrototypeNMMN::levelUpdate() {
     updateObjects(objectsList);
     glm::vec3 followPos = viewMarker ? marker->getTransform().getPosition() : player->getTransform().getPosition();
     GameEngine::getInstance()->getRenderer()->updateCamera(followPos);
+    
     ray->getTransform().setPosition(marker->getTransform().getPosition());
     // Update health bar position and size
     float healthPercentage = static_cast<float>(player->getHealth()) / 100;
@@ -184,26 +187,27 @@ void LevelPrototype::levelUpdate() {
         }
         ++it;
     }
+    //GameEngine::getInstance()->getRenderer()->getCamera()->followTarget();
 }
 
-void LevelPrototype::levelDraw() {
+void LevelPrototypeNMMN::levelDraw() {
     GameEngine::getInstance()->render(objectsList);
 }
 
-void LevelPrototype::levelFree() {
+void LevelPrototypeNMMN::levelFree() {
     for (DrawableObject* obj : objectsList) {
         delete obj;
     }
     objectsList.clear();
 }
 
-void LevelPrototype::levelUnload() {
+void LevelPrototypeNMMN::levelUnload() {
     GameEngine::getInstance()->clearMesh();
     GameEngine::getInstance()->getRenderer()->setClearColor(0.1f, 0.1f, 0.1f);
     //cout << "Unload Level" << endl;
 }
 
-void LevelPrototype::handleKey(InputManager& input) {
+void LevelPrototypeNMMN::handleKey(InputManager& input) {
     float dt = GameEngine::getInstance()->getTime()->getDeltaTime();
 
     /// Process key ///
@@ -300,11 +304,11 @@ void LevelPrototype::handleKey(InputManager& input) {
 
 }
 
-void LevelPrototype::handleMouse(int type, int x, int y) {
+void LevelPrototypeNMMN::handleMouse(int type, int x, int y) {
     /// Will be implemented in inherited level when used ///
 }
 
-void LevelPrototype::handleAnalogStick(int type, float amount) {
+void LevelPrototypeNMMN::handleAnalogStick(int type, float amount) {
 
     if (type == 0) { // x axis
         player->getTransform().translate(glm::vec3(0.3 * amount, 0, 0));
@@ -315,7 +319,7 @@ void LevelPrototype::handleAnalogStick(int type, float amount) {
 
 }
 
-void LevelPrototype::initPlayer(PlayerObject*& player, glm::vec3 position, PlayerInfo playerInfo) {
+void LevelPrototypeNMMN::initPlayer(PlayerObject*& player, glm::vec3 position, PlayerInfo playerInfo) {
     if (player == nullptr) {
         player = new PlayerObject(playerInfo);
         objectsList.emplace_back(player);
@@ -325,7 +329,7 @@ void LevelPrototype::initPlayer(PlayerObject*& player, glm::vec3 position, Playe
     player->setDrawCollider(true); // for debugging
 }
 
-void LevelPrototype::initPlayer(PlayerObject*& player, PlayerInfo playerInfo) {
+void LevelPrototypeNMMN::initPlayer(PlayerObject*& player, PlayerInfo playerInfo) {
     if (player == nullptr) {
         player = new PlayerObject(playerInfo);
         objectsList.emplace_back(player);
@@ -340,7 +344,7 @@ void LevelPrototype::initPlayer(PlayerObject*& player, PlayerInfo playerInfo) {
     player->setDrawCollider(true); // for debugging
 }
 
-void LevelPrototype::instantiateEnemy(glm::vec3 position, EnemyInfo enemyInfo, EnemyType type) {
+void LevelPrototypeNMMN::instantiateEnemy(glm::vec3 position, EnemyInfo enemyInfo, EnemyType type) {
     /// add different type later ///
 
     EnemyObject* enemy = new EnemyObject(enemyInfo);

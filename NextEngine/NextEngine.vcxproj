@@ -43,6 +43,7 @@
     <ClCompile Include="LevelMapEditorTest.cpp" />
     <ClCompile Include="LevelParallax.cpp" />
     <ClCompile Include="LevelPrototype.cpp" />
+    <ClCompile Include="LevelPrototypeNMMN.cpp" />
     <ClCompile Include="LevelTest.cpp" />
     <ClCompile Include="LevelUITest.cpp" />
     <ClCompile Include="LivingEntity.cpp" />
@@ -94,6 +95,7 @@
     <ClInclude Include="LevelMapEditorTest.h" />
     <ClInclude Include="LevelParallax.h" />
     <ClInclude Include="LevelPrototype.h" />
+    <ClInclude Include="LevelPrototypeNMMN.h" />
     <ClInclude Include="LevelTest.h" />
     <ClInclude Include="LevelUITest.h" />
     <ClInclude Include="LivingEntity.h" />
