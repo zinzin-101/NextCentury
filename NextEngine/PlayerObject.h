@@ -14,19 +14,32 @@ namespace PlayerStat {
     constexpr float ATTACK_DASH_VELOCITY = 2.0f;
     constexpr float AFTER_ATTACK_MOVE_DELAY_TIME = 0.8f;
     constexpr float DURATION_TO_START_HEAVY_ATTACK = 0.5f;
+    constexpr float DURATION_TO_START_CHARGED_BULLET = 0.5f;
+
     constexpr int COMBO_DAMAGE_1 = 10;
     constexpr int COMBO_DAMAGE_2 = 12;
     constexpr int COMBO_DAMAGE_3 = 15;
+    
     constexpr float CHARGE_DAMAGE_MULTIPLIER_1 = 1.2f;
     constexpr float CHARGE_DAMAGE_MULTIPLIER_2 = 1.5f;
     constexpr float HEAVY_ATTACK_COOLDOWN_1 = 0.5f;
     constexpr float HEAVY_ATTACK_COOLDOWN_2 = 0.8f;
+    
+    constexpr int RANGE_DAMAGE = 8;
+    constexpr int NUM_OF_BULLET_PER_SHOT_1 = 1;
+    constexpr int NUM_OF_BULLET_PER_SHOT_1 = 2;
+    constexpr int NUM_OF_BULLET_PER_SHOT_1 = 3;
+    constexpr float RANGE_CHARGE_DURATION_1 = 1.0f;
+    constexpr float RANGE_CHARGE_DURATION_2 = 2.0f;
+    constexpr float RANGE_CHARGE_DURATION_3 = 3.0f;
+    constexpr float RANGE_ATTACK_COOLDOWN_1 = 2.0f;
+    constexpr float RANGE_ATTACK_COOLDOWN_2 = 3.0f;
+    constexpr float RANGE_ATTACK_COOLDOWN_3 = 4.0f;
 
     constexpr float MOVE_SPEED = 5.0f;
     constexpr float ACCEL_SPEED = 2000.0f;
     constexpr float DECEL_SPEED = 10.0f;
     constexpr float AIR_ACCEL = 10.0f;
-
 
     constexpr float JUMP_VELOCITY = 25.0f;
 }
@@ -49,6 +62,10 @@ class PlayerObject : public LivingEntity {
             LEVEL_1,
             LEVEL_2,
             LEVEL_0
+        };
+
+        enum PlayerRangeCharge {
+
         };
 
         struct AttackFrame {
@@ -82,9 +99,13 @@ class PlayerObject : public LivingEntity {
         bool isInAttackState;
         float timeBetweenLastAttack;
 
+        
+        bool isInRangeAttack;
+
         void handleNormalAttack();
         void handleHeavyAttack();
         void handleParryAttack();
+        void handleRangeAttack();
         
         bool isDodging;
         bool canDodge;
@@ -112,8 +133,10 @@ class PlayerObject : public LivingEntity {
         void normalAttack();
         void heavyAttack(float duration);
         void parryAttack();
+        void rangeAttack(float duration);
 
         void startHeavyAttack();
+        void startRangeAttack();
 
         int getDamage() const;
         void setDamage(int damage);

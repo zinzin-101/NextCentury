@@ -77,6 +77,8 @@ PlayerObject::PlayerObject(PlayerInfo& playerInfo) : LivingEntity(playerInfo.nam
 
     timeToResetComboRemaining = 0.0f;
     attackHitbox = nullptr;
+
+    isInRangeAttack = false;
 }
 
 PlayerObject::~PlayerObject() {
@@ -338,6 +340,22 @@ void PlayerObject::startHeavyAttack() {
         currentCombo = PlayerCombo::FIRST;
     }
 }
+
+void PlayerObject::startRangeAttack() {
+    if (isAttacking || isParrying || isDodging) {
+        return;
+    }
+
+    if (attackCooldownRemaining > 0.0f) {
+        return;
+    }
+
+    isInRangeAttack = true;
+    // get animation component when sprite is added //
+    //++
+    ///
+}
+
 void PlayerObject::handleDodging() {
     this->getAnimationComponent()->setState("Dodging");
 

@@ -212,6 +212,9 @@ void LevelPrototype::handleKey(InputManager& input) {
     processHeldKey(input, SDLK_k);
     processHeldMouse(input, SDL_BUTTON_LEFT);
 
+    processHeldKey(input, SDLK_u);
+    processHeldMouse(input, SDL_BUTTON_MIDDLE);
+
     // add key that requires buffering here
     processKeyBuffer(input, SDLK_LSHIFT);
 
