@@ -9,22 +9,21 @@
 
 class TexturedObject : virtual public DrawableObject
 {
-	unsigned int texture;
-	Animation* animation; // Might use vector in the future to support multiple animation state
-	/*bool animated = false;
-	int rowCount;
-	int colCount;
-	float offsetX;
-	float offsetY;*/
+	private:
+		unsigned int texture;
+		Animation* animation;
 
-public:
-	TexturedObject();
-	TexturedObject(std::string name);
-	~TexturedObject();
-	void setTexture(std::string path);
-	void initAnimation(int row, int column);
-	void render(glm::mat4 globalModelTransform);
-	Animation* getAnimationComponent();
-	bool isAnimated();
-	//void setFrame(float row, float column);
+	protected:
+		glm::vec4 colorOverlay;
+
+	public:
+		TexturedObject();
+		TexturedObject(std::string name);
+		~TexturedObject();
+		void setTexture(std::string path);
+		void initAnimation(int row, int column);
+		void render(glm::mat4 globalModelTransform);
+		Animation* getAnimationComponent();
+		bool isAnimated();
+		//void setFrame(float row, float column);
 };

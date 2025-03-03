@@ -86,7 +86,6 @@ class PlayerObject : public LivingEntity {
         void handleHeavyAttack();
         void handleParryAttack();
         
-        float lastXDirection;
         bool isDodging;
         bool canDodge;
         float dodgeTimeElapsed;
@@ -125,8 +124,7 @@ class PlayerObject : public LivingEntity {
         void move(glm::vec2 direction);
         void jump();
         void dodge();
-
-        void setLastXDirection(float xDirection);
+        void dodge(float xDirection);
 
         bool getCanMove() const;
         bool getIsParrying() const;

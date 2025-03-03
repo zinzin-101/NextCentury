@@ -8,13 +8,17 @@ LivingEntity::Status::Status(StatusType type, float cooldown) {
     remainingTime = this->cooldown;
 }
 
-LivingEntity::LivingEntity() : health(100), isDead(false), isStun(false), canTakeDamage(true), isFacingRight(false) {}
+LivingEntity::LivingEntity() : health(100), isDead(false), isStun(false), canTakeDamage(true), isFacingRight(false),
+isDamageOverlayed(false), damageOverlayTimeRemaining(0.0f) {}
 
-LivingEntity::LivingEntity(int hp) : health(hp), isDead(false), isStun(false), canTakeDamage(true), isFacingRight(false) {}
+LivingEntity::LivingEntity(int hp) : health(hp), isDead(false), isStun(false), canTakeDamage(true), isFacingRight(false),
+isDamageOverlayed(false), damageOverlayTimeRemaining(0.0f) {}
 
-LivingEntity::LivingEntity(std::string name) : TexturedObject(name), health(100), isDead(false), isStun(false), canTakeDamage(true), isFacingRight(false) {}
+LivingEntity::LivingEntity(std::string name) : TexturedObject(name), health(100), isDead(false), isStun(false), canTakeDamage(true),
+isFacingRight(false), isDamageOverlayed(false), damageOverlayTimeRemaining(0.0f) {}
 
-LivingEntity::LivingEntity(std::string name, int hp) : TexturedObject(name), health(hp), isDead(false), isStun(false), canTakeDamage(true), isFacingRight(false) {}
+LivingEntity::LivingEntity(std::string name, int hp) : TexturedObject(name), health(hp), isDead(false), isStun(false), canTakeDamage(true),
+isFacingRight(false), isDamageOverlayed(false), damageOverlayTimeRemaining(0.0f) {}
 
 
 void LivingEntity::setHealth(int hp) {
@@ -86,7 +90,7 @@ void LivingEntity::applyStatus(float dt) { // NOt required???
 
     //cout << "applying" << endl;
     
-    for (std::list<Status>::iterator itr = statusList.begin(); itr != statusList.end(); itr++) {
+    for (std::list<Status>::iterator itr = statusList.begin(); itr != statusList.end(); ++itr) {
 
         cout << "enter" << endl;
         Status& status = *itr;
@@ -114,7 +118,7 @@ void LivingEntity::applyStatus(float dt) { // NOt required???
                 cout << "What";
             }
             itr = deleteStatus(itr);
-            itr--;
+            --itr;
             //itr = statusList.erase(itr);
             cout << "removed" << endl;
         }
@@ -139,6 +143,24 @@ void LivingEntity::takeDamage(int damage) {
         health = 0;
         isDead = true;
     }
+
+    isDamageOverlayed = true;
+    damageOverlayTimeRemaining = LivingEntityStat::DAMAGE_OVERLAY_DURATION;
+}
+
+void LivingEntity::handleDamageOverlay() {
+    if (!isDamageOverlayed) {
+        return;
+    }
+
+    colorOverlay = glm::vec4(1.0f, 0.0f, 0.0f, 0.75f);
+
+    damageOverlayTimeRemaining -= GameEngine::getInstance()->getTime()->getDeltaTime();
+    if (damageOverlayTimeRemaining <= 0.0f) {
+        damageOverlayTimeRemaining = 0.0f;
+        isDamageOverlayed = false;
+        colorOverlay = glm::vec4();
+    }
 }
 
 bool LivingEntity::getIsStun() const {
@@ -152,6 +174,8 @@ bool LivingEntity::getIsFacingRight() const {
 void LivingEntity::update(list<DrawableObject*>& objectsList) {
     updateBehavior(objectsList);
     DrawableObject::update(objectsList);
+
+    handleDamageOverlay();
 
     glm::vec3 currentScale = this->transform.getScale();
     currentScale.x = abs(currentScale.x);

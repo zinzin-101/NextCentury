@@ -45,7 +45,6 @@ PlayerObject::PlayerObject(PlayerInfo& playerInfo) : LivingEntity(playerInfo.nam
     groundedFrameNum = 4;
     canMove = true;
     canChangeFacingDirection = true;
-    lastXDirection = 1.0f;
 
     isAttacking = false;
     isInAttackState = false;
@@ -137,9 +136,12 @@ void PlayerObject::dodge() {
     isDodging = true;
     canChangeFacingDirection = false;
 
-    isFacingRight = lastXDirection > 0.0f;
-
     dodgeTimeElapsed = 0.0f;
+}
+
+void PlayerObject::dodge(float xDirection) {
+    dodge();
+    isFacingRight = xDirection > 0.0f;
 }
 
 void PlayerObject::start(list<DrawableObject*>& objectsList) {
@@ -204,10 +206,6 @@ void PlayerObject::updateBehavior(list<DrawableObject*>& objectsList) {
     
     if (canMove) {
         handleMovement();
-    }
-
-    if (moveDirection.x != 0.0f) {
-        lastXDirection = moveDirection.x;
     }
 
     moveDirection.x = 0.0f; // Reset move direction for next frame
@@ -350,7 +348,9 @@ void PlayerObject::handleDodging() {
     canDodge = false;
     setCanTakeDamage(false);
 
-    glm::vec2 dodgeVelocity = glm::vec2(abs(PlayerStat::DODGE_VELOCITY) * lastXDirection, vel.y);
+    float xDirection = isFacingRight ? 1.0f : -1.0f;
+
+    glm::vec2 dodgeVelocity = glm::vec2(abs(PlayerStat::DODGE_VELOCITY) * xDirection, vel.y);
     this->physics->setVelocity(dodgeVelocity);
 
     dodgeTimeElapsed += dt;
@@ -571,12 +571,6 @@ bool PlayerObject::getIsParrying() const {
 
 DamageCollider<EnemyObject>* PlayerObject::getDamageCollider() const {
     return attackHitbox;
-}
-
-void PlayerObject::setLastXDirection(float xDirection) {
-    if (xDirection != 0.0f) {
-        lastXDirection = abs(xDirection) / xDirection;
-    }
 }
 
 void PlayerObject::onTriggerEnter(Collider* collider) {

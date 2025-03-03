@@ -77,7 +77,7 @@ class Animation {
 		/// @brief This function renders the animation to the screen
 		/// @param globalModelTransform a 4x4 matrix containing the global transform
 		/// @param transform is the transformation for the render
-		void render(glm::mat4 globalModelTransform, Transform& transform);
+		void render(glm::mat4 globalModelTransform, Transform& transform, const glm::vec4& colorOverlay);
 
 		/// @brief This function sets the current frame according to its position on the animation file.
 		/// @param row is the row of the frame

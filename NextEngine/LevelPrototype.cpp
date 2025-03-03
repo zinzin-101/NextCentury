@@ -267,13 +267,14 @@ void LevelPrototype::handleKey(InputManager& input) {
         clearKeyBuffer(SDLK_LSHIFT);
 
         if (input.getButton(SDLK_a)){
-            player->setLastXDirection(-1.0f);
+            player->dodge(-1.0f);
         }
         else if (input.getButton(SDLK_d)) {
-            player->setLastXDirection(1.0f);
+            player->dodge(1.0f);
         }
-
-        player->dodge();
+        else {
+            player->dodge();
+        }
     }
 
 

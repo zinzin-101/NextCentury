@@ -28,6 +28,7 @@ protected:
     GLuint offsetYUniformId = -1;
     GLuint scaleXUniformId = -1;
     GLuint scaleYUniformId = -1;
+    GLuint colorOverlayUniformId = -1;
 
     GLuint gProgramId;
     int gPos2DLocation;
@@ -67,6 +68,7 @@ public:
     GLuint getOffsetYUniformId();
     GLuint getScaleXUniformId();
     GLuint getScaleYUniformId();
+    GLuint getColorOverlayUniformId();
 
     GLuint LoadTexture(string path);
     void setViewMatrix(const glm::mat4& viewMatrix);
