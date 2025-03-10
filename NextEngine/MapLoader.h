@@ -3,6 +3,7 @@
 #include "DrawableObject.h"
 #include "EnemyInfo.h"
 #include "EnemyObject.h"
+#include "Zealot.h"
 #include "SimpleObject.h"
 #include "Transform.h"
 #include "PlayerObject.h"
@@ -23,7 +24,8 @@ class MapLoader {
 			PLAYER,
 			PHYSICS_OBJ,
 			ENEMY_NORMAL,
-			PROCESSED
+			ENEMY_ZEALOT,
+			PROCESSED,
 		};
 
 		struct ObjectProperty {

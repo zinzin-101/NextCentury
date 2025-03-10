@@ -1,8 +1,5 @@
-#include "DamageCollider.h"
 #include "EnemyObject.h"
-#include "GameEngine.h"
-#include "PlayerObject.h"
-#include "ProjectileObject.h"
+
 //#include "ParticleSystem.h" // temporary testing
 #include <iostream>
 
@@ -13,21 +10,9 @@ EnemyObject::EnemyObject(EnemyInfo& enemyInfo) : LivingEntity(enemyInfo.name, en
 	this->attackCooldown = enemyInfo.attackCooldown;
 	this->damage = enemyInfo.damage;
 	currentState = IDLE;
-
-	//setTexture("../Resource/Texture/incineratorSizeFlip.png");
-	setTexture("../Resource/Texture/enemyplaceholder.png");
-	//initAnimation(6, 2);
-	initAnimation(3, 6);
 	addColliderComponent();
 	addPhysicsComponent();
-	targetEntity = nullptr;
-	//getAnimationComponent()->addState("Idle", 0, 6);
-	//getAnimationComponent()->addState("Moving", 1, 5);
-	//getAnimationComponent()->addState("Attacking", 1, 5);
-	getAnimationComponent()->addState("Idle", 0, 0, 6, true);
-	getAnimationComponent()->addState("Moving", 1, 0, 5, true);
-	getAnimationComponent()->addState("Attacking", 2, 0, 6, false);
-	getAnimationComponent()->setState("Idle");
+
 
 	//attackHitbox = new SimpleObject();
 	//attackHitbox->setColor(1.0f, 0.0f, 0.0f); // Red color for debugging
@@ -169,6 +154,18 @@ void EnemyObject::setTarget(LivingEntity* target) {
 }
 
 void EnemyObject::start(list<DrawableObject*>& objectsList) {
+	//setTexture("../Resource/Texture/incineratorSizeFlip.png");
+	setTexture("../Resource/Texture/enemyplaceholder.png");
+	//initAnimation(6, 2);
+	initAnimation(3, 6);
+	targetEntity = nullptr;
+	//getAnimationComponent()->addState("Idle", 0, 6);
+	//getAnimationComponent()->addState("Moving", 1, 5);
+	//getAnimationComponent()->addState("Attacking", 1, 5);
+	getAnimationComponent()->addState("Idle", 0, 0, 6, true);
+	getAnimationComponent()->addState("Moving", 1, 0, 5, true);
+	getAnimationComponent()->addState("Attacking", 2, 0, 6, false);
+	getAnimationComponent()->setState("Idle");
 	attackHitbox = new DamageCollider<PlayerObject>(this, damage, -1);
 	attackHitbox->setActive(false);
 	attackHitbox->setFollowOwner(true);

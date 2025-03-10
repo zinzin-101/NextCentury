@@ -4,6 +4,7 @@
 
 enum EnemyType {
 	NORMAL,
+	ZEALOT,
 	SPECIAL
 };
 

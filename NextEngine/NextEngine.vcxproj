@@ -68,6 +68,7 @@
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="TriangleMeshVbo.cpp" />
     <ClCompile Include="UI.cpp" />
+    <ClCompile Include="ZealotEnemy.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
@@ -126,6 +127,7 @@
     <ClInclude Include="TriangleMeshVbo.h" />
     <ClInclude Include="UI.h" />
     <ClInclude Include="UpgradeSystem.h" />
+    <ClInclude Include="Zealot.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
