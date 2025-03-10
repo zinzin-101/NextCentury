@@ -45,7 +45,7 @@ void Camera::followTarget() {
     }
 
     newPos = glm::vec3(x , y , 0.0f);
-    setPosition(newPos);
+    setPosition((1-0.2f) * this->position + 0.2f * newPos);
 }
 
 void Camera::setTarget(DrawableObject* target) {
