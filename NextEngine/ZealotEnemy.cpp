@@ -66,6 +66,7 @@ void Zealot::updateBehavior(list<DrawableObject*>& objectsList) {
 
 		if (currentAnimFrame == attackFrameEnd + 1) {
 			endAttack();
+			GameEngine::getInstance()->getRenderer()->getCamera()->shake = false;
 			//cout << attackCooldownTimer << endl;
 			break;
 		}
