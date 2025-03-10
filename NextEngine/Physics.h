@@ -5,7 +5,7 @@
 #include "Transform.h"
 #include <vector>
 
-constexpr float DEFAULT_GRAVITY = -1.0f; // fine tune later
+constexpr float DEFAULT_GRAVITY = -98.1f; // fine tune later
 constexpr float CONST_DELTA_TIME = 0.001f; // for testing
 
 using namespace std;

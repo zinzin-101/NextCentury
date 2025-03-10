@@ -26,7 +26,6 @@ void LevelUITest::levelInit() {
     // Initialize the player
     PlayerInfo playerInfo;
     playerInfo.health = 100;
-    playerInfo.damage = 5;
     player = new PlayerObject(playerInfo);
     player->getTransform().setPosition(glm::vec3(0.0f, 2.0f, 0.0f));
     player->addColliderComponent();
@@ -103,7 +102,7 @@ void LevelUITest::levelUpdate() {
                 EnemyObject* enemy = dynamic_cast<EnemyObject*>(*it);
                 if (enemy && checkCollision(attackHitbox->getColliderComponent(), attackHitbox->getTransform(),
                     enemy->getColliderComponent(), enemy->getTransform())) {
-                    enemy->takeDamage(player->getDamage());
+                    //enemy->takeDamage(player->getDamage());
                     std::cout << "Enemy hit by player attack! Enemy Health: " << enemy->getHealth() << std::endl;
 
                     if (enemy->getHealth() <= 0) {

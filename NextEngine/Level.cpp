@@ -149,7 +149,6 @@ void Level::initPlayer(PlayerObject*& player, PlayerInfo playerInfo) {
         player->setName(playerInfo.name);
         player->setHealth(playerInfo.health);
         //player->setMovementInfo(playerInfo.movementInfo);
-        player->setDamage(playerInfo.damage);
     }
 
     player->setDrawCollider(true); // for debugging

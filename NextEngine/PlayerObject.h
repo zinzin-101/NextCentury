@@ -27,14 +27,16 @@ namespace PlayerStat {
     
     constexpr int RANGE_DAMAGE = 8;
     constexpr int NUM_OF_BULLET_PER_SHOT_1 = 1;
-    constexpr int NUM_OF_BULLET_PER_SHOT_1 = 2;
-    constexpr int NUM_OF_BULLET_PER_SHOT_1 = 3;
+    constexpr int NUM_OF_BULLET_PER_SHOT_2 = 2;
+    constexpr int NUM_OF_BULLET_PER_SHOT_3 = 3;
     constexpr float RANGE_CHARGE_DURATION_1 = 1.0f;
     constexpr float RANGE_CHARGE_DURATION_2 = 2.0f;
     constexpr float RANGE_CHARGE_DURATION_3 = 3.0f;
     constexpr float RANGE_ATTACK_COOLDOWN_1 = 2.0f;
     constexpr float RANGE_ATTACK_COOLDOWN_2 = 3.0f;
     constexpr float RANGE_ATTACK_COOLDOWN_3 = 4.0f;
+    constexpr float RANGE_ATTACK_DISTANCE = 100.0f;
+    constexpr float RANGE_ATTACK_LIFESPAN = 0.5f;
 
     constexpr float MOVE_SPEED = 5.0f;
     constexpr float ACCEL_SPEED = 2000.0f;
@@ -65,7 +67,10 @@ class PlayerObject : public LivingEntity {
         };
 
         enum PlayerRangeCharge {
-
+            CHARGE_1,
+            CHARGE_2,
+            CHARGE_3,
+            CHARGE_0
         };
 
         struct AttackFrame {
@@ -80,8 +85,8 @@ class PlayerObject : public LivingEntity {
         PlayerCombo currentCombo;
         bool isCurrentAttackFacingRight;
         float timeToResetComboRemaining;
-        void startAttack();
-        void endAttack();
+        void startMeleeAttack();
+        void endMeleeAttack();
 
         float damageMultiplier[2];
         float heavyAttackCooldown[2];
@@ -91,21 +96,26 @@ class PlayerObject : public LivingEntity {
 
         AttackFrame parryFrame;
         bool isParrying;
+
+        int rangeDamageMultiplier[3];
+
+        int baseRangeDamage;
+        float rangeAttackCooldown[3];
+        float rangeChargeDuration[3];
+        PlayerRangeCharge currentRangeCharge;
+        bool isInRangeAttack;
         
         DamageCollider<EnemyObject>* attackHitbox;
-        int damage;
+        //int damage;
         float attackCooldownRemaining;
         bool isAttacking;
         bool isInAttackState;
         float timeBetweenLastAttack;
 
-        
-        bool isInRangeAttack;
-
         void handleNormalAttack();
         void handleHeavyAttack();
-        void handleParryAttack();
         void handleRangeAttack();
+        void handleParryAttack();
         
         bool isDodging;
         bool canDodge;
@@ -122,7 +132,6 @@ class PlayerObject : public LivingEntity {
 
         void handleMovement();
         void handleJumpMovement();
-
     
         glm::vec3 moveDirection;
 
@@ -131,15 +140,15 @@ class PlayerObject : public LivingEntity {
         ~PlayerObject();
 
         void normalAttack();
-        void heavyAttack(float duration);
+        void heavyAttack();
         void parryAttack();
-        void rangeAttack(float duration);
+        void rangeAttack(list<DrawableObject*>& objectsList);
 
         void startHeavyAttack();
-        void startRangeAttack();
+        void startRangeAttack(float duration);
 
-        int getDamage() const;
-        void setDamage(int damage);
+        //int getDamage() const;
+        //void setDamage(int damage);
 
         virtual void start(list<DrawableObject*>& objectsList);
         virtual void updateBehavior(list<DrawableObject*>& objectsList);

@@ -72,7 +72,7 @@ void LevelPrototype::levelInit() {
     marker->setColor(0, 0, 0);
     objectsList.emplace_back(marker);
 
-    PlayerInfo playerInfo = PlayerInfo("Player", 10, MovementInfo(5, 25), 5);
+    PlayerInfo playerInfo = PlayerInfo("Player", 10, MovementInfo(5, 25));
     startObjects(objectsList);
     initPlayer(player, playerInfo);
 
@@ -119,7 +119,7 @@ void LevelPrototype::levelInit() {
     //marker->getColliderComponent()->setDimension(50, 50);
 
     ray = new RayObject(player->getTransform().getPosition(), glm::vec3(1, 1, 0), 4);
-    objectsList.emplace_back(ray);
+    //objectsList.emplace_back(ray);
     ray->setDrawCollider(true);
     ray->setName("ray");
 
@@ -245,7 +245,7 @@ void LevelPrototype::handleKey(InputManager& input) {
     }
     else {
         if (input.getButtonUp(SDLK_k)) {
-            player->heavyAttack(keyHeldDuration[SDLK_k]);
+            player->heavyAttack();
         }
         else if (input.getButton(SDLK_k)) {
             player->startHeavyAttack();
@@ -259,11 +259,18 @@ void LevelPrototype::handleKey(InputManager& input) {
     }
     else {
         if (input.getMouseButtonUp(SDL_BUTTON_LEFT)) {
-            player->heavyAttack(mouseHeldDuration[SDL_BUTTON_LEFT]);
+            player->heavyAttack();
         }
         else if (input.getMouseButton(SDL_BUTTON_LEFT)) {
             player->startHeavyAttack();
         }
+    }
+
+    if (input.getButtonUp(SDLK_u)) {
+        player->rangeAttack(objectsList);
+    }
+    else if (input.getButton(SDLK_u)) {
+        player->startRangeAttack(keyHeldDuration[SDLK_u]);
     }
 
     if (keyBuffer[SDLK_LSHIFT] > 0 && player->getCanMove()) {
@@ -338,8 +345,7 @@ void LevelPrototype::initPlayer(PlayerObject*& player, PlayerInfo playerInfo) {
     else {
         player->setName(playerInfo.name);
         player->setHealth(playerInfo.health);
-        //player->setMovementInfo(playerInfo.movementInfo);
-        player->setDamage(playerInfo.damage);
+        //player->setMovementInfo(playerInfo.movementInfo)
     }
 
     player->setDrawCollider(true); // for debugging

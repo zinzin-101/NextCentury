@@ -37,7 +37,7 @@ void Physics::addForce(glm::vec2 f) {
 }
 
 void Physics::addVelocity(glm::vec2 vel) {
-	velocity += vel * GameEngine::getInstance()->getTime()->getDeltaTime();
+	velocity += vel;
 }
 
 void Physics::setDrag(float drag) {

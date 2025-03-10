@@ -3,7 +3,7 @@
 #include "DrawableObject.h"
 
 class RayObject : public DrawableObject {
-	private:
+	protected:
 		glm::vec3 origin;
 		glm::vec3 dir;
 		float length;

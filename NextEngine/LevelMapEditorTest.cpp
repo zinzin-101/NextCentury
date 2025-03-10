@@ -68,7 +68,7 @@ void LevelMapEditorTest::levelUpdate() {
                 EnemyObject* enemy = dynamic_cast<EnemyObject*>(*it);
                 if (enemy && checkCollision(attackHitbox->getColliderComponent(), attackHitbox->getTransform(),
                     enemy->getColliderComponent(), enemy->getTransform())) {
-                    enemy->takeDamage(player->getDamage());
+                    //enemy->takeDamage(player->getDamage());
                     std::cout << "Enemy hit! Remaining HP: " << enemy->getHealth() << std::endl;
 
                     if (enemy->getHealth() <= 0) {

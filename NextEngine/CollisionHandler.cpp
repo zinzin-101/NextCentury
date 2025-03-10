@@ -1,5 +1,7 @@
 #include "CollisionHandler.h"
-
+///
+#include "EnemyObject.h"
+///
 constexpr unsigned int COLLISION_RESOLUTION = 4;
 
 bool checkCollision(Collider* col1, Transform& t1, Collider* col2, Transform& t2) {
@@ -148,6 +150,13 @@ void handleObjectCollision(list<DrawableObject*>& objects) {
 			if (col1 == nullptr || col2 == nullptr) {
 				continue;
 			}
+
+			/// debug
+			EnemyObject* enemy = dynamic_cast<EnemyObject*>(col2->getObject());
+			if (enemy && ray1) {
+				cout << "ray and enemy" << endl;
+			}
+			///
 
 			if (!col1->isEnable() || !col2->isEnable()) {
 				continue;
