@@ -1,5 +1,4 @@
 #include "CollisionHandler.h"
-#include "HitScanDamage.h"
 
 constexpr unsigned int COLLISION_RESOLUTION = 4;
 
