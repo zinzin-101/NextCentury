@@ -339,13 +339,18 @@ void PlayerObject::rangeAttack(std::list<DrawableObject*>& objectsList) {
     glm::vec3 direction = isFacingRight ? glm::vec3(1, 0, 0) : glm::vec3(-1, 0, 0);
 
     HitScanDamage<EnemyObject>* hitscan = new HitScanDamage<EnemyObject>(
-        this->getTransform().getPosition(),
+        glm::vec3(),
         direction, 
         PlayerStat::RANGE_ATTACK_DISTANCE, 
         baseRangeDamage * rangeDamageMultiplier[currentRangeCharge],
         PlayerStat::RANGE_ATTACK_LIFESPAN
     );
-    /// add animation later
+    ///temporary pos, new adjustment later
+    glm::vec3 currentPos = this->getTransform().getPosition();
+    currentPos.y -= 0.5f;
+    hitscan->getTransform().setPosition(currentPos);
+    
+        /// add animation later
     switch (currentRangeCharge) {
         case PlayerHeavyCharge::LEVEL_1:
         //this->getAnimationComponent()->setState("Charge1");

@@ -52,6 +52,8 @@ void HitScanDamage<TargetEntity>::onCollisionEnter(Collider* collider) {
 
 template <class TargetEntity>
 void HitScanDamage<TargetEntity>::update(std::list<DrawableObject*>& objectsList) {
+	DrawableObject::update(objectsList);
+
 	float dt = GameEngine::getInstance()->getTime()->getDeltaTime();
 
 	lifespan -= dt;
