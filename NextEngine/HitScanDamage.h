@@ -23,7 +23,7 @@ template <class TargetEntity>
 HitScanDamage<TargetEntity>::HitScanDamage(glm::vec3 pos, glm::vec3 dir, float length, int damage, float lifespan) :
 	RayObject(pos, dir, length), damage(damage), lifespan(lifespan), used(false), closestEntity(nullptr) {
 	this->setDrawCollider(true);
-	std::cout << "spawn hitscan" << std::endl;
+	std::cout << "spawn hitscan, damage = " << damage << std::endl;
 }
 
 template <class TargetEntity>
@@ -68,6 +68,9 @@ void HitScanDamage<TargetEntity>::update(std::list<DrawableObject*>& objectsList
 	}
 
 	closestEntity->takeDamage(damage);
+
+	cout << "range damage = " << damage << endl;
+
 	used = true;
 }
 

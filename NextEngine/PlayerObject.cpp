@@ -86,6 +86,7 @@ PlayerObject::PlayerObject(PlayerInfo& playerInfo) : LivingEntity(playerInfo.nam
     rangeChargeDuration[PlayerRangeCharge::CHARGE_2] = PlayerStat::RANGE_CHARGE_DURATION_2;
     rangeChargeDuration[PlayerRangeCharge::CHARGE_3] = PlayerStat::RANGE_CHARGE_DURATION_3;
     currentRangeCharge = PlayerRangeCharge::CHARGE_0;
+    rangeAttackCooldownRemaining = 0.0f;
 
     parryFrame = AttackFrame(2, 3);
     isParrying = false;
@@ -170,6 +171,10 @@ void PlayerObject::updateBehavior(list<DrawableObject*>& objectsList) {
 
     if (attackCooldownRemaining > 0.0f) {
         attackCooldownRemaining -= dt;
+    }
+
+    if (rangeAttackCooldownRemaining > 0.0f) {
+        rangeAttackCooldownRemaining -= dt;
     }
 
     if (isInRangeAttack) {
@@ -327,6 +332,10 @@ void PlayerObject::parryAttack() {
 }
 
 void PlayerObject::rangeAttack(std::list<DrawableObject*>& objectsList) {
+    if (currentRangeCharge == PlayerRangeCharge::CHARGE_0) {
+        return;
+    }
+
     isAttacking = true;
     canChangeFacingDirection = false;
 
@@ -345,6 +354,7 @@ void PlayerObject::rangeAttack(std::list<DrawableObject*>& objectsList) {
         baseRangeDamage * rangeDamageMultiplier[currentRangeCharge],
         PlayerStat::RANGE_ATTACK_LIFESPAN
     );
+    cout << "current charge: " << currentRangeCharge << endl;
     ///temporary pos, new adjustment later
     glm::vec3 currentPos = this->getTransform().getPosition();
     currentPos.y -= 0.5f;
@@ -352,16 +362,22 @@ void PlayerObject::rangeAttack(std::list<DrawableObject*>& objectsList) {
     
         /// add animation later
     switch (currentRangeCharge) {
-        case PlayerHeavyCharge::LEVEL_1:
+        case PlayerRangeCharge::CHARGE_1:
         //this->getAnimationComponent()->setState("Charge1");
             break;
 
-        case PlayerHeavyCharge::LEVEL_2:
+        case PlayerRangeCharge::CHARGE_2:
         //this->getAnimationComponent()->setState("Charge2");
+            break;
+
+        case PlayerRangeCharge::CHARGE_3:
+            //this->getAnimationComponent()->setState("Charge3");
             break;
     }
 
     objectsList.emplace_back(hitscan);
+    rangeAttackCooldownRemaining = rangeAttackCooldown[currentRangeCharge];
+    currentRangeCharge = PlayerRangeCharge::CHARGE_0;
 }
 
 void PlayerObject::startMeleeAttack() {
@@ -395,7 +411,7 @@ void PlayerObject::startRangeAttack(float duration) {
         return;
     }
 
-    if (attackCooldownRemaining > 0.0f) {
+    if (rangeAttackCooldownRemaining > 0.0f) {
         return;
     }
 
@@ -404,20 +420,17 @@ void PlayerObject::startRangeAttack(float duration) {
     //++
     ///
 
-    if (duration < rangeChargeDuration[PlayerRangeCharge::CHARGE_1]) {
-        currentRangeCharge = PlayerRangeCharge::CHARGE_1;
+    if (duration > rangeChargeDuration[PlayerRangeCharge::CHARGE_3]) {
+        currentRangeCharge = PlayerRangeCharge::CHARGE_3;
         return;
     }
 
-    if (duration < rangeChargeDuration[PlayerRangeCharge::CHARGE_2]) {
+    if (duration > rangeChargeDuration[PlayerRangeCharge::CHARGE_2]) {
         currentRangeCharge = PlayerRangeCharge::CHARGE_2;
         return;
     }
 
-    if (duration < rangeChargeDuration[PlayerRangeCharge::CHARGE_3]) {
-        currentRangeCharge = PlayerRangeCharge::CHARGE_3;
-        return;
-    }
+    currentRangeCharge = PlayerRangeCharge::CHARGE_1;
 }
 
 void PlayerObject::handleDodging() {

@@ -104,6 +104,7 @@ class PlayerObject : public LivingEntity {
         float rangeChargeDuration[3];
         PlayerRangeCharge currentRangeCharge;
         bool isInRangeAttack;
+        float rangeAttackCooldownRemaining;
         
         DamageCollider<EnemyObject>* attackHitbox;
         //int damage;
