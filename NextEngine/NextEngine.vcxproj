@@ -43,6 +43,7 @@
     <ClCompile Include="LevelMapEditorTest.cpp" />
     <ClCompile Include="LevelParallax.cpp" />
     <ClCompile Include="LevelPrototype.cpp" />
+    <ClCompile Include="LevelPrototypeNMMN.cpp" />
     <ClCompile Include="LevelTest.cpp" />
     <ClCompile Include="LevelUITest.cpp" />
     <ClCompile Include="LivingEntity.cpp" />
@@ -67,6 +68,7 @@
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="TriangleMeshVbo.cpp" />
     <ClCompile Include="UI.cpp" />
+    <ClCompile Include="ZealotEnemy.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
@@ -95,6 +97,7 @@
     <ClInclude Include="LevelMapEditorTest.h" />
     <ClInclude Include="LevelParallax.h" />
     <ClInclude Include="LevelPrototype.h" />
+    <ClInclude Include="LevelPrototypeNMMN.h" />
     <ClInclude Include="LevelTest.h" />
     <ClInclude Include="LevelUITest.h" />
     <ClInclude Include="LivingEntity.h" />
@@ -125,6 +128,7 @@
     <ClInclude Include="TriangleMeshVbo.h" />
     <ClInclude Include="UI.h" />
     <ClInclude Include="UpgradeSystem.h" />
+    <ClInclude Include="Zealot.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>

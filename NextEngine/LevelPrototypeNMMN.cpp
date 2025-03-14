@@ -1,13 +1,12 @@
 #include "CollisionHandler.h"
 #include "EnemyObject.h"
-#include "HitScanDamage.h"
 #include "RayObject.h"
-#include "LevelPrototype.h"
+#include "LevelPrototypeNMMN.h"
 #include "DamageCollider.h"
 
 static ostream& operator<<(ostream& out, glm::vec3 pos);
 
-void LevelPrototype::levelLoad() {
+void LevelPrototypeNMMN::levelLoad() {
     SquareMeshVbo* square = new SquareMeshVbo();
     square->loadData();
     GameEngine::getInstance()->addMesh(SquareMeshVbo::MESH_NAME, square);
@@ -17,7 +16,7 @@ void LevelPrototype::levelLoad() {
     GameEngine::getInstance()->addMesh(SquareBorderMesh::MESH_NAME, border);
 }
 
-void LevelPrototype::levelInit() {
+void LevelPrototypeNMMN::levelInit() {
     //GameEngine::getInstance()->setDrawArea(-8.0f, 960.0f, -540.0f, 540.0f);
     EnemyInfo enemyInfo = EnemyInfo("EnemyNormal", 5, MovementInfo(3, 25), 30, 3.0f, 2.0f, 1.0f);
     mapLoader.addEnemyType(EnemyType::NORMAL, enemyInfo);
@@ -59,7 +58,7 @@ void LevelPrototype::levelInit() {
     Ground->setTexture("../Resource/Texture/OutskirtParallax/OSKT_P02_Ground.png");
     objectsList.push_back(Ground);
 
-    mapLoader.readData("prototypemap.txt");
+    mapLoader.readData("prototypemapNMMN.txt");
     mapLoader.appendDataToScene(objectsList, player);
 
     ParallaxObject* Fog = new ParallaxObject(0.0f, 7.3f, 100.0f, false, player, true);
@@ -72,7 +71,7 @@ void LevelPrototype::levelInit() {
     marker->setColor(0, 0, 0);
     objectsList.emplace_back(marker);
 
-    PlayerInfo playerInfo = PlayerInfo("Player", 10, MovementInfo(5, 25));
+    PlayerInfo playerInfo = PlayerInfo("Player", 10, MovementInfo(5, 25), 5);
     startObjects(objectsList);
     initPlayer(player, playerInfo);
 
@@ -118,9 +117,8 @@ void LevelPrototype::levelInit() {
     //marker->getColliderComponent()->getTransform().setScale(2.0f);
     //marker->getColliderComponent()->setDimension(50, 50);
 
-    ray = new RayObject(glm::vec3(), glm::vec3(1, 1, 0), 2);
-    //ray = new HitScanDamage<EnemyObject>(player->getTransform().getPosition(), glm::vec3(1, 1, 0), 4, 1, 9999.0f);
-    //objectsList.emplace_back(ray);
+    ray = new RayObject(player->getTransform().getPosition(), glm::vec3(1, 1, 0), 4);
+    objectsList.emplace_back(ray);
     ray->setDrawCollider(true);
     ray->setName("ray");
 
@@ -131,13 +129,16 @@ void LevelPrototype::levelInit() {
     player->getDamageCollider()->getTransform().scales(2);
 
     GameEngine::getInstance()->getRenderer()->toggleViewport();
+    GameEngine::getInstance()->getRenderer()->getCamera()->setTarget(player);
+    GameEngine::getInstance()->getRenderer()->getCamera()->setOffset(glm::vec3(0.0f, 1.0f, 0.0f)); // offset X rn should be 0 (or else camera deadzone won't work)
 }
 
-void LevelPrototype::levelUpdate() {
+void LevelPrototypeNMMN::levelUpdate() {
     updateObjects(objectsList);
     glm::vec3 followPos = viewMarker ? marker->getTransform().getPosition() : player->getTransform().getPosition();
     GameEngine::getInstance()->getRenderer()->updateCamera(followPos);
-    if (ray != nullptr) ray->getTransform().setPosition(marker->getTransform().getPosition());
+    
+    ray->getTransform().setPosition(marker->getTransform().getPosition());
     // Update health bar position and size
     float healthPercentage = static_cast<float>(player->getHealth()) / 100;
     float healthBarWidth = healthPercentage * 2.0f;
@@ -186,35 +187,33 @@ void LevelPrototype::levelUpdate() {
         }
         ++it;
     }
+    //GameEngine::getInstance()->getRenderer()->getCamera()->followTarget();
 }
 
-void LevelPrototype::levelDraw() {
+void LevelPrototypeNMMN::levelDraw() {
     GameEngine::getInstance()->render(objectsList);
 }
 
-void LevelPrototype::levelFree() {
+void LevelPrototypeNMMN::levelFree() {
     for (DrawableObject* obj : objectsList) {
         delete obj;
     }
     objectsList.clear();
 }
 
-void LevelPrototype::levelUnload() {
+void LevelPrototypeNMMN::levelUnload() {
     GameEngine::getInstance()->clearMesh();
     GameEngine::getInstance()->getRenderer()->setClearColor(0.1f, 0.1f, 0.1f);
     //cout << "Unload Level" << endl;
 }
 
-void LevelPrototype::handleKey(InputManager& input) {
+void LevelPrototypeNMMN::handleKey(InputManager& input) {
     float dt = GameEngine::getInstance()->getTime()->getDeltaTime();
 
     /// Process key ///
     // add key that requires hold duration here
     processHeldKey(input, SDLK_k);
     processHeldMouse(input, SDL_BUTTON_LEFT);
-
-    processHeldKey(input, SDLK_u);
-    processHeldMouse(input, SDL_BUTTON_MIDDLE);
 
     // add key that requires buffering here
     processKeyBuffer(input, SDLK_LSHIFT);
@@ -246,7 +245,7 @@ void LevelPrototype::handleKey(InputManager& input) {
     }
     else {
         if (input.getButtonUp(SDLK_k)) {
-            player->heavyAttack();
+            player->heavyAttack(keyHeldDuration[SDLK_k]);
         }
         else if (input.getButton(SDLK_k)) {
             player->startHeavyAttack();
@@ -260,32 +259,24 @@ void LevelPrototype::handleKey(InputManager& input) {
     }
     else {
         if (input.getMouseButtonUp(SDL_BUTTON_LEFT)) {
-            player->heavyAttack();
+            player->heavyAttack(mouseHeldDuration[SDL_BUTTON_LEFT]);
         }
         else if (input.getMouseButton(SDL_BUTTON_LEFT)) {
             player->startHeavyAttack();
         }
     }
 
-    if (input.getButtonUp(SDLK_u)) {
-        player->rangeAttack(objectsList);
-    }
-    else if (input.getButton(SDLK_u)) {
-        player->startRangeAttack(keyHeldDuration[SDLK_u]);
-    }
-
     if (keyBuffer[SDLK_LSHIFT] > 0 && player->getCanMove()) {
         clearKeyBuffer(SDLK_LSHIFT);
 
         if (input.getButton(SDLK_a)){
-            player->dodge(-1.0f);
+            player->setLastXDirection(-1.0f);
         }
         else if (input.getButton(SDLK_d)) {
-            player->dodge(1.0f);
+            player->setLastXDirection(1.0f);
         }
-        else {
-            player->dodge();
-        }
+
+        player->dodge();
     }
 
 
@@ -313,11 +304,11 @@ void LevelPrototype::handleKey(InputManager& input) {
 
 }
 
-void LevelPrototype::handleMouse(int type, int x, int y) {
+void LevelPrototypeNMMN::handleMouse(int type, int x, int y) {
     /// Will be implemented in inherited level when used ///
 }
 
-void LevelPrototype::handleAnalogStick(int type, float amount) {
+void LevelPrototypeNMMN::handleAnalogStick(int type, float amount) {
 
     if (type == 0) { // x axis
         player->getTransform().translate(glm::vec3(0.3 * amount, 0, 0));
@@ -328,7 +319,7 @@ void LevelPrototype::handleAnalogStick(int type, float amount) {
 
 }
 
-void LevelPrototype::initPlayer(PlayerObject*& player, glm::vec3 position, PlayerInfo playerInfo) {
+void LevelPrototypeNMMN::initPlayer(PlayerObject*& player, glm::vec3 position, PlayerInfo playerInfo) {
     if (player == nullptr) {
         player = new PlayerObject(playerInfo);
         objectsList.emplace_back(player);
@@ -338,7 +329,7 @@ void LevelPrototype::initPlayer(PlayerObject*& player, glm::vec3 position, Playe
     player->setDrawCollider(true); // for debugging
 }
 
-void LevelPrototype::initPlayer(PlayerObject*& player, PlayerInfo playerInfo) {
+void LevelPrototypeNMMN::initPlayer(PlayerObject*& player, PlayerInfo playerInfo) {
     if (player == nullptr) {
         player = new PlayerObject(playerInfo);
         objectsList.emplace_back(player);
@@ -346,13 +337,14 @@ void LevelPrototype::initPlayer(PlayerObject*& player, PlayerInfo playerInfo) {
     else {
         player->setName(playerInfo.name);
         player->setHealth(playerInfo.health);
-        //player->setMovementInfo(playerInfo.movementInfo)
+        //player->setMovementInfo(playerInfo.movementInfo);
+        player->setDamage(playerInfo.damage);
     }
 
     player->setDrawCollider(true); // for debugging
 }
 
-void LevelPrototype::instantiateEnemy(glm::vec3 position, EnemyInfo enemyInfo, EnemyType type) {
+void LevelPrototypeNMMN::instantiateEnemy(glm::vec3 position, EnemyInfo enemyInfo, EnemyType type) {
     /// add different type later ///
 
     EnemyObject* enemy = new EnemyObject(enemyInfo);

@@ -85,7 +85,7 @@ void ParallaxObject::update(list<DrawableObject*>& objectsList) {
 
 	//glm::vec3 newPos = startPos + (travelDistance * parallaxFactor);
 
-	glm::vec3 newPos = startPos  + (playerPos * parallaxFactor);
+	glm::vec3 newPos = startPos  + (camPos * parallaxFactor);
 	//if (loopable) {
 	//	cout << "CAM" << << endl;
 	//}

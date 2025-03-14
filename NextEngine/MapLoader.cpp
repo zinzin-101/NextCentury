@@ -9,7 +9,9 @@ using namespace std;
 MapLoader::ObjectProperty::ObjectProperty(ObjectType type, Transform transform, float width, float height) :
 	type(type), transform(transform), width(width), height(height) {}
 
-MapLoader::MapLoader() {}
+MapLoader::MapLoader() {
+	addEnemyType(EnemyType::ZEALOT, EnemyInfo("Zealot", 100, MovementInfo(10, 10), 5.0f, 2.0f, 0.2f, 1));
+}
 
 MapLoader::~MapLoader() {
 	clearData();
@@ -199,7 +201,7 @@ void MapLoader::loadDataToScene(list<DrawableObject*>& objectList, PlayerObject*
 				break;
 
 			case PLAYER: {
-				PlayerInfo playerInfo("Player", 100, MovementInfo());
+				PlayerInfo playerInfo("Player", 100, MovementInfo(), 10);
 				PlayerObject* playerObj = new PlayerObject(playerInfo);
 				//playerObj->getTransform() = objProperty.transform * MAP_SCALE;
 				//playerObj->getColliderComponent()->setDimension(1, 1);
@@ -208,8 +210,8 @@ void MapLoader::loadDataToScene(list<DrawableObject*>& objectList, PlayerObject*
 				//playerObj->getColliderComponent()->setDimension(objProperty.transform.getScale().x * MAP_SCALE, objProperty.transform.getScale().y * MAP_SCALE);
 				playerObj->getColliderComponent()->setDimension(1, 1);
 
-				player = playerObj; 
-				obj = playerObj;  
+				player = playerObj;
+				obj = playerObj;
 				break;
 			}
 			case PHYSICS_OBJ:
@@ -226,7 +228,7 @@ void MapLoader::loadDataToScene(list<DrawableObject*>& objectList, PlayerObject*
 				obj->setDrawCollider(true);
 				break;
 			
-			case ENEMY_NORMAL:
+			case ENEMY_NORMAL: {
 				if (enemyTypeMap.count(EnemyType::NORMAL) == 0) {
 					break;
 				}
@@ -236,10 +238,24 @@ void MapLoader::loadDataToScene(list<DrawableObject*>& objectList, PlayerObject*
 				enemyObj->getColliderComponent()->setDimension(1, 1);
 				//enemyObj->getDamageCollider()->setFollowOffset(glm::vec3(1.0f, -1.0f, 0)); ///////////
 				//enemyObj->getDamageCollider()->getTransform().scales(2);
-				
+
 				obj = enemyObj;
-				
 				break;
+			}
+			case ENEMY_ZEALOT:{
+				if (enemyTypeMap.count(EnemyType::ZEALOT) == 0) {
+					break;
+				}
+				cout << "enemy created " << enemyTypeMap[EnemyType::ZEALOT].name << endl;
+				Zealot* zealotObj = new Zealot(enemyTypeMap[EnemyType::ZEALOT]);
+				zealotObj->getTransform() = objProperty.transform * MAP_SCALE;
+				zealotObj->getColliderComponent()->setDimension(1, 1);
+				//enemyObj->getDamageCollider()->setFollowOffset(glm::vec3(1.0f, -1.0f, 0)); ///////////
+				//enemyObj->getDamageCollider()->getTransform().scales(2);
+
+				obj = zealotObj;
+				break;
+			}
 		}
 		if (obj != nullptr) {
 			objectList.emplace_back(obj);
@@ -274,59 +290,74 @@ void MapLoader::appendDataToScene(list<DrawableObject*>& objectList, PlayerObjec
 		DrawableObject* obj = nullptr;
 		SimpleObject* sObj = nullptr;
 		switch (objProperty.type) {
-		case GROUND:
-			obj = new ColliderObject("Ground");
-			obj->getTransform() = objProperty.transform * MAP_SCALE;
-			obj->addColliderComponent();
-			obj->getColliderComponent()->setDimension(1, 1);
-			//obj->getColliderComponent()->setDimension(objProperty.width, objProperty.height); // Add this instead of scaling the object
-			//sObj = dynamic_cast<SimpleObject*>(obj);
-			//if (sObj != NULL) {
-			//	sObj->setColor(0.59, 0.3, 0.0); // for debug
-			//}
-			obj->setDrawCollider(true);
-			break;
+			case GROUND:
+				obj = new ColliderObject("Ground");
+				obj->getTransform() = objProperty.transform * MAP_SCALE;
+				obj->addColliderComponent();
+				obj->getColliderComponent()->setDimension(1, 1);
+				//obj->getColliderComponent()->setDimension(objProperty.width, objProperty.height); // Add this instead of scaling the object
+				//sObj = dynamic_cast<SimpleObject*>(obj);
+				//if (sObj != NULL) {
+				//	sObj->setColor(0.59, 0.3, 0.0); // for debug
+				//}
+				obj->setDrawCollider(true);
+				break;
 
-		case PLAYER: {
-			PlayerInfo playerInfo("Player", 100, MovementInfo());
-			PlayerObject* playerObj = new PlayerObject(playerInfo);
-			playerObj->getTransform() = objProperty.transform * MAP_SCALE;
+			case PLAYER:{
+				PlayerInfo playerInfo("Player", 100, MovementInfo(), 10);
+				PlayerObject* playerObj = new PlayerObject(playerInfo);
+				playerObj->getTransform() = objProperty.transform * MAP_SCALE;
 			
-			//playerObj->getColliderComponent()->setDimension(objProperty.transform.getScale().x * MAP_SCALE, objProperty.transform.getScale().y * MAP_SCALE);
-			cout << "append player in map scale : " << playerObj->getTransform().getScale().x << " , " << playerObj->getTransform().getScale().y << endl;
-			playerObj->getColliderComponent()->setDimension(1, 1);
-			player = playerObj;
-			obj = playerObj;
-			break;
-		}
-		case PHYSICS_OBJ:
-			obj = new SimpleObject("PhysicsObject");
-			obj->getTransform() = objProperty.transform * MAP_SCALE;
-			obj->addColliderComponent();
-			obj->getColliderComponent()->setDimension(1, 1);
-			obj->addPhysicsComponent();
-			//obj->getColliderComponent()->setDimension(objProperty.width, objProperty.height); // Add this instead of scaling the object
-			sObj = dynamic_cast<SimpleObject*>(obj);
-			if (sObj != NULL) {
-				sObj->setColor(0.5, 0.5, 0.5); // for debug
-			}
-			obj->setDrawCollider(true);
-			break;
-
-		case ENEMY_NORMAL:
-			if (enemyTypeMap.count(EnemyType::NORMAL) == 0) {
+				//playerObj->getColliderComponent()->setDimension(objProperty.transform.getScale().x * MAP_SCALE, objProperty.transform.getScale().y * MAP_SCALE);
+				cout << "append player in map scale : " << playerObj->getTransform().getScale().x << " , " << playerObj->getTransform().getScale().y << endl;
+				playerObj->getColliderComponent()->setDimension(1, 1);
+				player = playerObj;
+				obj = playerObj;
 				break;
 			}
-			cout << "enemy created " << enemyTypeMap[EnemyType::NORMAL].name << endl;
-			EnemyObject* enemyObj = new EnemyObject(enemyTypeMap[EnemyType::NORMAL]);
-			enemyObj->getTransform() = objProperty.transform * MAP_SCALE;
-			enemyObj->getColliderComponent()->setDimension(1, 1);
-			//enemyObj->getDamageCollider()->setFollowOffset(glm::vec3(1.0f, -1.0f, 0)); ///////////
-			//enemyObj->getDamageCollider()->getTransform().scales(2);
+			case PHYSICS_OBJ:
+				obj = new SimpleObject("PhysicsObject");
+				obj->getTransform() = objProperty.transform * MAP_SCALE;
+				obj->addColliderComponent();
+				obj->getColliderComponent()->setDimension(1, 1);
+				obj->addPhysicsComponent();
+				//obj->getColliderComponent()->setDimension(objProperty.width, objProperty.height); // Add this instead of scaling the object
+				sObj = dynamic_cast<SimpleObject*>(obj);
+				if (sObj != NULL) {
+					sObj->setColor(0.5, 0.5, 0.5); // for debug
+				}
+				obj->setDrawCollider(true);
+				break;
 
-			obj = enemyObj;
+			case ENEMY_NORMAL: {
+				if (enemyTypeMap.count(EnemyType::NORMAL) == 0) {
+					break;
+				}
+				cout << "enemy created " << enemyTypeMap[EnemyType::NORMAL].name << endl;
+				EnemyObject* enemyObj = new EnemyObject(enemyTypeMap[EnemyType::NORMAL]);
+				enemyObj->getTransform() = objProperty.transform * MAP_SCALE;
+				enemyObj->getColliderComponent()->setDimension(1, 1);
+				//enemyObj->getDamageCollider()->setFollowOffset(glm::vec3(1.0f, -1.0f, 0)); ///////////
+				//enemyObj->getDamageCollider()->getTransform().scales(2);
 
-			break;
+				obj = enemyObj;
+
+				break;
+			}
+			case ENEMY_ZEALOT: {
+				if (enemyTypeMap.count(EnemyType::ZEALOT) == 0) {
+					break;
+				}
+				cout << "enemy created " << enemyTypeMap[EnemyType::ZEALOT].name << endl;
+				Zealot* zealotObj = new Zealot(enemyTypeMap[EnemyType::ZEALOT]);
+				zealotObj->getTransform() = objProperty.transform * MAP_SCALE;
+				zealotObj->getColliderComponent()->setDimension(1, 1);
+				//enemyObj->getDamageCollider()->setFollowOffset(glm::vec3(1.0f, -1.0f, 0)); ///////////
+				//enemyObj->getDamageCollider()->getTransform().scales(2);
+
+				obj = zealotObj;
+				break;
+			}
 		}
 		if (obj != nullptr) {
 			objectList.emplace_back(obj);

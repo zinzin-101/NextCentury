@@ -3,6 +3,10 @@
 #include "LivingEntity.h"
 #include "MovementInfo.h"
 #include <list>
+#include "GameEngine.h"
+#include "PlayerObject.h"
+#include "ProjectileObject.h"
+#include "DamageCollider.h"
 
 /// test ///
 #include "ParticleSystem.h"
