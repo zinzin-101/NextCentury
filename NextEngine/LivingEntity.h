@@ -4,6 +4,10 @@
 
 using namespace std;
 
+namespace LivingEntityStat {
+    constexpr float DAMAGE_OVERLAY_DURATION = 0.2f;
+}
+
 class LivingEntity : public TexturedObject {
     public:
         struct Status;
@@ -17,6 +21,9 @@ class LivingEntity : public TexturedObject {
 
     protected:
         bool isFacingRight;
+
+        float damageOverlayTimeRemaining;
+        bool isDamageOverlayed;
 
     public:
         enum StatusType {
@@ -51,6 +58,7 @@ class LivingEntity : public TexturedObject {
         list<Status>& getStatusList();
         void applyStatus(float dt);
         void takeDamage(int damage);
+        void handleDamageOverlay();
 
         virtual void update(list<DrawableObject*>& objectsList);
         virtual void updateBehavior(list<DrawableObject*>& objectsList);

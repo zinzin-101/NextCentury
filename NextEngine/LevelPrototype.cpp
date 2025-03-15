@@ -1,5 +1,6 @@
 #include "CollisionHandler.h"
 #include "EnemyObject.h"
+#include "HitScanDamage.h"
 #include "RayObject.h"
 #include "LevelPrototype.h"
 #include "DamageCollider.h"
@@ -71,7 +72,7 @@ void LevelPrototype::levelInit() {
     marker->setColor(0, 0, 0);
     objectsList.emplace_back(marker);
 
-    PlayerInfo playerInfo = PlayerInfo("Player", 10, MovementInfo(5, 25), 5);
+    PlayerInfo playerInfo = PlayerInfo("Player", 10, MovementInfo(5, 25));
     startObjects(objectsList);
     initPlayer(player, playerInfo);
 
@@ -117,8 +118,9 @@ void LevelPrototype::levelInit() {
     //marker->getColliderComponent()->getTransform().setScale(2.0f);
     //marker->getColliderComponent()->setDimension(50, 50);
 
-    ray = new RayObject(player->getTransform().getPosition(), glm::vec3(1, 1, 0), 4);
-    objectsList.emplace_back(ray);
+    ray = new RayObject(glm::vec3(), glm::vec3(1, 1, 0), 2);
+    //ray = new HitScanDamage<EnemyObject>(player->getTransform().getPosition(), glm::vec3(1, 1, 0), 4, 1, 9999.0f);
+    //objectsList.emplace_back(ray);
     ray->setDrawCollider(true);
     ray->setName("ray");
 
@@ -135,7 +137,7 @@ void LevelPrototype::levelUpdate() {
     updateObjects(objectsList);
     glm::vec3 followPos = viewMarker ? marker->getTransform().getPosition() : player->getTransform().getPosition();
     GameEngine::getInstance()->getRenderer()->updateCamera(followPos);
-    ray->getTransform().setPosition(marker->getTransform().getPosition());
+    if (ray != nullptr) ray->getTransform().setPosition(marker->getTransform().getPosition());
     // Update health bar position and size
     float healthPercentage = static_cast<float>(player->getHealth()) / 100;
     float healthBarWidth = healthPercentage * 2.0f;
@@ -211,6 +213,9 @@ void LevelPrototype::handleKey(InputManager& input) {
     processHeldKey(input, SDLK_k);
     processHeldMouse(input, SDL_BUTTON_LEFT);
 
+    processHeldKey(input, SDLK_u);
+    processHeldMouse(input, SDL_BUTTON_MIDDLE);
+
     // add key that requires buffering here
     processKeyBuffer(input, SDLK_LSHIFT);
 
@@ -241,7 +246,7 @@ void LevelPrototype::handleKey(InputManager& input) {
     }
     else {
         if (input.getButtonUp(SDLK_k)) {
-            player->heavyAttack(keyHeldDuration[SDLK_k]);
+            player->heavyAttack();
         }
         else if (input.getButton(SDLK_k)) {
             player->startHeavyAttack();
@@ -255,24 +260,32 @@ void LevelPrototype::handleKey(InputManager& input) {
     }
     else {
         if (input.getMouseButtonUp(SDL_BUTTON_LEFT)) {
-            player->heavyAttack(mouseHeldDuration[SDL_BUTTON_LEFT]);
+            player->heavyAttack();
         }
         else if (input.getMouseButton(SDL_BUTTON_LEFT)) {
             player->startHeavyAttack();
         }
     }
 
+    if (input.getButtonUp(SDLK_u)) {
+        player->rangeAttack(objectsList);
+    }
+    else if (input.getButton(SDLK_u)) {
+        player->startRangeAttack(keyHeldDuration[SDLK_u]);
+    }
+
     if (keyBuffer[SDLK_LSHIFT] > 0 && player->getCanMove()) {
         clearKeyBuffer(SDLK_LSHIFT);
 
         if (input.getButton(SDLK_a)){
-            player->setLastXDirection(-1.0f);
+            player->dodge(-1.0f);
         }
         else if (input.getButton(SDLK_d)) {
-            player->setLastXDirection(1.0f);
+            player->dodge(1.0f);
         }
-
-        player->dodge();
+        else {
+            player->dodge();
+        }
     }
 
 
@@ -333,8 +346,7 @@ void LevelPrototype::initPlayer(PlayerObject*& player, PlayerInfo playerInfo) {
     else {
         player->setName(playerInfo.name);
         player->setHealth(playerInfo.health);
-        //player->setMovementInfo(playerInfo.movementInfo);
-        player->setDamage(playerInfo.damage);
+        //player->setMovementInfo(playerInfo.movementInfo)
     }
 
     player->setDrawCollider(true); // for debugging

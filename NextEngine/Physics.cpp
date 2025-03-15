@@ -50,7 +50,7 @@ void Physics::setDrag(float drag) {
 }
 
 void Physics::applyGravity() {
-	velocity += gravity;
+	velocity += gravity * GameEngine::getInstance()->getTime()->getDeltaTime();
 }
 void Physics::update(Transform& transform) {
 	if (!enablePhysics) {

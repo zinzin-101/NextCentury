@@ -201,7 +201,7 @@ void MapLoader::loadDataToScene(list<DrawableObject*>& objectList, PlayerObject*
 				break;
 
 			case PLAYER: {
-				PlayerInfo playerInfo("Player", 100, MovementInfo(), 10);
+				PlayerInfo playerInfo("Player", 100, MovementInfo());
 				PlayerObject* playerObj = new PlayerObject(playerInfo);
 				//playerObj->getTransform() = objProperty.transform * MAP_SCALE;
 				//playerObj->getColliderComponent()->setDimension(1, 1);
@@ -303,10 +303,10 @@ void MapLoader::appendDataToScene(list<DrawableObject*>& objectList, PlayerObjec
 				obj->setDrawCollider(true);
 				break;
 
-			case PLAYER:{
-				PlayerInfo playerInfo("Player", 100, MovementInfo(), 10);
-				PlayerObject* playerObj = new PlayerObject(playerInfo);
-				playerObj->getTransform() = objProperty.transform * MAP_SCALE;
+		case PLAYER: {
+			PlayerInfo playerInfo("Player", 100, MovementInfo());
+			PlayerObject* playerObj = new PlayerObject(playerInfo);
+			playerObj->getTransform() = objProperty.transform * MAP_SCALE;
 			
 				//playerObj->getColliderComponent()->setDimension(objProperty.transform.getScale().x * MAP_SCALE, objProperty.transform.getScale().y * MAP_SCALE);
 				cout << "append player in map scale : " << playerObj->getTransform().getScale().x << " , " << playerObj->getTransform().getScale().y << endl;
