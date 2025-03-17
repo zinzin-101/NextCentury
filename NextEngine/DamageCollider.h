@@ -109,6 +109,7 @@ void DamageCollider<TargetEntityType>::onTriggerEnter(Collider* collider) { // f
 				EnemyObject* enemyObj = dynamic_cast<EnemyObject*>(this->getOwner());
 
 				if (enemyObj != NULL) {
+					enemyObj->setCurrentState(enemyObj->STUNNED);
 					for (int i = 0; i < 5; i++) {
 						ParticleProperties particleProps = ParticleProperties(enemyObj->getTransform().getPosition(), 5.0f * glm::vec2(Random::Float(), Random::Float()), glm::vec2(1.0f, 1.0f), glm::vec3(0.8f, 0, 0),
 							0.5f, 0.2f, 0.05f, 1.0f);

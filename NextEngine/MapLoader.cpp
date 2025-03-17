@@ -10,7 +10,7 @@ MapLoader::ObjectProperty::ObjectProperty(ObjectType type, Transform transform, 
 	type(type), transform(transform), width(width), height(height) {}
 
 MapLoader::MapLoader() {
-	addEnemyType(EnemyType::ZEALOT, EnemyInfo("Zealot", 100, MovementInfo(10, 10), 5.0f, 2.0f, 0.2f, 1));
+	addEnemyType(EnemyType::ZEALOT, EnemyInfo("Zealot", 100, MovementInfo(3, 3), 5.0f, 2.0f, 1.0f, 1));
 }
 
 MapLoader::~MapLoader() {

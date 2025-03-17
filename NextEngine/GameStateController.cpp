@@ -36,7 +36,7 @@ void GameStateController::loadLevel() {
 			break;
 		case GameState::GS_LEVEL3:
 			//cout << "in" << endl;
-			currentLevel = new LevelEnemTest();
+			currentLevel = new LevelPrototype();
 			break;
 		default:
 			cout << "gGameStateCurr : invalid state!!" << endl;
