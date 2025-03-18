@@ -55,10 +55,6 @@ PlayerObject::PlayerObject(PlayerInfo& playerInfo) : LivingEntity(playerInfo.nam
     canMove = true;
     canChangeFacingDirection = true;
 
-    isAttacking = false;
-    isInAttackState = false;
-    attackCooldownRemaining = 0.0f;
-
     baseDamage[PlayerCombo::FIRST] = PlayerStat::COMBO_DAMAGE_1;
     baseDamage[PlayerCombo::SECOND] = PlayerStat::COMBO_DAMAGE_2;
     baseDamage[PlayerCombo::THIRD] = PlayerStat::COMBO_DAMAGE_3;
@@ -66,9 +62,6 @@ PlayerObject::PlayerObject(PlayerInfo& playerInfo) : LivingEntity(playerInfo.nam
     comboFrame[PlayerCombo::FIRST] = AttackFrame(2, 3);
     comboFrame[PlayerCombo::SECOND] = AttackFrame(2, 3);
     comboFrame[PlayerCombo::THIRD] = AttackFrame(2, 3);
-
-    currentCombo = PlayerCombo::NONE;
-    timeBetweenLastAttack = 0.0f;
 
     damageMultiplier[PlayerHeavyCharge::LEVEL_1] = PlayerStat::CHARGE_DAMAGE_MULTIPLIER_1;
     damageMultiplier[PlayerHeavyCharge::LEVEL_2] = PlayerStat::CHARGE_DAMAGE_MULTIPLIER_2;
@@ -79,7 +72,6 @@ PlayerObject::PlayerObject(PlayerInfo& playerInfo) : LivingEntity(playerInfo.nam
     heavyAttackFrame[PlayerHeavyCharge::LEVEL_1] = AttackFrame(2, 3);
     heavyAttackFrame[PlayerHeavyCharge::LEVEL_2] = AttackFrame(2, 3);
     currentHeavyCharge = PlayerHeavyCharge::LEVEL_0;
-    isInHeavyAttack = false;
 
     baseRangeDamage = PlayerStat::RANGE_DAMAGE;
     rangeAttackCooldown[PlayerRangeCharge::CHARGE_1] = PlayerStat::RANGE_ATTACK_COOLDOWN_1;
@@ -94,15 +86,10 @@ PlayerObject::PlayerObject(PlayerInfo& playerInfo) : LivingEntity(playerInfo.nam
     rangeChargeDuration[PlayerRangeCharge::CHARGE_2] = PlayerStat::RANGE_CHARGE_DURATION_2;
     rangeChargeDuration[PlayerRangeCharge::CHARGE_3] = PlayerStat::RANGE_CHARGE_DURATION_3;
     currentRangeCharge = PlayerRangeCharge::CHARGE_0;
-    rangeAttackCooldownRemaining = 0.0f;
 
-    parryFrame = AttackFrame(2, 3);
-    isParrying = false;
+    resetAttack();
 
-    timeToResetComboRemaining = 0.0f;
     attackHitbox = nullptr;
-
-    isInRangeAttack = false;
 }
 
 PlayerObject::~PlayerObject() {
@@ -176,6 +163,17 @@ void PlayerObject::start(list<DrawableObject*>& objectsList) {
 void PlayerObject::updateBehavior(list<DrawableObject*>& objectsList) {
     float dt = GameEngine::getInstance()->getTime()->getDeltaTime();
     glm::vec2 vel = this->physics->getVelocity();
+
+    if (this->isInKnockback) {
+        //+ add knockback animation
+        moveDirection.x = 0.0f;
+        return;
+    }
+
+    if (flinchTimeRemaining > 0.0f) {
+        handleFlinch();
+        return;
+    }
 
     if (attackCooldownRemaining > 0.0f) {
         attackCooldownRemaining -= dt;
@@ -349,6 +347,7 @@ void PlayerObject::rangeAttack(std::list<DrawableObject*>& objectsList) {
 
     if (moveDirection.x != 0.0f) {
         isFacingRight = moveDirection.x >= 0.0f ? true : false;
+        moveDirection.x = 0.0f;
     }
 
     timeBetweenLastAttack = 0.0f;
@@ -390,6 +389,33 @@ void PlayerObject::rangeAttack(std::list<DrawableObject*>& objectsList) {
     currentRangeCharge = PlayerRangeCharge::CHARGE_0;
 }
 
+void PlayerObject::resetAttack() {
+    isAttacking = false;
+    isInAttackState = false;
+    attackCooldownRemaining = 0.0f;
+    currentCombo = PlayerCombo::NONE;
+    timeBetweenLastAttack = 0.0f;
+    timeToResetComboRemaining = 0.0f;
+
+    currentHeavyCharge = PlayerHeavyCharge::LEVEL_0;
+    isInHeavyAttack = false;
+
+    rangeAttackCooldownRemaining = 0.0f;
+    rangeHeldDuration = 0.0f;
+
+    isParrying = false;
+    isInRangeAttack = false;
+
+    flinchTimeRemaining = 0.0f;
+}
+
+void PlayerObject::flinch(float duration) {
+    this->flinchTimeRemaining = duration;
+    resetAttack();
+    moveDirection.x = 0.0f;
+    //+ start flinch animation
+}
+
 void PlayerObject::startMeleeAttack() {
     attackHitbox->trigger(transform.getPosition());
 }
@@ -416,7 +442,7 @@ void PlayerObject::startHeavyAttack() {
     }
 }
 
-void PlayerObject::startRangeAttack(float duration) {
+void PlayerObject::startRangeAttack(float dt) {
     if (isAttacking || isParrying || isDodging) {
         return;
     }
@@ -430,14 +456,16 @@ void PlayerObject::startRangeAttack(float duration) {
     //++
     ///
 
-    if (duration > rangeChargeDuration[PlayerRangeCharge::CHARGE_3]) {
+    rangeHeldDuration += dt;
+
+    if (rangeHeldDuration > rangeChargeDuration[PlayerRangeCharge::CHARGE_3]) {
         currentRangeCharge = PlayerRangeCharge::CHARGE_3;
         this->getAnimationComponent()->setState("GunCharge3");
         //GameEngine::getInstance()->getRenderer()->getCamera()->shake = true;
         return;
     }
 
-    if (duration > rangeChargeDuration[PlayerRangeCharge::CHARGE_2]) {
+    if (rangeHeldDuration > rangeChargeDuration[PlayerRangeCharge::CHARGE_2]) {
         currentRangeCharge = PlayerRangeCharge::CHARGE_2;
         this->getAnimationComponent()->setState("GunCharge2");
         return;
@@ -685,6 +713,17 @@ void PlayerObject::handleParryAttack() {
         canMove = true;
         isParrying = false;
         moveDirection.x = 0.0f;
+    }
+}
+
+void PlayerObject::handleFlinch() {
+    float dt = GameEngine::getInstance()->getTime()->getDeltaTime();
+
+    flinchTimeRemaining -= dt;
+
+    if (flinchTimeRemaining <= 0.0f) {
+        //+ reset to idle animation
+        return;
     }
 }
 

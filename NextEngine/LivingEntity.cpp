@@ -200,19 +200,19 @@ void LivingEntity::handleKnockback() {
         float dt = GameEngine::getInstance()->getTime()->getDeltaTime();
         this->knockbackDurationRemaining -= dt;
 
+        if (knockbackDurationRemaining <= 0.0f) {
+            isInKnockback = false;
+            return;
+        }
+
         glm::vec2 vel = this->getPhysicsComponent()->getVelocity();
-        if (vel.x != 0.0f) {
+        if (abs(vel.x) > 0.1f) {
             float dragDir = vel.x > 0.0f ? -1.0f : 1.0f;
             vel.x *= dragDir;
             vel.x /= knockbackDurationRemaining;
         }
 
         this->physics->addVelocity(glm::vec2(vel.x * dt, 0.0f));
-
-        if (knockbackDurationRemaining <= 0.0f) {
-            isInKnockback = false;
-            return;
-        }
     }
 }
 

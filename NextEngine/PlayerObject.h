@@ -104,6 +104,7 @@ class PlayerObject : public LivingEntity {
         float rangeChargeDuration[3];
         PlayerRangeCharge currentRangeCharge;
         bool isInRangeAttack;
+        float rangeHeldDuration;
         float rangeAttackCooldownRemaining;
         
         DamageCollider<EnemyObject>* attackHitbox;
@@ -134,6 +135,11 @@ class PlayerObject : public LivingEntity {
         void handleMovement();
         void handleJumpMovement();
     
+        void resetAttack();
+        void flinch(float duration);
+        void handleFlinch();
+        float flinchTimeRemaining;
+
         glm::vec3 moveDirection;
 
     public:
@@ -146,7 +152,7 @@ class PlayerObject : public LivingEntity {
         void rangeAttack(list<DrawableObject*>& objectsList);
 
         void startHeavyAttack();
-        void startRangeAttack(float duration);
+        void startRangeAttack(float dt);
 
         //int getDamage() const;
         //void setDamage(int damage);

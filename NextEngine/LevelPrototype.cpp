@@ -245,7 +245,7 @@ void LevelPrototype::handleKey(InputManager& input) {
     if (input.getButton(SDLK_z)) GameEngine::getInstance()->getRenderer()->increaseZoomRatio(0.1f);
     if (input.getButton(SDLK_x)) GameEngine::getInstance()->getRenderer()->decreaseZoomRatio(0.1f);
     // test knockback
-    if (input.getButton(SDLK_b)) player->knockback(glm::vec2(2,1), 0.2f);
+    if (input.getButton(SDLK_b)) player->knockback(glm::vec2(10,25), 0.5f);
 
     /// Use processed key here ///
     if (keyHeldDuration[SDLK_k] < PlayerStat::DURATION_TO_START_HEAVY_ATTACK) {
@@ -280,7 +280,7 @@ void LevelPrototype::handleKey(InputManager& input) {
         player->rangeAttack(objectsList);
     }
     else if (input.getButton(SDLK_u)) {
-        player->startRangeAttack(keyHeldDuration[SDLK_u]);
+        player->startRangeAttack(dt);
     }
 
     if (keyBuffer[SDLK_LSHIFT] > 0 && player->getCanMove()) {
