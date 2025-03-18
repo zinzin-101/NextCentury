@@ -20,7 +20,7 @@ Animation::Animation(unsigned int& texture): texture(texture) {
 	timePerFrame = AnimationData::DEFAULT_TIME_PER_FRAME;
 }
 
-void Animation::render(glm::mat4 globalModelTransform, Transform& transform, const glm::vec4& colorOverlay) {
+void Animation::render(glm::mat4 globalModelTransform, Transform& transform, const glm::vec4& colorOverlay, const float brightness) {
 	SquareMeshVbo* squareMesh = dynamic_cast<SquareMeshVbo*> (GameEngine::getInstance()->getRenderer()->getMesh(SquareMeshVbo::MESH_NAME));
 
 	GLuint modelMatixId = GameEngine::getInstance()->getRenderer()->getModelMatrixAttrId();
@@ -30,6 +30,7 @@ void Animation::render(glm::mat4 globalModelTransform, Transform& transform, con
 	GLuint scaleXId = GameEngine::getInstance()->getRenderer()->getScaleXUniformId();
 	GLuint scaleYId = GameEngine::getInstance()->getRenderer()->getScaleYUniformId();
 	GLint colorOverlayId = GameEngine::getInstance()->getRenderer()->getColorOverlayUniformId();
+	GLfloat brightnessId = GameEngine::getInstance()->getRenderer()->getBrightnessUniformId();
 
 	if (modelMatixId == -1) {
 		cout << "Error: Can't perform transformation " << endl;
@@ -58,6 +59,7 @@ void Animation::render(glm::mat4 globalModelTransform, Transform& transform, con
 		glUniform1f(scaleXId, 1.0f / this->colCount); // bigger scale zoom out, small scale zoom in
 		glUniform1f(scaleYId, 1.0f / this->rowCount);
 		glUniform4f(colorOverlayId, colorOverlay.x, colorOverlay.y, colorOverlay.z, colorOverlay.w);
+		glUniform1f(brightnessId, brightness);
 		glBindTexture(GL_TEXTURE_2D, texture);
 		squareMesh->render();
 

@@ -25,7 +25,6 @@ class LivingEntity : public TexturedObject {
         float damageOverlayTimeRemaining;
         bool isDamageOverlayed;
 
-        glm::vec2 knockbackVelocity;
         float isInKnockback;
         float knockbackDurationRemaining;
 
@@ -69,6 +68,8 @@ class LivingEntity : public TexturedObject {
 
         void knockback(glm::vec2 velocityDirection, float duration);
         void handleKnockback();
+
+        void handleLighting(list<DrawableObject*>& objectsList);
 
         virtual void update(list<DrawableObject*>& objectsList);
         virtual void updateBehavior(list<DrawableObject*>& objectsList);

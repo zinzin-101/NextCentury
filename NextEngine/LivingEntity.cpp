@@ -1,4 +1,5 @@
 #include "GameEngine.h"
+#include "LightSource.h"
 #include "LivingEntity.h"
 #include <iostream>
 
@@ -9,16 +10,16 @@ LivingEntity::Status::Status(StatusType type, float cooldown) {
 }
 
 LivingEntity::LivingEntity() : health(100), isDead(false), isStun(false), canTakeDamage(true), isFacingRight(false),
-isDamageOverlayed(false), damageOverlayTimeRemaining(0.0f), knockbackVelocity(), knockbackDurationRemaining(0.0f) {}
+isDamageOverlayed(false), damageOverlayTimeRemaining(0.0f), knockbackDurationRemaining(0.0f) {}
 
 LivingEntity::LivingEntity(int hp) : health(hp), isDead(false), isStun(false), canTakeDamage(true), isFacingRight(false),
-isDamageOverlayed(false), damageOverlayTimeRemaining(0.0f), knockbackVelocity(), isInKnockback(false), knockbackDurationRemaining(0.0f) {}
+isDamageOverlayed(false), damageOverlayTimeRemaining(0.0f), isInKnockback(false), knockbackDurationRemaining(0.0f) {}
 
 LivingEntity::LivingEntity(std::string name) : TexturedObject(name), health(100), isDead(false), isStun(false), canTakeDamage(true),
-isFacingRight(false), isDamageOverlayed(false), damageOverlayTimeRemaining(0.0f), knockbackVelocity(), isInKnockback(false), knockbackDurationRemaining(0.0f) {}
+isFacingRight(false), isDamageOverlayed(false), damageOverlayTimeRemaining(0.0f), isInKnockback(false), knockbackDurationRemaining(0.0f) {}
 
 LivingEntity::LivingEntity(std::string name, int hp) : TexturedObject(name), health(hp), isDead(false), isStun(false), canTakeDamage(true),
-isFacingRight(false), isDamageOverlayed(false), damageOverlayTimeRemaining(0.0f), knockbackVelocity(), isInKnockback(false), knockbackDurationRemaining(0.0f) {}
+isFacingRight(false), isDamageOverlayed(false), damageOverlayTimeRemaining(0.0f), isInKnockback(false), knockbackDurationRemaining(0.0f) {}
 
 
 void LivingEntity::setHealth(int hp) {
@@ -163,13 +164,34 @@ void LivingEntity::handleDamageOverlay() {
     }
 }
 
+void LivingEntity::handleLighting(std::list<DrawableObject*>& objectsList) {
+    unsigned int numOfLight = 0;
+    float totalBrightness = 0.0f;
+
+    for (DrawableObject* obj : objectsList) {
+        LightSource* l = dynamic_cast<LightSource*>(obj);
+
+        if (l != NULL) {
+            totalBrightness += l->getTextureBrightness(this);
+            numOfLight++;
+        }
+    }
+
+    if (numOfLight == 0) {
+        this->textureBrightness = LightSourceData::MINIMUM_BRIGHTNESS;
+        return;
+    }
+
+    this->textureBrightness = LightSource::normalizeBrightness(totalBrightness / static_cast<float>(numOfLight));
+}
+
 void LivingEntity::knockback(glm::vec2 velocityDirection, float duration) {
     if (isInKnockback) {
         return;
     }
     
     isInKnockback = true;
-    this->knockbackVelocity = velocityDirection;
+    this->getPhysicsComponent()->setVelocity(velocityDirection);
     this->knockbackDurationRemaining = duration;
 }
 
@@ -178,7 +200,14 @@ void LivingEntity::handleKnockback() {
         float dt = GameEngine::getInstance()->getTime()->getDeltaTime();
         this->knockbackDurationRemaining -= dt;
 
-        //+ add behavior later, waiting for designer
+        glm::vec2 vel = this->getPhysicsComponent()->getVelocity();
+        if (vel.x != 0.0f) {
+            float dragDir = vel.x > 0.0f ? -1.0f : 1.0f;
+            vel.x *= dragDir;
+            vel.x /= knockbackDurationRemaining;
+        }
+
+        this->physics->addVelocity(glm::vec2(vel.x * dt, 0.0f));
 
         if (knockbackDurationRemaining <= 0.0f) {
             isInKnockback = false;
@@ -202,6 +231,7 @@ void LivingEntity::update(list<DrawableObject*>& objectsList) {
 
     DrawableObject::update(objectsList);
 
+    handleLighting(objectsList);
     handleDamageOverlay();
 
     glm::vec3 currentScale = this->transform.getScale();

@@ -3,9 +3,9 @@
 #include "SquareMeshVbo.h"
 
 
-TexturedObject::TexturedObject(): animation(nullptr), colorOverlay(glm::vec4()) {}
+TexturedObject::TexturedObject(): animation(nullptr), colorOverlay(glm::vec4()), textureBrightness(1.0f) {}
 
-TexturedObject::TexturedObject(string name) : animation(nullptr), colorOverlay(glm::vec4()) {
+TexturedObject::TexturedObject(string name) : animation(nullptr), colorOverlay(glm::vec4()), textureBrightness(1.0f) {
 	DrawableObject::setName(name);
 }
 
@@ -22,7 +22,7 @@ void TexturedObject::setTexture(string path) {
 
 void TexturedObject::render(glm::mat4 globalModelTransform) {
 	if (animation != nullptr) {
-		animation->render(globalModelTransform, this->transform, colorOverlay);
+		animation->render(globalModelTransform, this->transform, colorOverlay, textureBrightness);
 		return;
 	}
 
@@ -35,6 +35,7 @@ void TexturedObject::render(glm::mat4 globalModelTransform) {
 	GLuint scaleXId = GameEngine::getInstance()->getRenderer()->getScaleXUniformId();
 	GLuint scaleYId = GameEngine::getInstance()->getRenderer()->getScaleYUniformId();
 	GLint colorOverlayId = GameEngine::getInstance()->getRenderer()->getColorOverlayUniformId();
+	GLfloat brightnessId = GameEngine::getInstance()->getRenderer()->getBrightnessUniformId();
 
 	if (modelMatixId == -1) {
 		cout << "Error: Can't perform transformation " << endl;
@@ -59,6 +60,7 @@ void TexturedObject::render(glm::mat4 globalModelTransform) {
 		glUniformMatrix4fv(modelMatixId, 1, GL_FALSE, glm::value_ptr(currentMatrix));
 		glUniform1i(renderModeId, 1);
 		glUniform4f(colorOverlayId, colorOverlay.x, colorOverlay.y, colorOverlay.z, colorOverlay.w);
+		glUniform1f(brightnessId, textureBrightness);
 		glBindTexture(GL_TEXTURE_2D, texture);
 		squareMesh->render();
 
