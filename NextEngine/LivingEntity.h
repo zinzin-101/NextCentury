@@ -25,6 +25,10 @@ class LivingEntity : public TexturedObject {
         float damageOverlayTimeRemaining;
         bool isDamageOverlayed;
 
+        glm::vec2 knockbackVelocity;
+        float isInKnockback;
+        float knockbackDurationRemaining;
+
     public:
         enum StatusType {
             STUN,
@@ -46,19 +50,25 @@ class LivingEntity : public TexturedObject {
 
         void setHealth(int hp);
         void setCanTakeDamage(bool value);
+
         int getHealth() const;
         bool getCanTakeDamage() const;
         bool getIsDead() const;
         bool getIsStun() const;
         bool getIsFacingRight() const;
+
         void addStatus(Status newStatus);
         bool findStatus(Status target);
         void deleteStatus(int index);
         std::list<Status>::iterator deleteStatus(list<Status>::iterator itr);
         list<Status>& getStatusList();
         void applyStatus(float dt);
+
         void takeDamage(int damage);
         void handleDamageOverlay();
+
+        void knockback(glm::vec2 velocityDirection, float duration);
+        void handleKnockback();
 
         virtual void update(list<DrawableObject*>& objectsList);
         virtual void updateBehavior(list<DrawableObject*>& objectsList);

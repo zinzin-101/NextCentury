@@ -9,16 +9,16 @@ LivingEntity::Status::Status(StatusType type, float cooldown) {
 }
 
 LivingEntity::LivingEntity() : health(100), isDead(false), isStun(false), canTakeDamage(true), isFacingRight(false),
-isDamageOverlayed(false), damageOverlayTimeRemaining(0.0f) {}
+isDamageOverlayed(false), damageOverlayTimeRemaining(0.0f), knockbackVelocity(), knockbackDurationRemaining(0.0f) {}
 
 LivingEntity::LivingEntity(int hp) : health(hp), isDead(false), isStun(false), canTakeDamage(true), isFacingRight(false),
-isDamageOverlayed(false), damageOverlayTimeRemaining(0.0f) {}
+isDamageOverlayed(false), damageOverlayTimeRemaining(0.0f), knockbackVelocity(), isInKnockback(false), knockbackDurationRemaining(0.0f) {}
 
 LivingEntity::LivingEntity(std::string name) : TexturedObject(name), health(100), isDead(false), isStun(false), canTakeDamage(true),
-isFacingRight(false), isDamageOverlayed(false), damageOverlayTimeRemaining(0.0f) {}
+isFacingRight(false), isDamageOverlayed(false), damageOverlayTimeRemaining(0.0f), knockbackVelocity(), isInKnockback(false), knockbackDurationRemaining(0.0f) {}
 
 LivingEntity::LivingEntity(std::string name, int hp) : TexturedObject(name), health(hp), isDead(false), isStun(false), canTakeDamage(true),
-isFacingRight(false), isDamageOverlayed(false), damageOverlayTimeRemaining(0.0f) {}
+isFacingRight(false), isDamageOverlayed(false), damageOverlayTimeRemaining(0.0f), knockbackVelocity(), isInKnockback(false), knockbackDurationRemaining(0.0f) {}
 
 
 void LivingEntity::setHealth(int hp) {
@@ -163,6 +163,30 @@ void LivingEntity::handleDamageOverlay() {
     }
 }
 
+void LivingEntity::knockback(glm::vec2 velocityDirection, float duration) {
+    if (isInKnockback) {
+        return;
+    }
+    
+    isInKnockback = true;
+    this->knockbackVelocity = velocityDirection;
+    this->knockbackDurationRemaining = duration;
+}
+
+void LivingEntity::handleKnockback() {
+    if (isInKnockback) {
+        float dt = GameEngine::getInstance()->getTime()->getDeltaTime();
+        this->knockbackDurationRemaining -= dt;
+
+        //+ add behavior later, waiting for designer
+
+        if (knockbackDurationRemaining <= 0.0f) {
+            isInKnockback = false;
+            return;
+        }
+    }
+}
+
 bool LivingEntity::getIsStun() const {
     return isStun;
 }
@@ -173,6 +197,9 @@ bool LivingEntity::getIsFacingRight() const {
 
 void LivingEntity::update(list<DrawableObject*>& objectsList) {
     updateBehavior(objectsList);
+
+    handleKnockback();
+
     DrawableObject::update(objectsList);
 
     handleDamageOverlay();
