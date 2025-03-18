@@ -40,13 +40,13 @@ protected:
     Shader* fragmentShader;
     map <string, MeshVbo*> shapes;
     void setMeshAttribId(MeshVbo* shape);
-    Camera camera;
+    Camera* camera;
     bool isViewportEnabled;
     float zoomRatio = 1.0f;
 public:
 
     GLRenderer(int w, int h);
-    GLRenderer(int w, int h, const Camera& cam);
+    GLRenderer(int w, int h, Camera* cam);
 
     bool initGL(string vertexShaderFile, string fragmentShaderFile);
 
@@ -82,6 +82,8 @@ public:
     void applyViewMatrix();
     void render(list<DrawableObject*>& objList);
     glm::vec3 getCamPos();
+
+    Camera* getCamera();
 
     void drawCameraOutline();
     

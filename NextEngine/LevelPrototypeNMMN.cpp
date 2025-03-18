@@ -1,14 +1,12 @@
 #include "CollisionHandler.h"
 #include "EnemyObject.h"
-#include "HitScanDamage.h"
 #include "RayObject.h"
-#include "LevelPrototype.h"
-#include "LightSource.h"
+#include "LevelPrototypeNMMN.h"
 #include "DamageCollider.h"
 
 static ostream& operator<<(ostream& out, glm::vec3 pos);
 
-void LevelPrototype::levelLoad() {
+void LevelPrototypeNMMN::levelLoad() {
     SquareMeshVbo* square = new SquareMeshVbo();
     square->loadData();
     GameEngine::getInstance()->addMesh(SquareMeshVbo::MESH_NAME, square);
@@ -18,14 +16,14 @@ void LevelPrototype::levelLoad() {
     GameEngine::getInstance()->addMesh(SquareBorderMesh::MESH_NAME, border);
 }
 
-void LevelPrototype::levelInit() {
+void LevelPrototypeNMMN::levelInit() {
     //GameEngine::getInstance()->setDrawArea(-8.0f, 960.0f, -540.0f, 540.0f);
     EnemyInfo enemyInfo = EnemyInfo("EnemyNormal", 5, MovementInfo(3, 25), 30, 3.0f, 2.0f, 1.0f);
     mapLoader.addEnemyType(EnemyType::NORMAL, enemyInfo);
     map<EnemyType, EnemyInfo>& enemyMap = mapLoader.getEnemyTypeMap();
     for (auto pair : enemyMap) {
         cout << "test loop" << endl;
-        cout << pair.first << " , " << pair.second.name << endl;    
+        cout << pair.first << " , " << pair.second.name << endl;
     }
 
     ParallaxObject* background = new ParallaxObject(0.0f, 7.3f, 550.0f, false, player, true);
@@ -60,7 +58,7 @@ void LevelPrototype::levelInit() {
     Ground->setTexture("../Resource/Texture/OutskirtParallax/OSKT_P02_Ground.png");
     objectsList.push_back(Ground);
 
-    mapLoader.readData("prototypemap.txt");
+    mapLoader.readData("prototypemapNMMN.txt");
     mapLoader.appendDataToScene(objectsList, player);
 
     ParallaxObject* Fog = new ParallaxObject(0.0f, 7.3f, 100.0f, false, player, true);
@@ -85,27 +83,39 @@ void LevelPrototype::levelInit() {
         }
     }
 
-   /* healthBar = new SimpleObject();
-    healthBar->setColor(1.0f, 0.0f, 0.0f);
-    healthBar->getTransform().setScale(glm::vec3(2.0f, 0.2f, 0.0f));
-    healthBar->getTransform().setPosition(glm::vec3(player->getTransform().getPosition().x,
-        player->getTransform().getPosition().y + 1.0f, 0.0f));
-    objectsList.push_back(healthBar);*/
+    /* healthBar = new SimpleObject();
+     healthBar->setColor(1.0f, 0.0f, 0.0f);
+     healthBar->getTransform().setScale(glm::vec3(2.0f, 0.2f, 0.0f));
+     healthBar->getTransform().setPosition(glm::vec3(player->getTransform().getPosition().x,
+         player->getTransform().getPosition().y + 1.0f, 0.0f));
+     objectsList.push_back(healthBar);*/
 
     for (DrawableObject* obj : objectsList) {
         EnemyObject* enemy = dynamic_cast<EnemyObject*>(obj);
+        Zealot* zea = dynamic_cast<Zealot*>(obj);
+        BlightFlame* bf = dynamic_cast<BlightFlame*>(obj);
         if (enemy != NULL) {
             enemy->setTarget(player);
-            enemy->setHealth(37);
+            //enemy->setHealth(37);
             //enemy->setCanAttack(false); // debug
             enemy->setDrawCollider(true); // for debugging
             cout << "enemy found" << endl;
+            if (zea != NULL) {
+                enemy->getTransform().scales(2);
+                enemy->getColliderComponent()->getTransform().translate(0.0f, -1.0f);
+                enemy->getColliderComponent()->setDimension(0.5f, 0.5f);
+                enemy->getDamageCollider()->setFollowOffset(glm::vec3(1.0f, -1.0f, 0));
+                enemy->getDamageCollider()->getTransform().scales(2);
+            }
+            if (bf != NULL) {
+                enemy->getTransform().scales(2);
+                enemy->getTransform().setScale(enemy->getTransform().getScale().x * 1.5f, enemy->getTransform().getScale().y);
+                enemy->getColliderComponent()->getTransform().translate(0.0f, -1.0f);
+                enemy->getColliderComponent()->setDimension(0.5f, 0.5f);
+                enemy->getDamageCollider()->setFollowOffset(glm::vec3(1.0f, -1.0f, 0));
+                enemy->getDamageCollider()->getTransform().scales(2);
+            }
 
-            enemy->getTransform().scales(2);
-            enemy->getColliderComponent()->getTransform().translate(0.0f, -1.0f);
-            enemy->getColliderComponent()->setDimension(0.5f, 0.5f);
-            enemy->getDamageCollider()->setFollowOffset(glm::vec3(1.0f, -1.0f, 0));
-            enemy->getDamageCollider()->getTransform().scales(2);
         }
     }
 
@@ -119,9 +129,8 @@ void LevelPrototype::levelInit() {
     //marker->getColliderComponent()->getTransform().setScale(2.0f);
     //marker->getColliderComponent()->setDimension(50, 50);
 
-    ray = new RayObject(glm::vec3(), glm::vec3(1, 1, 0), 2);
-    //ray = new HitScanDamage<EnemyObject>(player->getTransform().getPosition(), glm::vec3(1, 1, 0), 4, 1, 9999.0f);
-    //objectsList.emplace_back(ray);
+    ray = new RayObject(player->getTransform().getPosition(), glm::vec3(1, 1, 0), 4);
+    objectsList.emplace_back(ray);
     ray->setDrawCollider(true);
     ray->setName("ray");
 
@@ -131,20 +140,17 @@ void LevelPrototype::levelInit() {
     player->getDamageCollider()->setFollowOffset(glm::vec3(1.0f, -1.0f, 0));
     player->getDamageCollider()->getTransform().scales(2);
 
-    GameEngine::getInstance()->getRenderer()->getCamera()->setTarget(player);
     GameEngine::getInstance()->getRenderer()->toggleViewport();
-
-    LightSource* testLight = new LightSource(1.0f, 4.0f);
-    testLight->getTransform().setPosition(player->getTransform().getPosition());
-    testLight->getTransform().translate(0, 1);
-    objectsList.emplace_back(testLight);
+    GameEngine::getInstance()->getRenderer()->getCamera()->setTarget(player);
+    GameEngine::getInstance()->getRenderer()->getCamera()->setOffset(glm::vec3(0.0f, 1.0f, 0.0f)); // offset X rn should be 0 (or else camera deadzone won't work)
 }
 
-void LevelPrototype::levelUpdate() {
+void LevelPrototypeNMMN::levelUpdate() {
     updateObjects(objectsList);
     glm::vec3 followPos = viewMarker ? marker->getTransform().getPosition() : player->getTransform().getPosition();
     GameEngine::getInstance()->getRenderer()->updateCamera(followPos);
-    if (ray != nullptr) ray->getTransform().setPosition(marker->getTransform().getPosition());
+
+    ray->getTransform().setPosition(marker->getTransform().getPosition());
     // Update health bar position and size
     float healthPercentage = static_cast<float>(player->getHealth()) / 100;
     float healthBarWidth = healthPercentage * 2.0f;
@@ -187,41 +193,40 @@ void LevelPrototype::levelUpdate() {
             if (enemy->getHealth() <= 0) {
                 /*delete enemy;
                 it = objectsList.erase(it);  */
+                cout << enemy->getName() << " dies " << endl;
                 DrawableObject::destroyObject(enemy);
                 //continue;  
             }
         }
         ++it;
     }
+    //GameEngine::getInstance()->getRenderer()->getCamera()->followTarget();
 }
 
-void LevelPrototype::levelDraw() {
+void LevelPrototypeNMMN::levelDraw() {
     GameEngine::getInstance()->render(objectsList);
 }
 
-void LevelPrototype::levelFree() {
+void LevelPrototypeNMMN::levelFree() {
     for (DrawableObject* obj : objectsList) {
         delete obj;
     }
     objectsList.clear();
 }
 
-void LevelPrototype::levelUnload() {
+void LevelPrototypeNMMN::levelUnload() {
     GameEngine::getInstance()->clearMesh();
     GameEngine::getInstance()->getRenderer()->setClearColor(0.1f, 0.1f, 0.1f);
     //cout << "Unload Level" << endl;
 }
 
-void LevelPrototype::handleKey(InputManager& input) {
+void LevelPrototypeNMMN::handleKey(InputManager& input) {
     float dt = GameEngine::getInstance()->getTime()->getDeltaTime();
 
     /// Process key ///
     // add key that requires hold duration here
     processHeldKey(input, SDLK_k);
     processHeldMouse(input, SDL_BUTTON_LEFT);
-
-    processHeldKey(input, SDLK_u);
-    processHeldMouse(input, SDL_BUTTON_MIDDLE);
 
     // add key that requires buffering here
     processKeyBuffer(input, SDLK_LSHIFT);
@@ -244,8 +249,6 @@ void LevelPrototype::handleKey(InputManager& input) {
     if (input.getButtonDown(SDLK_e)) GameEngine::getInstance()->getStateController()->gameStateNext = (GameState)((GameEngine::getInstance()->getStateController()->gameStateCurr + 1) % 3);
     if (input.getButton(SDLK_z)) GameEngine::getInstance()->getRenderer()->increaseZoomRatio(0.1f);
     if (input.getButton(SDLK_x)) GameEngine::getInstance()->getRenderer()->decreaseZoomRatio(0.1f);
-    // test knockback
-    if (input.getButton(SDLK_b)) player->knockback(glm::vec2(2,1), 0.2f);
 
     /// Use processed key here ///
     if (keyHeldDuration[SDLK_k] < PlayerStat::DURATION_TO_START_HEAVY_ATTACK) {
@@ -276,25 +279,17 @@ void LevelPrototype::handleKey(InputManager& input) {
         }
     }
 
-    if (input.getButtonUp(SDLK_u)) {
-        player->rangeAttack(objectsList);
-    }
-    else if (input.getButton(SDLK_u)) {
-        player->startRangeAttack(keyHeldDuration[SDLK_u]);
-    }
-
     if (keyBuffer[SDLK_LSHIFT] > 0 && player->getCanMove()) {
         clearKeyBuffer(SDLK_LSHIFT);
 
-        if (input.getButton(SDLK_a)){
+        if (input.getButton(SDLK_a)) {
             player->dodge(-1.0f);
         }
         else if (input.getButton(SDLK_d)) {
             player->dodge(1.0f);
         }
-        else {
-            player->dodge();
-        }
+
+        player->dodge();
     }
 
 
@@ -322,11 +317,11 @@ void LevelPrototype::handleKey(InputManager& input) {
 
 }
 
-void LevelPrototype::handleMouse(int type, int x, int y) {
+void LevelPrototypeNMMN::handleMouse(int type, int x, int y) {
     /// Will be implemented in inherited level when used ///
 }
 
-void LevelPrototype::handleAnalogStick(int type, float amount) {
+void LevelPrototypeNMMN::handleAnalogStick(int type, float amount) {
 
     if (type == 0) { // x axis
         player->getTransform().translate(glm::vec3(0.3 * amount, 0, 0));
@@ -337,7 +332,7 @@ void LevelPrototype::handleAnalogStick(int type, float amount) {
 
 }
 
-void LevelPrototype::initPlayer(PlayerObject*& player, glm::vec3 position, PlayerInfo playerInfo) {
+void LevelPrototypeNMMN::initPlayer(PlayerObject*& player, glm::vec3 position, PlayerInfo playerInfo) {
     if (player == nullptr) {
         player = new PlayerObject(playerInfo);
         objectsList.emplace_back(player);
@@ -347,7 +342,7 @@ void LevelPrototype::initPlayer(PlayerObject*& player, glm::vec3 position, Playe
     player->setDrawCollider(true); // for debugging
 }
 
-void LevelPrototype::initPlayer(PlayerObject*& player, PlayerInfo playerInfo) {
+void LevelPrototypeNMMN::initPlayer(PlayerObject*& player, PlayerInfo playerInfo) {
     if (player == nullptr) {
         player = new PlayerObject(playerInfo);
         objectsList.emplace_back(player);
@@ -355,13 +350,14 @@ void LevelPrototype::initPlayer(PlayerObject*& player, PlayerInfo playerInfo) {
     else {
         player->setName(playerInfo.name);
         player->setHealth(playerInfo.health);
-        //player->setMovementInfo(playerInfo.movementInfo)
+        //player->setMovementInfo(playerInfo.movementInfo);
+        
     }
 
     player->setDrawCollider(true); // for debugging
 }
 
-void LevelPrototype::instantiateEnemy(glm::vec3 position, EnemyInfo enemyInfo, EnemyType type) {
+void LevelPrototypeNMMN::instantiateEnemy(glm::vec3 position, EnemyInfo enemyInfo, EnemyType type) {
     /// add different type later ///
 
     EnemyObject* enemy = new EnemyObject(enemyInfo);

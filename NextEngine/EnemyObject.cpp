@@ -1,8 +1,5 @@
-#include "DamageCollider.h"
 #include "EnemyObject.h"
-#include "GameEngine.h"
-#include "PlayerObject.h"
-#include "ProjectileObject.h"
+
 //#include "ParticleSystem.h" // temporary testing
 #include <iostream>
 
@@ -13,22 +10,11 @@ EnemyObject::EnemyObject(EnemyInfo& enemyInfo) : LivingEntity(enemyInfo.name, en
 	this->attackCooldown = enemyInfo.attackCooldown;
 	this->damage = enemyInfo.damage;
 	currentState = IDLE;
-
-	//setTexture("../Resource/Texture/incineratorSizeFlip.png");
-	setTexture("../Resource/Texture/enemyplaceholder.png");
-	//initAnimation(6, 2);
-	initAnimation(3, 6);
 	addColliderComponent();
 	addPhysicsComponent();
-	targetEntity = nullptr;
-	//getAnimationComponent()->addState("Idle", 0, 6);
-	//getAnimationComponent()->addState("Moving", 1, 5);
-	//getAnimationComponent()->addState("Attacking", 1, 5);
-	getAnimationComponent()->addState("Idle", 0, 0, 6, true);
-	getAnimationComponent()->addState("Moving", 1, 0, 5, true);
-	getAnimationComponent()->addState("Attacking", 2, 0, 6, false);
-	getAnimationComponent()->setState("Idle");
 
+	this->stunnedTime = 1.0f;
+	this->currentStunnedTime = 0;
 	//attackHitbox = new SimpleObject();
 	//attackHitbox->setColor(1.0f, 0.0f, 0.0f); // Red color for debugging
 	//attackHitbox->getTransform().setScale(glm::vec3(1.0f, 1.0f, 0.0f)); // Adjust size as needed
@@ -61,6 +47,9 @@ EnemyObject::~EnemyObject() {
 }
 
 void EnemyObject::setCurrentState(State state) {
+	if (state == STUNNED) {
+		currentStunnedTime = stunnedTime;
+	}
 	currentState = state;
 }
 
@@ -169,6 +158,18 @@ void EnemyObject::setTarget(LivingEntity* target) {
 }
 
 void EnemyObject::start(list<DrawableObject*>& objectsList) {
+	//setTexture("../Resource/Texture/incineratorSizeFlip.png");
+	setTexture("../Resource/Texture/enemyplaceholder.png");
+	//initAnimation(6, 2);
+	initAnimation(3, 6);
+	targetEntity = nullptr;
+	//getAnimationComponent()->addState("Idle", 0, 6);
+	//getAnimationComponent()->addState("Moving", 1, 5);
+	//getAnimationComponent()->addState("Attacking", 1, 5);
+	getAnimationComponent()->addState("Idle", 0, 0, 6, true);
+	getAnimationComponent()->addState("Moving", 1, 0, 5, true);
+	getAnimationComponent()->addState("Attacking", 2, 0, 6, false);
+	getAnimationComponent()->setState("Idle");
 	attackHitbox = new DamageCollider<PlayerObject>(this, damage, -1);
 	attackHitbox->setActive(false);
 	attackHitbox->setFollowOwner(true);
@@ -179,6 +180,11 @@ void EnemyObject::start(list<DrawableObject*>& objectsList) {
 
 void EnemyObject::updateState() {
 	State prevState = currentState;
+	float dt = GameEngine::getInstance()->getTime()->getDeltaTime();
+
+	if (currentState == State::STUNNED) {
+		return;
+	}
 
 	if (prevState == State::ATTACKING) {
 		Animation::State animState = getAnimationComponent()->getCurrentAnimationState();
@@ -239,11 +245,11 @@ void EnemyObject::updateBehavior(list<DrawableObject*>& objectsList) {
 			}
 			break;
 
-		case ATTACKING:
+		case ATTACKING: {
 			getAnimationComponent()->setState("Attacking");
-			
+
 			int currentAnimFrame = getAnimationComponent()->getCurrentFrame();
-			
+
 			if (currentAnimFrame == attackFrameStart + 1) {
 				startAttack();
 				break;
@@ -254,6 +260,19 @@ void EnemyObject::updateBehavior(list<DrawableObject*>& objectsList) {
 				break;
 			}
 
+			break;
+		}
+		case STUNNED:
+			cout << "stun" << endl;
+			if (currentStunnedTime > 0) {
+				currentStunnedTime -= dt;
+			}
+			else {
+				currentState = IDLE;
+			}
+			if (currentStunnedTime < 0.6f) {
+				GameEngine::getInstance()->getRenderer()->getCamera()->shake = false;
+			}
 			break;
 	}
 

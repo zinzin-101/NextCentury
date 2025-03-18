@@ -3,6 +3,10 @@
 #include "LivingEntity.h"
 #include "MovementInfo.h"
 #include <list>
+#include "GameEngine.h"
+#include "PlayerObject.h"
+#include "ProjectileObject.h"
+#include "DamageCollider.h"
 
 /// test ///
 #include "ParticleSystem.h"
@@ -41,10 +45,13 @@ class EnemyObject : public LivingEntity {
         int attackFrameStart;
         int attackFrameEnd;
 
+        float stunnedTime;
+        float currentStunnedTime;
+
         float getDistanceFromTarget() const;
         virtual void moveTowardsTarget();
-        void startAttack();
-        void endAttack();
+        virtual void startAttack();
+        virtual void endAttack();
 
     public:
         EnemyObject(EnemyInfo& enemyInfo);
@@ -73,7 +80,7 @@ class EnemyObject : public LivingEntity {
         void setCanAttack(bool value);
 
         virtual void start(list<DrawableObject*>& objectsList);
-        void updateState();
+        virtual void updateState();
         virtual void updateBehavior(list<DrawableObject*>& objectsList);
 
         DamageCollider<PlayerObject>* getDamageCollider() const;

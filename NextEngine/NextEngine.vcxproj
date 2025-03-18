@@ -25,6 +25,7 @@
   <ItemGroup>
     <ClCompile Include="Animation.cpp" />
     <ClCompile Include="Audio.cpp" />
+    <ClCompile Include="BlightFlame.cpp" />
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Collider.cpp" />
@@ -43,6 +44,7 @@
     <ClCompile Include="LevelMapEditorTest.cpp" />
     <ClCompile Include="LevelParallax.cpp" />
     <ClCompile Include="LevelPrototype.cpp" />
+    <ClCompile Include="LevelPrototypeNMMN.cpp" />
     <ClCompile Include="LevelTest.cpp" />
     <ClCompile Include="LevelUITest.cpp" />
     <ClCompile Include="LightSource.cpp" />
@@ -68,10 +70,12 @@
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="TriangleMeshVbo.cpp" />
     <ClCompile Include="UI.cpp" />
+    <ClCompile Include="ZealotEnemy.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
     <ClInclude Include="Audio.h" />
+    <ClInclude Include="BlightFlame.h" />
     <ClInclude Include="Button.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Collider.h" />
@@ -96,6 +100,7 @@
     <ClInclude Include="LevelMapEditorTest.h" />
     <ClInclude Include="LevelParallax.h" />
     <ClInclude Include="LevelPrototype.h" />
+    <ClInclude Include="LevelPrototypeNMMN.h" />
     <ClInclude Include="LevelTest.h" />
     <ClInclude Include="LevelUITest.h" />
     <ClInclude Include="LightSource.h" />
@@ -127,6 +132,7 @@
     <ClInclude Include="TriangleMeshVbo.h" />
     <ClInclude Include="UI.h" />
     <ClInclude Include="UpgradeSystem.h" />
+    <ClInclude Include="Zealot.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>

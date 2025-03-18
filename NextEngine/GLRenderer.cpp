@@ -5,9 +5,9 @@
 #include "SDL_image.h"
 
 using namespace std;
-GLRenderer::GLRenderer(int w, int h) : winWidth(w), winHeight(h), camera(Camera()) {}
+GLRenderer::GLRenderer(int w, int h) : winWidth(w), winHeight(h), camera(new Camera()) {}
 
-GLRenderer::GLRenderer(int w, int h, const Camera& cam) : winWidth(w), winHeight(h), camera(cam) {
+GLRenderer::GLRenderer(int w, int h, Camera* cam) : winWidth(w), winHeight(h), camera(cam) {
     // Initialize other members if needed
     projectionMatrix = glm::ortho(-1.f, 1.f, -1.f, 1.f);
     glViewport(0, 0, winWidth, winHeight);
@@ -151,7 +151,7 @@ void GLRenderer::render(list<DrawableObject*>& objList) {
     glUniformMatrix4fv(pMatrixId, 1, GL_FALSE, glm::value_ptr(this->projectionMatrix));
 
     // Set view matrix
-    glm::mat4 view = camera.getViewMatrix();
+    glm::mat4 view = camera->getViewMatrix();
     setViewMatrix(view);
 
     // Calculate the model matrix if necessary, or use the default
@@ -232,6 +232,9 @@ GLRenderer::~GLRenderer() {
     if (gPos2DLocation != -1) {
         glDisableVertexAttribArray(gPos2DLocation);
     }
+    //if (camera != nullptr) {
+    //    delete camera;
+    //}
 }
 
 void GLRenderer::setOrthoProjection(float left, float right, float bottom, float top) {
@@ -322,8 +325,8 @@ void GLRenderer::setViewMatrix(const glm::mat4& viewMatrix) {
     }
 }
 void GLRenderer::updateCamera(const glm::vec3& playerPosition) {
-    camera.setPosition(glm::vec3(playerPosition.x + 1.0f, playerPosition.y + 1.0f, camera.getPosition().z));
-
+    //camera->setPosition(glm::vec3(playerPosition.x + 1.0f, playerPosition.y + 1.0f, camera->getPosition().z));
+    camera->followTarget();
     if (isViewportEnabled) {
         updateViewport();
     }
@@ -337,12 +340,20 @@ void GLRenderer::decreaseZoomRatio(float newRatio) {
 }
 
 void GLRenderer::applyViewMatrix() {
-    glm::mat4 viewMatrix = glm::lookAt(camera.getPosition(), camera.getTarget(), glm::vec3(0.0f, 1.0f, 0.0f));
+    glm::vec3 a;
+    if (camera->getTarget() == nullptr) {
+        a = glm::vec3(0.0f, 0.0f, 0.0f);
+    }
+    else {
+        a = camera->getTarget()->getTransform().getPosition();
+    }
+    
+    glm::mat4 viewMatrix = glm::lookAt(camera->getPosition(), a, glm::vec3(0.0f, 1.0f, 0.0f));
     setViewMatrix(viewMatrix); 
 }
 
 void GLRenderer::drawCameraOutline() {
-    glm::vec3 cameraPosition = camera.getPosition();
+    glm::vec3 cameraPosition = camera->getPosition();
 
     float left = cameraPosition.x - (winWidth / 2.0f) * (1.0f / winHeight); 
     float right = cameraPosition.x + (winWidth / 2.0f) * (1.0f / winHeight);
@@ -359,9 +370,13 @@ void GLRenderer::drawCameraOutline() {
     glEnd();
 }
 
+Camera* GLRenderer::getCamera() {
+    return camera;
+}
+
 void GLRenderer::updateViewport() {
     //camera.setPosition(glm::vec3(camera.getPosition().x, camera.getPosition().y, -100.0f));
-    glm::vec3 cameraPosition = camera.getPosition();
+    glm::vec3 cameraPosition = camera->getPosition();
     //cameraPosition.y += 190;
     float aspectRatio = static_cast<float>(winWidth) / winHeight;
     float left = cameraPosition.x - zoomRatio * aspectRatio;
@@ -378,5 +393,5 @@ void GLRenderer::toggleViewport() {
 }
 
 glm::vec3 GLRenderer::getCamPos() {
-    return camera.getPosition();
+    return camera->getPosition();
 }
