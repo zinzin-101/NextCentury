@@ -4,6 +4,7 @@
 #include "EnemyInfo.h"
 #include "EnemyObject.h"
 #include "Zealot.h"
+#include "BlightFlame.h"
 #include "SimpleObject.h"
 #include "Transform.h"
 #include "PlayerObject.h"
@@ -25,6 +26,7 @@ class MapLoader {
 			PHYSICS_OBJ,
 			ENEMY_NORMAL,
 			ENEMY_ZEALOT,
+			ENEMY_BLIGHTFLAME,
 			PROCESSED,
 		};
 

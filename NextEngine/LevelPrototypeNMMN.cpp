@@ -92,18 +92,30 @@ void LevelPrototypeNMMN::levelInit() {
 
     for (DrawableObject* obj : objectsList) {
         EnemyObject* enemy = dynamic_cast<EnemyObject*>(obj);
+        Zealot* zea = dynamic_cast<Zealot*>(obj);
+        BlightFlame* bf = dynamic_cast<BlightFlame*>(obj);
         if (enemy != NULL) {
             enemy->setTarget(player);
-            enemy->setHealth(37);
+            //enemy->setHealth(37);
             //enemy->setCanAttack(false); // debug
             enemy->setDrawCollider(true); // for debugging
             cout << "enemy found" << endl;
+            if (zea != NULL) {
+                enemy->getTransform().scales(2);
+                enemy->getColliderComponent()->getTransform().translate(0.0f, -1.0f);
+                enemy->getColliderComponent()->setDimension(0.5f, 0.5f);
+                enemy->getDamageCollider()->setFollowOffset(glm::vec3(1.0f, -1.0f, 0));
+                enemy->getDamageCollider()->getTransform().scales(2);
+            }
+            if (bf != NULL) {
+                enemy->getTransform().scales(2);
+                enemy->getTransform().setScale(enemy->getTransform().getScale().x * 1.5f, enemy->getTransform().getScale().y);
+                enemy->getColliderComponent()->getTransform().translate(0.0f, -1.0f);
+                enemy->getColliderComponent()->setDimension(0.5f, 0.5f);
+                enemy->getDamageCollider()->setFollowOffset(glm::vec3(1.0f, -1.0f, 0));
+                enemy->getDamageCollider()->getTransform().scales(2);
+            }
 
-            enemy->getTransform().scales(2);
-            enemy->getColliderComponent()->getTransform().translate(0.0f, -1.0f);
-            enemy->getColliderComponent()->setDimension(0.5f, 0.5f);
-            enemy->getDamageCollider()->setFollowOffset(glm::vec3(1.0f, -1.0f, 0));
-            enemy->getDamageCollider()->getTransform().scales(2);
         }
     }
 
