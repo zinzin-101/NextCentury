@@ -63,7 +63,7 @@ class LivingEntity : public TexturedObject {
         list<Status>& getStatusList();
         void applyStatus(float dt);
 
-        void takeDamage(int damage);
+        virtual void takeDamage(int damage);
         void handleDamageOverlay();
 
         void knockback(glm::vec2 velocityDirection, float duration);
@@ -72,7 +72,7 @@ class LivingEntity : public TexturedObject {
         void handleLighting(list<DrawableObject*>& objectsList);
 
         virtual void update(list<DrawableObject*>& objectsList);
-        virtual void updateBehavior(list<DrawableObject*>& objectsList);
+        virtual void updateBehavior(list<DrawableObject*>& objectsList) = 0;
  };
 
 bool operator==(LivingEntity::Status s1, LivingEntity::Status s2);

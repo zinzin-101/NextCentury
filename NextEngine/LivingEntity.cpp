@@ -242,8 +242,6 @@ void LivingEntity::update(list<DrawableObject*>& objectsList) {
     applyStatus(GameEngine::getInstance()->getTime()->getDeltaTime());
 }
 
-void LivingEntity::updateBehavior(list<DrawableObject*>& objectsList) {}
-
 bool operator==(LivingEntity::Status s1, LivingEntity::Status s2) {
     return s1.type == s2.type;
 }

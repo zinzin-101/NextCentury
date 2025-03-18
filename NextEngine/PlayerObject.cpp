@@ -85,11 +85,12 @@ PlayerObject::PlayerObject(PlayerInfo& playerInfo) : LivingEntity(playerInfo.nam
     rangeChargeDuration[PlayerRangeCharge::CHARGE_1] = PlayerStat::RANGE_CHARGE_DURATION_1;
     rangeChargeDuration[PlayerRangeCharge::CHARGE_2] = PlayerStat::RANGE_CHARGE_DURATION_2;
     rangeChargeDuration[PlayerRangeCharge::CHARGE_3] = PlayerStat::RANGE_CHARGE_DURATION_3;
-    currentRangeCharge = PlayerRangeCharge::CHARGE_0;
 
     resetAttack();
 
     attackHitbox = nullptr;
+
+    iFrameTimeRemaining = 0.0f;
 }
 
 PlayerObject::~PlayerObject() {
@@ -164,6 +165,14 @@ void PlayerObject::updateBehavior(list<DrawableObject*>& objectsList) {
     float dt = GameEngine::getInstance()->getTime()->getDeltaTime();
     glm::vec2 vel = this->physics->getVelocity();
 
+    if (iFrameTimeRemaining > 0.0f) {
+        this->setCanTakeDamage(false);
+        iFrameTimeRemaining -= dt;
+    }
+    else {
+        this->setCanTakeDamage(true);
+    }
+
     if (this->isInKnockback) {
         //+ add knockback animation
         moveDirection.x = 0.0f;
@@ -224,8 +233,6 @@ void PlayerObject::updateBehavior(list<DrawableObject*>& objectsList) {
             dodgeCooldownLeft = 0.0f;
             canDodge = true;
         }
-
-        setCanTakeDamage(true);
     }
     
     if (canMove) {
@@ -366,21 +373,6 @@ void PlayerObject::rangeAttack(std::list<DrawableObject*>& objectsList) {
     glm::vec3 currentPos = this->getTransform().getPosition();
     currentPos.y -= 0.5f;
     hitscan->getTransform().setPosition(currentPos);
-    
-        /// add animation later
-    //switch (currentRangeCharge) {
-    //    case PlayerRangeCharge::CHARGE_1:
-    //        this->getAnimationComponent()->setState("GunCharge1");
-    //        break;
-
-    //    case PlayerRangeCharge::CHARGE_2:
-    //        this->getAnimationComponent()->setState("GunCharge2");
-    //        break;
-
-    //    case PlayerRangeCharge::CHARGE_3:
-    //        this->getAnimationComponent()->setState("GunCharge3");
-    //        break;
-    //}
 
     this->getAnimationComponent()->setState("GunShoot");
 
@@ -400,6 +392,7 @@ void PlayerObject::resetAttack() {
     currentHeavyCharge = PlayerHeavyCharge::LEVEL_0;
     isInHeavyAttack = false;
 
+    currentRangeCharge = PlayerRangeCharge::CHARGE_0;
     rangeAttackCooldownRemaining = 0.0f;
     rangeHeldDuration = 0.0f;
 
@@ -452,9 +445,6 @@ void PlayerObject::startRangeAttack(float dt) {
     }
 
     isInRangeAttack = true;
-    // get animation component when sprite is added //
-    //++
-    ///
 
     rangeHeldDuration += dt;
 
@@ -496,6 +486,8 @@ void PlayerObject::handleDodging() {
         isDodging = false;
         canChangeFacingDirection = true;
         dodgeCooldownLeft = PlayerStat::DODGE_COOLDOWN;
+        setCanTakeDamage(true);
+        iFrameTimeRemaining = 0.0f;
     }
 }
 
@@ -741,4 +733,13 @@ DamageCollider<EnemyObject>* PlayerObject::getDamageCollider() const {
 
 void PlayerObject::onTriggerEnter(Collider* collider) {
 
+}
+
+void PlayerObject::takeDamage(int damage) {
+    if (!this->getCanTakeDamage()) {
+        return;
+    }
+
+    this->LivingEntity::takeDamage(damage);
+    iFrameTimeRemaining = PlayerStat::INVINCIBLE_DURATION_AFTER_TAKING_DAMAGE;
 }

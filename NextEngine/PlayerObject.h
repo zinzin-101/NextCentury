@@ -44,6 +44,8 @@ namespace PlayerStat {
     constexpr float AIR_ACCEL = 10.0f;
 
     constexpr float JUMP_VELOCITY = 25.0f;
+
+    constexpr float INVINCIBLE_DURATION_AFTER_TAKING_DAMAGE = 0.5f;
 }
 
 class EnemyObject;
@@ -140,6 +142,8 @@ class PlayerObject : public LivingEntity {
         void handleFlinch();
         float flinchTimeRemaining;
 
+        float iFrameTimeRemaining;
+
         glm::vec3 moveDirection;
 
     public:
@@ -168,6 +172,8 @@ class PlayerObject : public LivingEntity {
         bool getCanMove() const;
         bool getIsParrying() const;
         DamageCollider<EnemyObject>* getDamageCollider() const;
+
+        virtual void takeDamage(int damage);
 
         /// debugging ///
         virtual void onTriggerEnter(Collider* collider);
