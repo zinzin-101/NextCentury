@@ -17,6 +17,8 @@ void LevelUITest::levelLoad() {
 }
 
 void LevelUITest::levelInit() {
+    
+
     UIobject = new UI();
 
     // Initialize the background for the Main Menu.
@@ -45,14 +47,17 @@ void LevelUITest::levelUpdate() {
 
 void LevelUITest::levelDraw() {
     std::list<DrawableObject*> renderList;
-
+    GameEngine::getInstance()->setDrawArea(-8, 8, -4.5f, 4.5f);
     for (DrawableObject* obj : objectsList) {
         renderList.push_back(obj);
     }
+    GameEngine::getInstance()->render(renderList);
+    renderList.clear();
+    GameEngine::getInstance()->setDrawArea(-960, 960, -540, 540);
     for (DrawableObject* obj : UIobjectsList) {
         renderList.push_back(obj);
     }
-    GameEngine::getInstance()->render(renderList);
+    GameEngine::getInstance()->render(renderList, false);
 }
 
 void LevelUITest::levelFree() {

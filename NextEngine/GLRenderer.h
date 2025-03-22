@@ -41,6 +41,7 @@ protected:
     Camera* camera;
     bool isViewportEnabled;
     float zoomRatio = 1.0f;
+    
 public:
 
     GLRenderer(int w, int h);
@@ -76,7 +77,7 @@ public:
     void updateViewport(); 
     void updateCamera(const glm::vec3& playerPosition);
     void applyViewMatrix();
-    void render(list<DrawableObject*>& objList);
+    void render(list<DrawableObject*>& objList, bool clear = true);
     glm::vec3 getCamPos();
 
     Camera* getCamera();
