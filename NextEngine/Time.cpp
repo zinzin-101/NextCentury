@@ -14,6 +14,10 @@ void Time::updateTick(uint64_t time) {
 	tickCounter = time;
 }
 
+void Time::updateTick() {
+	deltaTime = 0.0f;
+}
+
 float Time::getDeltaTime() {
 	return this->deltaTime * this->timeScale;
 }

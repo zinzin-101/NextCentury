@@ -81,3 +81,17 @@ void GameEngine::setWindowWidth(int w) {
 void GameEngine::setWindowHeight(int h) {
 	winHeight = h;
 }
+
+void GameEngine::setSDLWindow(SDL_Window* window){
+	this->gameWindow = window;
+}
+void GameEngine::setGlContext(SDL_GLContext* glContext) {
+	this->glContext = glContext;
+}
+
+SDL_Window* GameEngine::getSDLWindow() const {
+	return gameWindow;
+}
+SDL_GLContext* GameEngine::getGLContextPtr() const{
+	return glContext;
+}

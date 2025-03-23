@@ -1,7 +1,6 @@
 #include "Level.h"
 #include "CollisionHandler.h"
 
-
 void Level::levelLoad() {
     SquareMeshVbo* square = new SquareMeshVbo();
     square->loadData();

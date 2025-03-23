@@ -14,5 +14,6 @@ class Time {
 		float getDeltaTimeRealTime();
 		uint64_t getTicks();
 		void updateTick(uint64_t time);
+		void updateTick();
 		void setTimeScale(float timeScale);
 };

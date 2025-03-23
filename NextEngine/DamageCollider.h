@@ -8,7 +8,7 @@
 #include "SquareBorderMesh.h"
 
 /// testing ///
-#include "random.h";
+#include "random.h"
 
 template <class TargetEntityType>
 class DamageCollider : public ColliderObject {

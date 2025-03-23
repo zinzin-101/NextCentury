@@ -197,6 +197,30 @@ void LevelPrototype::levelUpdate() {
 
 void LevelPrototype::levelDraw() {
     GameEngine::getInstance()->render(objectsList);
+
+    #ifdef DEBUG_MODE_ON
+
+    bool show_demo_window = true;
+    bool show_another_window = false;
+    ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
+
+    ImGuiIO& io = ImGui::GetIO(); (void)io;
+
+    // Start the Dear ImGui frame
+    ImGui_ImplOpenGL3_NewFrame();
+    ImGui_ImplSDL2_NewFrame();
+    ImGui::NewFrame();
+
+    ImGui::Begin("test_window");
+    ImGui::Text("test");
+    ImGui::End();
+
+    ImGui::Render();
+
+    ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+    //SDL_GL_SwapWindow(GameEngine::getInstance()->getSDLWindow());
+
+    #endif
 }
 
 void LevelPrototype::levelFree() {
