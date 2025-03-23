@@ -2,9 +2,7 @@
 
 
 
-Time::Time() : tickCounter(0), timeScale(1.0f) {
-	updateTick(SDL_GetTicks());
-}
+Time::Time() : tickCounter(0), timeScale(1.0f) {}
 
 void Time::updateTick(uint64_t time) {
 	//uint64_t endCounter = SDL_GetTicks();
@@ -14,8 +12,9 @@ void Time::updateTick(uint64_t time) {
 	tickCounter = time;
 }
 
-void Time::updateTick() {
+void Time::updateTickCounterOnly(uint64_t time) {
 	deltaTime = 0.0f;
+	tickCounter = time;
 }
 
 float Time::getDeltaTime() {
