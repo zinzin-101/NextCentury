@@ -137,6 +137,7 @@ void LevelPrototype::levelInit() {
     LightSource* testLight = new LightSource(1.0f, 4.0f);
     testLight->getTransform().setPosition(player->getTransform().getPosition());
     testLight->getTransform().translate(0, 1);
+    testLight->setDrawCollider(true);
     objectsList.emplace_back(testLight);
 }
 
@@ -199,10 +200,6 @@ void LevelPrototype::levelDraw() {
     GameEngine::getInstance()->render(objectsList);
 
     #ifdef DEBUG_MODE_ON
-
-    bool show_demo_window = true;
-    bool show_another_window = false;
-    ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
     ImGuiIO& io = ImGui::GetIO(); (void)io;
 
