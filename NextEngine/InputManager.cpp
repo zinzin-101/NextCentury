@@ -1,12 +1,6 @@
 #include "InputManager.h"
 #include "DebugMode.h"
 
-#ifdef DEBUG_MODE_ON
-#include "imgui.h"
-#include "imgui_impl_sdl2.h"
-#include "imgui_impl_opengl3.h"
-#endif
-
 InputManager::InputManager() : mouseX(0), mouseY(0), controller(nullptr) {
     // Initialize SDL controller subsystem
     SDL_InitSubSystem(SDL_INIT_GAMECONTROLLER);
