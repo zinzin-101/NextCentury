@@ -10,10 +10,6 @@
 
 static ostream& operator<<(ostream& out, glm::vec3 pos);
 
-#ifdef DEBUG_MODE_ON
-void drawImgui(std::list<DrawableObject*>& objectsList);
-#endif
-
 void LevelPrototype::levelLoad() {
     SquareMeshVbo* square = new SquareMeshVbo();
     square->loadData();
@@ -207,7 +203,7 @@ void LevelPrototype::levelDraw() {
     GameEngine::getInstance()->render(objectsList);
 
     #ifdef DEBUG_MODE_ON
-    drawImgui(objectsList);
+    drawImGui(objectsList);
     #endif
 }
 
@@ -251,9 +247,9 @@ void LevelPrototype::handleKey(InputManager& input) {
     if (input.getButtonDown(SDLK_f)) GameEngine::getInstance()->getRenderer()->toggleViewport();
     if (input.getButtonDown(SDLK_c)) player->getColliderComponent()->setTrigger(!player->getColliderComponent()->isTrigger());
     if (input.getButtonDown(SDLK_g)) viewMarker = !viewMarker;
-    if (input.getButtonDown(SDLK_r)) GameEngine::getInstance()->getStateController()->gameStateNext = GameState::GS_RESTART;
+    //if (input.getButtonDown(SDLK_r)) GameEngine::getInstance()->getStateController()->gameStateNext = GameState::GS_RESTART;
     //if (input.getButtonDown(SDLK_e)) GameEngine::getInstance()->getStateController()->gameStateNext = GameState::GS_LEVEL1;
-    if (input.getButtonDown(SDLK_e)) GameEngine::getInstance()->getStateController()->gameStateNext = (GameState)((GameEngine::getInstance()->getStateController()->gameStateCurr + 1) % 3);
+    //if (input.getButtonDown(SDLK_e)) GameEngine::getInstance()->getStateController()->gameStateNext = (GameState)((GameEngine::getInstance()->getStateController()->gameStateCurr + 1) % 3);
     if (input.getButton(SDLK_z)) GameEngine::getInstance()->getRenderer()->increaseZoomRatio(0.1f);
     if (input.getButton(SDLK_x)) GameEngine::getInstance()->getRenderer()->decreaseZoomRatio(0.1f);
     // test knockback
@@ -388,115 +384,3 @@ static ostream& operator<<(ostream& out, glm::vec3 pos) {
     out << pos.x << "," << pos.y;
     return out;
 }
-
-#ifdef DEBUG_MODE_ON
-void drawImgui(std::list<DrawableObject*>& objectsList) {
-    ImGuiIO& io = ImGui::GetIO(); (void)io;
-
-    // Start the Dear ImGui frame
-    ImGui_ImplOpenGL3_NewFrame();
-    ImGui_ImplSDL2_NewFrame();
-    ImGui::NewFrame();
-
-    ImGui::Begin("Object List", NULL, ImGuiWindowFlags_NoCollapse);
-
-    static char stringBuffer[50] = "\0";
-    static bool isSearching = false;
-    unsigned int objectCounter = 0;
-
-    ImGui::InputText("Text Field", stringBuffer, 50);
-    std::ostringstream ss;
-
-    static std::string searchString;
-
-    if (ImGui::Button("Search name")) {
-        searchString = std::string(stringBuffer);
-        isSearching = true;
-    }
-
-    ImGui::SameLine();
-
-    if (ImGui::Button("clear search")) {
-        isSearching = false;
-    }
-
-    for (DrawableObject* obj : objectsList) {
-        ss.str(std::string());
-
-        if (isSearching) {
-            std::string name = obj->getName();
-
-            std::transform(name.begin(), name.end(), name.begin(),
-                [](unsigned char c) { return std::tolower(c); });
-
-            if (name != searchString) {
-                continue;
-            }
-        }
-
-        ss << objectCounter << ": " << obj->getName();
-        if (ImGui::CollapsingHeader(ss.str().c_str())) {
-            ss.str(std::string());
-            ss << objectCounter << " Change name";
-            if (ImGui::Button(ss.str().c_str())) {
-                obj->setName(std::string(stringBuffer));
-                stringBuffer[0] = '\0';
-            }
-
-            Transform transform = obj->getTransform();
-            glm::vec3 position = transform.getPosition();
-            float rotationRad = transform.getRotationRad();
-            float rotationDeg = transform.getRotationDeg();
-            glm::vec3 scale = transform.getScale();
-            ImGui::Text("Transform");
-            ImGui::Text("Position: x: %.2f, y: %.2f", position.x, position.y);
-            ImGui::Text("Rotation: %.2f rad / %.2f degree", rotationRad, rotationDeg);
-            ImGui::Text("Scale: x: %.2f, y: %.2f", scale.x, scale.y);
-
-            if (obj->getColliderComponent() != nullptr) {
-                ImGui::Text("Collider");
-                bool isCollisionEnabled = obj->getColliderComponent()->isEnable();
-                ImGui::Checkbox("Enable Collision", &isCollisionEnabled);
-                obj->getColliderComponent()->setEnableCollision(isCollisionEnabled);
-
-                bool isTrigger = obj->getColliderComponent()->isTrigger();
-                ImGui::Checkbox("Is Trigger", &isTrigger);
-                obj->getColliderComponent()->setTrigger(isTrigger);
-
-                ImGui::Text("Dimension: Width: %.2f, Height: %.2f", obj->getColliderComponent()->getWidth(), obj->getColliderComponent()->getHeight());
-
-                Transform colTransform = obj->getColliderComponent()->getTransform();
-                glm::vec3 pos = colTransform.getPosition();
-                float rotRad = colTransform.getRotationRad();
-                float rotDeg = colTransform.getRotationDeg();
-                glm::vec3 colScale = colTransform.getScale();
-                ImGui::Text("Collider Transform");
-                ImGui::Text("Position: x: %.2f, y: %.2f", pos.x, pos.y);
-                ImGui::Text("Rotation: %.2f rad / %.2f degree", rotRad, rotDeg);
-                ImGui::Text("Scale: x: %.2f, y: %.2f", colScale.x, colScale.y);
-            }
-
-            if (obj->getPhysicsComponent() != nullptr) {
-                ImGui::Text("Physics");
-                bool isPhysicsEnabled = obj->getPhysicsComponent()->isPhysicsEnable();
-                ImGui::Checkbox("Enable Physics", &isPhysicsEnabled);
-                obj->getPhysicsComponent()->setEnablePhysics(isPhysicsEnabled);
-                
-                bool isGravityEnabled = obj->getPhysicsComponent()->isGravityEnable();
-                ImGui::Checkbox("Enable Gravity", &isGravityEnabled);
-                obj->getPhysicsComponent()->setEnableGravity(isGravityEnabled);
-            }
-        }
-
-        ImGui::SeparatorText("");
-        objectCounter++;
-    }
-
-    ImGui::End();
-
-    ImGui::Render();
-
-    ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-    //SDL_GL_SwapWindow(GameEngine::getInstance()->getSDLWindow());
-}
-#endif

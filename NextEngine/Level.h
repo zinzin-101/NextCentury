@@ -12,12 +12,6 @@
 #include "ParallaxObject.h"
 #include "UI.h"
 
-#ifdef DEBUG_MODE_ON
-#include "imgui.h"
-#include "imgui_impl_sdl2.h"
-#include "imgui_impl_opengl3.h"
-#endif
-
 class Level
 {
 private:
@@ -56,4 +50,9 @@ public:
     virtual void updateObjects(list<DrawableObject*>& objectsList);
 
     virtual void initPlayer(PlayerObject*& player, PlayerInfo playerInfo);
+
+    #ifdef DEBUG_MODE_ON
+    void drawImGui(std::list<DrawableObject*>& objectsList);
+    void exportTransformData(std::list<DrawableObject*>& objectsList);
+    #endif
 };
