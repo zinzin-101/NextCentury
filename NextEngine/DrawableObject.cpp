@@ -39,7 +39,7 @@ DrawableObject::DrawableObject(){
 	isActive = true;
 	isMarkedForDelete = false;
 	
-	textureBrightness = 1.0f;
+	renderBrightness = 1.0f;
 }
 
 DrawableObject::DrawableObject(string name) {
@@ -56,7 +56,7 @@ DrawableObject::DrawableObject(string name) {
 	isActive = true;
 	isMarkedForDelete = false;
 
-	textureBrightness = 1.0f;
+	renderBrightness = 1.0f;
 }
 
 DrawableObject::~DrawableObject() {
@@ -273,8 +273,8 @@ bool DrawableObject::getMarkedForDelete() const {
 	return isMarkedForDelete;
 }
 
-void DrawableObject::setBrightness(float brightness) {
-	this->textureBrightness = brightness;
+void DrawableObject::setRenderBrightness(float brightness) {
+	this->renderBrightness = brightness;
 }
 
 void DrawableObject::destroyObject(DrawableObject* obj) {

@@ -399,6 +399,23 @@ void Level::drawImGui(std::list<DrawableObject*>& objectList) {
                 ImGui::Checkbox("Enable Gravity", &isGravityEnabled);
                 obj->getPhysicsComponent()->setEnableGravity(isGravityEnabled);
             }
+
+            LightSource* light = dynamic_cast<LightSource*>(obj);
+            if (light != NULL) {
+                ImGui::SeparatorText("Light Source");
+                ImGui::Text("Brightness: %.2f (0 - 1)", light->getBrightness());
+                ImGui::SameLine();
+                if (ImGui::Button("Set Brightness")) {
+                    light->setBrightness(inputNum);
+                }
+
+                ImGui::Text("Max Distance: %.2f", light->getMaxDistance());
+                ImGui::SameLine();
+                if (ImGui::Button("Set Max Distance")) {
+                    light->setMaxDistance(inputNum);
+                }
+            }
+
             ImGui::SeparatorText("");
             static unsigned int deletePressed = 0;
             if (deletePressed == 0) {

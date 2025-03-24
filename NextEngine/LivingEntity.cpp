@@ -178,11 +178,11 @@ void LivingEntity::handleLighting(std::list<DrawableObject*>& objectsList) {
     }
 
     if (numOfLight == 0) {
-        this->textureBrightness = LightSourceData::MINIMUM_BRIGHTNESS;
+        this->renderBrightness = LightSourceData::MINIMUM_BRIGHTNESS;
         return;
     }
 
-    this->textureBrightness = LightSource::normalizeBrightness(totalBrightness / static_cast<float>(numOfLight));
+    this->renderBrightness = LightSource::normalizeBrightness(totalBrightness / static_cast<float>(numOfLight));
 }
 
 void LivingEntity::knockback(glm::vec2 velocityDirection, float duration) {

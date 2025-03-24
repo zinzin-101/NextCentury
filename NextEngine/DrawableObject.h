@@ -23,7 +23,7 @@ class DrawableObject {
 
 		bool canDrawCollider;
 
-		float textureBrightness;
+		float renderBrightness;
 
 		void processCollider();
 		virtual void onCollisionEnter(Collider* collider);
@@ -66,7 +66,7 @@ class DrawableObject {
 		bool getCanDrawCollider() const;
 		bool getMarkedForDelete() const;
 
-		void setBrightness(float brightness);
+		void setRenderBrightness(float brightness);
 
 		static void destroyObject(DrawableObject* obj);
 };

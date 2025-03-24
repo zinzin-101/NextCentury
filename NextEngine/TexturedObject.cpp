@@ -22,7 +22,7 @@ void TexturedObject::setTexture(string path) {
 
 void TexturedObject::render(glm::mat4 globalModelTransform) {
 	if (animation != nullptr) {
-		animation->render(globalModelTransform, this->transform, colorOverlay, textureBrightness);
+		animation->render(globalModelTransform, this->transform, colorOverlay, renderBrightness);
 		return;
 	}
 
@@ -60,7 +60,7 @@ void TexturedObject::render(glm::mat4 globalModelTransform) {
 		glUniformMatrix4fv(modelMatixId, 1, GL_FALSE, glm::value_ptr(currentMatrix));
 		glUniform1i(renderModeId, 1);
 		glUniform4f(colorOverlayId, colorOverlay.x, colorOverlay.y, colorOverlay.z, colorOverlay.w);
-		glUniform1f(brightnessId, textureBrightness);
+		glUniform1f(brightnessId, renderBrightness);
 		glBindTexture(GL_TEXTURE_2D, texture);
 		squareMesh->render();
 

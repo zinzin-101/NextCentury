@@ -16,6 +16,9 @@ class LightSource : public DrawableObject {
 
 		virtual void render(glm::mat4 globalModelTransform);
 
+		void setBrightness(float brightness);
+		void setMaxDistance(float distance);
+
 		float getBrightness() const;
 		float getMaxDistance() const;
 

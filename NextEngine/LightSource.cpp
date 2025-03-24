@@ -14,6 +14,14 @@ float LightSource::getMaxDistance() const {
 	return maxDistance;
 }
 
+void LightSource::setBrightness(float brightness) {
+	this->brightness = brightness;
+}
+
+void LightSource::setMaxDistance(float distance) {
+	this->maxDistance = distance;
+}
+
 float LightSource::getTextureBrightness(DrawableObject* obj) {
 	float distance = glm::length(this->getTransform().getPosition() - obj->getTransform().getPosition());
 
