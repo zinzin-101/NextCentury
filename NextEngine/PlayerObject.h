@@ -44,6 +44,8 @@ namespace PlayerStat {
     constexpr float AIR_ACCEL = 10.0f;
 
     constexpr float JUMP_VELOCITY = 25.0f;
+
+    constexpr float INVINCIBLE_DURATION_AFTER_TAKING_DAMAGE = 0.5f;
 }
 
 class EnemyObject;
@@ -104,6 +106,7 @@ class PlayerObject : public LivingEntity {
         float rangeChargeDuration[3];
         PlayerRangeCharge currentRangeCharge;
         bool isInRangeAttack;
+        float rangeHeldDuration;
         float rangeAttackCooldownRemaining;
         
         DamageCollider<EnemyObject>* attackHitbox;
@@ -134,6 +137,13 @@ class PlayerObject : public LivingEntity {
         void handleMovement();
         void handleJumpMovement();
     
+        void resetAttack();
+        void flinch(float duration);
+        void handleFlinch();
+        float flinchTimeRemaining;
+
+        float iFrameTimeRemaining;
+
         glm::vec3 moveDirection;
 
     public:
@@ -146,7 +156,7 @@ class PlayerObject : public LivingEntity {
         void rangeAttack(list<DrawableObject*>& objectsList);
 
         void startHeavyAttack();
-        void startRangeAttack(float duration);
+        void startRangeAttack(float dt);
 
         //int getDamage() const;
         //void setDamage(int damage);
@@ -162,6 +172,8 @@ class PlayerObject : public LivingEntity {
         bool getCanMove() const;
         bool getIsParrying() const;
         DamageCollider<EnemyObject>* getDamageCollider() const;
+
+        virtual void takeDamage(int damage);
 
         /// debugging ///
         virtual void onTriggerEnter(Collider* collider);

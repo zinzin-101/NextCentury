@@ -47,6 +47,7 @@
     <ClCompile Include="LevelPrototypeNMMN.cpp" />
     <ClCompile Include="LevelTest.cpp" />
     <ClCompile Include="LevelUITest.cpp" />
+    <ClCompile Include="LightSource.cpp" />
     <ClCompile Include="LivingEntity.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MapLoader.cpp" />
@@ -102,6 +103,7 @@
     <ClInclude Include="LevelPrototypeNMMN.h" />
     <ClInclude Include="LevelTest.h" />
     <ClInclude Include="LevelUITest.h" />
+    <ClInclude Include="LightSource.h" />
     <ClInclude Include="LivingEntity.h" />
     <ClInclude Include="MapLoader.h" />
     <ClInclude Include="MeshVbo.h" />
