@@ -4,7 +4,6 @@
 
 #ifdef DEBUG_MODE_ON
 #include <fstream>
-bool Level::enableCameraMove = false;
 #endif
 
 void Level::levelLoad() {
@@ -173,7 +172,6 @@ void Level::drawImGui(std::list<DrawableObject*>& objectList) {
 
     static bool pauseGame = false;
     ImGui::Checkbox("Pause Game", &pauseGame);
-    ImGui::Checkbox("Enable Debug Camera Movement", &enableCameraMove);
 
     pauseGame ? GameEngine::getInstance()->getTime()->setTimeScale(0.0f) : GameEngine::getInstance()->getTime()->setTimeScale(1.0f);
 
@@ -270,7 +268,7 @@ void Level::drawImGui(std::list<DrawableObject*>& objectList) {
             }
 
             bool drawCollider = obj->getCanDrawCollider();
-            ImGui::Checkbox("Draw Collider", &drawCollider);
+            ImGui::Checkbox("Draw Outline", &drawCollider);
             obj->setDrawCollider(drawCollider);
 
             ImGui::SeparatorText("Transform");
@@ -426,15 +424,24 @@ void Level::drawImGui(std::list<DrawableObject*>& objectList) {
     ImGui::InputFloat("X", &posX);
     ImGui::InputFloat("Y", &posY);
 
+    static bool drawOutline = false;
+    ImGui::Checkbox("Draw Outline on spawn", &drawOutline);
+
     ImGui::SeparatorText("Collider Object");
+    static float width = 1;
+    static float height = 1;
+    ImGui::InputFloat("Width", &width);
+    ImGui::InputFloat("Height", &height);
     if (ImGui::Button("Spawn Collider Object")) {
         DrawableObject* obj = new ColliderObject("ColliderObject");
         obj->getTransform().setPosition(posX, posY);
+        obj->setDrawCollider(drawOutline);
+        obj->getColliderComponent()->setDimension(width, height);
         objectList.emplace_back(obj);
     }
     ImGui::SeparatorText("Lightsource");
-    static float brightness;
-    static float maxDistance;
+    static float brightness = 1;
+    static float maxDistance = 10;
     ImGui::InputFloat("Brightness", &brightness);
     ImGui::InputFloat("Max Distance", &maxDistance);
 
@@ -442,6 +449,7 @@ void Level::drawImGui(std::list<DrawableObject*>& objectList) {
         DrawableObject* light = new LightSource(brightness, maxDistance);
         light->getTransform().setPosition(posX, posY);
         light->setName("LightSource");
+        light->setDrawCollider(drawOutline);
         objectList.emplace_back(light);
     }
     ImGui::End();

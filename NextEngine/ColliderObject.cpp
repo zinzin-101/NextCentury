@@ -12,7 +12,8 @@ ColliderObject::ColliderObject(std::string name) {
 }
 
 void ColliderObject::drawCollider() {
-	render(glm::mat4());
+	//render(glm::mat4());
+	DrawableObject::drawCollider();
 }
 
 void ColliderObject::render(glm::mat4 globalModelTransform) {

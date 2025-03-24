@@ -58,10 +58,10 @@ void Camera::followTarget() {
 void Camera::setTarget(DrawableObject* target) {
     this->target = target;
     if (this->target == nullptr) {
-        cout << "o" << endl;
+        //cout << "o" << endl;
     }
     else {
-        cout << "k" << endl;
+        //cout << "k" << endl;
     }
 }
 
