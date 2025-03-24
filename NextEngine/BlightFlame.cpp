@@ -61,7 +61,6 @@ void BlightFlame::updateState() {
 		currentState = State::AGGRO;
 		return;
 	}
-
 	currentState = State::ATTACKING;
 	// facing target
 	isFacingRight = this->getTransform().getPosition().x < targetEntity->getTransform().getPosition().x;
@@ -115,6 +114,11 @@ void BlightFlame::updateBehavior(list<DrawableObject*>& objectsList) {
 			else {
 				endAttack();
 				getAnimationComponent()->setState("WindDown");
+			}
+		}
+		if (currAnim.name == "WindDown") {
+			if (!currAnim.isPlaying) {
+				attackCooldownTimer = attackCooldown;
 			}
 		}
 		break;
