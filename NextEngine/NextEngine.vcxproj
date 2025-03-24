@@ -77,6 +77,7 @@
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="TriangleMeshVbo.cpp" />
     <ClCompile Include="UI.cpp" />
+    <ClCompile Include="Wailer.cpp" />
     <ClCompile Include="ZealotEnemy.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -148,6 +149,7 @@
     <ClInclude Include="TriangleMeshVbo.h" />
     <ClInclude Include="UI.h" />
     <ClInclude Include="UpgradeSystem.h" />
+    <ClInclude Include="Wailer.h" />
     <ClInclude Include="Zealot.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
