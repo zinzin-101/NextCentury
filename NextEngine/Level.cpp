@@ -213,6 +213,9 @@ void Level::drawImGui(std::list<DrawableObject*>& objectsList) {
             std::transform(name.begin(), name.end(), name.begin(),
                 [](unsigned char c) { return std::tolower(c); });
 
+            std::transform(searchString.begin(), searchString.end(), searchString.begin(),
+                [](unsigned char c) { return std::tolower(c); });
+
             if (name != searchString) {
 
                 continue;

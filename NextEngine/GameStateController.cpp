@@ -29,7 +29,7 @@ void GameStateController::loadLevel() {
 	cout << gameStateCurr << endl;
 	switch (gameStateCurr) {
 		case GameState::GS_LEVEL1:
-			currentLevel = new LevelPrototypeNMMN();
+			currentLevel = new LevelPrototype();
 			break;
 		case GameState::GS_LEVEL2:
 			currentLevel = new LevelPrototypeNMMN();

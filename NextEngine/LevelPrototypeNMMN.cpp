@@ -206,6 +206,10 @@ void LevelPrototypeNMMN::levelUpdate() {
 
 void LevelPrototypeNMMN::levelDraw() {
     GameEngine::getInstance()->render(objectsList);
+
+    #ifdef DEBUG_MODE_ON
+    drawImGui(objectsList);
+    #endif
 }
 
 void LevelPrototypeNMMN::levelFree() {

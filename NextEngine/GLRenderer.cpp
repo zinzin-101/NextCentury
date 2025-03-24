@@ -328,10 +328,12 @@ void GLRenderer::setViewMatrix(const glm::mat4& viewMatrix) {
 }
 void GLRenderer::updateCamera(const glm::vec3& playerPosition) {
     //camera->setPosition(glm::vec3(playerPosition.x + 1.0f, playerPosition.y + 1.0f, camera->getPosition().z));
+    
     camera->followTarget();
-    if (isViewportEnabled) {
-        updateViewport();
-    }
+    updateViewport();
+    //if (isViewportEnabled) {
+    //    
+    //}
 }
 
 void GLRenderer::increaseZoomRatio(float newRatio) {
@@ -386,8 +388,13 @@ void GLRenderer::updateViewport() {
     float bottom = cameraPosition.y  - zoomRatio;
     float top = cameraPosition.y  + zoomRatio;
 
-    setOrthoProjection(cameraPosition.x + -8,cameraPosition.x + 8, cameraPosition.y + -4.5, cameraPosition.y + 4.5);
-    //setOrthoProjection(left, right, bottom, top);
+    if (isViewportEnabled) {
+        setOrthoProjection(cameraPosition.x + -8, cameraPosition.x + 8, cameraPosition.y + -4.5, cameraPosition.y + 4.5);
+    }
+    else {
+        setOrthoProjection(left, right, bottom, top);
+    }
+    
 }
 void GLRenderer::toggleViewport() {
     isViewportEnabled = !isViewportEnabled; 
