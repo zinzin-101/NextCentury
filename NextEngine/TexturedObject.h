@@ -15,7 +15,6 @@ class TexturedObject : virtual public DrawableObject
 
 	protected:
 		glm::vec4 colorOverlay;
-		float textureBrightness;
 
 	public:
 		TexturedObject();

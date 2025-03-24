@@ -3,6 +3,7 @@
 
 #ifdef DEBUG_MODE_ON
 #include <fstream>
+bool Level::enableCameraMove = false;
 #endif
 
 void Level::levelLoad() {
@@ -132,12 +133,12 @@ void Level::updateObjects(list<DrawableObject*>& objectsList) {
 
     handleObjectCollision(objectsList);
 
-    for (std::list<DrawableObject*>::iterator itr = objectsList.begin(); itr != objectsList.end(); itr++) {
+    for (std::list<DrawableObject*>::iterator itr = objectsList.begin(); itr != objectsList.end(); ++itr) {
         DrawableObject* obj = *itr;
         if (obj->getMarkedForDelete()) {
             delete obj;
             itr = objectsList.erase(itr);
-            itr--;
+            --itr;
             continue;
         }
     }
@@ -171,6 +172,7 @@ void Level::drawImGui(std::list<DrawableObject*>& objectsList) {
 
     static bool pauseGame = false;
     ImGui::Checkbox("Pause Game", &pauseGame);
+    ImGui::Checkbox("Enable Debug Camera Movement", &enableCameraMove);
 
     pauseGame ? GameEngine::getInstance()->getTime()->setTimeScale(0.0f) : GameEngine::getInstance()->getTime()->setTimeScale(1.0f);
 
@@ -207,10 +209,15 @@ void Level::drawImGui(std::list<DrawableObject*>& objectsList) {
     }
 
     for (DrawableObject* obj : objectsList) {
+        objectCounter++;
+
         if (isSearching) {
             std::string name = obj->getName();
 
             std::transform(name.begin(), name.end(), name.begin(),
+                [](unsigned char c) { return std::tolower(c); });
+
+            std::transform(searchString.begin(), searchString.end(), searchString.begin(),
                 [](unsigned char c) { return std::tolower(c); });
 
             if (name != searchString) {
@@ -229,10 +236,37 @@ void Level::drawImGui(std::list<DrawableObject*>& objectsList) {
                 stringBuffer[0] = '\0';
             }
 
+            bool isActive = obj->getIsActive();
+            ImGui::Checkbox("Is Active", &isActive);
+            obj->setActive(isActive);
+
             ImGui::SeparatorText("");
 
             static float inputNum;
             ImGui::InputFloat("Float Input Field", &inputNum);
+            if (ImGui::Button("<<<")) {
+                inputNum -= 10.0f;
+            }
+            ImGui::SameLine();
+            if (ImGui::Button("<<")) {
+                inputNum -= 5.0f;
+            }
+            ImGui::SameLine();
+            if (ImGui::Button("<")) {
+                inputNum -= 1.0f;
+            }
+            ImGui::SameLine();
+            if (ImGui::Button(">")) {
+                inputNum += 1.0f;
+            }
+            ImGui::SameLine();
+            if (ImGui::Button(">>")) {
+                inputNum += 5.0f;
+            }
+            ImGui::SameLine();
+            if (ImGui::Button(">>>")) {
+                inputNum += 10.0f;
+            }
 
             ImGui::SeparatorText("Transform");
 
@@ -359,8 +393,6 @@ void Level::drawImGui(std::list<DrawableObject*>& objectsList) {
 
         ImGui::SeparatorText("");
         ImGui::PopID();
-
-        objectCounter++;
     }
 
     ImGui::End();

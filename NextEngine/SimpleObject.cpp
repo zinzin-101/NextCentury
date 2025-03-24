@@ -30,6 +30,8 @@ void SimpleObject::render(glm::mat4 globalModelTransform) {
 	GLuint modelMatixId = GameEngine::getInstance()->getRenderer()->getModelMatrixAttrId();
 	GLuint colorId = GameEngine::getInstance()->getRenderer()->getColorUniformId();
 	GLuint renderModeId = GameEngine::getInstance()->getRenderer()->getModeUniformId();
+	GLfloat brightnessId = GameEngine::getInstance()->getRenderer()->getBrightnessUniformId();
+
 
 	if (modelMatixId == -1) {
 		cout << "Error: Can't perform transformation " << endl;
@@ -52,6 +54,7 @@ void SimpleObject::render(glm::mat4 globalModelTransform) {
 		currentMatrix = globalModelTransform * currentMatrix;
 		glUniformMatrix4fv(modelMatixId, 1, GL_FALSE, glm::value_ptr(currentMatrix));
 		glUniform3f(colorId, color.x, color.y, color.z);
+		glUniform1f(brightnessId, textureBrightness);
 		glUniform1i(renderModeId, 0);
 		squareMesh->render();
 

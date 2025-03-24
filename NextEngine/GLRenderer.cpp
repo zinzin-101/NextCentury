@@ -161,6 +161,10 @@ void GLRenderer::render(list<DrawableObject*>& objList) {
 
     // Loop through objects and call render with the model transform
     for (DrawableObject* obj : objList) {
+        if (!obj->getIsActive()) {
+            continue;
+        }
+
         obj->render(cam); 
         obj->drawCollider();
     }

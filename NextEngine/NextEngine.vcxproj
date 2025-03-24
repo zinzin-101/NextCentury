@@ -48,6 +48,7 @@
     <ClCompile Include="LevelAnimTest.cpp" />
     <ClCompile Include="LevelCollisionTest.cpp" />
     <ClCompile Include="LevelEnemTest.cpp" />
+    <ClCompile Include="LevelImgui.cpp" />
     <ClCompile Include="LevelMapEditorTest.cpp" />
     <ClCompile Include="LevelParallax.cpp" />
     <ClCompile Include="LevelPrototype.cpp" />
@@ -113,6 +114,7 @@
     <ClInclude Include="LevelAnimTest.h" />
     <ClInclude Include="LevelCollisionTest.h" />
     <ClInclude Include="LevelEnemTest.h" />
+    <ClInclude Include="LevelImgui.h" />
     <ClInclude Include="LevelMapEditorTest.h" />
     <ClInclude Include="LevelParallax.h" />
     <ClInclude Include="LevelPrototype.h" />

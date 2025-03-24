@@ -3,9 +3,9 @@
 #include "SquareMeshVbo.h"
 
 
-TexturedObject::TexturedObject(): animation(nullptr), colorOverlay(glm::vec4()), textureBrightness(1.0f) {}
+TexturedObject::TexturedObject(): animation(nullptr), colorOverlay(glm::vec4()) {}
 
-TexturedObject::TexturedObject(string name) : animation(nullptr), colorOverlay(glm::vec4()), textureBrightness(1.0f) {
+TexturedObject::TexturedObject(string name) : animation(nullptr), colorOverlay(glm::vec4()) {
 	DrawableObject::setName(name);
 }
 

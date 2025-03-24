@@ -4,6 +4,7 @@
 #include "LevelTest.h"
 #include "LevelAnimTest.h"
 #include "LevelCollisionTest.h"
+#include "LevelImgui.h"
 #include "LevelUITest.h"
 #include "LevelMapEditorTest.h"
 #include "LevelEnemTest.h"
@@ -29,7 +30,7 @@ void GameStateController::loadLevel() {
 	cout << gameStateCurr << endl;
 	switch (gameStateCurr) {
 		case GameState::GS_LEVEL1:
-			currentLevel = new LevelPrototypeNMMN();
+			currentLevel = new LevelImgui();
 			break;
 		case GameState::GS_LEVEL2:
 			currentLevel = new LevelUITest();

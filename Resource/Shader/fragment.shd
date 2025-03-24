@@ -19,7 +19,8 @@ void main()
 {
 	if(renderMode == 0)
 	{
-		finalColor = vec4( OutColor, 1.0 ); 
+		finalColor = vec4( OutColor, 1.0 );
+		finalColor.a *= brightness;
 	}
 	else if (renderMode == 1){
     	finalColor = texture(ourTexture, TexCoord);

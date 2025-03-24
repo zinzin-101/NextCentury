@@ -27,6 +27,10 @@ protected:
     map<unsigned int, float> mouseHeldDuration;
     map<unsigned int, int> mouseBuffer;
 
+    #ifdef DEBUG_MODE_ON
+    static bool enableCameraMove;
+    #endif
+
 public:
     //SimpleObject* healthBar = nullptr;
     virtual void levelLoad();
