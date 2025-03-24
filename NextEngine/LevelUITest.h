@@ -28,8 +28,5 @@ public:
     virtual void levelFree();
     virtual void levelUnload();
 
-    virtual void handleKey(char key);
     virtual void handleKey(InputManager& input);
-    virtual void handleMouse(int type, int x, int y);
-    virtual void handleAnalogStick(int type, float amount);
 };

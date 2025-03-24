@@ -134,9 +134,11 @@ bool GLRenderer::initialize(string vertexShaderFile, string fragmentShaderFile) 
 
 }
 
-void GLRenderer::render(list<DrawableObject*>& objList) {
+void GLRenderer::render(list<DrawableObject*>& objList, bool clear) {
     // Clear color buffer
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    if (clear) {
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    }
 
     // Update window with OpenGL rendering
     glUseProgram(gProgramId);
