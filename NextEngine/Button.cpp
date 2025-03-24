@@ -9,7 +9,7 @@ Button::Button()
     collider->setEnableCollision(true);
 
     // Initialize text object
-    textObject.loadText(label, { 255, 255, 255, 255 }, 24);
+    textObject.loadText(label, { 255, 255, 255, 255 }, 50);
 }
 
 Button::Button(std::string name, std::string label)
@@ -19,7 +19,7 @@ Button::Button(std::string name, std::string label)
     collider = new Collider(this, size.x, size.y);
     collider->setEnableCollision(true);
 
-    textObject.loadText(label, { 255, 255, 255, 255 }, 24);
+    textObject.loadText(label, { 255, 255, 255, 255 }, 50);
 }
 
 std::string Button::getLabel() const {
@@ -28,7 +28,7 @@ std::string Button::getLabel() const {
 
 void Button::setLabel(const std::string& newLabel) {
     label = newLabel;
-    textObject.loadText(label, { 255, 255, 255, 255 }, 24);
+    textObject.loadText(label, { 255, 255, 255, 255 }, 50);
 }
 
 Button::ButtonState Button::getState() const {
@@ -118,5 +118,5 @@ void Button::render(glm::mat4 globalModelTransform) {
     }
 
     // Render text
-    //textObject.render(globalModelTransform);
+    textObject.render(globalModelTransform);
 }

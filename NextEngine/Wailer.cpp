@@ -1,24 +1,23 @@
-#include "BlightFlame.h"
+#include "Wailer.h"
 #include "Random.h"
 
-BlightFlame::BlightFlame(EnemyInfo& enemyinfo) : EnemyObject(enemyinfo) {
-	
+Wailer::Wailer(EnemyInfo& enemyinfo) : EnemyObject(enemyinfo) {
+	cout << attackCooldown << endl;
 }
-void BlightFlame::start(list<DrawableObject*>& objectsList) {
+void Wailer::start(list<DrawableObject*>& objectsList) {
 	//setTexture("../Resource/Texture/incineratorSizeFlip.png");
-	setTexture("../Resource/Texture/BlightFlameplaceholder.png");
+	setTexture("../Resource/Texture/Zealotplaceholder3.png");
 	//initAnimation(6, 2);
-	initAnimation(6, 6);
+	initAnimation(5, 6);
 	targetEntity = nullptr;
 	//getAnimationComponent()->addState("Idle", 0, 6);
 	//getAnimationComponent()->addState("Moving", 1, 5);
 	//getAnimationComponent()->addState("Attacking", 1, 5);
 	getAnimationComponent()->addState("Idle", 0, 0, 6, true);
 	getAnimationComponent()->addState("Moving", 1, 0, 5, true);
-	getAnimationComponent()->addState("WindUp", 2, 0, 4, false);
-	getAnimationComponent()->addState("Attack", 3, 0, 2, true);
-	getAnimationComponent()->addState("WindDown", 4, 0, 4, false);
-	getAnimationComponent()->addState("Stunned", 5, 0, 3, true);
+	getAnimationComponent()->addState("Attack1", 2, 0, 6, false);
+	getAnimationComponent()->addState("Attack2", 3, 0, 6, false);
+	getAnimationComponent()->addState("Stunned", 4, 0, 3, true);
 	getAnimationComponent()->setState("Idle");
 	attackHitbox = new DamageCollider<PlayerObject>(this, damage, -1);
 	attackHitbox->setActive(false);
@@ -28,7 +27,7 @@ void BlightFlame::start(list<DrawableObject*>& objectsList) {
 	objectsList.emplace_back(attackHitbox);
 }
 
-void BlightFlame::updateState() {
+void Wailer::updateState() {
 	State prevState = currentState;
 	float dt = GameEngine::getInstance()->getTime()->getDeltaTime();
 
@@ -39,9 +38,7 @@ void BlightFlame::updateState() {
 
 	if (prevState == State::ATTACKING && attackCooldownTimer <= 0.0f) {
 		Animation::State animState = getAnimationComponent()->getCurrentAnimationState();
-		if (animState.name == "WindUp" && animState.isPlaying ||
-			animState.name == "Attack" && animState.isPlaying ||
-			animState.name == "WindDown" && animState.isPlaying) {
+		if (animState.name == "Attack1" && animState.isPlaying || animState.name == "Attack2" && animState.isPlaying) {
 			return;
 		}
 	}
@@ -61,12 +58,13 @@ void BlightFlame::updateState() {
 		currentState = State::AGGRO;
 		return;
 	}
+
 	currentState = State::ATTACKING;
 	// facing target
 	isFacingRight = this->getTransform().getPosition().x < targetEntity->getTransform().getPosition().x;
 }
 
-void BlightFlame::updateBehavior(list<DrawableObject*>& objectsList) {
+void Wailer::updateBehavior(list<DrawableObject*>& objectsList) {
 	/// testing ///
 	emitter->update(objectsList);
 	///
@@ -98,28 +96,24 @@ void BlightFlame::updateBehavior(list<DrawableObject*>& objectsList) {
 		break;
 
 	case ATTACKING: {
-		Animation::State currAnim = getAnimationComponent()->getCurrentAnimationState();
-		if (currAnim.name == "Idle" || currAnim.name == "Moving" || currAnim.name == "Stunned") {
-			getAnimationComponent()->setState("WindUp");
+		if (currentAttack == Variation1) {
+			getAnimationComponent()->setState("Attack1");
 		}
-		if (currAnim.name == "WindUp" && !currAnim.isPlaying) {
-			flameTimeKeep = flameTime;
+		else {
+			getAnimationComponent()->setState("Attack2");
+		}
+
+		int currentAnimFrame = getAnimationComponent()->getCurrentFrame();
+
+		if (currentAnimFrame == attackFrameStart + 1) {
 			startAttack();
-			getAnimationComponent()->setState("Attack");
+			break;
 		}
-		if (currAnim.name == "Attack") {
-			if (flameTimeKeep > 0) {
-				flameTimeKeep -= dt;
-			}
-			else {
-				endAttack();
-				getAnimationComponent()->setState("WindDown");
-			}
-		}
-		if (currAnim.name == "WindDown") {
-			if (!currAnim.isPlaying) {
-				attackCooldownTimer = attackCooldown;
-			}
+
+		if (currentAnimFrame == attackFrameEnd + 1) {
+			endAttack();
+			//cout << attackCooldownTimer << endl;
+			break;
 		}
 		break;
 	}
@@ -144,7 +138,7 @@ void BlightFlame::updateBehavior(list<DrawableObject*>& objectsList) {
 	}
 }
 
-void BlightFlame::moveTowardsTarget() {
+void Wailer::moveTowardsTarget() {
 	glm::vec3 targetPos = targetEntity->getTransform().getPosition();
 
 	glm::vec3 currentPos = this->transform.getPosition();
@@ -173,11 +167,24 @@ void BlightFlame::moveTowardsTarget() {
 	//cout << "grounded: " << grounded << endl;
 }
 
-void BlightFlame::startAttack() {
+void Wailer::startAttack() {
 	attackHitbox->trigger(transform.getPosition());
 	attackHitbox->setCanDecreaseTime(false);
 }
 
-void BlightFlame::endAttack() {
+void Wailer::endAttack() {
+	if (currentAttack == Variation1) {
+		if (Random::Float() <= 0.3f) {
+			currentAttack = Variation2;
+			cout << "attack2" << endl;
+		}
+		else {
+			attackCooldownTimer = attackCooldown;
+		}
+	}
+	else {
+		currentAttack = Variation1;
+		attackCooldownTimer = attackCooldown;
+	}
 	attackHitbox->setActive(false);
 }

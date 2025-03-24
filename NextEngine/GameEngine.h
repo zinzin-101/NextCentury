@@ -35,7 +35,7 @@ public:
 	void setBackgroundColor(float r, float g, float b);
 	void addMesh(string name, MeshVbo* mesh);
 	void clearMesh();
-	void render(list<DrawableObject*> renderObjects);
+	void render(list<DrawableObject*> renderObjects, bool clear = true);
 	int getWindowWidth();
 	int getWindowHeight();
 	void setWindowWidth(int w);

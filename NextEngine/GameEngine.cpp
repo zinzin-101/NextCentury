@@ -43,8 +43,8 @@ void GameEngine::init(int width, int height) {
 	inputHandler = new InputManager();  
 }
 
-void GameEngine::render(list<DrawableObject*> renderObjects) {
-	this->getRenderer()->render(renderObjects);
+void GameEngine::render(list<DrawableObject*> renderObjects, bool clear) {
+	this->getRenderer()->render(renderObjects, clear);
 }
 
 void GameEngine::setDrawArea(float left, float right, float bottom, float top) {

@@ -63,6 +63,7 @@ void LevelPrototypeNMMN::levelInit() {
 
     ParallaxObject* Fog = new ParallaxObject(0.0f, 7.3f, 100.0f, false, player, true);
     Fog->setTexture("../Resource/Texture/OutskirtParallax/OSKT_P01_Fog.png");
+    
     objectsList.push_back(Fog);
 
     marker = new SimpleObject();
