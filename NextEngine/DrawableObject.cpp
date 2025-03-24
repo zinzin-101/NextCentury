@@ -21,7 +21,7 @@ Transform& DrawableObject::getTransform(){
 	return transform;
 }
 
-glm::mat4 DrawableObject::getTransformMat4() {
+glm::mat4 DrawableObject::getTransformMat4() const {
 	return transform.getTransformMat4();
 }
 
@@ -71,7 +71,7 @@ DrawableObject::~DrawableObject() {
 	}
 }
 
-string DrawableObject::getName() {
+string DrawableObject::getName() const {
 	return this->name;
 }
 
@@ -79,7 +79,7 @@ void DrawableObject::setName(string name) {
 	this->name = name;
 }
 
-Physics* DrawableObject::getPhysicsComponent() {
+Physics* DrawableObject::getPhysicsComponent() const {
 	if (this->physics == nullptr) {
 		//cout << "Physics component does not exist" << endl;
 		return nullptr;
@@ -87,7 +87,7 @@ Physics* DrawableObject::getPhysicsComponent() {
 
 	return this->physics;
 }
-Collider* DrawableObject::getColliderComponent() {
+Collider* DrawableObject::getColliderComponent() const {
 	if (this->collider == nullptr) {
 		//cout << "Collider component does not exist" << endl;
 		return nullptr;
@@ -217,6 +217,8 @@ void DrawableObject::drawCollider() {
 	GLuint modelMatixId = GameEngine::getInstance()->getRenderer()->getModelMatrixAttrId();
 	GLuint renderModeId = GameEngine::getInstance()->getRenderer()->getModeUniformId();
 	GLuint colorId = GameEngine::getInstance()->getRenderer()->getColorUniformId();
+	GLfloat brightnessId = GameEngine::getInstance()->getRenderer()->getBrightnessUniformId();
+
 
 	if (modelMatixId == -1) {
 		cout << "Error: Can't perform transformation " << endl;
@@ -244,6 +246,7 @@ void DrawableObject::drawCollider() {
 		//currentMatrix = globalModelTransform * currentMatrix;
 		glUniformMatrix4fv(modelMatixId, 1, GL_FALSE, glm::value_ptr(currentMatrix));
 		glUniform3f(colorId, 0, 1, 0);
+		glUniform1f(brightnessId, 1);
 		glUniform1i(renderModeId, 0);
 		squareBorderMesh->render();
 	}
@@ -258,11 +261,15 @@ void DrawableObject::setActive(bool value) {
 	}
 }
 
-bool DrawableObject::getIsActive() {
+bool DrawableObject::getIsActive() const {
 	return isActive;
 }
 
-bool DrawableObject::getMarkedForDelete() {
+bool DrawableObject::getCanDrawCollider() const {
+	return canDrawCollider;
+}
+
+bool DrawableObject::getMarkedForDelete() const {
 	return isMarkedForDelete;
 }
 

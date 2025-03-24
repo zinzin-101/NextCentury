@@ -33,6 +33,11 @@ float LightSource::normalizeBrightness(float brightness) {
 }
 
 void LightSource::render(glm::mat4 globalModelTransform) {
+
+	if (!canDrawCollider) {
+		return;
+	}
+
 	SquareBorderMesh* squareBorderMesh = dynamic_cast<SquareBorderMesh*> (GameEngine::getInstance()->getRenderer()->getMesh(SquareBorderMesh::MESH_NAME));
 
 	GLuint modelMatixId = GameEngine::getInstance()->getRenderer()->getModelMatrixAttrId();

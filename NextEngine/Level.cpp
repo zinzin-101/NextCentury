@@ -1,5 +1,6 @@
 #include "Level.h"
 #include "CollisionHandler.h"
+#include "MapLoader.h"
 
 #ifdef DEBUG_MODE_ON
 #include <fstream>
@@ -133,13 +134,13 @@ void Level::updateObjects(list<DrawableObject*>& objectsList) {
 
     handleObjectCollision(objectsList);
 
-    for (std::list<DrawableObject*>::iterator itr = objectsList.begin(); itr != objectsList.end(); ++itr) {
+    for (std::list<DrawableObject*>::iterator itr = objectsList.begin(); itr != objectsList.end(); itr++) {
         DrawableObject* obj = *itr;
         if (obj->getMarkedForDelete()) {
             delete obj;
             itr = objectsList.erase(itr);
-            --itr;
-            continue;
+            if (itr != objectsList.begin()) itr--;
+            if (itr == objectsList.end()) break;
         }
     }
 }
@@ -160,7 +161,7 @@ void Level::initPlayer(PlayerObject*& player, PlayerInfo playerInfo) {
 }
 
 #ifdef DEBUG_MODE_ON
-void Level::drawImGui(std::list<DrawableObject*>& objectsList) {
+void Level::drawImGui(std::list<DrawableObject*>& objectList) {
     ImGuiIO& io = ImGui::GetIO(); (void)io;
 
     // Start the Dear ImGui frame
@@ -185,7 +186,7 @@ void Level::drawImGui(std::list<DrawableObject*>& objectsList) {
     }
 
     if (ImGui::Button("Export Transform Data")) {
-        exportTransformData(objectsList);
+        exportTransformData(objectList);
     }
 
     static char stringBuffer[50] = "\0";
@@ -208,7 +209,7 @@ void Level::drawImGui(std::list<DrawableObject*>& objectsList) {
         isSearching = false;
     }
 
-    for (DrawableObject* obj : objectsList) {
+    for (DrawableObject* obj : objectList) {
         objectCounter++;
 
         if (isSearching) {
@@ -268,8 +269,11 @@ void Level::drawImGui(std::list<DrawableObject*>& objectsList) {
                 inputNum += 10.0f;
             }
 
-            ImGui::SeparatorText("Transform");
+            bool drawCollider = obj->getCanDrawCollider();
+            ImGui::Checkbox("Draw Collider", &drawCollider);
+            obj->setDrawCollider(drawCollider);
 
+            ImGui::SeparatorText("Transform");
 
             Transform transform = obj->getTransform();
             glm::vec3 position = transform.getPosition();
@@ -317,6 +321,7 @@ void Level::drawImGui(std::list<DrawableObject*>& objectsList) {
 
             if (obj->getColliderComponent() != nullptr) {
                 ImGui::SeparatorText("Collider");
+
                 bool isCollisionEnabled = obj->getColliderComponent()->isEnable();
                 ImGui::Checkbox("Enable Collision", &isCollisionEnabled);
                 obj->getColliderComponent()->setEnableCollision(isCollisionEnabled);
@@ -389,12 +394,56 @@ void Level::drawImGui(std::list<DrawableObject*>& objectsList) {
                 ImGui::Checkbox("Enable Gravity", &isGravityEnabled);
                 obj->getPhysicsComponent()->setEnableGravity(isGravityEnabled);
             }
+            ImGui::SeparatorText("");
+            static unsigned int deletePressed = 0;
+            if (deletePressed == 0) {
+                if (ImGui::Button("Delete Object")) {
+                    deletePressed++;
+                }
+            }
+            else {
+                if (ImGui::Button("Sure?")) {
+                    DrawableObject::destroyObject(obj);
+                    deletePressed = 0;
+                }
+                ImGui::SameLine();
+                if (ImGui::Button("No")) {
+                    deletePressed = 0;
+                }
+            }
         }
 
         ImGui::SeparatorText("");
         ImGui::PopID();
     }
 
+    ImGui::End();
+
+    ImGui::Begin("Object Spawner");
+    static float posX;
+    static float posY;
+    ImGui::Text("Position:");
+    ImGui::InputFloat("X", &posX);
+    ImGui::InputFloat("Y", &posY);
+
+    ImGui::SeparatorText("Collider Object");
+    if (ImGui::Button("Spawn Collider Object")) {
+        DrawableObject* obj = new ColliderObject("ColliderObject");
+        obj->getTransform().setPosition(posX, posY);
+        objectList.emplace_back(obj);
+    }
+    ImGui::SeparatorText("Lightsource");
+    static float brightness;
+    static float maxDistance;
+    ImGui::InputFloat("Brightness", &brightness);
+    ImGui::InputFloat("Max Distance", &maxDistance);
+
+    if (ImGui::Button("Spawn LightSource")) {
+        DrawableObject* light = new LightSource(brightness, maxDistance);
+        light->getTransform().setPosition(posX, posY);
+        light->setName("LightSource");
+        objectList.emplace_back(light);
+    }
     ImGui::End();
 
     ImGui::Render();

@@ -1,4 +1,5 @@
 #include "Camera.h"
+#include "GameEngine.h"
 #include "Random.h"
 #include <iostream>
 
@@ -26,17 +27,23 @@ void Camera::followTarget() {
         y = 8.0f;
     }
     
-    if (abs(target->getTransform().getPosition().x - position.x) > deadZoneX) {
-        
-        if (target->getTransform().getPosition().x - position.x > 0) {
-            x = target->getTransform().getPosition().x - deadZoneX;
+    if (GameEngine::getInstance()->getRenderer()->getIsViewportEnabled()) {
+        if (abs(target->getTransform().getPosition().x - position.x) > deadZoneX) {
+
+            if (target->getTransform().getPosition().x - position.x > 0) {
+                x = target->getTransform().getPosition().x - deadZoneX;
+            }
+            else {
+                x = target->getTransform().getPosition().x + deadZoneX;
+            }
         }
         else {
-            x = target->getTransform().getPosition().x + deadZoneX;
+            x = position.x;
         }
     }
     else {
-        x = position.x;
+        x = target->getTransform().getPosition().x;
+        y = target->getTransform().getPosition().y;
     }
 
     if (shake) {

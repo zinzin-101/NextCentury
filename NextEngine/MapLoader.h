@@ -1,6 +1,7 @@
 #pragma once
 #include "ColliderObject.h"
 #include "DrawableObject.h"
+#include "LightSource.h"
 #include "EnemyInfo.h"
 #include "EnemyObject.h"
 #include "Zealot.h"

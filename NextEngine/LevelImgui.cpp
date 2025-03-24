@@ -70,14 +70,22 @@ void LevelImgui::levelInit() {
     player->setActive(false);
 
     GameEngine::getInstance()->getRenderer()->getCamera()->setTarget(player);
-    //GameEngine::getInstance()->getRenderer()->toggleViewport();
+    GameEngine::getInstance()->getRenderer()->setToggleViewport(true);
 }
 
 void LevelImgui::levelUpdate() {
     updateObjects(objectsList);
+    GameEngine::getInstance()->getRenderer()->updateCamera(glm::vec3());
 
     #ifdef DEBUG_MODE_ON
-    enableCameraMove ? GameEngine::getInstance()->getRenderer()->getCamera()->setTarget(marker) : GameEngine::getInstance()->getRenderer()->getCamera()->setTarget(player);
+    if (enableCameraMove) {
+        GameEngine::getInstance()->getRenderer()->getCamera()->setTarget(marker);
+        GameEngine::getInstance()->getRenderer()->setToggleViewport(false);
+    }
+    else {
+        GameEngine::getInstance()->getRenderer()->getCamera()->setTarget(player);
+        GameEngine::getInstance()->getRenderer()->setToggleViewport(true);
+    }
     #endif
 }
 
@@ -122,7 +130,7 @@ void LevelImgui::handleKey(InputManager& input) {
     if (input.getButton(SDLK_d)) player->move(glm::vec2(1, 0));
     if (input.getButtonDown(SDLK_j)) player->parryAttack();
     if (input.getMouseButtonDown(SDL_BUTTON_RIGHT)) player->parryAttack();
-    if (input.getButtonDown(SDLK_f)) GameEngine::getInstance()->getRenderer()->toggleViewport();
+    //if (input.getButtonDown(SDLK_f)) GameEngine::getInstance()->getRenderer()->toggleViewport();
     if (input.getButtonDown(SDLK_c)) player->getColliderComponent()->setTrigger(!player->getColliderComponent()->isTrigger());
     if (input.getButton(SDLK_z)) GameEngine::getInstance()->getRenderer()->increaseZoomRatio(0.1f);
     if (input.getButton(SDLK_x)) GameEngine::getInstance()->getRenderer()->decreaseZoomRatio(0.1f);

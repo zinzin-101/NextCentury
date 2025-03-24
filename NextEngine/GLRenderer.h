@@ -77,7 +77,10 @@ public:
     void setViewMatrix(const glm::mat4& viewMatrix);
     
 
-    void toggleViewport(); 
+    void toggleViewport();
+
+    void setToggleViewport(bool value);
+
     void updateViewport(); 
     void updateCamera(const glm::vec3& playerPosition);
     void applyViewMatrix();
@@ -88,6 +91,7 @@ public:
 
     void drawCameraOutline();
     
+    bool getIsViewportEnabled() const;
 };
 
 #endif

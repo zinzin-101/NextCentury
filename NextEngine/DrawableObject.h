@@ -35,14 +35,14 @@ class DrawableObject {
 		virtual void onTriggerExit(Collider* collider);
 
 	public:
-		string getName();
+		string getName() const;
 		void setName(string name);
 
 		Transform& getTransform();
-		glm::mat4 getTransformMat4();
+		glm::mat4 getTransformMat4() const;
 
-		Physics* getPhysicsComponent();
-		Collider* getColliderComponent();
+		Physics* getPhysicsComponent() const;
+		Collider* getColliderComponent() const;
 
 		void addPhysicsComponent();
 		void addPhysicsComponent(Physics& physics);
@@ -62,8 +62,9 @@ class DrawableObject {
 
 		void setActive(bool value);
 		
-		bool getIsActive();
-		bool getMarkedForDelete();
+		bool getIsActive() const;
+		bool getCanDrawCollider() const;
+		bool getMarkedForDelete() const;
 
 		void setBrightness(float brightness);
 
