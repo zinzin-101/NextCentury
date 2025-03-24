@@ -168,7 +168,7 @@ void Level::drawImGui(std::list<DrawableObject*>& objectList) {
     ImGui_ImplSDL2_NewFrame();
     ImGui::NewFrame();
 
-    ImGui::Begin("Object List", NULL, ImGuiWindowFlags_NoCollapse);
+    ImGui::Begin("Object List", NULL);
 
     static bool pauseGame = false;
     ImGui::Checkbox("Pause Game", &pauseGame);
@@ -183,16 +183,23 @@ void Level::drawImGui(std::list<DrawableObject*>& objectList) {
         GameEngine::getInstance()->getStateController()->gameStateNext = (GameState)((GameEngine::getInstance()->getStateController()->gameStateCurr + 1) % 3);
     }
 
-    if (ImGui::Button("Export Transform Data")) {
-        exportTransformData(objectList);
-    }
-
     static char stringBuffer[50] = "\0";
     static char nameBuffer[50] = "\0";
     static bool isSearching = false;
     int objectCounter = 0;
 
-    ImGui::InputText("Search Text Field", stringBuffer, 50);
+    ImGui::InputText("Text Field", stringBuffer, 50);
+
+    static bool importOutline = false;
+    ImGui::Checkbox("Draw Outline When Import", &importOutline);
+    ImGui::SameLine();
+    if (ImGui::Button("Import Data")) {
+        importTransformData(objectList, std::string(stringBuffer), importOutline);
+    }
+    ImGui::SameLine();
+    if (ImGui::Button("Export Data")) {
+        exportTransformData(objectList, std::string(stringBuffer));
+    }
 
     static std::string searchString;
 
@@ -459,40 +466,144 @@ void Level::drawImGui(std::list<DrawableObject*>& objectList) {
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 }
 
-void Level::exportTransformData(std::list<DrawableObject*>& objectsList) {
-    std::ofstream output("../Resource/output/TransformData.txt");
+void Level::exportTransformData(std::list<DrawableObject*>& objectsList, std::string fileName) {
+    std::ofstream output("../Resource/output/" + fileName + ".txt");
 
     if (!output) {
+        std::cout << "Failed to write file" << std::endl;
         return;
     }
 
     for (DrawableObject* obj : objectsList) {
-        output << obj->getName() << ", ";
+
+        ColliderObject* colObj = dynamic_cast<ColliderObject*>(obj);
+        LightSource* lightObj = dynamic_cast<LightSource*>(obj);
+
+        output << ((colObj != NULL) ? "ColliderObject," : "LightSource,");
+        
+        output << obj->getName() << ",";
         Transform transform = obj->getTransform();
         glm::vec3 position = transform.getPosition();
         glm::vec3 scale = transform.getScale();
-        output << "Position: " << "x: " << position.x << ", y: " << position.y << ", ";
-        output << "Rotation: " << transform.getRotationDeg() << " deg" << ", ";
-        output << "Scale: " << "x: " << scale.x << ", y: " << scale.y;
+        output << position.x << "," << position.y << ",";
+        output << transform.getRotationRad() << ",";
+        output << scale.x << "," << scale.y;
 
         Collider* col = obj->getColliderComponent();
 
-        if (col != nullptr) {
-            output << ", ";
+        output << ",";
 
+        if (col != nullptr) {
             transform = col->getTransform();
             position = transform.getPosition();
             scale = transform.getScale();
-            output << "Collider Width: " << col->getWidth() << ", Collider Height: " << col->getHeight() << ", ";
-            output << "Collider Position: " << "x: " << position.x << ", y: " << position.y << ", ";
-            output << "Collider Rotation: " << transform.getRotationDeg() << " deg" << ", ";
-            output << "Collider Scale: " << "x: " << scale.x << ", y: " << scale.y;
+            output << col->getWidth() << "," << col->getHeight() << ",";
+            output << position.x << "," << position.y << ",";
+            output << transform.getRotationRad() << ",";
+            output << scale.x << "," << scale.y;
+        }
+        else if (lightObj != NULL) {
+            output << lightObj->getBrightness() << ",";
+            output << lightObj->getMaxDistance();
         }
 
         output << "\n";
     }
 
     output.close();
+}
+
+void Level::importTransformData(std::list<DrawableObject*>& objectsList, std::string fileName, bool drawOutline) {
+    std::ifstream file("../Resource/output/" + fileName + ".txt");
+    if (!file) {
+        std::cout << "Failed to read file" << std::endl;
+        return;
+    }
+
+    std::string line;
+    while (!file.eof()) {
+        if (!std::getline(file, line, ',')) {
+            break;
+        }
+
+        std::string type = line;
+
+        std::getline(file, line, ',');
+        std::string name = line;
+
+        std::getline(file, line, ',');
+        float posX = std::stof(line);
+
+        std::getline(file, line, ',');
+        float posY = std::stof(line);
+
+        std::getline(file, line, ',');
+        float rotation = std::stof(line);
+
+        std::getline(file, line, ',');
+        float scaleX = std::stof(line);
+
+        std::getline(file, line, ',');
+        float scaleY = std::stof(line);
+
+        DrawableObject* obj = nullptr;
+
+        if (type == "ColliderObject") {
+            std::getline(file, line, ',');
+            float width = std::stof(line);
+
+            std::getline(file, line, ',');
+            float height = std::stof(line);
+
+            std::getline(file, line, ',');
+            float cPosX = std::stof(line);
+
+            std::getline(file, line, ',');
+            float cPosY = std::stof(line);
+
+            std::getline(file, line, ',');
+            float cRotation = std::stof(line);
+
+            std::getline(file, line, ',');
+            float cScaleX = std::stof(line);
+
+            std::getline(file, line);
+            float cScaleY = std::stof(line);
+
+            obj = new ColliderObject();
+
+            obj->getColliderComponent()->setDimension(width, height);
+            obj->getColliderComponent()->getTransform().setPosition(cPosX, cPosY);
+            obj->getColliderComponent()->getTransform().setRotation(cRotation);
+            obj->getColliderComponent()->getTransform().setScale(cScaleX, cScaleY);
+        }
+        else if (type == "LightSource") {
+            std::getline(file, line, ',');
+            float brightness = std::stof(line);
+
+            std::getline(file, line);
+            float maxDistance = std::stof(line);
+
+            obj = new LightSource(brightness, maxDistance);
+        }
+        else {
+            std::cout << "Error reading file" << std::endl;
+            break;
+        }
+
+        obj->setName(name);
+        obj->getTransform().setPosition(posX, posY);
+        obj->getTransform().setRotationRad(rotation);
+        obj->getTransform().setScale(scaleX, scaleY);
+
+        if (drawOutline) {
+            obj->setDrawCollider(true);
+        }
+
+        objectsList.emplace_back(obj);
+    }
+
+    file.close();
 }
 
 #endif

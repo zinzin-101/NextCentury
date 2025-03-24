@@ -1,0 +1,4 @@
+ColliderObject,ColliderObject,1,0,0,1,1,1,1,0,0,0,1,1
+ColliderObject,ColliderObject,2,0,0,1,1,1,1,0,0,0,1,1
+ColliderObject,ColliderObject,3,0,0,1,1,1,1,0,0,0,1,1
+ColliderObject,ColliderObject,5,0,0,1,1,1,1,0,0,0,1,1

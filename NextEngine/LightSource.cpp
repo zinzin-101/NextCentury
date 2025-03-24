@@ -2,7 +2,17 @@
 #include "GameEngine.h"
 #include "SquareBorderMesh.h"
 
-LightSource::LightSource(float brightness, float maxDistance): brightness(brightness), maxDistance(maxDistance) {}
+LightSource::LightSource(float brightness, float maxDistance): brightness(brightness), maxDistance(maxDistance) {
+	this->setName("LightSource");
+}
+
+float LightSource::getBrightness() const {
+	return brightness;
+}
+
+float LightSource::getMaxDistance() const {
+	return maxDistance;
+}
 
 float LightSource::getTextureBrightness(DrawableObject* obj) {
 	float distance = glm::length(this->getTransform().getPosition() - obj->getTransform().getPosition());

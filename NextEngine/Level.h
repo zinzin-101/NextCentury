@@ -53,6 +53,7 @@ public:
 
     #ifdef DEBUG_MODE_ON
     void drawImGui(std::list<DrawableObject*>& objectsList);
-    void exportTransformData(std::list<DrawableObject*>& objectsList);
+    void exportTransformData(std::list<DrawableObject*>& objectsList, std::string fileName);
+    void importTransformData(std::list<DrawableObject*>& objectsList, std::string fileName, bool drawOutline);
     #endif
 };
