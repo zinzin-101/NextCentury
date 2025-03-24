@@ -120,6 +120,10 @@ void Physics::setEnableGravity(bool flag) {
 	enableGravity = flag;
 }
 
-bool Physics::isGravityEnable() {
+bool Physics::isGravityEnable() const {
 	return enableGravity;
+}
+
+bool Physics::isPhysicsEnable() const {
+	return enablePhysics;
 }

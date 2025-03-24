@@ -50,4 +50,9 @@ public:
     virtual void updateObjects(list<DrawableObject*>& objectsList);
 
     virtual void initPlayer(PlayerObject*& player, PlayerInfo playerInfo);
+
+    #ifdef DEBUG_MODE_ON
+    void drawImGui(std::list<DrawableObject*>& objectsList);
+    void exportTransformData(std::list<DrawableObject*>& objectsList);
+    #endif
 };

@@ -1,4 +1,6 @@
 #include "LightSource.h"
+#include "GameEngine.h"
+#include "SquareBorderMesh.h"
 
 LightSource::LightSource(float brightness, float maxDistance): brightness(brightness), maxDistance(maxDistance) {}
 
@@ -31,5 +33,37 @@ float LightSource::normalizeBrightness(float brightness) {
 }
 
 void LightSource::render(glm::mat4 globalModelTransform) {
-	return;
+	SquareBorderMesh* squareBorderMesh = dynamic_cast<SquareBorderMesh*> (GameEngine::getInstance()->getRenderer()->getMesh(SquareBorderMesh::MESH_NAME));
+
+	GLuint modelMatixId = GameEngine::getInstance()->getRenderer()->getModelMatrixAttrId();
+	GLuint renderModeId = GameEngine::getInstance()->getRenderer()->getModeUniformId();
+	GLuint colorId = GameEngine::getInstance()->getRenderer()->getColorUniformId();
+
+	if (modelMatixId == -1) {
+		cout << "Error: Can't perform transformation " << endl;
+		return;
+	}
+	if (renderModeId == -1) {
+		cout << "Error: Can't set renderMode in TexturedObject " << endl;
+		return;
+	}
+	if (colorId == -1) {
+		cout << "Error: Can't set color " << endl;
+		return;
+	}
+
+	vector <glm::mat4> matrixStack;
+
+	//glm::mat4 currentMatrix = this->getTransformMat4();
+	glm::mat4 currentMatrix = this->transform.getTransformMat4();
+	//glm::mat4 currentMatrix = collider->getGlobalTransform(this->transform).getTransformMat4();
+
+	if (squareBorderMesh != nullptr) {
+
+		//currentMatrix = globalModelTransform * currentMatrix;
+		glUniformMatrix4fv(modelMatixId, 1, GL_FALSE, glm::value_ptr(currentMatrix));
+		glUniform3f(colorId, 1, 1, 0);
+		glUniform1i(renderModeId, 0);
+		squareBorderMesh->render();
+	}
 }

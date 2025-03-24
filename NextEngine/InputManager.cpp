@@ -1,6 +1,5 @@
 #include "InputManager.h"
-
-
+#include "DebugMode.h"
 
 InputManager::InputManager() : mouseX(0), mouseY(0), controller(nullptr) {
     // Initialize SDL controller subsystem
@@ -56,6 +55,12 @@ void InputManager::updateInput() {
     // Poll events
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
+
+        #ifdef DEBUG_MODE_ON
+        // Handle Imgui event
+        ImGui_ImplSDL2_ProcessEvent(&event);
+        #endif
+
         // Handle keyboard events
         if (event.type == SDL_KEYDOWN && !event.key.repeat) {
             keyStates[event.key.keysym.sym] = KEY_PRESSED;

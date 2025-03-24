@@ -1,0 +1,52 @@
+parallax, Position: x: 47.3131, y: 7.3, Rotation: 0 deg, Scale: x: 16, y: 10.9
+parallax, Position: x: 77.9835, y: 7.3, Rotation: 0 deg, Scale: x: 16, y: 10.9
+parallax, Position: x: 60.6538, y: 7.3, Rotation: 0 deg, Scale: x: 16, y: 10.9
+parallax, Position: x: 34.6593, y: 7.3, Rotation: 0 deg, Scale: x: 16, y: 10.9
+parallax, Position: x: 25.9945, y: 7.3, Rotation: 0 deg, Scale: x: 16, y: 10.9
+parallax, Position: x: 61.8637, y: 7.3, Rotation: 0 deg, Scale: x: 16, y: 10.9
+parallax, Position: x: 56.6648, y: 7.3, Rotation: 0 deg, Scale: x: 16, y: 10.9
+parallax, Position: x: 48, y: 7.3, Rotation: 0 deg, Scale: x: 16, y: 10.9
+Ground, Position: x: 143.5, y: 2, Rotation: 0 deg, Scale: x: 287, y: 4, Collider Width: 1, Collider Height: 1, Collider Position: x: 0, y: 0, Collider Rotation: 0 deg, Collider Scale: x: 1, y: 1
+Ground, Position: x: 17.5, y: 12.5, Rotation: 0 deg, Scale: x: 35, y: 17, Collider Width: 1, Collider Height: 1, Collider Position: x: 0, y: 0, Collider Rotation: 0 deg, Collider Scale: x: 1, y: 1
+Ground, Position: x: 288.5, y: 4.5, Rotation: 0 deg, Scale: x: 1, y: 1, Collider Width: 1, Collider Height: 1, Collider Position: x: 0, y: 0, Collider Rotation: 0 deg, Collider Scale: x: 1, y: 1
+Player, Position: x: 52.1044, y: 6, Rotation: 0 deg, Scale: x: -4, y: 4, Collider Width: 0.5, Collider Height: 0.5, Collider Position: x: 0, y: -1, Collider Rotation: 0 deg, Collider Scale: x: 1, y: 1
+EnemyNormal, Position: x: 86, y: 6, Rotation: 0 deg, Scale: x: -4, y: 4, Collider Width: 0.5, Collider Height: 0.5, Collider Position: x: 0, y: -1, Collider Rotation: 0 deg, Collider Scale: x: 1, y: 1
+EnemyNormal, Position: x: 113, y: 6, Rotation: 0 deg, Scale: x: -4, y: 4, Collider Width: 0.5, Collider Height: 0.5, Collider Position: x: 0, y: -1, Collider Rotation: 0 deg, Collider Scale: x: 1, y: 1
+EnemyNormal, Position: x: 156, y: 6, Rotation: 0 deg, Scale: x: -4, y: 4, Collider Width: 0.5, Collider Height: 0.5, Collider Position: x: 0, y: -1, Collider Rotation: 0 deg, Collider Scale: x: 1, y: 1
+EnemyNormal, Position: x: 187, y: 6, Rotation: 0 deg, Scale: x: -4, y: 4, Collider Width: 0.5, Collider Height: 0.5, Collider Position: x: 0, y: -1, Collider Rotation: 0 deg, Collider Scale: x: 1, y: 1
+Ground, Position: x: 296.5, y: 5.5, Rotation: 0 deg, Scale: x: 1, y: 1, Collider Width: 1, Collider Height: 1, Collider Position: x: 0, y: 0, Collider Rotation: 0 deg, Collider Scale: x: 1, y: 1
+Ground, Position: x: 294.5, y: 6.5, Rotation: 0 deg, Scale: x: 1, y: 1, Collider Width: 1, Collider Height: 1, Collider Position: x: 0, y: 0, Collider Rotation: 0 deg, Collider Scale: x: 1, y: 1
+Ground, Position: x: 217.5, y: 7.5, Rotation: 0 deg, Scale: x: 7, y: 1, Collider Width: 1, Collider Height: 1, Collider Position: x: 0, y: 0, Collider Rotation: 0 deg, Collider Scale: x: 1, y: 1
+Ground, Position: x: 231.5, y: 7.5, Rotation: 0 deg, Scale: x: 1, y: 1, Collider Width: 1, Collider Height: 1, Collider Position: x: 0, y: 0, Collider Rotation: 0 deg, Collider Scale: x: 1, y: 1
+Ground, Position: x: 228.5, y: 8.5, Rotation: 0 deg, Scale: x: 1, y: 1, Collider Width: 1, Collider Height: 1, Collider Position: x: 0, y: 0, Collider Rotation: 0 deg, Collider Scale: x: 1, y: 1
+Ground, Position: x: 233.5, y: 9.5, Rotation: 0 deg, Scale: x: 1, y: 1, Collider Width: 1, Collider Height: 1, Collider Position: x: 0, y: 0, Collider Rotation: 0 deg, Collider Scale: x: 1, y: 1
+Ground, Position: x: 236.5, y: 10.5, Rotation: 0 deg, Scale: x: 1, y: 1, Collider Width: 1, Collider Height: 1, Collider Position: x: 0, y: 0, Collider Rotation: 0 deg, Collider Scale: x: 1, y: 1
+Ground, Position: x: 228.5, y: 11.5, Rotation: 0 deg, Scale: x: 1, y: 1, Collider Width: 1, Collider Height: 1, Collider Position: x: 0, y: 0, Collider Rotation: 0 deg, Collider Scale: x: 1, y: 1
+Ground, Position: x: 221, y: 12.5, Rotation: 0 deg, Scale: x: 6, y: 1, Collider Width: 1, Collider Height: 1, Collider Position: x: 0, y: 0, Collider Rotation: 0 deg, Collider Scale: x: 1, y: 1
+Ground, Position: x: 234.5, y: 12.5, Rotation: 0 deg, Scale: x: 1, y: 1, Collider Width: 1, Collider Height: 1, Collider Position: x: 0, y: 0, Collider Rotation: 0 deg, Collider Scale: x: 1, y: 1
+Ground, Position: x: 228.5, y: 14, Rotation: 0 deg, Scale: x: 1, y: 2, Collider Width: 1, Collider Height: 1, Collider Position: x: 0, y: 0, Collider Rotation: 0 deg, Collider Scale: x: 1, y: 1
+Ground, Position: x: 235.5, y: 15.5, Rotation: 0 deg, Scale: x: 1, y: 1, Collider Width: 1, Collider Height: 1, Collider Position: x: 0, y: 0, Collider Rotation: 0 deg, Collider Scale: x: 1, y: 1
+Ground, Position: x: 228.5, y: 17.5, Rotation: 0 deg, Scale: x: 1, y: 3, Collider Width: 1, Collider Height: 1, Collider Position: x: 0, y: 0, Collider Rotation: 0 deg, Collider Scale: x: 1, y: 1
+Ground, Position: x: 121.5, y: 20, Rotation: 0 deg, Scale: x: 1, y: 2, Collider Width: 1, Collider Height: 1, Collider Position: x: 0, y: 0, Collider Rotation: 0 deg, Collider Scale: x: 1, y: 1
+Ground, Position: x: 144.5, y: 20, Rotation: 0 deg, Scale: x: 1, y: 2, Collider Width: 1, Collider Height: 1, Collider Position: x: 0, y: 0, Collider Rotation: 0 deg, Collider Scale: x: 1, y: 1
+Ground, Position: x: 162.5, y: 20, Rotation: 0 deg, Scale: x: 1, y: 2, Collider Width: 1, Collider Height: 1, Collider Position: x: 0, y: 0, Collider Rotation: 0 deg, Collider Scale: x: 1, y: 1
+Ground, Position: x: 174.5, y: 20, Rotation: 0 deg, Scale: x: 1, y: 2, Collider Width: 1, Collider Height: 1, Collider Position: x: 0, y: 0, Collider Rotation: 0 deg, Collider Scale: x: 1, y: 1
+Ground, Position: x: 192.5, y: 20, Rotation: 0 deg, Scale: x: 1, y: 2, Collider Width: 1, Collider Height: 1, Collider Position: x: 0, y: 0, Collider Rotation: 0 deg, Collider Scale: x: 1, y: 1
+Ground, Position: x: 198.5, y: 20, Rotation: 0 deg, Scale: x: 1, y: 2, Collider Width: 1, Collider Height: 1, Collider Position: x: 0, y: 0, Collider Rotation: 0 deg, Collider Scale: x: 1, y: 1
+Ground, Position: x: 235.5, y: 20, Rotation: 0 deg, Scale: x: 1, y: 2, Collider Width: 1, Collider Height: 1, Collider Position: x: 0, y: 0, Collider Rotation: 0 deg, Collider Scale: x: 1, y: 1
+Ground, Position: x: 78, y: 20.5, Rotation: 0 deg, Scale: x: 86, y: 1, Collider Width: 1, Collider Height: 1, Collider Position: x: 0, y: 0, Collider Rotation: 0 deg, Collider Scale: x: 1, y: 1
+Ground, Position: x: 133, y: 20.5, Rotation: 0 deg, Scale: x: 22, y: 1, Collider Width: 1, Collider Height: 1, Collider Position: x: 0, y: 0, Collider Rotation: 0 deg, Collider Scale: x: 1, y: 1
+Ground, Position: x: 153.5, y: 20.5, Rotation: 0 deg, Scale: x: 17, y: 1, Collider Width: 1, Collider Height: 1, Collider Position: x: 0, y: 0, Collider Rotation: 0 deg, Collider Scale: x: 1, y: 1
+Ground, Position: x: 168.5, y: 20.5, Rotation: 0 deg, Scale: x: 11, y: 1, Collider Width: 1, Collider Height: 1, Collider Position: x: 0, y: 0, Collider Rotation: 0 deg, Collider Scale: x: 1, y: 1
+Ground, Position: x: 183.5, y: 20.5, Rotation: 0 deg, Scale: x: 17, y: 1, Collider Width: 1, Collider Height: 1, Collider Position: x: 0, y: 0, Collider Rotation: 0 deg, Collider Scale: x: 1, y: 1
+Ground, Position: x: 195.5, y: 20.5, Rotation: 0 deg, Scale: x: 5, y: 1, Collider Width: 1, Collider Height: 1, Collider Position: x: 0, y: 0, Collider Rotation: 0 deg, Collider Scale: x: 1, y: 1
+Ground, Position: x: 217, y: 20.5, Rotation: 0 deg, Scale: x: 36, y: 1, Collider Width: 1, Collider Height: 1, Collider Position: x: 0, y: 0, Collider Rotation: 0 deg, Collider Scale: x: 1, y: 1
+Ground, Position: x: 261.5, y: 20.5, Rotation: 0 deg, Scale: x: 51, y: 1, Collider Width: 1, Collider Height: 1, Collider Position: x: 0, y: 0, Collider Rotation: 0 deg, Collider Scale: x: 1, y: 1
+parallax, Position: x: 65.3297, y: 7.3, Rotation: 0 deg, Scale: x: 16, y: 10.9
+marker, Position: x: 0, y: 0, Rotation: 0 deg, Scale: x: 0.2, y: 0.2
+PlayerDamageCollider, Position: x: 0, y: 0, Rotation: 0 deg, Scale: x: 2, y: 2, Collider Width: 1.5, Collider Height: 1, Collider Position: x: 0, y: 0, Collider Rotation: 0 deg, Collider Scale: x: 1, y: 1
+EnemyNormalDamageCollider, Position: x: 0, y: 0, Rotation: 0 deg, Scale: x: 2, y: 2, Collider Width: 1.5, Collider Height: 1, Collider Position: x: 0, y: 0, Collider Rotation: 0 deg, Collider Scale: x: 1, y: 1
+EnemyNormalDamageCollider, Position: x: 0, y: 0, Rotation: 0 deg, Scale: x: 2, y: 2, Collider Width: 1.5, Collider Height: 1, Collider Position: x: 0, y: 0, Collider Rotation: 0 deg, Collider Scale: x: 1, y: 1
+EnemyNormalDamageCollider, Position: x: 0, y: 0, Rotation: 0 deg, Scale: x: 2, y: 2, Collider Width: 1.5, Collider Height: 1, Collider Position: x: 0, y: 0, Collider Rotation: 0 deg, Collider Scale: x: 1, y: 1
+EnemyNormalDamageCollider, Position: x: 0, y: 0, Rotation: 0 deg, Scale: x: 2, y: 2, Collider Width: 1.5, Collider Height: 1, Collider Position: x: 0, y: 0, Collider Rotation: 0 deg, Collider Scale: x: 1, y: 1
+light source, Position: x: 51, y: 7, Rotation: 0 deg, Scale: x: 1, y: 1

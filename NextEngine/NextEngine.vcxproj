@@ -23,6 +23,13 @@
     <None Include="..\Resource\Shader\vertext.shd" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\Resource\imgui\backends\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="..\Resource\imgui\backends\imgui_impl_sdl2.cpp" />
+    <ClCompile Include="..\Resource\imgui\imgui.cpp" />
+    <ClCompile Include="..\Resource\imgui\imgui_demo.cpp" />
+    <ClCompile Include="..\Resource\imgui\imgui_draw.cpp" />
+    <ClCompile Include="..\Resource\imgui\imgui_tables.cpp" />
+    <ClCompile Include="..\Resource\imgui\imgui_widgets.cpp" />
     <ClCompile Include="Animation.cpp" />
     <ClCompile Include="Audio.cpp" />
     <ClCompile Include="BlightFlame.cpp" />
@@ -73,6 +80,14 @@
     <ClCompile Include="ZealotEnemy.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\Resource\imgui\backends\imgui_impl_opengl3.h" />
+    <ClInclude Include="..\Resource\imgui\backends\imgui_impl_sdl2.h" />
+    <ClInclude Include="..\Resource\imgui\imconfig.h" />
+    <ClInclude Include="..\Resource\imgui\imgui.h" />
+    <ClInclude Include="..\Resource\imgui\imgui_internal.h" />
+    <ClInclude Include="..\Resource\imgui\imstb_rectpack.h" />
+    <ClInclude Include="..\Resource\imgui\imstb_textedit.h" />
+    <ClInclude Include="..\Resource\imgui\imstb_truetype.h" />
     <ClInclude Include="Animation.h" />
     <ClInclude Include="Audio.h" />
     <ClInclude Include="BlightFlame.h" />
@@ -83,6 +98,7 @@
     <ClInclude Include="CollisionHandler.h" />
     <ClInclude Include="DamageCollider.h" />
     <ClInclude Include="DamageParticleObject.h" />
+    <ClInclude Include="DebugMode.h" />
     <ClInclude Include="DrawableObject.h" />
     <ClInclude Include="EnemyInfo.h" />
     <ClInclude Include="EnemyObject.h" />
@@ -189,6 +205,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
+    <IncludePath>$(ProjectDir)Resource\imgui;$(ProjectDirResource\imgui\backends;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
@@ -208,7 +225,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>../Resource/glew/include;../Resource/glm;../Resource/SDL2-2.0.5/include;../Resource/sdl_mixer/include;../Resource/SDL2_ttf/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../Resource/glew/include;../Resource/glm;../Resource/SDL2-2.0.5/include;../Resource/sdl_mixer/include;../Resource/SDL2_ttf/include;../Resource/imgui;../Resource/imgui/backends;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -216,6 +233,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>../Resource/glew/lib/Release/Win32;../Resource/SDL2-2.0.5/lib/x86;../Resource/sdl_mixer/lib/x86;../Resource/SDL2_ttf/lib/x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>SDL2main.lib;SDL2.lib;opengl32.lib;glew32.lib;glew32s.lib;SDL2_image.lib;SDL2_mixer.lib;SDL2_ttf.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <IgnoreSpecificDefaultLibraries>msvcrt.lib</IgnoreSpecificDefaultLibraries>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">

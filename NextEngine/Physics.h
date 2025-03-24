@@ -46,7 +46,8 @@ class Physics {
 		void setEnablePhysics(bool flag);
 		void setEnableGravity(bool flag);
 
-		bool isGravityEnable();
+		bool isGravityEnable() const;
+		bool isPhysicsEnable() const;
 
 		//void operator=(Physics& other);
 };

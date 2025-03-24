@@ -1,0 +1,170 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="Animation.cpp" />
+    <ClCompile Include="Audio.cpp" />
+    <ClCompile Include="BlightFlame.cpp" />
+    <ClCompile Include="Button.cpp" />
+    <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="Collider.cpp" />
+    <ClCompile Include="ColliderObject.cpp" />
+    <ClCompile Include="CollisionHandler.cpp" />
+    <ClCompile Include="DrawableObject.cpp" />
+    <ClCompile Include="EnemyObject.cpp" />
+    <ClCompile Include="GameEngine.cpp" />
+    <ClCompile Include="GameStateController.cpp" />
+    <ClCompile Include="GLRenderer.cpp" />
+    <ClCompile Include="InputManager.cpp" />
+    <ClCompile Include="Level.cpp" />
+    <ClCompile Include="LevelAnimTest.cpp" />
+    <ClCompile Include="LevelCollisionTest.cpp" />
+    <ClCompile Include="LevelEnemTest.cpp" />
+    <ClCompile Include="LevelMapEditorTest.cpp" />
+    <ClCompile Include="LevelParallax.cpp" />
+    <ClCompile Include="LevelPrototype.cpp" />
+    <ClCompile Include="LevelPrototypeNMMN.cpp" />
+    <ClCompile Include="LevelTest.cpp" />
+    <ClCompile Include="LevelUITest.cpp" />
+    <ClCompile Include="LightSource.cpp" />
+    <ClCompile Include="LivingEntity.cpp" />
+    <ClCompile Include="Main.cpp" />
+    <ClCompile Include="MapLoader.cpp" />
+    <ClCompile Include="MeshVbo.cpp" />
+    <ClCompile Include="ParallaxObject.cpp" />
+    <ClCompile Include="Particle.cpp" />
+    <ClCompile Include="ParticleSystem.cpp" />
+    <ClCompile Include="pch.cpp" />
+    <ClCompile Include="Physics.cpp" />
+    <ClCompile Include="PlayerObject.cpp" />
+    <ClCompile Include="Random.cpp" />
+    <ClCompile Include="RayObject.cpp" />
+    <ClCompile Include="Shader.cpp" />
+    <ClCompile Include="SimpleObject.cpp" />
+    <ClCompile Include="SquareBorderMesh.cpp" />
+    <ClCompile Include="SquareMeshVbo.cpp" />
+    <ClCompile Include="TextObject.cpp" />
+    <ClCompile Include="TexturedObject.cpp" />
+    <ClCompile Include="Time.cpp" />
+    <ClCompile Include="Transform.cpp" />
+    <ClCompile Include="TriangleMeshVbo.cpp" />
+    <ClCompile Include="UI.cpp" />
+    <ClCompile Include="ZealotEnemy.cpp" />
+    <ClCompile Include="..\Resource\imgui\imgui.cpp">
+      <Filter>Imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Resource\imgui\imgui_demo.cpp">
+      <Filter>Imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Resource\imgui\imgui_draw.cpp">
+      <Filter>Imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Resource\imgui\backends\imgui_impl_opengl3.cpp">
+      <Filter>Imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Resource\imgui\backends\imgui_impl_sdl2.cpp">
+      <Filter>Imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Resource\imgui\imgui_tables.cpp">
+      <Filter>Imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Resource\imgui\imgui_widgets.cpp">
+      <Filter>Imgui</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Animation.h" />
+    <ClInclude Include="Audio.h" />
+    <ClInclude Include="BlightFlame.h" />
+    <ClInclude Include="Button.h" />
+    <ClInclude Include="Camera.h" />
+    <ClInclude Include="Collider.h" />
+    <ClInclude Include="ColliderObject.h" />
+    <ClInclude Include="CollisionHandler.h" />
+    <ClInclude Include="DamageCollider.h" />
+    <ClInclude Include="DamageParticleObject.h" />
+    <ClInclude Include="DrawableObject.h" />
+    <ClInclude Include="EnemyInfo.h" />
+    <ClInclude Include="EnemyObject.h" />
+    <ClInclude Include="GameEngine.h" />
+    <ClInclude Include="GameStateController.h" />
+    <ClInclude Include="GameStateList.h" />
+    <ClInclude Include="GLRenderer.h" />
+    <ClInclude Include="HitScanDamage.h" />
+    <ClInclude Include="InputManager.h" />
+    <ClInclude Include="InteractableObject.h" />
+    <ClInclude Include="Level.h" />
+    <ClInclude Include="LevelAnimTest.h" />
+    <ClInclude Include="LevelCollisionTest.h" />
+    <ClInclude Include="LevelEnemTest.h" />
+    <ClInclude Include="LevelMapEditorTest.h" />
+    <ClInclude Include="LevelParallax.h" />
+    <ClInclude Include="LevelPrototype.h" />
+    <ClInclude Include="LevelPrototypeNMMN.h" />
+    <ClInclude Include="LevelTest.h" />
+    <ClInclude Include="LevelUITest.h" />
+    <ClInclude Include="LightSource.h" />
+    <ClInclude Include="LivingEntity.h" />
+    <ClInclude Include="MapLoader.h" />
+    <ClInclude Include="MeshVbo.h" />
+    <ClInclude Include="MovementInfo.h" />
+    <ClInclude Include="ParallaxBackground.h" />
+    <ClInclude Include="ParallaxObject.h" />
+    <ClInclude Include="Particle.h" />
+    <ClInclude Include="ParticleProperties.h" />
+    <ClInclude Include="ParticleSystem.h" />
+    <ClInclude Include="pch.h" />
+    <ClInclude Include="Physics.h" />
+    <ClInclude Include="PlayerInfo.h" />
+    <ClInclude Include="PlayerObject.h" />
+    <ClInclude Include="ProjectileObject.h" />
+    <ClInclude Include="Random.h" />
+    <ClInclude Include="RayObject.h" />
+    <ClInclude Include="SaveSystem.h" />
+    <ClInclude Include="Shader.h" />
+    <ClInclude Include="SimpleObject.h" />
+    <ClInclude Include="SquareBorderMesh.h" />
+    <ClInclude Include="SquareMeshVbo.h" />
+    <ClInclude Include="TextObject.h" />
+    <ClInclude Include="TexturedObject.h" />
+    <ClInclude Include="Time.h" />
+    <ClInclude Include="Transform.h" />
+    <ClInclude Include="TriangleMeshVbo.h" />
+    <ClInclude Include="UI.h" />
+    <ClInclude Include="UpgradeSystem.h" />
+    <ClInclude Include="Zealot.h" />
+    <ClInclude Include="..\Resource\imgui\imconfig.h">
+      <Filter>Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Resource\imgui\imgui.h">
+      <Filter>Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Resource\imgui\backends\imgui_impl_opengl3.h">
+      <Filter>Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Resource\imgui\backends\imgui_impl_sdl2.h">
+      <Filter>Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Resource\imgui\imgui_internal.h">
+      <Filter>Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Resource\imgui\imstb_rectpack.h">
+      <Filter>Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Resource\imgui\imstb_textedit.h">
+      <Filter>Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Resource\imgui\imstb_truetype.h">
+      <Filter>Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="DebugMode.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Resource\Shader\fragment.shd" />
+    <None Include="..\Resource\Shader\vertext.shd" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Imgui">
+      <UniqueIdentifier>{55ba9f0d-e87b-4203-a1cd-e8f9b6f44941}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

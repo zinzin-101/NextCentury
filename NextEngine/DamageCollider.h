@@ -8,7 +8,7 @@
 #include "SquareBorderMesh.h"
 
 /// testing ///
-#include "random.h";
+#include "random.h"
 
 template <class TargetEntityType>
 class DamageCollider : public ColliderObject {
@@ -111,8 +111,8 @@ void DamageCollider<TargetEntityType>::onTriggerEnter(Collider* collider) { // f
 				if (enemyObj != NULL) {
 					enemyObj->setCurrentState(enemyObj->STUNNED);
 					for (int i = 0; i < 5; i++) {
-						ParticleProperties particleProps = ParticleProperties(enemyObj->getTransform().getPosition(), 5.0f * glm::vec2(Random::Float(), Random::Float()), glm::vec2(1.0f, 1.0f), glm::vec3(0.8f, 0, 0),
-							0.5f, 0.2f, 0.05f, 1.0f);
+						ParticleProperties particleProps = ParticleProperties(enemyObj->getTransform().getPosition(), 20.0f * glm::vec2(Random::Float(), Random::Float()), glm::vec2(1.0f, 1.0f), glm::vec3(0.8f, 0, 0),
+							0.2f, 0.1f, 0.05f, 1.0f);
 						enemyObj->getEmitter()->emit(particleProps);
 					}
 				}

@@ -6,6 +6,8 @@
 #include "LightSource.h"
 #include "DamageCollider.h"
 
+#include <sstream>
+
 static ostream& operator<<(ostream& out, glm::vec3 pos);
 
 void LevelPrototype::levelLoad() {
@@ -134,9 +136,11 @@ void LevelPrototype::levelInit() {
     GameEngine::getInstance()->getRenderer()->getCamera()->setTarget(player);
     GameEngine::getInstance()->getRenderer()->toggleViewport();
 
-    LightSource* testLight = new LightSource(1.0f, 4.0f);
+    LightSource* testLight = new LightSource(1.0f, 10.0f);
+    testLight->setName("light source");
     testLight->getTransform().setPosition(player->getTransform().getPosition());
     testLight->getTransform().translate(0, 1);
+    testLight->setDrawCollider(true);
     objectsList.emplace_back(testLight);
 }
 
@@ -197,6 +201,10 @@ void LevelPrototype::levelUpdate() {
 
 void LevelPrototype::levelDraw() {
     GameEngine::getInstance()->render(objectsList);
+
+    #ifdef DEBUG_MODE_ON
+    drawImGui(objectsList);
+    #endif
 }
 
 void LevelPrototype::levelFree() {
@@ -239,9 +247,9 @@ void LevelPrototype::handleKey(InputManager& input) {
     if (input.getButtonDown(SDLK_f)) GameEngine::getInstance()->getRenderer()->toggleViewport();
     if (input.getButtonDown(SDLK_c)) player->getColliderComponent()->setTrigger(!player->getColliderComponent()->isTrigger());
     if (input.getButtonDown(SDLK_g)) viewMarker = !viewMarker;
-    if (input.getButtonDown(SDLK_r)) GameEngine::getInstance()->getStateController()->gameStateNext = GameState::GS_RESTART;
+    //if (input.getButtonDown(SDLK_r)) GameEngine::getInstance()->getStateController()->gameStateNext = GameState::GS_RESTART;
     //if (input.getButtonDown(SDLK_e)) GameEngine::getInstance()->getStateController()->gameStateNext = GameState::GS_LEVEL1;
-    if (input.getButtonDown(SDLK_e)) GameEngine::getInstance()->getStateController()->gameStateNext = (GameState)((GameEngine::getInstance()->getStateController()->gameStateCurr + 1) % 3);
+    //if (input.getButtonDown(SDLK_e)) GameEngine::getInstance()->getStateController()->gameStateNext = (GameState)((GameEngine::getInstance()->getStateController()->gameStateCurr + 1) % 3);
     if (input.getButton(SDLK_z)) GameEngine::getInstance()->getRenderer()->increaseZoomRatio(0.1f);
     if (input.getButton(SDLK_x)) GameEngine::getInstance()->getRenderer()->decreaseZoomRatio(0.1f);
     // test knockback

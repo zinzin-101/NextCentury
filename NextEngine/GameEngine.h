@@ -1,4 +1,5 @@
 #pragma once
+#include "DebugMode.h"
 
 #include <list>
 #include "DrawableObject.h"
@@ -6,6 +7,7 @@
 #include "GameStateController.h"
 #include "Time.h"
 #include "InputManager.h" 
+#include <SDL.h>
 
 using namespace std;
 
@@ -17,6 +19,9 @@ class GameEngine {
 	GameStateController* stateController;
 	Time* time;
 	InputManager* inputHandler;
+
+	SDL_Window* gameWindow;
+	SDL_GLContext* glContext;
 
 	GameEngine();
 public:
@@ -35,4 +40,9 @@ public:
 	int getWindowHeight();
 	void setWindowWidth(int w);
 	void setWindowHeight(int h);
+	void setSDLWindow(SDL_Window* window);
+	void setGlContext(SDL_GLContext* glContext);
+
+	SDL_Window* getSDLWindow() const;
+	SDL_GLContext* getGLContextPtr() const;
 };
