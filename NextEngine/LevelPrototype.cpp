@@ -130,6 +130,7 @@ void LevelPrototype::levelInit() {
     player->getDamageCollider()->setFollowOffset(glm::vec3(1.0f, -1.0f, 0));
     player->getDamageCollider()->getTransform().scales(2);
 
+    GameEngine::getInstance()->getRenderer()->getCamera()->setTarget(player);
     GameEngine::getInstance()->getRenderer()->toggleViewport();
 }
 

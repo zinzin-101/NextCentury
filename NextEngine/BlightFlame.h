@@ -1,20 +1,18 @@
 #pragma once
 #include "EnemyObject.h"
 
-class Zealot : public EnemyObject {
+class BlightFlame : public EnemyObject {
 protected:
-	enum AttackVariation {
-		Variation1,
-		Variation2
-	};
-	AttackVariation currentAttack = Variation1;
+
+	float flameTime = 1.5f;
+	float flameTimeKeep = 0;
 
 	void moveTowardsTarget();
 	void startAttack();
 	void endAttack();
 
 public:
-	Zealot(EnemyInfo& enemyinfo);
+	BlightFlame(EnemyInfo& enemyinfo);
 	void start(list<DrawableObject*>& objectsList);
 	void updateState();
 	void updateBehavior(list<DrawableObject*>& objectlist);

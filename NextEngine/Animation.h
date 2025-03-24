@@ -99,5 +99,7 @@ class Animation {
 		bool getIsPlaying() const;
 		State getCurrentAnimationState() const;
 		State& getCurrentAnimationStateRef();
+		State getAnimationState(string name) const;
+		State& getAnimationStateRef(string name);
 		float getTimeRate() const;
 };

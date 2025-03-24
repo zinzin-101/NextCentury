@@ -23,7 +23,7 @@ void LevelPrototypeNMMN::levelInit() {
     map<EnemyType, EnemyInfo>& enemyMap = mapLoader.getEnemyTypeMap();
     for (auto pair : enemyMap) {
         cout << "test loop" << endl;
-        cout << pair.first << " , " << pair.second.name << endl;    
+        cout << pair.first << " , " << pair.second.name << endl;
     }
 
     ParallaxObject* background = new ParallaxObject(0.0f, 7.3f, 550.0f, false, player, true);
@@ -71,7 +71,7 @@ void LevelPrototypeNMMN::levelInit() {
     marker->setColor(0, 0, 0);
     objectsList.emplace_back(marker);
 
-    PlayerInfo playerInfo = PlayerInfo("Player", 10, MovementInfo(5, 25), 5);
+    PlayerInfo playerInfo = PlayerInfo("Player", 10, MovementInfo(5, 25));
     startObjects(objectsList);
     initPlayer(player, playerInfo);
 
@@ -83,27 +83,39 @@ void LevelPrototypeNMMN::levelInit() {
         }
     }
 
-   /* healthBar = new SimpleObject();
-    healthBar->setColor(1.0f, 0.0f, 0.0f);
-    healthBar->getTransform().setScale(glm::vec3(2.0f, 0.2f, 0.0f));
-    healthBar->getTransform().setPosition(glm::vec3(player->getTransform().getPosition().x,
-        player->getTransform().getPosition().y + 1.0f, 0.0f));
-    objectsList.push_back(healthBar);*/
+    /* healthBar = new SimpleObject();
+     healthBar->setColor(1.0f, 0.0f, 0.0f);
+     healthBar->getTransform().setScale(glm::vec3(2.0f, 0.2f, 0.0f));
+     healthBar->getTransform().setPosition(glm::vec3(player->getTransform().getPosition().x,
+         player->getTransform().getPosition().y + 1.0f, 0.0f));
+     objectsList.push_back(healthBar);*/
 
     for (DrawableObject* obj : objectsList) {
         EnemyObject* enemy = dynamic_cast<EnemyObject*>(obj);
+        Zealot* zea = dynamic_cast<Zealot*>(obj);
+        BlightFlame* bf = dynamic_cast<BlightFlame*>(obj);
         if (enemy != NULL) {
             enemy->setTarget(player);
-            enemy->setHealth(37);
+            //enemy->setHealth(37);
             //enemy->setCanAttack(false); // debug
             enemy->setDrawCollider(true); // for debugging
             cout << "enemy found" << endl;
+            if (zea != NULL) {
+                enemy->getTransform().scales(2);
+                enemy->getColliderComponent()->getTransform().translate(0.0f, -1.0f);
+                enemy->getColliderComponent()->setDimension(0.5f, 0.5f);
+                enemy->getDamageCollider()->setFollowOffset(glm::vec3(1.0f, -1.0f, 0));
+                enemy->getDamageCollider()->getTransform().scales(2);
+            }
+            if (bf != NULL) {
+                enemy->getTransform().scales(2);
+                enemy->getTransform().setScale(enemy->getTransform().getScale().x * 1.5f, enemy->getTransform().getScale().y);
+                enemy->getColliderComponent()->getTransform().translate(0.0f, -1.0f);
+                enemy->getColliderComponent()->setDimension(0.5f, 0.5f);
+                enemy->getDamageCollider()->setFollowOffset(glm::vec3(1.0f, -1.0f, 0));
+                enemy->getDamageCollider()->getTransform().scales(2);
+            }
 
-            enemy->getTransform().scales(2);
-            enemy->getColliderComponent()->getTransform().translate(0.0f, -1.0f);
-            enemy->getColliderComponent()->setDimension(0.5f, 0.5f);
-            enemy->getDamageCollider()->setFollowOffset(glm::vec3(1.0f, -1.0f, 0));
-            enemy->getDamageCollider()->getTransform().scales(2);
         }
     }
 
@@ -137,7 +149,7 @@ void LevelPrototypeNMMN::levelUpdate() {
     updateObjects(objectsList);
     glm::vec3 followPos = viewMarker ? marker->getTransform().getPosition() : player->getTransform().getPosition();
     GameEngine::getInstance()->getRenderer()->updateCamera(followPos);
-    
+
     ray->getTransform().setPosition(marker->getTransform().getPosition());
     // Update health bar position and size
     float healthPercentage = static_cast<float>(player->getHealth()) / 100;
@@ -181,6 +193,7 @@ void LevelPrototypeNMMN::levelUpdate() {
             if (enemy->getHealth() <= 0) {
                 /*delete enemy;
                 it = objectsList.erase(it);  */
+                cout << enemy->getName() << " dies " << endl;
                 DrawableObject::destroyObject(enemy);
                 //continue;  
             }
@@ -245,7 +258,7 @@ void LevelPrototypeNMMN::handleKey(InputManager& input) {
     }
     else {
         if (input.getButtonUp(SDLK_k)) {
-            player->heavyAttack(keyHeldDuration[SDLK_k]);
+            player->heavyAttack();
         }
         else if (input.getButton(SDLK_k)) {
             player->startHeavyAttack();
@@ -259,7 +272,7 @@ void LevelPrototypeNMMN::handleKey(InputManager& input) {
     }
     else {
         if (input.getMouseButtonUp(SDL_BUTTON_LEFT)) {
-            player->heavyAttack(mouseHeldDuration[SDL_BUTTON_LEFT]);
+            player->heavyAttack();
         }
         else if (input.getMouseButton(SDL_BUTTON_LEFT)) {
             player->startHeavyAttack();
@@ -269,11 +282,11 @@ void LevelPrototypeNMMN::handleKey(InputManager& input) {
     if (keyBuffer[SDLK_LSHIFT] > 0 && player->getCanMove()) {
         clearKeyBuffer(SDLK_LSHIFT);
 
-        if (input.getButton(SDLK_a)){
-            player->setLastXDirection(-1.0f);
+        if (input.getButton(SDLK_a)) {
+            player->dodge(-1.0f);
         }
         else if (input.getButton(SDLK_d)) {
-            player->setLastXDirection(1.0f);
+            player->dodge(1.0f);
         }
 
         player->dodge();
@@ -338,7 +351,7 @@ void LevelPrototypeNMMN::initPlayer(PlayerObject*& player, PlayerInfo playerInfo
         player->setName(playerInfo.name);
         player->setHealth(playerInfo.health);
         //player->setMovementInfo(playerInfo.movementInfo);
-        player->setDamage(playerInfo.damage);
+        
     }
 
     player->setDrawCollider(true); // for debugging

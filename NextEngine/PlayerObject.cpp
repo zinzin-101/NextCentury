@@ -10,8 +10,8 @@
 PlayerObject::PlayerObject(PlayerInfo& playerInfo) : LivingEntity(playerInfo.name, playerInfo.health) {
     //this->damage = playerInfo.damage;
 
-    setTexture("../Resource/Texture/playertest5.png");
-    initAnimation(11, 6);
+    setTexture("../Resource/Texture/player6.png");
+    initAnimation(15, 6);
 
     getAnimationComponent()->addState("Idle", 0, 0, 6, true);
     getAnimationComponent()->addState("Walking", 10, 0, 6, true);
@@ -28,6 +28,14 @@ PlayerObject::PlayerObject(PlayerInfo& playerInfo) : LivingEntity(playerInfo.nam
     getAnimationComponent()->addState("Charge2", 6, 0, 6, false);
 
     getAnimationComponent()->addState("Parrying", 7, 0, 6, false);
+
+    getAnimationComponent()->addState("GunCharge1", 11, 0, 5, true);
+    getAnimationComponent()->addState("GunCharge2", 12, 0, 5, true);
+    getAnimationComponent()->addState("GunCharge3", 13, 0, 5, true);
+    getAnimationComponent()->addState("GunShoot", 14, 0, 4, false);
+    Animation::State& gunShotAnim = getAnimationComponent()->getAnimationStateRef("GunShoot");
+    gunShotAnim.timePerFrame = 0.08f;
+
 
     //getTransform().setScale(1, 1);
     addColliderComponent();
@@ -361,19 +369,21 @@ void PlayerObject::rangeAttack(std::list<DrawableObject*>& objectsList) {
     hitscan->getTransform().setPosition(currentPos);
     
         /// add animation later
-    switch (currentRangeCharge) {
-        case PlayerRangeCharge::CHARGE_1:
-        //this->getAnimationComponent()->setState("Charge1");
-            break;
+    //switch (currentRangeCharge) {
+    //    case PlayerRangeCharge::CHARGE_1:
+    //        this->getAnimationComponent()->setState("GunCharge1");
+    //        break;
 
-        case PlayerRangeCharge::CHARGE_2:
-        //this->getAnimationComponent()->setState("Charge2");
-            break;
+    //    case PlayerRangeCharge::CHARGE_2:
+    //        this->getAnimationComponent()->setState("GunCharge2");
+    //        break;
 
-        case PlayerRangeCharge::CHARGE_3:
-            //this->getAnimationComponent()->setState("Charge3");
-            break;
-    }
+    //    case PlayerRangeCharge::CHARGE_3:
+    //        this->getAnimationComponent()->setState("GunCharge3");
+    //        break;
+    //}
+
+    this->getAnimationComponent()->setState("GunShoot");
 
     objectsList.emplace_back(hitscan);
     rangeAttackCooldownRemaining = rangeAttackCooldown[currentRangeCharge];
@@ -422,15 +432,19 @@ void PlayerObject::startRangeAttack(float duration) {
 
     if (duration > rangeChargeDuration[PlayerRangeCharge::CHARGE_3]) {
         currentRangeCharge = PlayerRangeCharge::CHARGE_3;
+        this->getAnimationComponent()->setState("GunCharge3");
+        //GameEngine::getInstance()->getRenderer()->getCamera()->shake = true;
         return;
     }
 
     if (duration > rangeChargeDuration[PlayerRangeCharge::CHARGE_2]) {
         currentRangeCharge = PlayerRangeCharge::CHARGE_2;
+        this->getAnimationComponent()->setState("GunCharge2");
         return;
     }
 
     currentRangeCharge = PlayerRangeCharge::CHARGE_1;
+    this->getAnimationComponent()->setState("GunCharge1");
 }
 
 void PlayerObject::handleDodging() {
@@ -632,11 +646,12 @@ void PlayerObject::handleRangeAttack() {
     this->getPhysicsComponent()->setVelocity(glm::vec2(0.0f, vel.y));
     
     if (isAttacking) {
-        // ++
-        isInRangeAttack = false;
-        isAttacking = false;
-        canMove = true;
-
+        if (!getAnimationComponent()->getCurrentAnimationState().isPlaying) {
+            isInRangeAttack = false;
+            isAttacking = false;
+            canMove = true;
+            getAnimationComponent()->setState("Idle");
+        }
         return;
     }
 }

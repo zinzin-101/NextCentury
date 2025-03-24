@@ -1,23 +1,24 @@
-#include "Zealot.h"
+#include "BlightFlame.h"
 #include "Random.h"
 
-Zealot::Zealot(EnemyInfo& enemyinfo) : EnemyObject(enemyinfo) {
-	cout << attackCooldown << endl;
+BlightFlame::BlightFlame(EnemyInfo& enemyinfo) : EnemyObject(enemyinfo) {
+	
 }
-void Zealot::start(list<DrawableObject*>& objectsList) {
+void BlightFlame::start(list<DrawableObject*>& objectsList) {
 	//setTexture("../Resource/Texture/incineratorSizeFlip.png");
-	setTexture("../Resource/Texture/Zealotplaceholder3.png");
+	setTexture("../Resource/Texture/BlightFlameplaceholder.png");
 	//initAnimation(6, 2);
-	initAnimation(5, 6);
+	initAnimation(6, 6);
 	targetEntity = nullptr;
 	//getAnimationComponent()->addState("Idle", 0, 6);
 	//getAnimationComponent()->addState("Moving", 1, 5);
 	//getAnimationComponent()->addState("Attacking", 1, 5);
 	getAnimationComponent()->addState("Idle", 0, 0, 6, true);
 	getAnimationComponent()->addState("Moving", 1, 0, 5, true);
-	getAnimationComponent()->addState("Attack1", 2, 0, 6, false);
-	getAnimationComponent()->addState("Attack2", 3, 0, 6, false);
-	getAnimationComponent()->addState("Stunned", 4, 0, 3, true);
+	getAnimationComponent()->addState("WindUp", 2, 0, 4, false);
+	getAnimationComponent()->addState("Attack", 3, 0, 2, true);
+	getAnimationComponent()->addState("WindDown", 4, 0, 4, false);
+	getAnimationComponent()->addState("Stunned", 5, 0, 3, true);
 	getAnimationComponent()->setState("Idle");
 	attackHitbox = new DamageCollider<PlayerObject>(this, damage, -1);
 	attackHitbox->setActive(false);
@@ -27,7 +28,7 @@ void Zealot::start(list<DrawableObject*>& objectsList) {
 	objectsList.emplace_back(attackHitbox);
 }
 
-void Zealot::updateState() {
+void BlightFlame::updateState() {
 	State prevState = currentState;
 	float dt = GameEngine::getInstance()->getTime()->getDeltaTime();
 
@@ -38,7 +39,9 @@ void Zealot::updateState() {
 
 	if (prevState == State::ATTACKING && attackCooldownTimer <= 0.0f) {
 		Animation::State animState = getAnimationComponent()->getCurrentAnimationState();
-		if (animState.name == "Attack1" && animState.isPlaying || animState.name == "Attack2" && animState.isPlaying) {
+		if (animState.name == "WindUp" && animState.isPlaying ||
+			animState.name == "Attack" && animState.isPlaying ||
+			animState.name == "WindDown" && animState.isPlaying) {
 			return;
 		}
 	}
@@ -64,7 +67,7 @@ void Zealot::updateState() {
 	isFacingRight = this->getTransform().getPosition().x < targetEntity->getTransform().getPosition().x;
 }
 
-void Zealot::updateBehavior(list<DrawableObject*>& objectsList) {
+void BlightFlame::updateBehavior(list<DrawableObject*>& objectsList) {
 	/// testing ///
 	emitter->update(objectsList);
 	///
@@ -96,24 +99,23 @@ void Zealot::updateBehavior(list<DrawableObject*>& objectsList) {
 		break;
 
 	case ATTACKING: {
-		if (currentAttack == Variation1) {
-			getAnimationComponent()->setState("Attack1");
+		Animation::State currAnim = getAnimationComponent()->getCurrentAnimationState();
+		if (currAnim.name == "Idle" || currAnim.name == "Moving" || currAnim.name == "Stunned") {
+			getAnimationComponent()->setState("WindUp");
 		}
-		else {
-			getAnimationComponent()->setState("Attack2");
-		}
-
-		int currentAnimFrame = getAnimationComponent()->getCurrentFrame();
-
-		if (currentAnimFrame == attackFrameStart + 1) {
+		if (currAnim.name == "WindUp" && !currAnim.isPlaying) {
+			flameTimeKeep = flameTime;
 			startAttack();
-			break;
+			getAnimationComponent()->setState("Attack");
 		}
-
-		if (currentAnimFrame == attackFrameEnd + 1) {
-			endAttack();
-			//cout << attackCooldownTimer << endl;
-			break;
+		if (currAnim.name == "Attack") {
+			if (flameTimeKeep > 0) {
+				flameTimeKeep -= dt;
+			}
+			else {
+				endAttack();
+				getAnimationComponent()->setState("WindDown");
+			}
 		}
 		break;
 	}
@@ -138,7 +140,7 @@ void Zealot::updateBehavior(list<DrawableObject*>& objectsList) {
 	}
 }
 
-void Zealot::moveTowardsTarget() {
+void BlightFlame::moveTowardsTarget() {
 	glm::vec3 targetPos = targetEntity->getTransform().getPosition();
 
 	glm::vec3 currentPos = this->transform.getPosition();
@@ -167,24 +169,11 @@ void Zealot::moveTowardsTarget() {
 	//cout << "grounded: " << grounded << endl;
 }
 
-void Zealot::startAttack() {
+void BlightFlame::startAttack() {
 	attackHitbox->trigger(transform.getPosition());
 	attackHitbox->setCanDecreaseTime(false);
 }
 
-void Zealot::endAttack() {
-	if (currentAttack == Variation1) {
-		if (Random::Float() <= 0.3f) {
-			currentAttack = Variation2;
-			cout << "attack2" << endl;
-		}
-		else {
-			attackCooldownTimer = attackCooldown;
-		}
-	}
-	else {
-		currentAttack = Variation1;
-		attackCooldownTimer = attackCooldown;
-	}
+void BlightFlame::endAttack() {
 	attackHitbox->setActive(false);
 }

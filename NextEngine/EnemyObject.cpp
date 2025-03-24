@@ -13,7 +13,8 @@ EnemyObject::EnemyObject(EnemyInfo& enemyInfo) : LivingEntity(enemyInfo.name, en
 	addColliderComponent();
 	addPhysicsComponent();
 
-
+	this->stunnedTime = 1.0f;
+	this->currentStunnedTime = 0;
 	//attackHitbox = new SimpleObject();
 	//attackHitbox->setColor(1.0f, 0.0f, 0.0f); // Red color for debugging
 	//attackHitbox->getTransform().setScale(glm::vec3(1.0f, 1.0f, 0.0f)); // Adjust size as needed
@@ -46,6 +47,9 @@ EnemyObject::~EnemyObject() {
 }
 
 void EnemyObject::setCurrentState(State state) {
+	if (state == STUNNED) {
+		currentStunnedTime = stunnedTime;
+	}
 	currentState = state;
 }
 
@@ -176,6 +180,11 @@ void EnemyObject::start(list<DrawableObject*>& objectsList) {
 
 void EnemyObject::updateState() {
 	State prevState = currentState;
+	float dt = GameEngine::getInstance()->getTime()->getDeltaTime();
+
+	if (currentState == State::STUNNED) {
+		return;
+	}
 
 	if (prevState == State::ATTACKING) {
 		Animation::State animState = getAnimationComponent()->getCurrentAnimationState();
@@ -236,11 +245,11 @@ void EnemyObject::updateBehavior(list<DrawableObject*>& objectsList) {
 			}
 			break;
 
-		case ATTACKING:
+		case ATTACKING: {
 			getAnimationComponent()->setState("Attacking");
-			
+
 			int currentAnimFrame = getAnimationComponent()->getCurrentFrame();
-			
+
 			if (currentAnimFrame == attackFrameStart + 1) {
 				startAttack();
 				break;
@@ -251,6 +260,19 @@ void EnemyObject::updateBehavior(list<DrawableObject*>& objectsList) {
 				break;
 			}
 
+			break;
+		}
+		case STUNNED:
+			cout << "stun" << endl;
+			if (currentStunnedTime > 0) {
+				currentStunnedTime -= dt;
+			}
+			else {
+				currentState = IDLE;
+			}
+			if (currentStunnedTime < 0.6f) {
+				GameEngine::getInstance()->getRenderer()->getCamera()->shake = false;
+			}
 			break;
 	}
 

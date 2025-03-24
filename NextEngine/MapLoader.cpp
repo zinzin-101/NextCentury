@@ -10,7 +10,8 @@ MapLoader::ObjectProperty::ObjectProperty(ObjectType type, Transform transform, 
 	type(type), transform(transform), width(width), height(height) {}
 
 MapLoader::MapLoader() {
-	addEnemyType(EnemyType::ZEALOT, EnemyInfo("Zealot", 100, MovementInfo(10, 10), 5.0f, 2.0f, 0.2f, 1));
+	addEnemyType(EnemyType::ZEALOT, EnemyInfo("Zealot", 100, MovementInfo(3, 3), 5.0f, 2.0f, 1.0f, 1));
+	addEnemyType(EnemyType::BLIGHTFLAME, EnemyInfo("BlightFlame", 60, MovementInfo(2, 2), 7.0f, 4.0f, 1.0f, 1));
 }
 
 MapLoader::~MapLoader() {
@@ -256,6 +257,20 @@ void MapLoader::loadDataToScene(list<DrawableObject*>& objectList, PlayerObject*
 				obj = zealotObj;
 				break;
 			}
+			case ENEMY_BLIGHTFLAME: {
+				if (enemyTypeMap.count(EnemyType::BLIGHTFLAME) == 0) {
+					break;
+				}
+				cout << "enemy created " << enemyTypeMap[EnemyType::BLIGHTFLAME].name << endl;
+				BlightFlame* bfObj = new BlightFlame(enemyTypeMap[EnemyType::BLIGHTFLAME]);
+				bfObj->getTransform() = objProperty.transform * MAP_SCALE;
+				bfObj->getColliderComponent()->setDimension(1, 1);
+				//enemyObj->getDamageCollider()->setFollowOffset(glm::vec3(1.0f, -1.0f, 0)); ///////////
+				//enemyObj->getDamageCollider()->getTransform().scales(2);
+
+				obj = bfObj;
+				break;
+			}
 		}
 		if (obj != nullptr) {
 			objectList.emplace_back(obj);
@@ -356,6 +371,20 @@ void MapLoader::appendDataToScene(list<DrawableObject*>& objectList, PlayerObjec
 				//enemyObj->getDamageCollider()->getTransform().scales(2);
 
 				obj = zealotObj;
+				break;
+			}
+			case ENEMY_BLIGHTFLAME: {
+				if (enemyTypeMap.count(EnemyType::BLIGHTFLAME) == 0) {
+					break;
+				}
+				cout << "enemy created " << enemyTypeMap[EnemyType::BLIGHTFLAME].name << endl;
+				BlightFlame* bfObj = new BlightFlame(enemyTypeMap[EnemyType::BLIGHTFLAME]);
+				bfObj->getTransform() = objProperty.transform * MAP_SCALE;
+				bfObj->getColliderComponent()->setDimension(1, 1);
+				//enemyObj->getDamageCollider()->setFollowOffset(glm::vec3(1.0f, -1.0f, 0)); ///////////
+				//enemyObj->getDamageCollider()->getTransform().scales(2);
+
+				obj = bfObj;
 				break;
 			}
 		}
