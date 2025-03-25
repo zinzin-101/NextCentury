@@ -496,6 +496,10 @@ void Level::exportTransformData(std::list<DrawableObject*>& objectsList, std::st
         ColliderObject* colObj = dynamic_cast<ColliderObject*>(obj);
         LightSource* lightObj = dynamic_cast<LightSource*>(obj);
 
+        if (colObj == NULL && lightObj == NULL) {
+            continue;
+        }
+
         output << ((colObj != NULL) ? "ColliderObject," : "LightSource,");
         
         output << obj->getName() << ",";

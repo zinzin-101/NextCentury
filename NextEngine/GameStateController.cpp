@@ -30,10 +30,10 @@ void GameStateController::loadLevel() {
 	cout << gameStateCurr << endl;
 	switch (gameStateCurr) {
 		case GameState::GS_LEVEL1:
-			currentLevel = new LevelImgui();
+			currentLevel = new LevelUITest();
 			break;
 		case GameState::GS_LEVEL2:
-			currentLevel = new LevelUITest();
+			currentLevel = new LevelImgui();
 			break;
 		case GameState::GS_LEVEL3:
 			//cout << "in" << endl;

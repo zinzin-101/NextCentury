@@ -33,7 +33,7 @@ void Physics::setMass(float m) {
 }
 
 void Physics::addForce(glm::vec2 f) {
-	acceleration += f / mass;
+	force += f;
 }
 
 void Physics::addVelocity(glm::vec2 vel) {
@@ -63,16 +63,10 @@ void Physics::update(Transform& transform) {
 
 	float deltaTime = GameEngine::getInstance()->getTime()->getDeltaTime();
 
-	velocity += acceleration;
-	acceleration += -acceleration * drag;
-	force = mass * (velocity / deltaTime);
+	force *= drag;
 
-	//if (abs(force.x) < 0.05f) {
-	//	force.x = 0.0f;
-	//}
-	//if (abs(force.y) < 0.05f) {
-	//	force.y = 0.0f;
-	//}
+	acceleration = force / mass;
+	velocity += acceleration;
 
 	glm::vec3 velocityVec = glm::vec3(velocity.x, velocity.y, 0.0f);
 	//velocityVec *= CONST_DELTA_TIME; // for testing, change later
