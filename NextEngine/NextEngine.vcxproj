@@ -104,6 +104,7 @@
     <ClInclude Include="DrawableObject.h" />
     <ClInclude Include="EnemyInfo.h" />
     <ClInclude Include="EnemyObject.h" />
+    <ClInclude Include="FlameDamage.h" />
     <ClInclude Include="GameEngine.h" />
     <ClInclude Include="GameStateController.h" />
     <ClInclude Include="GameStateList.h" />
