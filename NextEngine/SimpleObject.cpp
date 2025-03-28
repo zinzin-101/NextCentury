@@ -30,7 +30,7 @@ void SimpleObject::render(glm::mat4 globalModelTransform) {
 	GLuint modelMatixId = GameEngine::getInstance()->getRenderer()->getModelMatrixAttrId();
 	GLuint colorId = GameEngine::getInstance()->getRenderer()->getColorUniformId();
 	GLuint renderModeId = GameEngine::getInstance()->getRenderer()->getModeUniformId();
-	GLfloat brightnessId = GameEngine::getInstance()->getRenderer()->getBrightnessUniformId();
+	GLuint brightnessId = GameEngine::getInstance()->getRenderer()->getBrightnessUniformId();
 
 
 	if (modelMatixId == -1) {

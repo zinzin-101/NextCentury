@@ -188,6 +188,7 @@ void DamageCollider<TargetEntityType>::render(glm::mat4 globalModelTransform) {
 	GLuint modelMatixId = GameEngine::getInstance()->getRenderer()->getModelMatrixAttrId();
 	GLuint renderModeId = GameEngine::getInstance()->getRenderer()->getModeUniformId();
 	GLuint colorId = GameEngine::getInstance()->getRenderer()->getColorUniformId();
+	GLuint brightnessId = GameEngine::getInstance()->getRenderer()->getBrightnessUniformId();
 
 	if (modelMatixId == -1) {
 		cout << "Error: Can't perform transformation " << endl;
@@ -216,6 +217,7 @@ void DamageCollider<TargetEntityType>::render(glm::mat4 globalModelTransform) {
 		glUniformMatrix4fv(modelMatixId, 1, GL_FALSE, glm::value_ptr(currentMatrix));
 		glUniform3f(colorId, 1, 0, 0);
 		glUniform1i(renderModeId, 0);
+		glUniform1f(brightnessId, 1.0f);
 		squareBorderMesh->render();
 	}
 }

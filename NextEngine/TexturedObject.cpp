@@ -34,8 +34,8 @@ void TexturedObject::render(glm::mat4 globalModelTransform) {
 	GLuint offsetYId = GameEngine::getInstance()->getRenderer()->getOffsetYUniformId();*/
 	GLuint scaleXId = GameEngine::getInstance()->getRenderer()->getScaleXUniformId();
 	GLuint scaleYId = GameEngine::getInstance()->getRenderer()->getScaleYUniformId();
-	GLint colorOverlayId = GameEngine::getInstance()->getRenderer()->getColorOverlayUniformId();
-	GLfloat brightnessId = GameEngine::getInstance()->getRenderer()->getBrightnessUniformId();
+	GLuint colorOverlayId = GameEngine::getInstance()->getRenderer()->getColorOverlayUniformId();
+	GLuint brightnessId = GameEngine::getInstance()->getRenderer()->getBrightnessUniformId();
 
 	if (modelMatixId == -1) {
 		cout << "Error: Can't perform transformation " << endl;

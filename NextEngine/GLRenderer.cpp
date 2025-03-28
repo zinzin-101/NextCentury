@@ -122,7 +122,7 @@ bool GLRenderer::initialize(string vertexShaderFile, string fragmentShaderFile) 
     }
 
     brightnessUniformId = glGetUniformLocation(gProgramId, "brightness");
-    if (colorOverlayUniformId == -1) {
+    if (brightnessUniformId == -1) {
         cout << "brightness is not a valid glsl uniform variable" << endl;
         return false;
     }

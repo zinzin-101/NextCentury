@@ -217,7 +217,7 @@ void DrawableObject::drawCollider() {
 	GLuint modelMatixId = GameEngine::getInstance()->getRenderer()->getModelMatrixAttrId();
 	GLuint renderModeId = GameEngine::getInstance()->getRenderer()->getModeUniformId();
 	GLuint colorId = GameEngine::getInstance()->getRenderer()->getColorUniformId();
-	GLfloat brightnessId = GameEngine::getInstance()->getRenderer()->getBrightnessUniformId();
+	GLuint brightnessId = GameEngine::getInstance()->getRenderer()->getBrightnessUniformId();
 
 
 	if (modelMatixId == -1) {

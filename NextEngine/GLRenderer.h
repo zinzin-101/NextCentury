@@ -29,7 +29,7 @@ protected:
     GLuint scaleXUniformId = -1;
     GLuint scaleYUniformId = -1;
     GLuint colorOverlayUniformId = -1;
-    GLfloat brightnessUniformId = -1;
+    GLuint brightnessUniformId = -1;
 
     GLuint gProgramId;
     int gPos2DLocation;

@@ -33,7 +33,7 @@ void GameStateController::loadLevel() {
 			currentLevel = new LevelUITest();
 			break;
 		case GameState::GS_LEVEL2:
-			currentLevel = new LevelImgui();
+			currentLevel = new LevelPrototypeNMMN();
 			break;
 		case GameState::GS_LEVEL3:
 			//cout << "in" << endl;
