@@ -381,6 +381,7 @@ void PlayerObject::rangeAttack(std::list<DrawableObject*>& objectsList) {
     objectsList.emplace_back(hitscan);
     rangeAttackCooldownRemaining = rangeAttackCooldown[currentRangeCharge];
     currentRangeCharge = PlayerRangeCharge::CHARGE_0;
+    rangeHeldDuration = 0.0f;
 }
 
 void PlayerObject::resetAttack() {
