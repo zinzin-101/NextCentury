@@ -90,5 +90,5 @@ class EnemyObject : public LivingEntity {
         ParticleSystem* getEmitter() { return emitter; };
         virtual void render(glm::mat4 globalModelTransform) { TexturedObject::render(glm::mat4()); emitter->render(glm::mat4()); };
 
-        ~EnemyObject();
+        virtual ~EnemyObject();
 };
