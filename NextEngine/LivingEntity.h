@@ -18,6 +18,7 @@ class LivingEntity : public TexturedObject {
         bool isDead;
         bool isStun; // for when any status that can cause a stun
         list<Status> statusList;
+        bool isAffectedByLighting;
 
     protected:
         bool isFacingRight;
@@ -70,6 +71,7 @@ class LivingEntity : public TexturedObject {
         void handleKnockback();
 
         void handleLighting(list<DrawableObject*>& objectsList);
+        void setAffectedByLighting(bool value);
 
         virtual void update(list<DrawableObject*>& objectsList);
         virtual void updateBehavior(list<DrawableObject*>& objectsList) = 0;

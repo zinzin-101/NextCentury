@@ -10,16 +10,18 @@ LivingEntity::Status::Status(StatusType type, float cooldown) {
 }
 
 LivingEntity::LivingEntity() : health(100), isDead(false), isStun(false), canTakeDamage(true), isFacingRight(false),
-isDamageOverlayed(false), damageOverlayTimeRemaining(0.0f), knockbackDurationRemaining(0.0f) {}
+isDamageOverlayed(false), damageOverlayTimeRemaining(0.0f), knockbackDurationRemaining(0.0f), isAffectedByLighting(false) {}
 
 LivingEntity::LivingEntity(int hp) : health(hp), isDead(false), isStun(false), canTakeDamage(true), isFacingRight(false),
-isDamageOverlayed(false), damageOverlayTimeRemaining(0.0f), isInKnockback(false), knockbackDurationRemaining(0.0f) {}
+isDamageOverlayed(false), damageOverlayTimeRemaining(0.0f), isInKnockback(false), knockbackDurationRemaining(0.0f), isAffectedByLighting(false) {}
 
 LivingEntity::LivingEntity(std::string name) : TexturedObject(name), health(100), isDead(false), isStun(false), canTakeDamage(true),
-isFacingRight(false), isDamageOverlayed(false), damageOverlayTimeRemaining(0.0f), isInKnockback(false), knockbackDurationRemaining(0.0f) {}
+isFacingRight(false), isDamageOverlayed(false), damageOverlayTimeRemaining(0.0f), isInKnockback(false), knockbackDurationRemaining(0.0f), 
+isAffectedByLighting(false) {}
 
 LivingEntity::LivingEntity(std::string name, int hp) : TexturedObject(name), health(hp), isDead(false), isStun(false), canTakeDamage(true),
-isFacingRight(false), isDamageOverlayed(false), damageOverlayTimeRemaining(0.0f), isInKnockback(false), knockbackDurationRemaining(0.0f) {}
+isFacingRight(false), isDamageOverlayed(false), damageOverlayTimeRemaining(0.0f), isInKnockback(false), knockbackDurationRemaining(0.0f), 
+isAffectedByLighting(false) {}
 
 
 void LivingEntity::setHealth(int hp) {
@@ -185,6 +187,10 @@ void LivingEntity::handleLighting(std::list<DrawableObject*>& objectsList) {
     this->renderBrightness = LightSource::normalizeBrightness(totalBrightness / static_cast<float>(numOfLight));
 }
 
+void LivingEntity::setAffectedByLighting(bool value) {
+    this->isAffectedByLighting = value;
+}
+
 void LivingEntity::knockback(glm::vec2 velocityDirection, float duration) {
     if (isInKnockback) {
         return;
@@ -231,7 +237,10 @@ void LivingEntity::update(list<DrawableObject*>& objectsList) {
 
     DrawableObject::update(objectsList);
 
-    handleLighting(objectsList);
+    if (isAffectedByLighting) {
+        handleLighting(objectsList);
+    }
+
     handleDamageOverlay();
 
     glm::vec3 currentScale = this->transform.getScale();
