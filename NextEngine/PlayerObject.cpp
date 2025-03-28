@@ -689,6 +689,7 @@ void PlayerObject::handleParryAttack() {
     int currentFrame = currentState.currentFrame;
 
     if (currentFrame < parryFrame.startAttackFrame + 1) {
+        this->setCanTakeDamage(false);
         return;
     }
 
@@ -699,6 +700,7 @@ void PlayerObject::handleParryAttack() {
 
     if (currentFrame == parryFrame.allowNextComboFrame + 1) {
         endMeleeAttack();
+        this->setCanTakeDamage(true);
         attackCooldownRemaining = PlayerStat::ATTACK_COOLDOWN;
         return;
     }
