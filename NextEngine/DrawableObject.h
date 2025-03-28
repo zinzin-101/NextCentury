@@ -60,7 +60,7 @@ class DrawableObject {
 		void setDrawCollider(bool value);
 		virtual void drawCollider();
 
-		void setActive(bool value);
+		virtual void setActive(bool value);
 		
 		bool getIsActive() const;
 		bool getCanDrawCollider() const;
