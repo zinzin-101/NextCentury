@@ -1,8 +1,9 @@
 #include "BlightFlame.h"
+#include "FlameDamage.h"
 #include "Random.h"
 
 BlightFlame::BlightFlame(EnemyInfo& enemyinfo) : EnemyObject(enemyinfo) {
-	
+	flameHitbox = nullptr;
 }
 void BlightFlame::start(list<DrawableObject*>& objectsList) {
 	//setTexture("../Resource/Texture/incineratorSizeFlip.png");
@@ -20,12 +21,29 @@ void BlightFlame::start(list<DrawableObject*>& objectsList) {
 	getAnimationComponent()->addState("WindDown", 4, 0, 4, false);
 	getAnimationComponent()->addState("Stunned", 5, 0, 3, true);
 	getAnimationComponent()->setState("Idle");
-	attackHitbox = new DamageCollider<PlayerObject>(this, damage, -1);
-	attackHitbox->setActive(false);
-	attackHitbox->setFollowOwner(true);
-	attackHitbox->setFollowOffset(glm::vec3(0.5f, 0, 0));
-	attackHitbox->getColliderComponent()->setWidth(1.5f);
-	objectsList.emplace_back(attackHitbox);
+	attackHitbox = nullptr;
+	flameHitbox = new FlameDamage<PlayerObject>(this, damage, 0.2f);
+	flameHitbox->setActive(false);
+	flameHitbox->setFollowOwner(true);
+	flameHitbox->setFollowOffset(glm::vec3(0.5f, 0, 0));
+	flameHitbox->getColliderComponent()->setWidth(1.5f);
+	objectsList.emplace_back(flameHitbox);
+}
+
+BlightFlame::~BlightFlame() {
+	if (flameHitbox != nullptr) {
+		destroyObject(flameHitbox);
+	}
+}
+
+void BlightFlame::setDamage(int damage) {
+	if (flameHitbox != nullptr) {
+		flameHitbox->setDamage(damage);
+	}
+}
+
+FlameDamage<PlayerObject>* BlightFlame::getFlameCollider() const {
+	return flameHitbox;
 }
 
 void BlightFlame::updateState() {
@@ -33,7 +51,7 @@ void BlightFlame::updateState() {
 	float dt = GameEngine::getInstance()->getTime()->getDeltaTime();
 
 	if (currentState == State::STUNNED) {
-		attackHitbox->setActive(false);
+		flameHitbox->setActive(false);
 		return;
 	}
 
@@ -174,10 +192,9 @@ void BlightFlame::moveTowardsTarget() {
 }
 
 void BlightFlame::startAttack() {
-	attackHitbox->trigger(transform.getPosition());
-	attackHitbox->setCanDecreaseTime(false);
+	flameHitbox->trigger(transform.getPosition());
 }
 
 void BlightFlame::endAttack() {
-	attackHitbox->setActive(false);
+	flameHitbox->setActive(false);
 }

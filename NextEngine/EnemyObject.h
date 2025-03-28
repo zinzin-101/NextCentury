@@ -73,7 +73,7 @@ class EnemyObject : public LivingEntity {
         void setMovementInfo(MovementInfo movementInfo);
         void setAggroRange(float range);
         void setAttackRange(float range);
-        void setDamage(int damage);
+        virtual void setDamage(int damage);
         float getAggroRange() const;
         float getAttackRange() const;
 

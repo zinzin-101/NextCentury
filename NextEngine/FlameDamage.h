@@ -42,16 +42,10 @@ public:
 
 template <class TargetEntityType>
 void FlameDamage<TargetEntityType>::onCollisionStay(Collider* col) {
-	if (delayTimer <= 0.0f) {
-		
-		DrawableObject* obj = collider->getObject();
-		TargetEntityType* entity = dynamic_cast<TargetEntityType*>(obj);
-
-		if (entity != NULL) {
-			entity->takeDamage(damage);
-		}
-
-		delayTimer = delayBetweenDamage;
+	DrawableObject* obj = col->getObject();
+	TargetEntityType* entity = dynamic_cast<TargetEntityType*>(obj);
+	if (entity != NULL) {
+		entity->takeDamage(damage);
 	}
 }
 
@@ -81,7 +75,7 @@ void FlameDamage<TargetEntityType>::update(std::list<DrawableObject*>& objectsLi
 		delayTimer -= dt;
 	}
 
-	std::cout << "delay timer " << delayTimer << std::endl;
+	//std::cout << "delay timer " << delayTimer << std::endl;
 }
 
 template <class TargetEntityType>

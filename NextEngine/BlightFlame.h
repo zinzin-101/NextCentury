@@ -1,20 +1,31 @@
 #pragma once
 #include "EnemyObject.h"
 
-class BlightFlame : public EnemyObject {
-protected:
+template <class T>
+class FlameDamage;
 
+class BlightFlame : public EnemyObject {
+	private:
+		FlameDamage<PlayerObject>* flameHitbox;
+
+protected:
 	float flameTime = 1.5f;
 	float flameTimeKeep = 0;
 
-	void moveTowardsTarget();
-	void startAttack();
-	void endAttack();
+	virtual void moveTowardsTarget();
+	virtual void startAttack();
+	virtual void endAttack();
 
 public:
 	BlightFlame(EnemyInfo& enemyinfo);
-	void start(list<DrawableObject*>& objectsList);
-	void updateState();
-	void updateBehavior(list<DrawableObject*>& objectlist);
-	void render(glm::mat4 globalModelTransform) { TexturedObject::render(glm::mat4()); emitter->render(glm::mat4()); };
+	virtual ~BlightFlame();
+
+	virtual void setDamage(int damage);
+
+	virtual void start(list<DrawableObject*>& objectsList);
+	virtual void updateState();
+	virtual void updateBehavior(list<DrawableObject*>& objectlist);
+	virtual void render(glm::mat4 globalModelTransform) { TexturedObject::render(glm::mat4()); emitter->render(glm::mat4()); };
+
+	FlameDamage<PlayerObject>* getFlameCollider() const;
 };

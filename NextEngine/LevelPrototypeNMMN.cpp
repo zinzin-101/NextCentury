@@ -1,8 +1,11 @@
+#include "BlightFlame.h"
 #include "CollisionHandler.h"
-#include "EnemyObject.h"
-#include "RayObject.h"
-#include "LevelPrototypeNMMN.h"
 #include "DamageCollider.h"
+#include "EnemyObject.h"
+#include "FlameDamage.h"
+#include "LevelPrototypeNMMN.h"
+#include "RayObject.h"
+#include "Zealot.h"
 
 static ostream& operator<<(ostream& out, glm::vec3 pos);
 
@@ -79,9 +82,15 @@ void LevelPrototypeNMMN::levelInit() {
     for (DrawableObject* obj : objectsList) {
         cout << obj->getName() << endl;
         EnemyObject* enemy = dynamic_cast<EnemyObject*>(obj);
-        if (enemy != NULL) {
+        BlightFlame* bf = dynamic_cast<BlightFlame*>(obj);
+        
+        if (bf != NULL) {
+            bf->setDamage(10);
+        }
+        else if (enemy != NULL) {
             enemy->setDamage(10);
         }
+        
     }
 
     /* healthBar = new SimpleObject();
@@ -113,8 +122,8 @@ void LevelPrototypeNMMN::levelInit() {
                 enemy->getTransform().setScale(enemy->getTransform().getScale().x * 1.5f, enemy->getTransform().getScale().y);
                 enemy->getColliderComponent()->getTransform().translate(0.0f, -1.0f);
                 enemy->getColliderComponent()->setDimension(0.5f, 0.5f);
-                enemy->getDamageCollider()->setFollowOffset(glm::vec3(1.0f, -1.0f, 0));
-                enemy->getDamageCollider()->getTransform().scales(2);
+                bf->getFlameCollider()->setFollowOffset(glm::vec3(1.0f, -1.0f, 0));
+                bf->getFlameCollider()->getTransform().scales(2);
             }
 
         }

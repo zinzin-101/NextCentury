@@ -70,6 +70,10 @@ void EnemyObject::setAttackRange(float range) {
 }
 
 void EnemyObject::setDamage(int damage) {
+	if (attackHitbox == nullptr) {
+		return;
+	}
+
 	this->damage = damage;
 	attackHitbox->setDamage(this->damage);
 }
