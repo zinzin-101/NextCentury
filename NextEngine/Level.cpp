@@ -398,6 +398,10 @@ void Level::drawImGui(std::list<DrawableObject*>& objectList) {
                 bool isGravityEnabled = obj->getPhysicsComponent()->isGravityEnable();
                 ImGui::Checkbox("Enable Gravity", &isGravityEnabled);
                 obj->getPhysicsComponent()->setEnableGravity(isGravityEnabled);
+
+                if (ImGui::Button("Reset Velocity")) {
+                    obj->getPhysicsComponent()->setVelocity(glm::vec2());
+                }
             }
 
             LightSource* light = dynamic_cast<LightSource*>(obj);
