@@ -35,7 +35,7 @@ namespace PlayerStat {
     constexpr float RANGE_ATTACK_COOLDOWN_1 = 2.0f;
     constexpr float RANGE_ATTACK_COOLDOWN_2 = 3.0f;
     constexpr float RANGE_ATTACK_COOLDOWN_3 = 4.0f;
-    constexpr float RANGE_ATTACK_DISTANCE = 2.0f;
+    constexpr float RANGE_ATTACK_DISTANCE = 5.0f;
     constexpr float RANGE_ATTACK_LIFESPAN = 0.5f;
 
     constexpr float MOVE_SPEED = 5.0f;
