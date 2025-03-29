@@ -242,6 +242,9 @@ void LevelPrototypeNMMN::handleKey(InputManager& input) {
     processHeldKey(input, SDLK_k);
     processHeldMouse(input, SDL_BUTTON_LEFT);
 
+    processHeldKey(input, SDLK_u);
+    processHeldMouse(input, SDL_BUTTON_MIDDLE);
+
     // add key that requires buffering here
     processKeyBuffer(input, SDLK_LSHIFT);
 
@@ -258,11 +261,13 @@ void LevelPrototypeNMMN::handleKey(InputManager& input) {
     if (input.getButtonDown(SDLK_f)) GameEngine::getInstance()->getRenderer()->toggleViewport();
     if (input.getButtonDown(SDLK_c)) player->getColliderComponent()->setTrigger(!player->getColliderComponent()->isTrigger());
     if (input.getButtonDown(SDLK_g)) viewMarker = !viewMarker;
-    if (input.getButtonDown(SDLK_r)) GameEngine::getInstance()->getStateController()->gameStateNext = GameState::GS_RESTART;
+    //if (input.getButtonDown(SDLK_r)) GameEngine::getInstance()->getStateController()->gameStateNext = GameState::GS_RESTART;
     //if (input.getButtonDown(SDLK_e)) GameEngine::getInstance()->getStateController()->gameStateNext = GameState::GS_LEVEL1;
-    if (input.getButtonDown(SDLK_e)) GameEngine::getInstance()->getStateController()->gameStateNext = (GameState)((GameEngine::getInstance()->getStateController()->gameStateCurr + 1) % 3);
+    //if (input.getButtonDown(SDLK_e)) GameEngine::getInstance()->getStateController()->gameStateNext = (GameState)((GameEngine::getInstance()->getStateController()->gameStateCurr + 1) % 3);
     if (input.getButton(SDLK_z)) GameEngine::getInstance()->getRenderer()->increaseZoomRatio(0.1f);
     if (input.getButton(SDLK_x)) GameEngine::getInstance()->getRenderer()->decreaseZoomRatio(0.1f);
+    // test knockback
+    if (input.getButton(SDLK_b)) player->knockback(glm::vec2(10, 25), 0.5f);
 
     /// Use processed key here ///
     if (keyHeldDuration[SDLK_k] < PlayerStat::DURATION_TO_START_HEAVY_ATTACK) {
@@ -293,6 +298,20 @@ void LevelPrototypeNMMN::handleKey(InputManager& input) {
         }
     }
 
+    if (input.getButtonUp(SDLK_u)) {
+        player->rangeAttack(objectsList);
+    }
+    else if (input.getButton(SDLK_u)) {
+        player->startRangeAttack(dt);
+    }
+
+    if (input.getMouseButtonUp(SDL_BUTTON_MIDDLE)) {
+        player->rangeAttack(objectsList);
+    }
+    else if (input.getMouseButton(SDL_BUTTON_MIDDLE)) {
+        player->startRangeAttack(dt);
+    }
+
     if (keyBuffer[SDLK_LSHIFT] > 0 && player->getCanMove()) {
         clearKeyBuffer(SDLK_LSHIFT);
 
@@ -302,33 +321,10 @@ void LevelPrototypeNMMN::handleKey(InputManager& input) {
         else if (input.getButton(SDLK_d)) {
             player->dodge(1.0f);
         }
-
-        player->dodge();
+        else {
+            player->dodge();
+        }
     }
-
-
-    //cout << dt << endl;
-    // 
-    //switch (key) {
-    //case ' ': player->jump(); break;
-    //case 'a': player->move(glm::vec2(-1, 0)); break;
-    //case 'd': player->move(glm::vec2(1, 0)); break;
-    //case '!': player->dodge(); break;
-    //case '9': marker->getTransform().translate(glm::vec3(0, 10, 0) * dt); break;
-    //case '0': marker->getTransform().translate(glm::vec3(0, -10, 0) * dt); break;
-    //case '-': marker->getTransform().translate(glm::vec3(-10, 0, 0) * dt); break;
-    //case '=': marker->getTransform().translate(glm::vec3(10, 0, 0) * dt); break;
-    //case 'f': GameEngine::getInstance()->getRenderer()->toggleViewport(); break;
-    //case 'c': player->getColliderComponent()->setTrigger(!player->getColliderComponent()->isTrigger()); break;
-    ////case 'c': DrawableObject::destroyObject(marker); break;
-    //case 'g': viewMarker = !viewMarker; break;
-    //case 'r': GameEngine::getInstance()->getStateController()->gameStateNext = GameState::GS_RESTART; ; break;
-    //case 'e': GameEngine::getInstance()->getStateController()->gameStateNext = GameState::GS_LEVEL1; ; break;
-    //case 'z': GameEngine::getInstance()->getRenderer()->increaseZoomRatio(0.1f); break;
-    //case 'x': GameEngine::getInstance()->getRenderer()->decreaseZoomRatio(0.1f); break;
-    //case 'k': player->attack(); break;
-    //}
-
 }
 
 void LevelPrototypeNMMN::handleMouse(int type, int x, int y) {
