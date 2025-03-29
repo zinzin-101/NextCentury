@@ -136,7 +136,7 @@ void PlayerObject::jump() {
 }
 
 void PlayerObject::dodge() {
-    if (!canDodge || !canMove) {
+    if (!canDodge || !canMove || isJumping) {
         return;
     }
 
@@ -245,7 +245,7 @@ void PlayerObject::updateBehavior(list<DrawableObject*>& objectsList) {
 }
 
 void PlayerObject::normalAttack() {
-    if (isAttacking || isParrying || isDodging) {
+    if (isAttacking || isParrying || isDodging || isJumping) {
         return;
     }
 
@@ -322,7 +322,7 @@ void PlayerObject::heavyAttack() {
 }
 
 void PlayerObject::parryAttack() {
-    if (isParrying || isDodging || isAttacking || isInHeavyAttack) {
+    if (isParrying || isDodging || isAttacking || isInHeavyAttack || isJumping) {
         return;
     }
 
@@ -421,7 +421,7 @@ void PlayerObject::endMeleeAttack() {
 }
 
 void PlayerObject::startHeavyAttack() {
-    if (isAttacking || isParrying || isDodging) {
+    if (isAttacking || isParrying || isDodging || isJumping) {
         return;
     }
 
@@ -439,7 +439,7 @@ void PlayerObject::startHeavyAttack() {
 }
 
 void PlayerObject::startRangeAttack(float dt) {
-    if (isAttacking || isParrying || isDodging) {
+    if (isAttacking || isParrying || isDodging || isJumping) {
         return;
     }
 
