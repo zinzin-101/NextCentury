@@ -10,6 +10,7 @@ class TextObject : virtual public DrawableObject
 {
 private:
 	unsigned int texture;
+	string text;
 
 public:
 	TextObject();
@@ -19,4 +20,5 @@ public:
 	void loadText(string text, SDL_Color textColor, int fontSize);
 	static void InitSDL();
 	static void cleanSDL();
+	string getText();
 };

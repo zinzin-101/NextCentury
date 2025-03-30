@@ -71,6 +71,7 @@
       <Filter>Imgui</Filter>
     </ClCompile>
     <ClCompile Include="Wailer.cpp" />
+    <ClCompile Include="Dialogue.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
@@ -159,6 +160,7 @@
     </ClInclude>
     <ClInclude Include="DebugMode.h" />
     <ClInclude Include="Wailer.h" />
+    <ClInclude Include="Dialogue.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Resource\Shader\fragment.shd" />

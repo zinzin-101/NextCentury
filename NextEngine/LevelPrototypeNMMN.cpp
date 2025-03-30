@@ -3,6 +3,7 @@
 #include "RayObject.h"
 #include "LevelPrototypeNMMN.h"
 #include "DamageCollider.h"
+#include "Dialogue.h"
 
 static ostream& operator<<(ostream& out, glm::vec3 pos);
 
@@ -141,9 +142,21 @@ void LevelPrototypeNMMN::levelInit() {
     player->getDamageCollider()->setFollowOffset(glm::vec3(1.0f, -1.0f, 0));
     player->getDamageCollider()->getTransform().scales(2);
 
+    Dialogue* d1 = new Dialogue(24);
+    d1->getTransform().setPosition(glm::vec3(5.0f, 5.0f, 0.0f));
+    d1->addSentence("This is sentence1");
+    d1->addSentence("This is \nsentence2");
+    UIObjects.emplace_back(d1);
+
     GameEngine::getInstance()->getRenderer()->toggleViewport();
     GameEngine::getInstance()->getRenderer()->getCamera()->setTarget(player);
     GameEngine::getInstance()->getRenderer()->getCamera()->setOffset(glm::vec3(0.0f, 1.0f, 0.0f)); // offset X rn should be 0 (or else camera deadzone won't work)
+
+    //Dialogue d2(36);
+    //d1.getTransform().setPosition(glm::vec3(2.0f, 5.0f, 0.0f));
+    //d1.addSentence("This is sentence11");
+    //d1.addSentence("This is \nsentence22");
+    //UIObjects.emplace_back(d2);
 }
 
 void LevelPrototypeNMMN::levelUpdate() {
@@ -205,7 +218,21 @@ void LevelPrototypeNMMN::levelUpdate() {
 }
 
 void LevelPrototypeNMMN::levelDraw() {
-    GameEngine::getInstance()->render(objectsList);
+    std::list<DrawableObject*> renderList;
+    GameEngine::getInstance()->setDrawArea(-8, 8, -4.5f, 4.5f);
+    for (DrawableObject* obj : objectsList) {
+        renderList.push_back(obj);
+    }
+    GameEngine::getInstance()->render(renderList);
+    renderList.clear();
+    GameEngine::getInstance()->setDrawArea(-960, 960, -540, 540);
+    for (DrawableObject* obj : UIObjects) {
+        renderList.push_back(obj);
+    }
+    GameEngine::getInstance()->render(renderList, false);
+    GameEngine::getInstance()->setDrawArea(-8, 8, -4.5f, 4.5f);
+
+    //GameEngine::getInstance()->render(objectsList);
 
     #ifdef DEBUG_MODE_ON
     drawImGui(objectsList);
@@ -254,6 +281,7 @@ void LevelPrototypeNMMN::handleKey(InputManager& input) {
     if (input.getButtonDown(SDLK_e)) GameEngine::getInstance()->getStateController()->gameStateNext = (GameState)((GameEngine::getInstance()->getStateController()->gameStateCurr + 1) % 3);
     if (input.getButton(SDLK_z)) GameEngine::getInstance()->getRenderer()->increaseZoomRatio(0.1f);
     if (input.getButton(SDLK_x)) GameEngine::getInstance()->getRenderer()->decreaseZoomRatio(0.1f);
+    //if (input.getButtonDown(SDLK_n)) dialogueObjects.front().nextSentence();
 
     /// Use processed key here ///
     if (keyHeldDuration[SDLK_k] < PlayerStat::DURATION_TO_START_HEAVY_ATTACK) {

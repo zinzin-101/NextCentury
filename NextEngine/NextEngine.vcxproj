@@ -38,6 +38,7 @@
     <ClCompile Include="Collider.cpp" />
     <ClCompile Include="ColliderObject.cpp" />
     <ClCompile Include="CollisionHandler.cpp" />
+    <ClCompile Include="Dialogue.cpp" />
     <ClCompile Include="DrawableObject.cpp" />
     <ClCompile Include="EnemyObject.cpp" />
     <ClCompile Include="GameEngine.cpp" />
@@ -100,6 +101,7 @@
     <ClInclude Include="DamageCollider.h" />
     <ClInclude Include="DamageParticleObject.h" />
     <ClInclude Include="DebugMode.h" />
+    <ClInclude Include="Dialogue.h" />
     <ClInclude Include="DrawableObject.h" />
     <ClInclude Include="EnemyInfo.h" />
     <ClInclude Include="EnemyObject.h" />
