@@ -43,6 +43,7 @@ class DamageCollider : public ColliderObject {
 		LivingEntity* getOwner() const;
 
 		virtual void render(glm::mat4 globalModelTransform);
+		virtual void drawCollider();
 };
 
 template <class TargetEntityType>
@@ -220,4 +221,9 @@ void DamageCollider<TargetEntityType>::render(glm::mat4 globalModelTransform) {
 		glUniform1f(brightnessId, 1.0f);
 		squareBorderMesh->render();
 	}
+}
+
+template <class TargetEntityType>
+void DamageCollider<TargetEntityType>::drawCollider() {
+	this->render(glm::mat4());
 }

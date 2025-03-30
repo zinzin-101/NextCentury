@@ -172,23 +172,6 @@ void LevelPrototypeNMMN::levelUpdate() {
     float offsetX = (2.0f - healthBarWidth) / 2.0f;
     //healthBar->getTransform().setPosition(glm::vec3(player->getTransform().getPosition().x - offsetX, player->getTransform().getPosition().y + 0.7f, 0.0f));
 
-    // Handle player's attack hitbox
-    //if (player->isHitboxActive()) {
-    //    for (DrawableObject* obj : objectsList) {
-    //        // Attempt to cast the DrawableObject to EnemyObject
-    //        EnemyObject* enemy = dynamic_cast<EnemyObject*>(obj);
-    //        if (enemy != nullptr) { // Only proceed if the cast succeeds
-    //            if (player->getAttackHitbox() != nullptr) {
-    //                if (checkCollision(player->getAttackHitbox()->getColliderComponent(),
-    //                    player->getAttackHitbox()->getTransform(),
-    //                    enemy->getColliderComponent(),
-    //                    enemy->getTransform())) {
-    //                    enemy->takeDamage(player->getDamage());
-    //                }
-    //            }
-    //        }
-    //    }
-    //}
 
     // Update other objects
     for (auto it = objectsList.begin(); it != objectsList.end(); ) {
