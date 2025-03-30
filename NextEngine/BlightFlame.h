@@ -9,7 +9,7 @@ class BlightFlame : public EnemyObject {
 		FlameDamage<PlayerObject>* flameHitbox;
 
 protected:
-	float flameTime = 1.5f;
+	float flameTime = 3.0f;
 	float flameTimeKeep = 0;
 
 	virtual void moveTowardsTarget();

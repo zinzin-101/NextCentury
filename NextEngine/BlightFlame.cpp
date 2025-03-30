@@ -23,7 +23,7 @@ void BlightFlame::start(list<DrawableObject*>& objectsList) {
 	getAnimationComponent()->setState("Idle");
 	attackHitbox = nullptr;
 	flameHitbox = new FlameDamage<PlayerObject>(this, damage, 0.2f);
-	flameHitbox->setActive(false);
+	flameHitbox->DrawableObject::setActive(false);
 	flameHitbox->setFollowOwner(true);
 	flameHitbox->setFollowOffset(glm::vec3(0.5f, 0, 0));
 	flameHitbox->getColliderComponent()->setWidth(1.5f);
