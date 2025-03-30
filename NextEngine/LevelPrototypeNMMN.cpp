@@ -119,7 +119,7 @@ void LevelPrototypeNMMN::levelInit() {
             }
             if (bf != NULL) {
                 enemy->getTransform().scales(2);
-                enemy->getTransform().setScale(enemy->getTransform().getScale().x * 1.5f, enemy->getTransform().getScale().y);
+                //enemy->getTransform().setScale(enemy->getTransform().getScale().x * 1.5f, enemy->getTransform().getScale().y);
                 enemy->getColliderComponent()->getTransform().translate(0.0f, -1.0f);
                 enemy->getColliderComponent()->setDimension(0.5f, 0.5f);
                 bf->getFlameCollider()->setFollowOffset(glm::vec3(1.0f, -1.0f, 0));
@@ -153,6 +153,10 @@ void LevelPrototypeNMMN::levelInit() {
     GameEngine::getInstance()->getRenderer()->toggleViewport();
     GameEngine::getInstance()->getRenderer()->getCamera()->setTarget(player);
     GameEngine::getInstance()->getRenderer()->getCamera()->setOffset(glm::vec3(0.0f, 1.0f, 0.0f)); // offset X rn should be 0 (or else camera deadzone won't work)
+
+    flame = new FlameDamage<PlayerObject>(player, 1, 2);
+    flame->getTransform().setPosition(player->getTransform().getPosition());
+    objectsList.emplace_back(flame);
 }
 
 void LevelPrototypeNMMN::levelUpdate() {
@@ -267,7 +271,7 @@ void LevelPrototypeNMMN::handleKey(InputManager& input) {
     if (input.getButton(SDLK_z)) GameEngine::getInstance()->getRenderer()->increaseZoomRatio(0.1f);
     if (input.getButton(SDLK_x)) GameEngine::getInstance()->getRenderer()->decreaseZoomRatio(0.1f);
     // test knockback
-    if (input.getButton(SDLK_b)) player->knockback(glm::vec2(10, 25), 0.5f);
+    //if (input.getButton(SDLK_b)) player->knockback(glm::vec2(10, 25), 0.5f);
 
     /// Use processed key here ///
     if (keyHeldDuration[SDLK_k] < PlayerStat::DURATION_TO_START_HEAVY_ATTACK) {
@@ -324,6 +328,14 @@ void LevelPrototypeNMMN::handleKey(InputManager& input) {
         else {
             player->dodge();
         }
+    }
+
+    ///test
+    if (input.getButtonDown(SDLK_b)) {
+        flame->trigger(flame->getTransform().getPosition(), true);
+    }
+    if (input.getButtonDown(SDLK_n)) {
+        flame->setActive(false);
     }
 }
 

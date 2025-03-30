@@ -7,7 +7,7 @@ BlightFlame::BlightFlame(EnemyInfo& enemyinfo) : EnemyObject(enemyinfo) {
 }
 void BlightFlame::start(list<DrawableObject*>& objectsList) {
 	//setTexture("../Resource/Texture/incineratorSizeFlip.png");
-	setTexture("../Resource/Texture/BlightFlameplaceholder.png");
+	setTexture("../Resource/Texture/BlightFlameplaceholder2.png");
 	//initAnimation(6, 2);
 	initAnimation(6, 6);
 	targetEntity = nullptr;
@@ -192,7 +192,7 @@ void BlightFlame::moveTowardsTarget() {
 }
 
 void BlightFlame::startAttack() {
-	flameHitbox->trigger(transform.getPosition());
+	flameHitbox->trigger(transform.getPosition(), isFacingRight);
 }
 
 void BlightFlame::endAttack() {

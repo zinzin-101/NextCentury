@@ -181,14 +181,14 @@ Animation::State& Animation::getCurrentAnimationStateRef() {
 	return *currentState;
 }
 
-//Animation::State Animation::getAnimationState(string name) const {
-//	if (states.count(name) == 0) {
-//		std::cout << "State does not exist" << std::endl;
-//		return;
-//	}
-//
-//	return states[name];
-//}
+Animation::State Animation::getAnimationState(string name) {
+	if (states.count(name) == 0) {
+		std::cout << "State does not exist" << std::endl;
+		return State();
+	}
+
+	return states[name];
+}
 
 Animation::State& Animation::getAnimationStateRef(string name) {
 	if (states.count(name) == 0) {
