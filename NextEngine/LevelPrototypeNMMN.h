@@ -12,8 +12,6 @@ class LevelPrototypeNMMN : public Level {
         RayObject* ray;
         MapLoader mapLoader;
 
-        FlameDamage<PlayerObject>* flame;
-
         bool viewMarker;
 
 
