@@ -11,7 +11,7 @@ class LevelPrototypeNMMN : public Level {
         SimpleObject* marker;
         RayObject* ray;
         MapLoader mapLoader;
-
+        list<DrawableObject*> UIObjects;
         bool viewMarker;
 
 

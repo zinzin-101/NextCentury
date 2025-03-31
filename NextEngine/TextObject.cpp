@@ -87,7 +87,7 @@ void TextObject::loadText(string text, SDL_Color textColor, int fontSize)
 		cout << "Error: text :" << TTF_GetError() << endl;
 		return;
 	}
-	
+	this->text = text;
 }
 
 void TextObject::InitSDL() {
@@ -109,4 +109,8 @@ void TextObject::InitSDL() {
 void TextObject::cleanSDL() {
 	TTF_Quit();
 	SDL_Quit();
+}
+
+string TextObject::getText() {
+	return this->text;
 }
