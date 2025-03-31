@@ -64,6 +64,8 @@ void LevelPrototypeNMMN::levelInit() {
     mapLoader.readData("prototypemapNMMN.txt");
     mapLoader.appendDataToScene(objectsList, player);
 
+	mapLoader.offsetMapToCenter(objectsList);   
+
     ParallaxObject* Fog = new ParallaxObject(0.0f, 7.3f, 100.0f, false, player, true);
     Fog->setTexture("../Resource/Texture/OutskirtParallax/OSKT_P01_Fog.png");
     
