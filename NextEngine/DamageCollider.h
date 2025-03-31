@@ -111,9 +111,15 @@ void DamageCollider<TargetEntityType>::onTriggerEnter(Collider* collider) { // f
 
 				if (enemyObj != NULL) {
 					enemyObj->setCurrentState(enemyObj->STUNNED);
+					float parryDirection = (player->getTransform().getPosition().x < enemyObj->getTransform().getPosition().x) ? 1.0f : -1.0f;
 					for (int i = 0; i < 5; i++) {
-						ParticleProperties particleProps = ParticleProperties(enemyObj->getTransform().getPosition(), 20.0f * glm::vec2(Random::Float(), Random::Float()), glm::vec2(1.0f, 1.0f), glm::vec3(0.8f, 0, 0),
-							0.2f, 0.1f, 0.05f, 1.0f);
+						ParticleProperties particleProps = ParticleProperties(
+							enemyObj->getTransform().getPosition(),
+							20.0f * glm::vec2(parryDirection * Random::Float(), Random::Float()),
+							glm::vec2(-0.1f, 0.1f), 
+							glm::vec3(0.8f, 0, 0),
+							0.2f, 0.1f, 0.05f, 1.0f
+						);
 						enemyObj->getEmitter()->emit(particleProps);
 					}
 				}
