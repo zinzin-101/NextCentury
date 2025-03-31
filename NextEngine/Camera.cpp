@@ -46,7 +46,7 @@ void Camera::followTarget() {
         y = target->getTransform().getPosition().y;
     }
 
-    if (shake) {
+    if (isShaking) {
         x += Random::Float() - 0.5f;
         y += Random::Float() - 0.5f;
     }
@@ -106,4 +106,21 @@ void Camera::moveUp(float distance) {
 void Camera::moveDown(float distance) {
     position.y -= distance;
     //target.y -= distance;
+}
+
+void Camera::startShake(float duration) {
+    isShaking = true;
+    shakeDurationRemaining = duration;
+}
+
+void Camera::updateCamera() {
+    float dt = GameEngine::getInstance()->getTime()->getDeltaTime();
+    
+    if (shakeDurationRemaining > 0.0f && isShaking) {
+        shakeDurationRemaining -= dt;
+
+        if (shakeDurationRemaining <= 0.0f) {
+            isShaking = false;
+        }
+    }
 }

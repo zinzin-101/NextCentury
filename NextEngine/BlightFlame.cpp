@@ -151,9 +151,9 @@ void BlightFlame::updateBehavior(list<DrawableObject*>& objectsList) {
 		else {
 			currentState = IDLE;
 		}
-		if (currentStunnedTime < 0.6f) {
-			GameEngine::getInstance()->getRenderer()->getCamera()->shake = false;
-		}
+		//if (currentStunnedTime < 0.6f) {
+		//	GameEngine::getInstance()->getRenderer()->getCamera()->CanShake = false;
+		//}
 		break;
 	}
 

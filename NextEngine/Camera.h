@@ -16,9 +16,10 @@ private:
     glm::vec3 offset;
     //bool targetIsSet;
 
-public:
-    bool shake = false;
+    float shakeDurationRemaining;
+    bool isShaking;
 
+public:
     Camera();
     Camera(float fov, float aspect, float near, float far) {}
     void setPosition(const glm::vec3& pos);
@@ -34,4 +35,8 @@ public:
     void moveRight(float distance);
     void moveUp(float distance);
     void moveDown(float distance);
+
+    void startShake(float duration);
+
+    void updateCamera();
 };

@@ -334,6 +334,7 @@ void GLRenderer::updateCamera(const glm::vec3& playerPosition) {
     //camera->setPosition(glm::vec3(playerPosition.x + 1.0f, playerPosition.y + 1.0f, camera->getPosition().z));
     
     camera->followTarget();
+    camera->updateCamera();
     updateViewport();
     //if (isViewportEnabled) {
     //    

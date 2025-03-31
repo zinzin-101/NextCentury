@@ -25,6 +25,8 @@ void Zealot::start(list<DrawableObject*>& objectsList) {
 	attackHitbox->setFollowOffset(glm::vec3(0.5f, 0, 0));
 	attackHitbox->getColliderComponent()->setWidth(1.5f);
 	objectsList.emplace_back(attackHitbox);
+
+	stunnedTime = ZealotStat::STUN_DURATION;
 }
 
 void Zealot::updateState() {
@@ -127,9 +129,9 @@ void Zealot::updateBehavior(list<DrawableObject*>& objectsList) {
 		else {
 			currentState = IDLE;
 		}
-		if (currentStunnedTime < 0.6f) {
-			GameEngine::getInstance()->getRenderer()->getCamera()->shake = false;
-		}
+		//if (currentStunnedTime < 0.6f) {
+		//	GameEngine::getInstance()->getRenderer()->getCamera()->CanShake = false;
+		//}
 		break;
 	}
 

@@ -106,7 +106,7 @@ void DamageCollider<TargetEntityType>::onTriggerEnter(Collider* collider) { // f
 			if (player->getIsParrying()) {
 				// implement stun later
 				std::cout << owner->getName() << " got parried" << std::endl;
-				GameEngine::getInstance()->getRenderer()->getCamera()->shake = true;
+				GameEngine::getInstance()->getRenderer()->getCamera()->startShake(0.3f);
 				EnemyObject* enemyObj = dynamic_cast<EnemyObject*>(this->getOwner());
 
 				if (enemyObj != NULL) {
@@ -122,6 +122,7 @@ void DamageCollider<TargetEntityType>::onTriggerEnter(Collider* collider) { // f
 						);
 						enemyObj->getEmitter()->emit(particleProps);
 					}
+
 				}
 			}
 		}

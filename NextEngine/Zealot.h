@@ -1,6 +1,10 @@
 #pragma once
 #include "EnemyObject.h"
 
+namespace ZealotStat {
+	constexpr float STUN_DURATION = 2.0f;
+}
+
 class Zealot : public EnemyObject {
 protected:
 	enum AttackVariation {
@@ -18,5 +22,4 @@ public:
 	void start(list<DrawableObject*>& objectsList);
 	void updateState();
 	void updateBehavior(list<DrawableObject*>& objectlist);
-	void render(glm::mat4 globalModelTransform) { TexturedObject::render(glm::mat4()); emitter->render(glm::mat4()); };
 };
