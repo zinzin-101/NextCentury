@@ -38,11 +38,13 @@ void HitScanDamage<TargetEntity>::onCollisionEnter(Collider* collider) {
 			return;
 		}
 
+		glm::vec3 globalOrigin = this->getTransform().getPosition() + origin;
+
 		glm::vec3 entityPos = entity->getTransform().getPosition();
-		float newDistance = glm::length(entityPos - origin);
+		float newDistance = glm::length(entityPos - globalOrigin);
 
 		glm::vec3 lastClosestPos = closestEntity->getTransform().getPosition();
-		float oldDistance = glm::length(lastClosestPos - origin);
+		float oldDistance = glm::length(lastClosestPos - globalOrigin);
 
 		if (newDistance < oldDistance) {
 			closestEntity = entity;

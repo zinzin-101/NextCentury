@@ -439,7 +439,7 @@ void PlayerObject::startHeavyAttack() {
 }
 
 void PlayerObject::startRangeAttack(float dt) {
-    if (isAttacking || isParrying || isDodging || isJumping) {
+    if (isAttacking || isParrying || isDodging || isJumping || isInAttackState || isInHeavyAttack) {
         return;
     }
 

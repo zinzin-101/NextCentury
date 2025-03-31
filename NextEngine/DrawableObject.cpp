@@ -189,8 +189,6 @@ void DrawableObject::update(list<DrawableObject*>& objectsList) {
 			anim->updateCurrentState();
 		}
 	}
-
-	//updateBehavior();
 }
 
 void DrawableObject::setDrawCollider(bool value) {
