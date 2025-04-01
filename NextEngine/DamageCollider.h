@@ -93,8 +93,8 @@ void DamageCollider<TargetEntityType>::onCollisionEnter(Collider* collider) {
 		entity->takeDamage(damage);
 		//std::cout << entity->getName() << " took " << damage << " damage" << std::endl;
 		PlayerObject* player = dynamic_cast<PlayerObject*>(obj);
-		if (player != NULL) {
-			player->flinch(0.2f);
+		if (player != NULL && !player->getIsParrying()) {
+			player->flinch(0.5f);
 		}
 	}
 }

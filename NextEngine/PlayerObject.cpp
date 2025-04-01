@@ -402,8 +402,6 @@ void PlayerObject::resetAttack() {
 
     isParrying = false;
     isInRangeAttack = false;
-
-    flinchTimeRemaining = 0.0f;
 }
 
 void PlayerObject::flinch(float duration) {
@@ -413,6 +411,11 @@ void PlayerObject::flinch(float duration) {
 	vel.x = 0.0f;
 	this->getPhysicsComponent()->setVelocity(vel);
     moveDirection.x = 0.0f;
+    endMeleeAttack();
+
+    canChangeFacingDirection = false;
+    canMove = false;
+
     //+ start flinch animation
     this->getAnimationComponent()->setState("Idle");
 }
@@ -722,10 +725,15 @@ void PlayerObject::handleFlinch() {
     float dt = GameEngine::getInstance()->getTime()->getDeltaTime();
     flinchTimeRemaining -= dt;
 	canMove = false;
+
+    resetAttack();
+    endMeleeAttack();
+
     if (flinchTimeRemaining <= 0.0f) {
         //+ reset to idle animation
 		this->getAnimationComponent()->setState("Idle");
 		canMove = true;
+        canChangeFacingDirection = true;
         return;
     }
 }

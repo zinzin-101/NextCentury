@@ -20,7 +20,6 @@ void LevelPrototypeNMMN::levelLoad() {
 }
 
 void LevelPrototypeNMMN::levelInit() {
-	GameEngine::getInstance()->forceLoad(3.0f);
     //GameEngine::getInstance()->setDrawArea(-8.0f, 960.0f, -540.0f, 540.0f);
     EnemyInfo enemyInfo = EnemyInfo("EnemyNormal", 5, MovementInfo(3, 25), 30, 3.0f, 2.0f, 1.0f);
     mapLoader.addEnemyType(EnemyType::NORMAL, enemyInfo);
@@ -168,6 +167,8 @@ void LevelPrototypeNMMN::levelInit() {
     //d1.addSentence("This is sentence11");
     //d1.addSentence("This is \nsentence22");
     //UIObjects.emplace_back(d2);
+
+    GameEngine::getInstance()->freezeGameForSeconds(1.0f);
 }
 
 void LevelPrototypeNMMN::levelUpdate() {

@@ -42,7 +42,7 @@ public:
 	void setWindowHeight(int h);
 	void setSDLWindow(SDL_Window* window);
 	void setGlContext(SDL_GLContext* glContext);
-	void forceLoad(float duration);
+	void freezeGameForSeconds(float duration);
 
 	SDL_Window* getSDLWindow() const;
 	SDL_GLContext* getGLContextPtr() const;
