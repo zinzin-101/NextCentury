@@ -96,10 +96,9 @@ SDL_GLContext* GameEngine::getGLContextPtr() const{
 	return glContext;
 }
 
-void GameEngine::forceLoad(float duration) {
+void GameEngine::freezeGameForSeconds(float duration) {
 	while (duration > 0.0f) {
 		time->updateTick(SDL_GetTicks());
-		duration -= time->getDeltaTime();
-		;
+		duration -= time->getDeltaTimeRealTime();
 	}
 }
