@@ -138,7 +138,7 @@ class PlayerObject : public LivingEntity {
         void handleJumpMovement();
     
         void resetAttack();
-        void flinch(float duration);
+        
         void handleFlinch();
         float flinchTimeRemaining;
 
@@ -177,4 +177,6 @@ class PlayerObject : public LivingEntity {
 
         /// debugging ///
         virtual void onTriggerEnter(Collider* collider);
+
+        void flinch(float duration);
 };

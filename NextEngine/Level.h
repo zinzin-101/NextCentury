@@ -11,6 +11,7 @@
 #include "Audio.h"
 #include "ParallaxObject.h"
 #include "UI.h"
+#include "Dialogue.h"
 
 class Level
 {

@@ -92,6 +92,10 @@ void DamageCollider<TargetEntityType>::onCollisionEnter(Collider* collider) {
 	if (entity != NULL) {
 		entity->takeDamage(damage);
 		//std::cout << entity->getName() << " took " << damage << " damage" << std::endl;
+		PlayerObject* player = dynamic_cast<PlayerObject*>(obj);
+		if (player != NULL) {
+			player->flinch(0.2f);
+		}
 	}
 }
 

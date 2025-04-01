@@ -242,6 +242,7 @@ void PlayerObject::updateBehavior(list<DrawableObject*>& objectsList) {
     }
 
     moveDirection.x = 0.0f; // Reset move direction for next frame
+    
 }
 
 void PlayerObject::normalAttack() {
@@ -408,8 +409,12 @@ void PlayerObject::resetAttack() {
 void PlayerObject::flinch(float duration) {
     this->flinchTimeRemaining = duration;
     resetAttack();
+    glm::vec2 vel = this->getPhysicsComponent()->getVelocity();
+	vel.x = 0.0f;
+	this->getPhysicsComponent()->setVelocity(vel);
     moveDirection.x = 0.0f;
     //+ start flinch animation
+    this->getAnimationComponent()->setState("Idle");
 }
 
 void PlayerObject::startMeleeAttack() {
@@ -715,11 +720,12 @@ void PlayerObject::handleParryAttack() {
 
 void PlayerObject::handleFlinch() {
     float dt = GameEngine::getInstance()->getTime()->getDeltaTime();
-
     flinchTimeRemaining -= dt;
-
+	canMove = false;
     if (flinchTimeRemaining <= 0.0f) {
         //+ reset to idle animation
+		this->getAnimationComponent()->setState("Idle");
+		canMove = true;
         return;
     }
 }
