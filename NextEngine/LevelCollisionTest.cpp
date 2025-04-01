@@ -24,7 +24,7 @@ void LevelCollisionTest::levelInit() {
 
 	// Initialize the player
 	PlayerInfo playerInfo;
-	player = new PlayerObject(playerInfo);
+	player = new PlayerObject();
 	player->setTexture("../Resource/Texture/playerTexture.png");
 	player->getTransform().setPosition(glm::vec3(0.0f, 2.0f, 0.0f));
 	player->addColliderComponent();

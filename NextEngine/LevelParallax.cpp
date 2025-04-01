@@ -21,7 +21,7 @@ void LevelParallax::levelInit() {
 
 
     PlayerInfo pinf = PlayerInfo();
-    player = new PlayerObject(pinf);
+    player = new PlayerObject();
 
 
     if (player != nullptr) {

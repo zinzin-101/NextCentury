@@ -7,7 +7,7 @@
 //constexpr float ATTACK_DURATION = 0.2f; // Duration for the attack collider to be active
 //constexpr float ATTACK_COOLDOWN = 0.5f; // Cooldown between attacks
 
-PlayerObject::PlayerObject(PlayerInfo& playerInfo) : LivingEntity(playerInfo.name, playerInfo.health) {
+PlayerObject::PlayerObject() : LivingEntity("Player", PlayerStat::MAX_HEALTH) {
     //this->damage = playerInfo.damage;
 
     setTexture("../Resource/Texture/player6.png");

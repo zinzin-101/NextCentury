@@ -17,7 +17,7 @@ protected:
 	virtual void endAttack();
 
 public:
-	BlightFlame(EnemyInfo& enemyinfo);
+	BlightFlame(const EnemyInfo& enemyinfo);
 	virtual ~BlightFlame();
 
 	virtual void setDamage(int damage);

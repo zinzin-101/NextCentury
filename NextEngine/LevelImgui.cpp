@@ -78,7 +78,7 @@ void LevelImgui::levelUnload() {
 }
 
 void LevelImgui::handleKey(InputManager& input) {
-    float dt = GameEngine::getInstance()->getTime()->getDeltaTime();
+    float dt = GameEngine::getInstance()->getTime()->getDeltaTimeRealTime();
 
     if (input.getButton(SDLK_z)) GameEngine::getInstance()->getRenderer()->increaseZoomRatio(0.1f);
     if (input.getButton(SDLK_x)) GameEngine::getInstance()->getRenderer()->decreaseZoomRatio(0.1f);
@@ -96,28 +96,4 @@ void LevelImgui::handleKey(InputManager& input) {
         if (input.getButton(SDLK_a)) marker->getTransform().translate(glm::vec3(-10, 0, 0) * dt);
         if (input.getButton(SDLK_d)) marker->getTransform().translate(glm::vec3(10, 0, 0) * dt);
     }
-}
-
-void LevelImgui::initPlayer(PlayerObject*& player, glm::vec3 position, PlayerInfo playerInfo) {
-    if (player == nullptr) {
-        player = new PlayerObject(playerInfo);
-        objectsList.emplace_back(player);
-    }
-
-    player->getTransform().setPosition(position);
-    player->setDrawCollider(true); // for debugging
-}
-
-void LevelImgui::initPlayer(PlayerObject*& player, PlayerInfo playerInfo) {
-    if (player == nullptr) {
-        player = new PlayerObject(playerInfo);
-        objectsList.emplace_back(player);
-    }
-    else {
-        player->setName(playerInfo.name);
-        player->setHealth(playerInfo.health);
-        //player->setMovementInfo(playerInfo.movementInfo)
-    }
-
-    player->setDrawCollider(true); // for debugging
 }

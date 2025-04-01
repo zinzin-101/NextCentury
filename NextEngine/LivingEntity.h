@@ -15,7 +15,6 @@ class LivingEntity : public TexturedObject {
     private:
         int health;
         bool canTakeDamage;
-        bool isDead;
         bool isStun; // for when any status that can cause a stun
         list<Status> statusList;
         bool isAffectedByLighting;

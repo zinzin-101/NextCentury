@@ -46,6 +46,9 @@ namespace PlayerStat {
     constexpr float JUMP_VELOCITY = 25.0f;
 
     constexpr float INVINCIBLE_DURATION_AFTER_TAKING_DAMAGE = 0.5f;
+
+    //+ placeholder player health
+    constexpr int MAX_HEALTH = 100;
 }
 
 class EnemyObject;
@@ -147,7 +150,7 @@ class PlayerObject : public LivingEntity {
         glm::vec3 moveDirection;
 
     public:
-        PlayerObject(PlayerInfo& playerInfo);
+        PlayerObject();
         ~PlayerObject();
 
         void normalAttack();

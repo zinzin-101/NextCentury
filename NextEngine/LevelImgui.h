@@ -19,7 +19,4 @@ public:
     virtual void levelUnload();
 
     virtual void handleKey(InputManager& input);
-
-    void initPlayer(PlayerObject*& player, glm::vec3 position, PlayerInfo playerInfo);
-    void initPlayer(PlayerObject*& player, PlayerInfo playerInfo);
 };

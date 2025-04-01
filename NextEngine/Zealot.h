@@ -18,7 +18,7 @@ protected:
 	void endAttack();
 
 public:
-	Zealot(EnemyInfo& enemyinfo);
+	Zealot(const EnemyInfo& enemyinfo);
 	void start(list<DrawableObject*>& objectsList);
 	void updateState();
 	void updateBehavior(list<DrawableObject*>& objectlist);

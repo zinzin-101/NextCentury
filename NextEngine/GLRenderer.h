@@ -41,7 +41,7 @@ protected:
     map <string, MeshVbo*> shapes;
     void setMeshAttribId(MeshVbo* shape);
     Camera* camera;
-    bool isViewportEnabled;
+    bool isViewportEnabled = true;
     float zoomRatio = 1.0f;
     
 public:

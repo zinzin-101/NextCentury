@@ -9,17 +9,17 @@ LivingEntity::Status::Status(StatusType type, float cooldown) {
     remainingTime = this->cooldown;
 }
 
-LivingEntity::LivingEntity() : health(100), isDead(false), isStun(false), canTakeDamage(true), isFacingRight(false),
+LivingEntity::LivingEntity() : health(100), isStun(false), canTakeDamage(true), isFacingRight(false),
 isDamageOverlayed(false), damageOverlayTimeRemaining(0.0f), knockbackDurationRemaining(0.0f), isAffectedByLighting(false) {}
 
-LivingEntity::LivingEntity(int hp) : health(hp), isDead(false), isStun(false), canTakeDamage(true), isFacingRight(false),
+LivingEntity::LivingEntity(int hp) : health(hp), isStun(false), canTakeDamage(true), isFacingRight(false),
 isDamageOverlayed(false), damageOverlayTimeRemaining(0.0f), isInKnockback(false), knockbackDurationRemaining(0.0f), isAffectedByLighting(false) {}
 
-LivingEntity::LivingEntity(std::string name) : TexturedObject(name), health(100), isDead(false), isStun(false), canTakeDamage(true),
+LivingEntity::LivingEntity(std::string name) : TexturedObject(name), health(100), isStun(false), canTakeDamage(true),
 isFacingRight(false), isDamageOverlayed(false), damageOverlayTimeRemaining(0.0f), isInKnockback(false), knockbackDurationRemaining(0.0f), 
 isAffectedByLighting(false) {}
 
-LivingEntity::LivingEntity(std::string name, int hp) : TexturedObject(name), health(hp), isDead(false), isStun(false), canTakeDamage(true),
+LivingEntity::LivingEntity(std::string name, int hp) : TexturedObject(name), health(hp), isStun(false), canTakeDamage(true),
 isFacingRight(false), isDamageOverlayed(false), damageOverlayTimeRemaining(0.0f), isInKnockback(false), knockbackDurationRemaining(0.0f), 
 isAffectedByLighting(false) {}
 
@@ -41,7 +41,7 @@ bool LivingEntity::getCanTakeDamage() const {
 }
 
 bool LivingEntity::getIsDead() const {
-    return isDead;
+    return health > 0;
 }
 
 void LivingEntity::addStatus(Status newStatus) { 
@@ -142,10 +142,6 @@ void LivingEntity::takeDamage(int damage) {
     }
 
     health -= damage;
-    if (health <= 0) {
-        health = 0;
-        isDead = true;
-    }
 
     isDamageOverlayed = true;
     damageOverlayTimeRemaining = LivingEntityStat::DAMAGE_OVERLAY_DURATION;

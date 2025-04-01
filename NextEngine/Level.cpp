@@ -145,18 +145,18 @@ void Level::updateObjects(list<DrawableObject*>& objectsList) {
 }
 
 void Level::initPlayer(PlayerObject*& player, PlayerInfo playerInfo) {
-    if (player == nullptr) {
-        player = new PlayerObject(playerInfo);
-        objectsList.emplace_back(player);
-    }
-    else {
-        player->setName(playerInfo.name);
-        player->setHealth(playerInfo.health);
-        //player->setMovementInfo(playerInfo.movementInfo);
-    }
+    //if (player == nullptr) {
+    //    player = new PlayerObject(playerInfo);
+    //    objectsList.emplace_back(player);
+    //}
+    //else {
+    //    player->setName(playerInfo.name);
+    //    player->setHealth(playerInfo.health);
+    //    //player->setMovementInfo(playerInfo.movementInfo);
+    //}
 
-    player->setDrawCollider(true); // for debugging
-    //player->getTransform().setScale(glm::vec3(500.0f, 500.0f , 1.0f));
+    //player->setDrawCollider(true); // for debugging
+    ////player->getTransform().setScale(glm::vec3(500.0f, 500.0f , 1.0f));
 }
 
 #ifdef DEBUG_MODE_ON
@@ -172,6 +172,10 @@ void Level::drawImGui(std::list<DrawableObject*>& objectList) {
 
     static bool pauseGame = false;
     ImGui::Checkbox("Pause Game", &pauseGame);
+
+    bool enableFreeViewPort = !GameEngine::getInstance()->getRenderer()->getIsViewportEnabled();
+    ImGui::Checkbox("Free Viewport", &enableFreeViewPort);
+    GameEngine::getInstance()->getRenderer()->setToggleViewport(!enableFreeViewPort);
 
     pauseGame ? GameEngine::getInstance()->getTime()->setTimeScale(0.0f) : GameEngine::getInstance()->getTime()->setTimeScale(1.0f);
 
@@ -420,6 +424,30 @@ void Level::drawImGui(std::list<DrawableObject*>& objectList) {
                 }
             }
 
+            EnemyObject* enemy = dynamic_cast<EnemyObject*>(obj);
+            if (enemy != NULL) {
+                ImGui::SeparatorText("Enemy Info");
+                ImGui::Text("Health: %d", enemy->getHealth());
+                ImGui::SameLine();
+                if (ImGui::Button("Set Health")) {
+                    enemy->setHealth(inputNum);
+                }
+                if (ImGui::Button("Set Player As Target")) {
+                    PlayerObject* player = EnemyObject::findPlayer(objectList);
+                    enemy->setTarget(player);
+                }
+            }
+
+            PlayerObject* player = dynamic_cast<PlayerObject*>(obj);
+            if (player != NULL) {
+                ImGui::SeparatorText("Player Info");
+                ImGui::Text("Health: %d", player->getHealth());
+                ImGui::SameLine();
+                if (ImGui::Button("Set Health")) {
+                    player->setHealth(inputNum);
+                }
+            }
+
             ImGui::SeparatorText("");
             static unsigned int deletePressed = 0;
             if (deletePressed == 0) {
@@ -446,12 +474,15 @@ void Level::drawImGui(std::list<DrawableObject*>& objectList) {
     ImGui::End();
 
     ImGui::Begin("Object Spawner");
-    static float posX;
-    static float posY;
+    static float posX = 0.0f;
+    static float posY = 0.0f;
+    static float scaleX = 1.0f;
+    static float scaleY = 1.0f;
     ImGui::Text("Position:");
     ImGui::InputFloat("X", &posX);
     ImGui::InputFloat("Y", &posY);
-
+    ImGui::InputFloat("Scale X", &scaleX);
+    ImGui::InputFloat("Scale Y", &scaleY);
     static bool drawOutline = false;
     ImGui::Checkbox("Draw Outline on spawn", &drawOutline);
 
@@ -463,6 +494,7 @@ void Level::drawImGui(std::list<DrawableObject*>& objectList) {
     if (ImGui::Button("Spawn Collider Object")) {
         DrawableObject* obj = new ColliderObject("ColliderObject");
         obj->getTransform().setPosition(posX, posY);
+        obj->getTransform().setScale(scaleX, scaleY);
         obj->setDrawCollider(drawOutline);
         obj->getColliderComponent()->setDimension(width, height);
         objectList.emplace_back(obj);
@@ -476,9 +508,49 @@ void Level::drawImGui(std::list<DrawableObject*>& objectList) {
     if (ImGui::Button("Spawn LightSource")) {
         DrawableObject* light = new LightSource(brightness, maxDistance);
         light->getTransform().setPosition(posX, posY);
+        light->getTransform().setScale(scaleX, scaleY);
         light->setName("LightSource");
         light->setDrawCollider(drawOutline);
         objectList.emplace_back(light);
+    }
+    ImGui::SeparatorText("Enemy");
+    if (ImGui::Button("Spawn Zealot")) {
+        Zealot* zealot = new Zealot(DefaultEnemyStat::ZEALOT_INFO);
+        zealot->getTransform().setPosition(posX, posY);
+        zealot->getTransform().setScale(scaleX, scaleY);
+        zealot->setDrawCollider(drawOutline);
+        objectList.emplace_back(zealot);
+        zealot->start(objectList);
+    }
+    if (ImGui::Button("Spawn BlightFlame")) {
+        BlightFlame* bf = new BlightFlame(DefaultEnemyStat::BLIGHT_FLAME_INFO);
+        bf->getTransform().setPosition(posX, posY);
+        bf->getTransform().setScale(scaleX, scaleY);
+        bf->setDrawCollider(drawOutline);
+        objectList.emplace_back(bf);
+        bf->start(objectList);
+    }
+    ImGui::SeparatorText("Player");
+    if (ImGui::Button("Spawn Player")) {
+        PlayerObject* player = EnemyObject::findPlayer(objectList);
+        if (player == nullptr) {
+            player = new PlayerObject();
+            player->getTransform().setPosition(posX, posY);
+            player->getTransform().setScale(scaleX, scaleY);
+            player->setDrawCollider(drawOutline);
+            objectList.emplace_back(player);
+            player->start(objectList);
+
+            for (DrawableObject* obj : objectList) {
+                ParallaxObject* pObj = dynamic_cast<ParallaxObject*>(obj);
+                if (pObj != NULL) {
+                    pObj->setPlayer(player);
+                }
+            }
+        }
+        else {
+            std::cout << "Player already exists" << std::endl;
+        }
     }
     ImGui::End();
 

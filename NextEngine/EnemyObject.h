@@ -54,7 +54,7 @@ class EnemyObject : public LivingEntity {
         virtual void endAttack();
 
     public:
-        EnemyObject(EnemyInfo& enemyInfo);
+        EnemyObject(const EnemyInfo& enemyInfo);
         void setCurrentState(State state);
         State getCurrentState();
 
@@ -66,6 +66,8 @@ class EnemyObject : public LivingEntity {
 
         void findTarget(std::string name, std::list<DrawableObject*>& objectList);
         void setTarget(LivingEntity* target);
+        
+        static PlayerObject* findPlayer(std::list<DrawableObject*>& objectList);
 
         void setAttackCooldown(float cooldown);
         float getAttackCooldown() const;

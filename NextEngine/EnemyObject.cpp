@@ -1,9 +1,10 @@
 #include "EnemyObject.h"
+#include <limits>
 
 //#include "ParticleSystem.h" // temporary testing
 #include <iostream>
 
-EnemyObject::EnemyObject(EnemyInfo& enemyInfo) : LivingEntity(enemyInfo.name, enemyInfo.health) {
+EnemyObject::EnemyObject(const EnemyInfo& enemyInfo) : LivingEntity(enemyInfo.name, enemyInfo.health) {
 	this->movementInfo = enemyInfo.movementInfo;
 	this->aggroRange = enemyInfo.health;
 	this->attackRange = enemyInfo.attackRange;
@@ -20,6 +21,8 @@ EnemyObject::EnemyObject(EnemyInfo& enemyInfo) : LivingEntity(enemyInfo.name, en
 	//attackHitbox->getTransform().setScale(glm::vec3(1.0f, 1.0f, 0.0f)); // Adjust size as needed
 	//attackHitbox->addColliderComponent();
 	//attackHitbox->getColliderComponent()->setTrigger(true); // Hitbox should be a trigger
+
+	targetEntity = nullptr;
 
 	/*deactivateHitbox();*/
 	attackHitbox = nullptr;
@@ -91,6 +94,10 @@ void EnemyObject::setCanAttack(bool value) {
 }
 
 float EnemyObject::getDistanceFromTarget() const {
+	if (targetEntity == nullptr) {
+		return std::numeric_limits<float>::infinity();
+	}
+
 	glm::vec3 targetPos = targetEntity->getTransform().getPosition();
 	return glm::length(targetPos - this->transform.getPosition());
 }
@@ -117,6 +124,10 @@ float EnemyObject::getAttackCooldown() const {
 }
 
 void EnemyObject::moveTowardsTarget() {
+	if (targetEntity == nullptr) {
+		return;
+	}
+
 	glm::vec3 targetPos = targetEntity->getTransform().getPosition();
 
 	glm::vec3 currentPos = this->transform.getPosition();
@@ -155,10 +166,23 @@ void EnemyObject::findTarget(std::string name, std::list<DrawableObject*>& objec
 			break;
 		}
 	}
+
+	this->targetEntity = nullptr;
 }
 
 void EnemyObject::setTarget(LivingEntity* target) {
 	this->targetEntity = target;
+}
+
+PlayerObject* EnemyObject::findPlayer(std::list<DrawableObject*>& objectList) {
+	for (DrawableObject* obj : objectList) {
+		PlayerObject* player = dynamic_cast<PlayerObject*>(obj);
+		if (player != NULL) {
+			return player;
+		}
+	}
+
+	return nullptr;
 }
 
 void EnemyObject::start(list<DrawableObject*>& objectsList) {
@@ -180,6 +204,8 @@ void EnemyObject::start(list<DrawableObject*>& objectsList) {
 	attackHitbox->setFollowOffset(glm::vec3(0.5f, 0, 0));
 	attackHitbox->getColliderComponent()->setWidth(1.5f);
 	objectsList.emplace_back(attackHitbox);
+
+	targetEntity = EnemyObject::findPlayer(objectsList);
 }
 
 void EnemyObject::updateState() {
@@ -215,7 +241,10 @@ void EnemyObject::updateState() {
 
 	currentState = State::ATTACKING;
 	// facing target
-	isFacingRight = this->getTransform().getPosition().x < targetEntity->getTransform().getPosition().x;
+	if (targetEntity != nullptr) {
+		isFacingRight = this->getTransform().getPosition().x < targetEntity->getTransform().getPosition().x;
+
+	}
 }
 
 void EnemyObject::updateBehavior(list<DrawableObject*>& objectsList) {

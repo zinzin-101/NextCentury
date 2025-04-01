@@ -1,7 +1,7 @@
 #include "Zealot.h"
 #include "Random.h"
 
-Zealot::Zealot(EnemyInfo& enemyinfo) : EnemyObject(enemyinfo) {
+Zealot::Zealot(const EnemyInfo& enemyinfo) : EnemyObject(enemyinfo) {
 	cout << attackCooldown << endl;
 }
 void Zealot::start(list<DrawableObject*>& objectsList) {
@@ -27,6 +27,8 @@ void Zealot::start(list<DrawableObject*>& objectsList) {
 	objectsList.emplace_back(attackHitbox);
 
 	stunnedTime = ZealotStat::STUN_DURATION;
+
+	targetEntity = EnemyObject::findPlayer(objectsList);
 }
 
 void Zealot::updateState() {
@@ -63,7 +65,9 @@ void Zealot::updateState() {
 
 	currentState = State::ATTACKING;
 	// facing target
-	isFacingRight = this->getTransform().getPosition().x < targetEntity->getTransform().getPosition().x;
+	if (targetEntity != nullptr) {
+		isFacingRight = this->getTransform().getPosition().x < targetEntity->getTransform().getPosition().x;
+	}
 }
 
 void Zealot::updateBehavior(list<DrawableObject*>& objectsList) {
@@ -141,6 +145,10 @@ void Zealot::updateBehavior(list<DrawableObject*>& objectsList) {
 }
 
 void Zealot::moveTowardsTarget() {
+	if (targetEntity == nullptr) {
+		return;
+	}
+
 	glm::vec3 targetPos = targetEntity->getTransform().getPosition();
 
 	glm::vec3 currentPos = this->transform.getPosition();

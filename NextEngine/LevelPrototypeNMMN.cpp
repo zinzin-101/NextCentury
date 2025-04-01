@@ -79,6 +79,7 @@ void LevelPrototypeNMMN::levelInit() {
 
     PlayerInfo playerInfo = PlayerInfo("Player", 10, MovementInfo(5, 25));
     startObjects(objectsList);
+    
     initPlayer(player, playerInfo);
 
     for (DrawableObject* obj : objectsList) {
@@ -357,7 +358,7 @@ void LevelPrototypeNMMN::handleAnalogStick(int type, float amount) {
 
 void LevelPrototypeNMMN::initPlayer(PlayerObject*& player, glm::vec3 position, PlayerInfo playerInfo) {
     if (player == nullptr) {
-        player = new PlayerObject(playerInfo);
+        player = new PlayerObject();
         objectsList.emplace_back(player);
     }
 
@@ -367,7 +368,7 @@ void LevelPrototypeNMMN::initPlayer(PlayerObject*& player, glm::vec3 position, P
 
 void LevelPrototypeNMMN::initPlayer(PlayerObject*& player, PlayerInfo playerInfo) {
     if (player == nullptr) {
-        player = new PlayerObject(playerInfo);
+        player = new PlayerObject();
         objectsList.emplace_back(player);
     }
     else {

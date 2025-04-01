@@ -203,7 +203,7 @@ void MapLoader::loadDataToScene(list<DrawableObject*>& objectList, PlayerObject*
 
 			case PLAYER: {
 				PlayerInfo playerInfo("Player", 100, MovementInfo());
-				PlayerObject* playerObj = new PlayerObject(playerInfo);
+				PlayerObject* playerObj = new PlayerObject();
 				//playerObj->getTransform() = objProperty.transform * MAP_SCALE;
 				//playerObj->getColliderComponent()->setDimension(1, 1);
 				playerObj->getTransform() = objProperty.transform * MAP_SCALE;
@@ -320,7 +320,7 @@ void MapLoader::appendDataToScene(list<DrawableObject*>& objectList, PlayerObjec
 
 		case PLAYER: {
 			PlayerInfo playerInfo("Player", 100, MovementInfo());
-			PlayerObject* playerObj = new PlayerObject(playerInfo);
+			PlayerObject* playerObj = new PlayerObject();
 			playerObj->getTransform() = objProperty.transform * MAP_SCALE;
 			
 				//playerObj->getColliderComponent()->setDimension(objProperty.transform.getScale().x * MAP_SCALE, objProperty.transform.getScale().y * MAP_SCALE);

@@ -2,7 +2,7 @@
 #include "FlameDamage.h"
 #include "Random.h"
 
-BlightFlame::BlightFlame(EnemyInfo& enemyinfo) : EnemyObject(enemyinfo) {
+BlightFlame::BlightFlame(const EnemyInfo& enemyinfo) : EnemyObject(enemyinfo) {
 	flameHitbox = nullptr;
 }
 void BlightFlame::start(list<DrawableObject*>& objectsList) {
@@ -28,6 +28,8 @@ void BlightFlame::start(list<DrawableObject*>& objectsList) {
 	flameHitbox->setFollowOffset(glm::vec3(0.5f, 0, 0));
 	flameHitbox->getColliderComponent()->setWidth(1.5f);
 	objectsList.emplace_back(flameHitbox);
+
+	targetEntity = EnemyObject::findPlayer(objectsList);
 }
 
 BlightFlame::~BlightFlame() {
@@ -81,7 +83,9 @@ void BlightFlame::updateState() {
 	}
 	currentState = State::ATTACKING;
 	// facing target
-	isFacingRight = this->getTransform().getPosition().x < targetEntity->getTransform().getPosition().x;
+	if (targetEntity != nullptr) {
+		isFacingRight = this->getTransform().getPosition().x < targetEntity->getTransform().getPosition().x;
+	}
 }
 
 void BlightFlame::updateBehavior(list<DrawableObject*>& objectsList) {
@@ -163,6 +167,10 @@ void BlightFlame::updateBehavior(list<DrawableObject*>& objectsList) {
 }
 
 void BlightFlame::moveTowardsTarget() {
+	if (targetEntity == nullptr) {
+		return;
+	}
+
 	glm::vec3 targetPos = targetEntity->getTransform().getPosition();
 
 	glm::vec3 currentPos = this->transform.getPosition();

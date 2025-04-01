@@ -75,9 +75,10 @@ void LevelPrototype::levelInit() {
     marker->setColor(0, 0, 0);
     objectsList.emplace_back(marker);
 
-    PlayerInfo playerInfo = PlayerInfo("Player", 10, MovementInfo(5, 25));
+    //PlayerInfo playerInfo = PlayerInfo("Player", 10, MovementInfo(5, 25));
+    //objectsList.emplace_back(player);
     startObjects(objectsList);
-    initPlayer(player, playerInfo);
+    //initPlayer(player, playerInfo);
 
     for (DrawableObject* obj : objectsList) {
         cout << obj->getName() << endl;
@@ -329,27 +330,27 @@ void LevelPrototype::handleAnalogStick(int type, float amount) {
 }
 
 void LevelPrototype::initPlayer(PlayerObject*& player, glm::vec3 position, PlayerInfo playerInfo) {
-    if (player == nullptr) {
-        player = new PlayerObject(playerInfo);
-        objectsList.emplace_back(player);
-    }
+    //if (player == nullptr) {
+    //    player = new PlayerObject(playerInfo);
+    //    objectsList.emplace_back(player);
+    //}
 
-    player->getTransform().setPosition(position);
-    player->setDrawCollider(true); // for debugging
+    //player->getTransform().setPosition(position);
+    //player->setDrawCollider(true); // for debugging
 }
 
 void LevelPrototype::initPlayer(PlayerObject*& player, PlayerInfo playerInfo) {
-    if (player == nullptr) {
-        player = new PlayerObject(playerInfo);
-        objectsList.emplace_back(player);
-    }
-    else {
-        player->setName(playerInfo.name);
-        player->setHealth(playerInfo.health);
-        //player->setMovementInfo(playerInfo.movementInfo)
-    }
+    //if (player == nullptr) {
+    //    player = new PlayerObject(playerInfo);
+    //    objectsList.emplace_back(player);
+    //}
+    //else {
+    //    player->setName(playerInfo.name);
+    //    player->setHealth(playerInfo.health);
+    //    //player->setMovementInfo(playerInfo.movementInfo)
+    //}
 
-    player->setDrawCollider(true); // for debugging
+    //player->setDrawCollider(true); // for debugging
 }
 
 void LevelPrototype::instantiateEnemy(glm::vec3 position, EnemyInfo enemyInfo, EnemyType type) {
