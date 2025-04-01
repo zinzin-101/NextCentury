@@ -20,6 +20,7 @@ void LevelPrototypeNMMN::levelLoad() {
 }
 
 void LevelPrototypeNMMN::levelInit() {
+	GameEngine::getInstance()->forceLoad(3.0f);
     //GameEngine::getInstance()->setDrawArea(-8.0f, 960.0f, -540.0f, 540.0f);
     EnemyInfo enemyInfo = EnemyInfo("EnemyNormal", 5, MovementInfo(3, 25), 30, 3.0f, 2.0f, 1.0f);
     mapLoader.addEnemyType(EnemyType::NORMAL, enemyInfo);

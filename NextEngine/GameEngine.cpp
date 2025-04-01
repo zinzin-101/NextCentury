@@ -95,3 +95,11 @@ SDL_Window* GameEngine::getSDLWindow() const {
 SDL_GLContext* GameEngine::getGLContextPtr() const{
 	return glContext;
 }
+
+void GameEngine::forceLoad(float duration) {
+	while (duration > 0.0f) {
+		time->updateTick(SDL_GetTicks());
+		duration -= time->getDeltaTime();
+		;
+	}
+}
