@@ -4,6 +4,7 @@
 #include "LightSource.h"
 #include "EnemyInfo.h"
 #include "EnemyObject.h"
+#include "FlameDamage.h"
 #include "Zealot.h"
 #include "BlightFlame.h"
 #include "SimpleObject.h"

@@ -28,6 +28,11 @@ protected:
     map<unsigned int, float> mouseHeldDuration;
     map<unsigned int, int> mouseBuffer;
 
+    #ifdef DEBUG_MODE_ON
+    static void appendEnemyData(std::ofstream& output, EnemyObject* enemy);
+    static void readEnemyData(std::ifstream& file, std::string type, std::list<DrawableObject*>& objectsList);
+    #endif
+
 public:
     //SimpleObject* healthBar = nullptr;
     virtual void levelLoad();
@@ -53,8 +58,8 @@ public:
     virtual void initPlayer(PlayerObject*& player, PlayerInfo playerInfo);
 
     #ifdef DEBUG_MODE_ON
-    void drawImGui(std::list<DrawableObject*>& objectsList);
-    void exportTransformData(std::list<DrawableObject*>& objectsList, std::string fileName);
-    void importTransformData(std::list<DrawableObject*>& objectsList, std::string fileName, bool drawOutline);
+    static void drawImGui(std::list<DrawableObject*>& objectsList);
+    static void exportTransformData(std::list<DrawableObject*>& objectsList, std::string fileName);
+    static void importTransformData(std::list<DrawableObject*>& objectsList, std::string fileName, bool drawOutline);
     #endif
 };

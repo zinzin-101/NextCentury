@@ -571,6 +571,20 @@ void Level::exportTransformData(std::list<DrawableObject*>& objectsList, std::st
 
         ColliderObject* colObj = dynamic_cast<ColliderObject*>(obj);
         LightSource* lightObj = dynamic_cast<LightSource*>(obj);
+        EnemyObject* enemyObj = dynamic_cast<EnemyObject*>(obj);
+        
+        DamageCollider<EnemyObject>* dmgColEnemy = dynamic_cast<DamageCollider<EnemyObject>*>(obj);
+        DamageCollider<PlayerObject>* dmgColPlayer = dynamic_cast<DamageCollider<PlayerObject>*>(obj);
+        FlameDamage<PlayerObject>* flameCol = dynamic_cast<FlameDamage<PlayerObject>*>(obj);
+
+        if (dmgColEnemy || dmgColPlayer || flameCol) {
+            continue;
+        }
+
+        if (enemyObj != NULL) {
+            appendEnemyData(output, enemyObj);
+            continue;
+        }
 
         if (colObj == NULL && lightObj == NULL) {
             continue;
@@ -624,6 +638,11 @@ void Level::importTransformData(std::list<DrawableObject*>& objectsList, std::st
         }
 
         std::string type = line;
+
+        if (type == "Zealot" || type == "BlightFlame") {
+            readEnemyData(file, type, objectsList);
+            continue;
+        }
 
         std::getline(file, line, ',');
         std::string name = line;
@@ -701,6 +720,109 @@ void Level::importTransformData(std::list<DrawableObject*>& objectsList, std::st
     }
 
     file.close();
+}
+
+void Level::appendEnemyData(std::ofstream& output, EnemyObject* enemy) {
+    Zealot* zealot = dynamic_cast<Zealot*>(enemy);
+    BlightFlame* bf = dynamic_cast<BlightFlame*>(enemy);
+
+    if (zealot == NULL && bf == NULL) {
+        std::cout << "Invalid Enemy Type" << std::endl;
+        return;
+    }
+
+    if (zealot != NULL) {
+        output << "Zealot,";
+    }
+    else if (bf != NULL) {
+        output << "BlightFlame,";
+    }
+
+    output << enemy->getName() << ",";
+    Transform transform = enemy->getTransform();
+    glm::vec3 position = transform.getPosition();
+    glm::vec3 scale = transform.getScale();
+    output << position.x << "," << position.y << ",";
+    output << transform.getRotationRad() << ",";
+    output << scale.x << "," << scale.y;
+
+    Collider* col = enemy->getColliderComponent();
+
+    output << ",";
+
+    transform = col->getTransform();
+    position = transform.getPosition();
+    scale = transform.getScale();
+    output << col->getWidth() << "," << col->getHeight() << ",";
+    output << position.x << "," << position.y << ",";
+    output << transform.getRotationRad() << ",";
+    output << scale.x << "," << scale.y;
+
+    output << "\n";
+}
+void Level::readEnemyData(std::ifstream& file, std::string type, std::list<DrawableObject*>& objectsList) {
+    std::string line;
+    std::getline(file, line, ',');
+    std::string name = line;
+
+    std::getline(file, line, ',');
+    float posX = std::stof(line);
+
+    std::getline(file, line, ',');
+    float posY = std::stof(line);
+
+    std::getline(file, line, ',');
+    float rotation = std::stof(line);
+
+    std::getline(file, line, ',');
+    float scaleX = std::stof(line);
+
+    std::getline(file, line, ',');
+    float scaleY = std::stof(line);
+
+    DrawableObject* obj = nullptr;
+
+    std::getline(file, line, ',');
+    float width = std::stof(line);
+
+    std::getline(file, line, ',');
+    float height = std::stof(line);
+
+    std::getline(file, line, ',');
+    float cPosX = std::stof(line);
+
+    std::getline(file, line, ',');
+    float cPosY = std::stof(line);
+
+    std::getline(file, line, ',');
+    float cRotation = std::stof(line);
+
+    std::getline(file, line, ',');
+    float cScaleX = std::stof(line);
+
+    std::getline(file, line);
+    float cScaleY = std::stof(line);
+
+    EnemyObject* enemy = nullptr;
+
+    if (type == "Zealot") {
+        enemy = new Zealot(DefaultEnemyStat::ZEALOT_INFO);
+    }
+    else if (type == "BlightFlame") {
+        enemy = new BlightFlame(DefaultEnemyStat::BLIGHT_FLAME_INFO);
+    }
+    else {
+        std::cout << "Invalid Type When Reading Enemy Data" << std::endl;
+        return;
+    }
+
+    enemy->getColliderComponent()->setDimension(width, height);
+    enemy->getColliderComponent()->getTransform().setPosition(cPosX, cPosY);
+    enemy->getColliderComponent()->getTransform().setRotation(cRotation);
+    enemy->getColliderComponent()->getTransform().setScale(cScaleX, cScaleY);
+
+    objectsList.emplace_back(enemy);
+    enemy->start(objectsList);
 }
 
 #endif
