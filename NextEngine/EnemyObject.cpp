@@ -297,6 +297,9 @@ void EnemyObject::updateBehavior(list<DrawableObject*>& objectsList) {
 		}
 		case STUNNED:
 			cout << "stun" << endl;
+			getAnimationComponent()->setState("Idle");
+			attackHitbox->setActive(false);
+
 			if (currentStunnedTime > 0) {
 				currentStunnedTime -= dt;
 			}

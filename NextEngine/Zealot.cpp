@@ -125,6 +125,7 @@ void Zealot::updateBehavior(list<DrawableObject*>& objectsList) {
 	}
 	case STUNNED:
 		getAnimationComponent()->setState("Stunned");
+		attackHitbox->setActive(false);
 
 		cout << "stun" << endl;
 		if (currentStunnedTime > 0) {
