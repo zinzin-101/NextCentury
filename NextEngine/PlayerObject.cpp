@@ -433,6 +433,7 @@ void PlayerObject::startMeleeAttack() {
 
 void PlayerObject::endMeleeAttack() {
     attackHitbox->setActive(false);
+    attackHitbox->setDamageTag("");
 }
 
 void PlayerObject::startHeavyAttack() {
@@ -644,6 +645,7 @@ void PlayerObject::handleHeavyAttack() {
         }
 
         if (currentFrame == heavyAttackFrame[currentHeavyCharge].startAttackFrame + 1) {
+            attackHitbox->setDamageTag("HeavyAttack");
             startMeleeAttack();
             return;
         }

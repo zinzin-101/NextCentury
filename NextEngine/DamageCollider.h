@@ -1,10 +1,10 @@
 #pragma once
 #include "ColliderObject.h"
-#include "EnemyObject.h"
 #include "GameEngine.h"
 #include "LivingEntity.h"
 #include "ParticleProperties.h"
 #include "PlayerObject.h"
+#include "Zealot.h"
 #include "SquareBorderMesh.h"
 
 /// testing ///
@@ -23,6 +23,8 @@ class DamageCollider : public ColliderObject {
 		bool followOwner;
 		glm::vec3 followOffset;
 
+		std::string damageTag;
+
 
 	public:
 		DamageCollider(LivingEntity* owner, int damage, float lifespan);
@@ -39,6 +41,7 @@ class DamageCollider : public ColliderObject {
 		void setFollowOwner(bool value);
 		void setFollowOffset(glm::vec3 offset);
 		void setCanDecreaseTime(bool value);
+		void setDamageTag(std::string tag);
 
 		LivingEntity* getOwner() const;
 
@@ -55,6 +58,7 @@ DamageCollider<TargetEntityType>::DamageCollider(LivingEntity* owner, int damage
 	this->followOwner = false;
 	this->setDrawCollider(true); // for debug
 	this->canDecreaseTimeRemaining = true;
+	damageTag = "";
 }
 
 template <class TargetEntityType>
@@ -97,6 +101,11 @@ void DamageCollider<TargetEntityType>::onCollisionEnter(Collider* collider) {
 			if (playerAsOwner != NULL && playerAsOwner->getIsParrying()) {
 				return;
 			}
+
+			Zealot* zealot = dynamic_cast<Zealot*>(obj);
+			if (zealot != NULL && damageTag == "HeavyAttack") {
+				zealot->setCurrentState(EnemyObject::STUNNED);
+			}
 		}
 		
 		entity->takeDamage(damage);
@@ -124,7 +133,7 @@ void DamageCollider<TargetEntityType>::onTriggerEnter(Collider* collider) { // f
 				EnemyObject* enemyObj = dynamic_cast<EnemyObject*>(this->getOwner());
 
 				if (enemyObj != NULL) {
-					enemyObj->setCurrentState(enemyObj->STUNNED);
+					enemyObj->setCurrentState(EnemyObject::STUNNED);
 					float parryDirection = (player->getTransform().getPosition().x < enemyObj->getTransform().getPosition().x) ? 1.0f : -1.0f;
 					for (int i = 0; i < 5; i++) {
 						ParticleProperties particleProps = ParticleProperties(
@@ -189,6 +198,12 @@ template <class TargetEntityType>
 void DamageCollider<TargetEntityType>::setCanDecreaseTime(bool value) {
 	canDecreaseTimeRemaining = value;
 }
+
+template <class TargetEntityType>
+void DamageCollider<TargetEntityType>::setDamageTag(std::string tag) {
+	this->damageTag = tag;
+}
+
 
 template <class TargetEntityType>
 LivingEntity* DamageCollider<TargetEntityType>::getOwner() const {
