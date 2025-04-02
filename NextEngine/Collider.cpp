@@ -23,11 +23,6 @@ Collider::~Collider() {
 	for (pair<Collider*, CollisionState> pair : collisionMap) {
 		Collider* col = pair.first;
 		std::map<Collider*, CollisionState>& otherMap = col->getCollisionMap();
-
-		if (otherMap.count(this) == 0) {
-			continue;
-		}
-
 		otherMap.erase(this);
 	}
 }

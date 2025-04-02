@@ -75,6 +75,17 @@ void LevelAlphaTest::levelInit() {
 void LevelAlphaTest::levelUpdate() {
     updateObjects(objectsList);
     GameEngine::getInstance()->getRenderer()->updateCamera(glm::vec3());
+
+
+    // Placeholder death logic
+    for (std::list<DrawableObject*>::iterator itr = objectsList.begin(); itr != objectsList.end(); ++itr) {
+        EnemyObject* enemy = dynamic_cast<EnemyObject*>(*itr);
+        if (enemy != NULL) {
+            if (enemy->getHealth() <= 0) {
+                DrawableObject::destroyObject(enemy);
+            }
+        }
+    }
 }
 
 void LevelAlphaTest::levelDraw() {
@@ -99,8 +110,10 @@ void LevelAlphaTest::levelUnload() {
 }
 
 void LevelAlphaTest::handleKey(InputManager& input) {
+    // For debugging
     if (input.getButton(SDLK_z)) GameEngine::getInstance()->getRenderer()->increaseZoomRatio(0.1f);
     if (input.getButton(SDLK_x)) GameEngine::getInstance()->getRenderer()->decreaseZoomRatio(0.1f);
+    if (input.getButtonDown(SDLK_b)) player->knockback(glm::vec2(0.0f, 10.0f), 0.5f);
 
     float dt = GameEngine::getInstance()->getTime()->getDeltaTime();
 

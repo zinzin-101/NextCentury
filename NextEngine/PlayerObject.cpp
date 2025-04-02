@@ -374,7 +374,7 @@ void PlayerObject::rangeAttack(std::list<DrawableObject*>& objectsList) {
     cout << "current charge: " << currentRangeCharge << endl;
     ///temporary pos, new adjustment later
     glm::vec3 currentPos = this->getTransform().getPosition();
-    currentPos.y -= 0.5f;
+    currentPos.y -= 0.25f;
     hitscan->getTransform().setPosition(currentPos);
 
     this->getAnimationComponent()->setState("GunShoot");
@@ -405,6 +405,13 @@ void PlayerObject::resetAttack() {
 }
 
 void PlayerObject::flinch(float duration) {
+    bool grounded = this->getColliderComponent()->getCollisionFlag() & COLLISION_DOWN;
+    if (!grounded) {
+        isJumping = false;
+        knockback(glm::vec2(0.0f, 10.0f), 0.5f);
+        return;
+    }
+
     this->flinchTimeRemaining = duration;
     resetAttack();
     glm::vec2 vel = this->getPhysicsComponent()->getVelocity();

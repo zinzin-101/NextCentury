@@ -5,14 +5,14 @@
 
 namespace PlayerStat {
     constexpr float DODGE_VELOCITY = 8.0f;
-    constexpr float DODGE_COOLDOWN = 1.0f;
+    constexpr float DODGE_COOLDOWN = 0.5f;
     constexpr float DODGE_DURATION = 0.8f;
 
-    constexpr float TIME_TO_RESET_COMBO = 2.0f;
-    constexpr float ATTACK_COOLDOWN = 0.2f;
-    constexpr float LAST_COMBO_COOLDOWN = 1.0f;
-    constexpr float ATTACK_DASH_VELOCITY = 2.0f;
-    constexpr float AFTER_ATTACK_MOVE_DELAY_TIME = 0.8f;
+    constexpr float TIME_TO_RESET_COMBO = 0.8f;
+    constexpr float ATTACK_COOLDOWN = 0.15f;
+    constexpr float LAST_COMBO_COOLDOWN = 0.5f;
+    constexpr float ATTACK_DASH_VELOCITY = 1.0f;
+    constexpr float AFTER_ATTACK_MOVE_DELAY_TIME = 0.5f;
     constexpr float DURATION_TO_START_HEAVY_ATTACK = 0.5f;
     constexpr float DURATION_TO_START_CHARGED_BULLET = 0.5f;
 
@@ -45,7 +45,7 @@ namespace PlayerStat {
 
     constexpr float JUMP_VELOCITY = 25.0f;
 
-    constexpr float INVINCIBLE_DURATION_AFTER_TAKING_DAMAGE = 0.5f;
+    constexpr float INVINCIBLE_DURATION_AFTER_TAKING_DAMAGE = 0.3f;
 
     //+ placeholder player health
     constexpr int MAX_HEALTH = 100;
