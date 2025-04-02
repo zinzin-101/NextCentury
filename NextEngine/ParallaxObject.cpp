@@ -60,6 +60,11 @@ void ParallaxObject::setPlane(float nearPlane, float farPlane) { // the magic nu
 	this->nearPlane = nearPlane;
 	this->farPlane = farPlane;
 }
+
+void ParallaxObject::start(list<DrawableObject*>& objectsList) {
+	// Might use to set player pointer but it will be O(n^2), so right now the player is set through level init
+}
+
 // Parallax doesn't work with start Pos
 void ParallaxObject::update(list<DrawableObject*>& objectsList) {
 	if (player == nullptr) {

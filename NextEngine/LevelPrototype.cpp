@@ -135,7 +135,7 @@ void LevelPrototype::levelInit() {
     player->getDamageCollider()->getTransform().scales(2);
 
     GameEngine::getInstance()->getRenderer()->getCamera()->setTarget(player);
-    GameEngine::getInstance()->getRenderer()->toggleViewport();
+    //GameEngine::getInstance()->getRenderer()->toggleViewport();
 
     LightSource* testLight = new LightSource(1.0f, 10.0f);
     testLight->setName("light source");

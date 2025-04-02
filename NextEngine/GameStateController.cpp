@@ -1,5 +1,6 @@
 #include "GameStateController.h"
 #include "Level.h"
+#include "LevelAlphaTest.h"
 #include "LevelParallax.h"
 #include "LevelTest.h"
 #include "LevelAnimTest.h"
@@ -30,7 +31,7 @@ void GameStateController::loadLevel() {
 	cout << gameStateCurr << endl;
 	switch (gameStateCurr) {
 		case GameState::GS_LEVEL1:
-			currentLevel = new LevelPrototype();
+			currentLevel = new LevelAlphaTest();
 			break;
 		case GameState::GS_LEVEL2:
 			currentLevel = new LevelPrototype();

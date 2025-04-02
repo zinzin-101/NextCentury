@@ -277,6 +277,15 @@ void Level::drawImGui(std::list<DrawableObject*>& objectList) {
             if (ImGui::Button(">>>")) {
                 inputNum += 10.0f;
             }
+            static float increment = 0.1f;
+            ImGui::InputFloat("Custom Increment", &increment);
+            ImGui::SameLine();
+            if (ImGui::Button("-")) {
+                inputNum -= increment;
+            }
+            if (ImGui::Button("+")) {
+                inputNum += increment;
+            }
 
             bool drawCollider = obj->getCanDrawCollider();
             ImGui::Checkbox("Draw Outline", &drawCollider);
@@ -815,6 +824,10 @@ void Level::readEnemyData(std::ifstream& file, std::string type, std::list<Drawa
         std::cout << "Invalid Type When Reading Enemy Data" << std::endl;
         return;
     }
+
+    enemy->getTransform().setPosition(posX, posY);
+    enemy->getTransform().setRotationRad(rotation);
+    enemy->getTransform().setScale(scaleX, scaleY);
 
     enemy->getColliderComponent()->setDimension(width, height);
     enemy->getColliderComponent()->getTransform().setPosition(cPosX, cPosY);

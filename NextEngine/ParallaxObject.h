@@ -21,6 +21,7 @@ public:
 	ParallaxObject(float x, float y, float z, bool vertical, PlayerObject* player, bool loopable);
 	void setStartPos(glm::vec3 startPos);
 	void setPlane(float nearPlane, float farPlane);
+	virtual void start(list<DrawableObject*>& objectsList);
 	virtual void update(list<DrawableObject*>& objectsList);
 	void setTexture(string path);
 	void initAnimation(int row, int column);

@@ -90,11 +90,21 @@ void DamageCollider<TargetEntityType>::onCollisionEnter(Collider* collider) {
 	TargetEntityType* entity = dynamic_cast<TargetEntityType*>(obj);
 
 	if (entity != NULL) {
+		EnemyObject* enemy = dynamic_cast<EnemyObject*>(obj);
+		if (enemy != NULL) {
+			PlayerObject* playerAsOwner = dynamic_cast<PlayerObject*>(this->owner);
+
+			if (playerAsOwner != NULL && playerAsOwner->getIsParrying()) {
+				return;
+			}
+		}
+		
 		entity->takeDamage(damage);
 		//std::cout << entity->getName() << " took " << damage << " damage" << std::endl;
 		PlayerObject* player = dynamic_cast<PlayerObject*>(obj);
 		if (player != NULL && !player->getIsParrying()) {
 			player->flinch(0.5f);
+			return;
 		}
 	}
 }

@@ -46,6 +46,7 @@
     <ClCompile Include="GLRenderer.cpp" />
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="Level.cpp" />
+    <ClCompile Include="LevelAlphaTest.cpp" />
     <ClCompile Include="LevelAnimTest.cpp" />
     <ClCompile Include="LevelCollisionTest.cpp" />
     <ClCompile Include="LevelEnemTest.cpp" />
@@ -115,6 +116,7 @@
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="InteractableObject.h" />
     <ClInclude Include="Level.h" />
+    <ClInclude Include="LevelAlphaTest.h" />
     <ClInclude Include="LevelAnimTest.h" />
     <ClInclude Include="LevelCollisionTest.h" />
     <ClInclude Include="LevelEnemTest.h" />
