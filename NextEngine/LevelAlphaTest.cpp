@@ -45,12 +45,13 @@ void LevelAlphaTest::levelInit() {
     Ground->setTexture("../Resource/Texture/OutskirtParallax/OSKT_P02_Ground.png");
     objectsList.push_back(Ground);
 
-    Level::importTransformData(objectsList, "", true);
+    Level::importTransformData(objectsList, "alpha", true);
 
     player = new PlayerObject();
     player->getTransform().scales(2);
     player->getColliderComponent()->getTransform().translate(0.0f, -0.5f);
     player->getColliderComponent()->setDimension(0.5f, 0.5f);
+    player->setDrawCollider(true);
     objectsList.emplace_back(player);
 
     GameEngine::getInstance()->getRenderer()->getCamera()->setTarget(player);

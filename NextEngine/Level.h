@@ -30,7 +30,7 @@ protected:
 
     #ifdef DEBUG_MODE_ON
     static void appendEnemyData(std::ofstream& output, EnemyObject* enemy);
-    static void readEnemyData(std::ifstream& file, std::string type, std::list<DrawableObject*>& objectsList);
+    static void readEnemyData(std::ifstream& file, std::string type, std::list<DrawableObject*>& objectsList, bool setDrawCollider);
     #endif
 
 public:

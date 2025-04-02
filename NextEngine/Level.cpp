@@ -649,7 +649,7 @@ void Level::importTransformData(std::list<DrawableObject*>& objectsList, std::st
         std::string type = line;
 
         if (type == "Zealot" || type == "BlightFlame") {
-            readEnemyData(file, type, objectsList);
+            readEnemyData(file, type, objectsList, drawOutline);
             continue;
         }
 
@@ -769,7 +769,7 @@ void Level::appendEnemyData(std::ofstream& output, EnemyObject* enemy) {
 
     output << "\n";
 }
-void Level::readEnemyData(std::ifstream& file, std::string type, std::list<DrawableObject*>& objectsList) {
+void Level::readEnemyData(std::ifstream& file, std::string type, std::list<DrawableObject*>& objectsList, bool setDrawCollider) {
     std::string line;
     std::getline(file, line, ',');
     std::string name = line;
@@ -836,6 +836,10 @@ void Level::readEnemyData(std::ifstream& file, std::string type, std::list<Drawa
 
     objectsList.emplace_back(enemy);
     enemy->start(objectsList);
+
+    if (setDrawCollider) {
+        enemy->setDrawCollider(true);
+    }
 }
 
 #endif
