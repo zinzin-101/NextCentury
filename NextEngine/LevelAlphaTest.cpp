@@ -67,8 +67,7 @@ void LevelAlphaTest::levelInit() {
 
     startObjects(objectsList);
 
-    player->getDamageCollider()->setFollowOffset(glm::vec3(1.0f, -1.0f, 0));
-    player->getDamageCollider()->getTransform().scales(2);
+    player->getDamageCollider()->setFollowOffset(glm::vec3(0.5f, -0.5f, 0));
 
     GameEngine::getInstance()->freezeGameForSeconds(0.5f);
 }

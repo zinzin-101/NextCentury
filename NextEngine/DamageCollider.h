@@ -146,7 +146,7 @@ void DamageCollider<TargetEntityType>::onTriggerEnter(Collider* collider) { // f
 template <class TargetEntityType>
 void DamageCollider<TargetEntityType>::trigger(glm::vec3 pos) {
 	timeRemaining = lifespan;
-	this->transform.setPosition(pos);
+	this->transform.setPosition(pos + followOffset);
 	this->setActive(true);
 
 	// debug //

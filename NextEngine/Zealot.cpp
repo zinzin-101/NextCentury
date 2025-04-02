@@ -23,9 +23,8 @@ void Zealot::start(list<DrawableObject*>& objectsList) {
 	attackHitbox->setActive(false);
 	attackHitbox->setFollowOwner(true);
 	attackHitbox->setFollowOffset(glm::vec3(0.5f, 0, 0));
+	attackHitbox->getColliderComponent()->getTransform().translate(0.0f, -0.5f);
 	attackHitbox->getColliderComponent()->setWidth(1.5f);
-	glm::vec3 scale = this->getTransform().getScale();
-	attackHitbox->getColliderComponent()->getTransform().scales(scale.x, scale.y);
 	objectsList.emplace_back(attackHitbox);
 
 	stunnedTime = ZealotStat::STUN_DURATION;
