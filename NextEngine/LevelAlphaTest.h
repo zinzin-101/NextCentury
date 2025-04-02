@@ -1,5 +1,6 @@
 #pragma once
 #include "Level.h"
+#include "ObjectHeader.h"
 
 class LevelAlphaTest : public Level {
 private:

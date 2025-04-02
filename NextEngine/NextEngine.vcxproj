@@ -132,6 +132,7 @@
     <ClInclude Include="MapLoader.h" />
     <ClInclude Include="MeshVbo.h" />
     <ClInclude Include="MovementInfo.h" />
+    <ClInclude Include="ObjectHeader.h" />
     <ClInclude Include="ParallaxBackground.h" />
     <ClInclude Include="ParallaxObject.h" />
     <ClInclude Include="Particle.h" />

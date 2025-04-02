@@ -1,4 +1,5 @@
 #include "Zealot.h"
+#include "ObjectHeader.h"
 #include "Random.h"
 
 Zealot::Zealot(const EnemyInfo& enemyinfo) : EnemyObject(enemyinfo) {

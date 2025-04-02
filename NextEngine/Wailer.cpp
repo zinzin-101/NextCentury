@@ -1,5 +1,6 @@
 #include "Wailer.h"
 #include "Random.h"
+#include "ObjectHeader.h"
 
 Wailer::Wailer(EnemyInfo& enemyinfo) : EnemyObject(enemyinfo) {
 	cout << attackCooldown << endl;

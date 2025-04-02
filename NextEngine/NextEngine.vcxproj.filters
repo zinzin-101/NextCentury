@@ -166,6 +166,7 @@
     <ClInclude Include="FlameDamage.h" />
     <ClInclude Include="Dialogue.h" />
     <ClInclude Include="LevelAlphaTest.h" />
+    <ClInclude Include="ObjectHeader.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Resource\Shader\fragment.shd" />

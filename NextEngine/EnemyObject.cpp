@@ -1,4 +1,5 @@
 #include "EnemyObject.h"
+#include "DamageCollider.h"
 #include <limits>
 
 //#include "ParticleSystem.h" // temporary testing
