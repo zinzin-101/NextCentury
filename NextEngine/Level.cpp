@@ -839,3 +839,23 @@ void Level::readEnemyData(std::ifstream& file, std::string type, std::list<Drawa
         enemy->setDrawCollider(true);
     }
 }
+
+void Level::addLoadingScreen() {
+	blackLoadingScreen = new SimpleObject();
+	blackLoadingScreen->setName("BlackLoadingScreen");
+	blackLoadingScreen->getTransform().setPosition(0.0f, 0.0f);
+	blackLoadingScreen->getTransform().setScale(2000.0f, 2000.0f);
+	blackLoadingScreen->setDrawCollider(false);
+	blackLoadingScreen->setColor(0.0f, 0.0f, 0.0f);
+	objectsList.emplace_back(blackLoadingScreen);
+}
+
+void Level::removeLoadingScreen() {
+	objectsList.remove(blackLoadingScreen);
+	blackLoadingScreen = nullptr;
+}
+
+void Level::LoadContent() {
+	GameEngine::getInstance()->getAudio()->loadAudio("../Resource/audio/NextEngine/NextEngine.wav", "NextEngine");
+	GameEngine::getInstance()->getAudio()->playAudio("NextEngine", 0.0f, 0.0f, 1.0f);
+}
