@@ -24,12 +24,14 @@ void BlightFlame::start(list<DrawableObject*>& objectsList) {
 	getAnimationComponent()->setState("Idle");
 	attackHitbox = new DamageCollider<PlayerObject>(this, BlightFlameStat::MELEE_DAMAGE, -1);
 	attackHitbox->setActive(false);
+	attackHitbox->setFollowOwner(true);
+	attackHitbox->setFollowOffset(glm::vec3(0.6f, 0.0f ,0.0f));
 	objectsList.emplace_back(attackHitbox);
 	flameHitbox = new FlameDamage<PlayerObject>(this, BlightFlameStat::FLAME_DAMAGE, 0.2f);
 	flameHitbox->DrawableObject::setActive(false);
 	flameHitbox->setFollowOwner(true);
-	flameHitbox->setFollowOffset(glm::vec3(0.5f, 0, 0));
-	flameHitbox->getColliderComponent()->setWidth(1.5f);
+	flameHitbox->setFollowOffset(glm::vec3(2.0f, 0, 0));
+	flameHitbox->getColliderComponent()->setWidth(4.0f);
 	objectsList.emplace_back(flameHitbox);
 
 	targetEntity = EnemyObject::findPlayer(objectsList);

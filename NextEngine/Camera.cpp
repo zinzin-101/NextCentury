@@ -23,9 +23,7 @@ void Camera::followTarget() {
     glm::vec3 newPos;
     float x;
     float y = target->getTransform().getPosition().y + offset.y;
-    //if (y > 8.0f) {
-    //    y = 8.0f;
-    //}
+    cout << y << endl;
     
     if (GameEngine::getInstance()->getRenderer()->getIsViewportEnabled()) {
         if (abs(target->getTransform().getPosition().x - position.x) > deadZoneX) {
@@ -51,7 +49,7 @@ void Camera::followTarget() {
         y += Random::Float() - 0.5f;
     }
 
-    newPos = glm::vec3(x , y , 0.0f);
+    newPos = glm::vec3(x , 0/*y*/, 0.0f);
     setPosition((1-0.2f) * this->position + 0.2f * newPos);
 }
 
