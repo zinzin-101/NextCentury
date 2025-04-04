@@ -1,5 +1,5 @@
 #include "BlightFlame.h"
-#include "FlameDamage.h"
+#include "ObjectHeader.h"
 #include "Random.h"
 
 BlightFlame::BlightFlame(const EnemyInfo& enemyinfo) : EnemyObject(enemyinfo) {
@@ -21,7 +21,7 @@ void BlightFlame::start(list<DrawableObject*>& objectsList) {
 	getAnimationComponent()->addState("WindDown", 4, 0, 4, false);
 	getAnimationComponent()->addState("Stunned", 5, 0, 3, true);
 	getAnimationComponent()->setState("Idle");
-	attackHitbox = nullptr;
+	attackHitbox = new DamageCollider<PlayerObject>(this, damage, 0.2f);
 	flameHitbox = new FlameDamage<PlayerObject>(this, damage, 0.2f);
 	flameHitbox->DrawableObject::setActive(false);
 	flameHitbox->setFollowOwner(true);
