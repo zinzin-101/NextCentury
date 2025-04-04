@@ -776,10 +776,6 @@ DamageCollider<EnemyObject>* PlayerObject::getDamageCollider() const {
     return attackHitbox;
 }
 
-void PlayerObject::onTriggerEnter(Collider* collider) {
-
-}
-
 void PlayerObject::takeDamage(int damage) {
     if (!this->getCanTakeDamage()) {
         return;
