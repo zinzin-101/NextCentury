@@ -43,6 +43,8 @@ public:
 
 	virtual void render(glm::mat4 globalModelTransform);
 	virtual void drawCollider();
+
+	void reset();
 };
 
 template <class TargetEntityType>
@@ -72,10 +74,8 @@ FlameDamage<TargetEntityType>::FlameDamage(LivingEntity* owner, int damage, floa
 	this->getAnimationComponent()->addState("Start", 0, 0, 3, false);
 	this->getAnimationComponent()->addState("Blast", 1, 0, 6, true);
 	this->getAnimationComponent()->addState("End", 2, 0, 2, false);
-	flameStart = false;
-	isWaitingToDeactivate = false;
 
-	canDamage = false;
+	reset();
 }
 
 template <class TargetEntityType>
@@ -251,4 +251,12 @@ void FlameDamage<TargetEntityType>::render(glm::mat4 globalModelTransform){
 template <class TargetEntityType>
 void FlameDamage<TargetEntityType>::drawCollider() {
 	this->render(glm::mat4());
+}
+
+template <class TargetEntityType>
+void FlameDamage<TargetEntityType>::reset() {
+	flameStart = false;
+	isWaitingToDeactivate = false;
+	canDamage = false;
+	this->setActive(false);
 }
