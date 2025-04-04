@@ -54,6 +54,10 @@ namespace PlayerStat {
     constexpr int MAX_STAMINA = 100;
     constexpr int MAX_BULLET = 3;
 
+    constexpr float STAMINA_RECHARGE_DELAY = 1.0f;
+    constexpr float STAMINA_RECHARGE_TIMER = 1.0f;
+    constexpr int STAMINA_RECHARGE_AMOUNT = 1;
+
     constexpr float BULLET_RECHARGE_TIMER = 1.0f;
 
     constexpr int JUMP_STAMINA_CONSUMPTION = 1;
@@ -62,6 +66,7 @@ namespace PlayerStat {
     constexpr int HEAVY1_STAMINA_CONSUMPTION = 1;
     constexpr int HEAVY2_STAMINA_CONSUMPTION = 1;
     constexpr int PARRY_STAMINA_CONSUMPTION = 1;
+    constexpr int RANGE_STAMINA_CONSUMPTION = 1;
 }
 
 class EnemyObject;
@@ -163,6 +168,9 @@ class PlayerObject : public LivingEntity {
         glm::vec3 moveDirection;
 
         int stamina;
+        float staminaRechargeTimer;
+        float staminaRechargeDelayTimer;
+        void resetStaminaRechargeDelay();
 
         int currentNumOfBullets;
         float bulletRechargeTimer;

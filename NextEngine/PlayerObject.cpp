@@ -95,6 +95,9 @@ PlayerObject::PlayerObject() : LivingEntity("Player", PlayerStat::MAX_HEALTH) {
     iFrameTimeRemaining = 0.0f;
 
     stamina = PlayerStat::MAX_STAMINA;
+    staminaRechargeDelayTimer = 0.0f;
+    staminaRechargeTimer = 0.0f;
+
     currentNumOfBullets = PlayerStat::MAX_BULLET;
 }
 
@@ -121,6 +124,13 @@ void PlayerObject::jump() {
         return;
     }
 
+    if (stamina < PlayerStat::JUMP_STAMINA_CONSUMPTION) {
+        return;
+    }
+
+    stamina -= PlayerStat::JUMP_STAMINA_CONSUMPTION;
+    resetStaminaRechargeDelay();
+
     bool grounded = collider->getCollisionFlag() & COLLISION_DOWN;
     if (!grounded) {
         return;
@@ -142,6 +152,13 @@ void PlayerObject::dodge() {
     if (!canDodge || !canMove || isJumping) {
         return;
     }
+
+    if (stamina < PlayerStat::DODGE_STAMINA_CONSUMPTION) {
+        return;
+    }
+
+    stamina -= PlayerStat::DODGE_STAMINA_CONSUMPTION;
+    resetStaminaRechargeDelay();
 
     isDodging = true;
     canChangeFacingDirection = false;
@@ -176,6 +193,25 @@ void PlayerObject::updateStat() {
     if (currentNumOfBullets < PlayerStat::MAX_BULLET && bulletRechargeTimer <= 0.0f) {
         bulletRechargeTimer = PlayerStat::BULLET_RECHARGE_TIMER;
         currentNumOfBullets++;
+    }
+
+    if (staminaRechargeDelayTimer > 0.0f) {
+        staminaRechargeDelayTimer -= dt;
+    }
+
+    if (staminaRechargeTimer > 0.0f) {
+        staminaRechargeTimer -= dt;
+    }
+
+    if (staminaRechargeDelayTimer <= 0.0f) {
+        if (staminaRechargeTimer <= 0.0f && stamina < PlayerStat::MAX_STAMINA) {
+            staminaRechargeTimer = PlayerStat::STAMINA_RECHARGE_TIMER;
+
+            stamina += PlayerStat::STAMINA_RECHARGE_AMOUNT;
+            if (stamina > PlayerStat::MAX_STAMINA) {
+                stamina = PlayerStat::MAX_STAMINA;
+            }
+        }
     }
 }
 
@@ -272,6 +308,13 @@ void PlayerObject::normalAttack() {
         return;
     }
 
+    if (stamina < PlayerStat::MELEE_STAMINA_CONSUMPTION) {
+        return;
+    }
+
+    stamina -= PlayerStat::MELEE_STAMINA_CONSUMPTION;
+    resetStaminaRechargeDelay();
+
     isInAttackState = true;
     isAttacking = true;
     canChangeFacingDirection = false;
@@ -331,14 +374,18 @@ void PlayerObject::heavyAttack() {
     switch (currentHeavyCharge) {
         case PlayerHeavyCharge::LEVEL_1:
             this->getAnimationComponent()->setState("Charge1");
+            stamina -= PlayerStat::HEAVY1_STAMINA_CONSUMPTION;
             break;
 
         case PlayerHeavyCharge::LEVEL_2:
             this->getAnimationComponent()->setState("Charge2");
+            stamina -= PlayerStat::HEAVY2_STAMINA_CONSUMPTION;
             break;
     }
+    resetStaminaRechargeDelay();
 
     attackHitbox->setDamage(baseDamage[currentCombo] * damageMultiplier[currentHeavyCharge]);
+
 }
 
 void PlayerObject::parryAttack() {
@@ -349,6 +396,13 @@ void PlayerObject::parryAttack() {
     if (attackCooldownRemaining > 0.0f) {
         return;
     }
+
+    if (stamina < PlayerStat::PARRY_STAMINA_CONSUMPTION) {
+        return;
+    }
+
+    stamina -= PlayerStat::PARRY_STAMINA_CONSUMPTION;
+    resetStaminaRechargeDelay();
 
     isAttacking = false;
     isInAttackState = false;
@@ -403,6 +457,9 @@ void PlayerObject::rangeAttack(std::list<DrawableObject*>& objectsList) {
     currentNumOfBullets -= rangeDamageMultiplier[currentRangeCharge];
     currentRangeCharge = PlayerRangeCharge::CHARGE_0;
     rangeHeldDuration = 0.0f;
+
+    stamina -= PlayerStat::RANGE_STAMINA_CONSUMPTION;
+    resetStaminaRechargeDelay();
 }
 
 void PlayerObject::resetAttack() {
@@ -462,6 +519,10 @@ void PlayerObject::startHeavyAttack() {
         return;
     }
 
+    if (stamina < PlayerStat::HEAVY1_STAMINA_CONSUMPTION) {
+        return;
+    }
+
     isInHeavyAttack = true;
     this->getAnimationComponent()->setState("Charging");
     currentHeavyCharge = PlayerHeavyCharge::LEVEL_1;
@@ -477,6 +538,10 @@ void PlayerObject::startRangeAttack(float dt) {
     }
 
     if (rangeAttackCooldownRemaining > 0.0f || currentNumOfBullets < rangeChargeDuration[PlayerRangeCharge::CHARGE_1]) {
+        return;
+    }
+
+    if (stamina < PlayerStat::RANGE_STAMINA_CONSUMPTION) {
         return;
     }
 
@@ -784,6 +849,11 @@ void PlayerObject::takeDamage(int damage) {
     this->LivingEntity::takeDamage(damage);
     iFrameTimeRemaining = PlayerStat::INVINCIBLE_DURATION_AFTER_TAKING_DAMAGE;
 }
+
+void PlayerObject::resetStaminaRechargeDelay() {
+    staminaRechargeDelayTimer = PlayerStat::STAMINA_RECHARGE_DELAY;
+}
+
 
 int PlayerObject::getStamina() const {
     return stamina;
