@@ -14,13 +14,18 @@ class PlayerObject;
 template <class T>
 class DamageCollider;
 
+namespace EnemyStat {
+    constexpr float FLINCH_TIME = 0.2f;
+}
+
 class EnemyObject : public LivingEntity {
     public:
         enum State {
             IDLE,
             AGGRO,
             ATTACKING,
-            STUNNED
+            STUNNED,
+            FLINCH
         };
 
     protected:
@@ -46,6 +51,8 @@ class EnemyObject : public LivingEntity {
         float stunnedTime;
         float currentStunnedTime;
 
+        float flinchTimer;
+
         float getDistanceFromTarget() const;
         virtual void moveTowardsTarget();
         virtual void startAttack();
@@ -53,7 +60,7 @@ class EnemyObject : public LivingEntity {
 
     public:
         EnemyObject(const EnemyInfo& enemyInfo);
-        void setCurrentState(State state);
+        virtual void setCurrentState(State state);
         State getCurrentState();
 
         /*SimpleObject* getHitbox() const;

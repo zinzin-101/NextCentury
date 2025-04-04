@@ -23,6 +23,8 @@ EnemyObject::EnemyObject(const EnemyInfo& enemyInfo) : LivingEntity(enemyInfo.na
 	//attackHitbox->addColliderComponent();
 	//attackHitbox->getColliderComponent()->setTrigger(true); // Hitbox should be a trigger
 
+	this->flinchTimer = 0.0f;
+
 	targetEntity = nullptr;
 
 	/*deactivateHitbox();*/
@@ -53,6 +55,10 @@ EnemyObject::~EnemyObject() {
 void EnemyObject::setCurrentState(State state) {
 	if (state == STUNNED) {
 		currentStunnedTime = stunnedTime;
+	}
+	else if (state == FLINCH) {
+		flinchTimer = EnemyStat::FLINCH_TIME;
+		attackCooldownTimer = attackCooldown;
 	}
 	currentState = state;
 }
@@ -217,6 +223,10 @@ void EnemyObject::updateState() {
 		return;
 	}
 
+	if (currentState == State::FLINCH) {
+		return;
+	}
+
 	if (prevState == State::ATTACKING) {
 		Animation::State animState = getAnimationComponent()->getCurrentAnimationState();
 		if (animState.name == "Attacking" && animState.isPlaying) {
@@ -310,6 +320,18 @@ void EnemyObject::updateBehavior(list<DrawableObject*>& objectsList) {
 			//if (currentStunnedTime < 0.6f) {
 			//	GameEngine::getInstance()->getRenderer()->getCamera()->CanShake = false;
 			//}
+			break;
+
+		case FLINCH:
+			getAnimationComponent()->setState("Idle");
+			attackHitbox->setActive(false);
+			if (flinchTimer > 0) {
+				flinchTimer -= dt;
+			}
+			else {
+				currentState = IDLE;
+			}
+
 			break;
 	}
 

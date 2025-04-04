@@ -103,8 +103,8 @@ void DamageCollider<TargetEntityType>::onCollisionEnter(Collider* collider) {
 			}
 
 			Zealot* zealot = dynamic_cast<Zealot*>(obj);
-			if (zealot != NULL && damageTag == "HeavyAttack") {
-				zealot->setCurrentState(EnemyObject::STUNNED);
+			if (zealot != NULL) {
+				zealot->setCurrentState(EnemyObject::FLINCH);
 			}
 		}
 		

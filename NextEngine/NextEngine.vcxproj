@@ -101,7 +101,6 @@
     <ClInclude Include="ColliderObject.h" />
     <ClInclude Include="CollisionHandler.h" />
     <ClInclude Include="DamageCollider.h" />
-    <ClInclude Include="DamageParticleObject.h" />
     <ClInclude Include="DebugMode.h" />
     <ClInclude Include="Dialogue.h" />
     <ClInclude Include="DrawableObject.h" />

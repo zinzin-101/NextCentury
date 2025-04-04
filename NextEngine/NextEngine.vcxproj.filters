@@ -85,7 +85,6 @@
     <ClInclude Include="ColliderObject.h" />
     <ClInclude Include="CollisionHandler.h" />
     <ClInclude Include="DamageCollider.h" />
-    <ClInclude Include="DamageParticleObject.h" />
     <ClInclude Include="DrawableObject.h" />
     <ClInclude Include="EnemyInfo.h" />
     <ClInclude Include="EnemyObject.h" />

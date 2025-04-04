@@ -29,6 +29,7 @@ void Zealot::start(list<DrawableObject*>& objectsList) {
 	objectsList.emplace_back(attackHitbox);
 
 	stunnedTime = ZealotStat::STUN_DURATION;
+	flinchTimer = 0.0f;
 
 	targetEntity = EnemyObject::findPlayer(objectsList);
 }
@@ -38,6 +39,11 @@ void Zealot::updateState() {
 	float dt = GameEngine::getInstance()->getTime()->getDeltaTime();
 
 	if (currentState == State::STUNNED) {
+		attackHitbox->setActive(false);
+		return;
+	}
+
+	if (currentState == State::FLINCH) {
 		attackHitbox->setActive(false);
 		return;
 	}
@@ -136,9 +142,20 @@ void Zealot::updateBehavior(list<DrawableObject*>& objectsList) {
 		else {
 			currentState = IDLE;
 		}
-		//if (currentStunnedTime < 0.6f) {
-		//	GameEngine::getInstance()->getRenderer()->getCamera()->CanShake = false;
-		//}
+
+		break;
+
+	case FLINCH:
+		getAnimationComponent()->setState("Idle");
+		attackHitbox->setActive(false);
+		cout << "flinching" << endl;
+		if (flinchTimer > 0) {
+			flinchTimer -= dt;
+		}
+		else {
+			currentState = IDLE;
+		}
+
 		break;
 	}
 
