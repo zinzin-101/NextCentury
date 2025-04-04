@@ -4,6 +4,8 @@
 
 BlightFlame::BlightFlame(const EnemyInfo& enemyinfo) : EnemyObject(enemyinfo) {
 	flameHitbox = nullptr;
+
+	getTransform().setScale(1.0f, 1.6f);
 }
 void BlightFlame::start(list<DrawableObject*>& objectsList) {
 	//setTexture("../Resource/Texture/incineratorSizeFlip.png");
@@ -108,6 +110,10 @@ void BlightFlame::updateBehavior(list<DrawableObject*>& objectsList) {
 	emitter->update(objectsList);
 	///
 
+	if (isInKnockback) {
+		return;
+	}
+
 	float dt = GameEngine::getInstance()->getTime()->getDeltaTime();
 
 	updateState();
@@ -153,7 +159,22 @@ void BlightFlame::updateBehavior(list<DrawableObject*>& objectsList) {
 		//	GameEngine::getInstance()->getRenderer()->getCamera()->CanShake = false;
 		//}
 		break;
+
+	case FLINCH:
+		getAnimationComponent()->setState("Idle");
+		attackHitbox->setActive(false);
+		flameHitbox->reset();
+		cout << "blightflame flinching" << endl;
+		if (flinchTimer > 0) {
+			flinchTimer -= dt;
+		}
+		else {
+			currentState = IDLE;
+		}
+
+		break;
 	}
+
 
 	if (attackCooldownTimer > 0.0f) {
 		attackCooldownTimer -= dt;
