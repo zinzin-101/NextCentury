@@ -6,6 +6,7 @@
 class IngameUI {
 private:
     SimpleObject* healthBar = nullptr;
+    SimpleObject* staminaBar = nullptr;
 public:
     void initUI(std::list<DrawableObject*>& objectsList);
     void updateUI(PlayerObject& playerObject, glm::vec3 camPos);
