@@ -4,9 +4,25 @@
 template <class T>
 class FlameDamage;
 
+namespace BlightFlameStat {
+	constexpr int FLAME_DAMAGE = 1;
+	constexpr int MELEE_DAMAGE = 5;
+
+	constexpr float MELEE_ATTACK_DISTANCE = 2.0f;
+}
+
 class BlightFlame : public EnemyObject {
 	private:
 		FlameDamage<PlayerObject>* flameHitbox;
+
+		enum AttackType {
+			FLAME,
+			MELEE
+		};
+
+		AttackType currentAttackType;
+		void handleFlameAttack();
+		void handleMeleeAttack();
 
 protected:
 	float flameTime = 3.0f;
