@@ -4,24 +4,24 @@
 #include <list>
 
 namespace PlayerStat {
-    constexpr float DODGE_VELOCITY = 8.0f;
-    constexpr float DODGE_COOLDOWN = 0.5f;
-    constexpr float DODGE_DURATION = 0.8f;
+    constexpr float DODGE_VELOCITY = 6.0f;
+    constexpr float DODGE_COOLDOWN = 0.2f;
+    constexpr float DODGE_DURATION = 0.5f;
 
     constexpr float TIME_TO_RESET_COMBO = 0.8f;
-    constexpr float ATTACK_COOLDOWN = 0.15f;
+    constexpr float ATTACK_COOLDOWN = 0.1f;
     constexpr float LAST_COMBO_COOLDOWN = 0.5f;
-    constexpr float ATTACK_DASH_VELOCITY = 1.0f;
-    constexpr float AFTER_ATTACK_MOVE_DELAY_TIME = 0.5f;
+    constexpr float ATTACK_DASH_VELOCITY = 0.8f;
+    constexpr float AFTER_ATTACK_MOVE_DELAY_TIME = 0.3f;
     constexpr float DURATION_TO_START_HEAVY_ATTACK = 0.5f;
     constexpr float DURATION_TO_START_CHARGED_BULLET = 0.5f;
 
     constexpr int COMBO_DAMAGE_1 = 10;
-    constexpr int COMBO_DAMAGE_2 = 12;
-    constexpr int COMBO_DAMAGE_3 = 15;
+    constexpr int COMBO_DAMAGE_2 = 15;
+    constexpr int COMBO_DAMAGE_3 = 17;
     
-    constexpr float CHARGE_DAMAGE_MULTIPLIER_1 = 1.2f;
-    constexpr float CHARGE_DAMAGE_MULTIPLIER_2 = 1.5f;
+    constexpr float CHARGE_DAMAGE_MULTIPLIER_1 = 1.5f;
+    constexpr float CHARGE_DAMAGE_MULTIPLIER_2 = 2.0f;
     constexpr float HEAVY_ATTACK_COOLDOWN_1 = 0.5f;
     constexpr float HEAVY_ATTACK_COOLDOWN_2 = 0.8f;
     
@@ -38,14 +38,14 @@ namespace PlayerStat {
     constexpr float RANGE_ATTACK_DISTANCE = 5.0f;
     constexpr float RANGE_ATTACK_LIFESPAN = 0.5f;
 
-    constexpr float MOVE_SPEED = 5.0f;
+    constexpr float MOVE_SPEED = 3.0f;
     constexpr float ACCEL_SPEED = 2000.0f;
     constexpr float DECEL_SPEED = 10.0f;
-    constexpr float AIR_ACCEL = 10.0f;
+    constexpr float AIR_ACCEL = 6.0f;
 
-    constexpr float JUMP_VELOCITY = 25.0f;
+    constexpr float JUMP_VELOCITY = 20.0f;
 
-    constexpr float INVINCIBLE_DURATION_AFTER_TAKING_DAMAGE = 0.3f;
+    constexpr float INVINCIBLE_DURATION_AFTER_TAKING_DAMAGE = 0.4f;
 
     constexpr float FLINCH_TIME = 0.2f;
 
@@ -54,19 +54,19 @@ namespace PlayerStat {
     constexpr int MAX_STAMINA = 100;
     constexpr int MAX_BULLET = 3;
 
-    constexpr float STAMINA_RECHARGE_DELAY = 1.0f;
-    constexpr float STAMINA_RECHARGE_TIMER = 1.0f;
-    constexpr int STAMINA_RECHARGE_AMOUNT = 1;
+    constexpr float STAMINA_RECHARGE_DELAY = 1.5f;
+    constexpr float STAMINA_RECHARGE_TIMER = 0.3f;
+    constexpr int STAMINA_RECHARGE_AMOUNT = 10.0f;
 
-    constexpr float BULLET_RECHARGE_TIMER = 1.0f;
+    constexpr float BULLET_RECHARGE_TIMER = 4.0f;
 
-    constexpr int JUMP_STAMINA_CONSUMPTION = 1;
-    constexpr int DODGE_STAMINA_CONSUMPTION = 1;
-    constexpr int MELEE_STAMINA_CONSUMPTION = 1;
-    constexpr int HEAVY1_STAMINA_CONSUMPTION = 1;
-    constexpr int HEAVY2_STAMINA_CONSUMPTION = 1;
-    constexpr int PARRY_STAMINA_CONSUMPTION = 1;
-    constexpr int RANGE_STAMINA_CONSUMPTION = 1;
+    constexpr int JUMP_STAMINA_CONSUMPTION = 10;
+    constexpr int DODGE_STAMINA_CONSUMPTION = 20;
+    constexpr int MELEE_STAMINA_CONSUMPTION = 10;
+    constexpr int HEAVY1_STAMINA_CONSUMPTION = 35;
+    constexpr int HEAVY2_STAMINA_CONSUMPTION = 50;
+    constexpr int PARRY_STAMINA_CONSUMPTION = 20;
+    constexpr int RANGE_STAMINA_CONSUMPTION = 15;
 }
 
 class EnemyObject;
