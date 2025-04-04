@@ -31,35 +31,35 @@ void LevelPrototypeNMMN::levelInit() {
 
     ParallaxObject* background = new ParallaxObject(0.0f, 7.3f, 550.0f, false, player, true);
     background->setTexture("../Resource/Texture/OutskirtParallax/OSKT_P09_Sky.png");
-    objectsList.emplace(objectsList.begin(), background);
+    objectsList.emplace_back(objectsList.begin(), background);
 
     ParallaxObject* spaceShip = new ParallaxObject(0.0f, 7.3f, 450.0f, false, player, true);
     spaceShip->setTexture("../Resource/Texture/OutskirtParallax/OSKT_P08_Spaceship.png");
-    objectsList.push_back(spaceShip);
+    objectsList.emplace_back(spaceShip);
 
     ParallaxObject* Mountain1 = new ParallaxObject(0.0f, 7.3f, 350.0f, false, player, true);
     Mountain1->setTexture("../Resource/Texture/OutskirtParallax/OSKT_P06_Mountain01.png");
-    objectsList.push_back(Mountain1);
+    objectsList.emplace_back(Mountain1);
 
     ParallaxObject* Mountain2 = new ParallaxObject(0.0f, 7.3f, 200.0f, false, player, true);
     Mountain2->setTexture("../Resource/Texture/OutskirtParallax/OSKT_P07_Mountain02.png");
-    objectsList.push_back(Mountain2);
+    objectsList.emplace_back(Mountain2);
 
     ParallaxObject* MidGround1 = new ParallaxObject(0.0f, 7.3f, 150.0f, false, player, true);
     MidGround1->setTexture("../Resource/Texture/OutskirtParallax/OSKT_P05_MidGround01.png");
-    objectsList.push_back(MidGround1);
+    objectsList.emplace_back(MidGround1);
 
     ParallaxObject* MidGround2 = new ParallaxObject(0.0f, 7.3f, 80.0f, false, player, true);
     MidGround2->setTexture("../Resource/Texture/OutskirtParallax/OSKT_P04_MidGround02.png");
-    objectsList.push_back(MidGround2);
+    objectsList.emplace_back(MidGround2);
 
     ParallaxObject* MidGround3 = new ParallaxObject(0.0f, 7.3f, 50.0f, false, player, true);
     MidGround3->setTexture("../Resource/Texture/OutskirtParallax/Mid3.png");
-    objectsList.push_back(MidGround3);
+    objectsList.emplace_back(MidGround3);
 
     ParallaxObject* Ground = new ParallaxObject(0.0f, 7.3f, 0.0f, false, player, true);
     Ground->setTexture("../Resource/Texture/OutskirtParallax/OSKT_P02_Ground.png");
-    objectsList.push_back(Ground);
+    objectsList.emplace_back(Ground);
 
     mapLoader.readData("prototypemapNMMN.txt");
     mapLoader.appendDataToScene(objectsList, player);
@@ -68,8 +68,7 @@ void LevelPrototypeNMMN::levelInit() {
 
     ParallaxObject* Fog = new ParallaxObject(0.0f, 7.3f, 100.0f, false, player, true);
     Fog->setTexture("../Resource/Texture/OutskirtParallax/OSKT_P01_Fog.png");
-    
-    objectsList.push_back(Fog);
+    objectsList.emplace_back(Fog);
 
     marker = new SimpleObject();
     marker->setName("marker");

@@ -28,6 +28,9 @@ protected:
 	float flameTime = 3.0f;
 	float flameTimeKeep = 0;
 
+	float meleeTime = 0.5f;
+	float meleeTimeKeep = 0;
+
 	virtual void moveTowardsTarget();
 	virtual void startAttack();
 	virtual void endAttack();

@@ -10,24 +10,24 @@
 PlayerObject::PlayerObject() : LivingEntity("Player", PlayerStat::MAX_HEALTH) {
     //this->damage = playerInfo.damage;
 
-    setTexture("../Resource/Texture/player6.png");
-    initAnimation(15, 6);
+    setTexture("../Resource/Texture/playerAlpha.png");
+    initAnimation(15, 8);
 
     getAnimationComponent()->addState("Idle", 0, 0, 6, true);
-    getAnimationComponent()->addState("Walking", 10, 0, 6, true);
-    getAnimationComponent()->addState("Jumping", 9, 0, 6, false, 0.2f);
+    getAnimationComponent()->addState("Walking", 1, 0, 6, true);
+    getAnimationComponent()->addState("Jumping", 10, 0, 6, false, 0.2f);
 
-    getAnimationComponent()->addState("Dodging", 8, 0, 6, false, PlayerStat::DODGE_DURATION / 6.0f);
+    getAnimationComponent()->addState("Dodging", 9, 0, 5, false, PlayerStat::DODGE_DURATION / 6.0f);
 
-    getAnimationComponent()->addState("Combo1", 1, 0, 6, false);
-    getAnimationComponent()->addState("Combo2", 2, 0, 6, false);
-    getAnimationComponent()->addState("Combo3", 3, 0, 6, false);
+    getAnimationComponent()->addState("Combo1", 2, 0, 5, false);
+    getAnimationComponent()->addState("Combo2", 3, 0, 5, false);
+    getAnimationComponent()->addState("Combo3", 4, 0, 5, false);
 
-    getAnimationComponent()->addState("Charging", 4, 0, 6, false);
-    getAnimationComponent()->addState("Charge1", 5, 0, 6, false);
-    getAnimationComponent()->addState("Charge2", 6, 0, 6, false);
+    getAnimationComponent()->addState("Charging", 5, 0, 6, false);
+    getAnimationComponent()->addState("Charge1", 6, 0, 4, false);
+    getAnimationComponent()->addState("Charge2", 7, 0, 4, false);
 
-    getAnimationComponent()->addState("Parrying", 7, 0, 6, false);
+    getAnimationComponent()->addState("Parrying", 8, 0, 8, false);
 
     getAnimationComponent()->addState("GunCharge1", 11, 0, 5, true);
     getAnimationComponent()->addState("GunCharge2", 12, 0, 5, true);
@@ -59,9 +59,9 @@ PlayerObject::PlayerObject() : LivingEntity("Player", PlayerStat::MAX_HEALTH) {
     baseDamage[PlayerCombo::SECOND] = PlayerStat::COMBO_DAMAGE_2;
     baseDamage[PlayerCombo::THIRD] = PlayerStat::COMBO_DAMAGE_3;
 
-    comboFrame[PlayerCombo::FIRST] = AttackFrame(2, 3);
-    comboFrame[PlayerCombo::SECOND] = AttackFrame(2, 3);
-    comboFrame[PlayerCombo::THIRD] = AttackFrame(2, 3);
+    comboFrame[PlayerCombo::FIRST] = AttackFrame(1, 2);
+    comboFrame[PlayerCombo::SECOND] = AttackFrame(1, 2);
+    comboFrame[PlayerCombo::THIRD] = AttackFrame(1, 2);
 
     damageMultiplier[PlayerHeavyCharge::LEVEL_1] = PlayerStat::CHARGE_DAMAGE_MULTIPLIER_1;
     damageMultiplier[PlayerHeavyCharge::LEVEL_2] = PlayerStat::CHARGE_DAMAGE_MULTIPLIER_2;
@@ -69,8 +69,8 @@ PlayerObject::PlayerObject() : LivingEntity("Player", PlayerStat::MAX_HEALTH) {
     heavyAttackCooldown[PlayerHeavyCharge::LEVEL_1] = PlayerStat::HEAVY_ATTACK_COOLDOWN_1;
     heavyAttackCooldown[PlayerHeavyCharge::LEVEL_2] = PlayerStat::HEAVY_ATTACK_COOLDOWN_2;
 
-    heavyAttackFrame[PlayerHeavyCharge::LEVEL_1] = AttackFrame(2, 3);
-    heavyAttackFrame[PlayerHeavyCharge::LEVEL_2] = AttackFrame(2, 3);
+    heavyAttackFrame[PlayerHeavyCharge::LEVEL_1] = AttackFrame(0, 1);
+    heavyAttackFrame[PlayerHeavyCharge::LEVEL_2] = AttackFrame(0, 1);
     currentHeavyCharge = PlayerHeavyCharge::LEVEL_0;
 
     baseRangeDamage = PlayerStat::RANGE_DAMAGE;
@@ -86,7 +86,7 @@ PlayerObject::PlayerObject() : LivingEntity("Player", PlayerStat::MAX_HEALTH) {
     rangeChargeDuration[PlayerRangeCharge::CHARGE_2] = PlayerStat::RANGE_CHARGE_DURATION_2;
     rangeChargeDuration[PlayerRangeCharge::CHARGE_3] = PlayerStat::RANGE_CHARGE_DURATION_3;
 
-    parryFrame = AttackFrame(2, 3);
+    parryFrame = AttackFrame(1, 2);
 
     resetAttack();
 
@@ -177,7 +177,7 @@ void PlayerObject::start(list<DrawableObject*>& objectsList) {
     //attackHitbox = new DamageCollider<EnemyObject>(this, damage, 2.5f);
     attackHitbox->setActive(false);
     attackHitbox->setFollowOwner(true);
-    attackHitbox->setFollowOffset(glm::vec3(0.5f, 0, 0));
+    attackHitbox->setFollowOffset(glm::vec3(0.5f, 0.0f, 0));
     attackHitbox->getColliderComponent()->setWidth(1.5f);
     objectsList.emplace_back(attackHitbox);
 

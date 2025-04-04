@@ -14,46 +14,54 @@ void LevelAlphaTest::levelInit() {
     UIobject = new IngameUI();
     GameEngine::getInstance()->getRenderer()->setClearColor(0.1f, 0.1f, 0.1f);
 
-    ParallaxObject* background = new ParallaxObject(0.0f, 7.3f, 550.0f, false, player, true);
+    
+
+    ParallaxObject* background = new ParallaxObject(0.0f, 0.0f, 550.0f, false, player, true);
     background->setTexture("../Resource/Texture/OutskirtParallax/OSKT_P09_Sky.png");
     objectsList.emplace(objectsList.begin(), background);
 
-    ParallaxObject* spaceShip = new ParallaxObject(0.0f, 7.3f, 450.0f, false, player, true);
+    ParallaxObject* spaceShip = new ParallaxObject(0.0f, 0.0f, 450.0f, false, player, true);
     spaceShip->setTexture("../Resource/Texture/OutskirtParallax/OSKT_P08_Spaceship.png");
-    objectsList.push_back(spaceShip);
+    objectsList.emplace_back(spaceShip);
 
-    ParallaxObject* Mountain1 = new ParallaxObject(0.0f, 7.3f, 350.0f, false, player, true);
+    ParallaxObject* Mountain1 = new ParallaxObject(0.0f, 0.0f, 350.0f, false, player, true);
     Mountain1->setTexture("../Resource/Texture/OutskirtParallax/OSKT_P06_Mountain01.png");
-    objectsList.push_back(Mountain1);
+    objectsList.emplace_back(Mountain1);
 
-    ParallaxObject* Mountain2 = new ParallaxObject(0.0f, 7.3f, 200.0f, false, player, true);
+    ParallaxObject* Mountain2 = new ParallaxObject(0.0f, 0.0f, 200.0f, false, player, true);
     Mountain2->setTexture("../Resource/Texture/OutskirtParallax/OSKT_P07_Mountain02.png");
-    objectsList.push_back(Mountain2);
+    objectsList.emplace_back(Mountain2);
 
-    ParallaxObject* MidGround1 = new ParallaxObject(0.0f, 7.3f, 150.0f, false, player, true);
+    ParallaxObject* MidGround1 = new ParallaxObject(0.0f, 0.0f, 150.0f, false, player, true);
     MidGround1->setTexture("../Resource/Texture/OutskirtParallax/OSKT_P05_MidGround01.png");
-    objectsList.push_back(MidGround1);
+    objectsList.emplace_back(MidGround1);
 
-    ParallaxObject* MidGround2 = new ParallaxObject(0.0f, 7.3f, 80.0f, false, player, true);
+    ParallaxObject* MidGround2 = new ParallaxObject(0.0f, 0.0f, 80.0f, false, player, true);
     MidGround2->setTexture("../Resource/Texture/OutskirtParallax/OSKT_P04_MidGround02.png");
-    objectsList.push_back(MidGround2);
+    objectsList.emplace_back(MidGround2);
 
-    ParallaxObject* MidGround3 = new ParallaxObject(0.0f, 7.3f, 50.0f, false, player, true);
+    ParallaxObject* MidGround3 = new ParallaxObject(0.0f, 0.0f, 50.0f, false, player, true);
     MidGround3->setTexture("../Resource/Texture/OutskirtParallax/Mid3.png");
-    objectsList.push_back(MidGround3);
+    objectsList.emplace_back(MidGround3);
 
-    ParallaxObject* Ground = new ParallaxObject(0.0f, 7.3f, 0.0f, false, player, true);
+    ParallaxObject* Ground = new ParallaxObject(0.0f, 0.0f, 0.0f, false, player, true);
     Ground->setTexture("../Resource/Texture/OutskirtParallax/OSKT_P02_Ground.png");
-    objectsList.push_back(Ground);
+    objectsList.emplace_back(Ground);
 
-    Level::importTransformData(objectsList, "alpha", true);
+
+    Level::importTransformData(objectsList, "alpha1", true);
 
     player = new PlayerObject();
-    player->getTransform().scales(2);
-    player->getColliderComponent()->getTransform().translate(0.0f, -0.5f);
-    player->getColliderComponent()->setDimension(0.5f, 0.5f);
+    player->getTransform().setScale(4.166f, 2.5f);
+    player->getColliderComponent()->getTransform().translate(-0.2f, -0.44f);
+    player->getColliderComponent()->setDimension(0.25f, 0.65f);
     player->setDrawCollider(true);
     objectsList.emplace_back(player);
+
+
+    ParallaxObject* Fog = new ParallaxObject(0.0f, 0.0f, 100.0f, false, player, true);
+    Fog->setTexture("../Resource/Texture/OutskirtParallax/OSKT_P01_Fog.png");
+    objectsList.emplace_back(Fog);
 
     GameEngine::getInstance()->getRenderer()->getCamera()->setTarget(player);
     GameEngine::getInstance()->getRenderer()->setToggleViewport(false);
@@ -68,7 +76,7 @@ void LevelAlphaTest::levelInit() {
 
     startObjects(objectsList);
 
-    player->getDamageCollider()->setFollowOffset(glm::vec3(0.5f, -0.5f, 0));
+    player->getDamageCollider()->setFollowOffset(glm::vec3(1.0f, -0.2f, 0));
 
     UIobject->initUI(objectsList);
 
