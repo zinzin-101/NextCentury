@@ -22,7 +22,7 @@ void TexturedObject::setTexture(string path) {
 
 void TexturedObject::render(glm::mat4 globalModelTransform) {
 	if (animation != nullptr) {
-		animation->render(globalModelTransform, this->transform, colorOverlay, renderBrightness);
+		animation->render(globalModelTransform, this->transform, colorOverlay, renderBrightness, renderOpacity);
 		return;
 	}
 
