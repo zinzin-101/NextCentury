@@ -283,6 +283,7 @@ void PlayerObject::normalAttack() {
         case PlayerCombo::SECOND:
             currentCombo = PlayerCombo::THIRD;
             this->getAnimationComponent()->setState("Combo3");
+            attackHitbox->setDamageTag("FinalNormalAttack");
             break;
 
         case PlayerCombo::THIRD:
