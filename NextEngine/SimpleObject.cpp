@@ -31,6 +31,7 @@ void SimpleObject::render(glm::mat4 globalModelTransform) {
 	GLuint colorId = GameEngine::getInstance()->getRenderer()->getColorUniformId();
 	GLuint renderModeId = GameEngine::getInstance()->getRenderer()->getModeUniformId();
 	GLuint brightnessId = GameEngine::getInstance()->getRenderer()->getBrightnessUniformId();
+	GLuint opacityId = GameEngine::getInstance()->getRenderer()->getOpacityUniformId();
 
 
 	if (modelMatixId == -1) {
@@ -55,6 +56,7 @@ void SimpleObject::render(glm::mat4 globalModelTransform) {
 		glUniformMatrix4fv(modelMatixId, 1, GL_FALSE, glm::value_ptr(currentMatrix));
 		glUniform3f(colorId, color.x, color.y, color.z);
 		glUniform1f(brightnessId, renderBrightness);
+		glUniform1f(opacityId, renderOpacity);
 		glUniform1i(renderModeId, 0);
 		squareMesh->render();
 

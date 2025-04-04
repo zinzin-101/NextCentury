@@ -127,6 +127,12 @@ bool GLRenderer::initialize(string vertexShaderFile, string fragmentShaderFile) 
         return false;
     }
 
+    opacityUniformId = glGetUniformLocation(gProgramId, "opacity");
+    if (opacityUniformId == -1) {
+        cout << "opacity is not a valid glsl uniform variable" << endl;
+        return false;
+    }
+
     glEnableVertexAttribArray(gPos2DLocation);
     glEnableVertexAttribArray(gTex2DLocation);
 
@@ -294,6 +300,10 @@ GLuint GLRenderer::getColorOverlayUniformId() {
 
 GLuint GLRenderer::getBrightnessUniformId() {
     return this->brightnessUniformId;
+}
+
+GLuint GLRenderer::getOpacityUniformId() {
+    return this->opacityUniformId;
 }
 
 GLuint GLRenderer::LoadTexture(string path) {

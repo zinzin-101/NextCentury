@@ -40,6 +40,7 @@ DrawableObject::DrawableObject(){
 	isMarkedForDelete = false;
 	
 	renderBrightness = 1.0f;
+	renderOpacity = 1.0f;
 }
 
 DrawableObject::DrawableObject(string name) {
@@ -273,6 +274,10 @@ bool DrawableObject::getMarkedForDelete() const {
 
 void DrawableObject::setRenderBrightness(float brightness) {
 	this->renderBrightness = brightness;
+}
+
+void DrawableObject::setRenderOpacity(float opacity) {
+	this->renderOpacity = opacity;
 }
 
 void DrawableObject::destroyObject(DrawableObject* obj) {
