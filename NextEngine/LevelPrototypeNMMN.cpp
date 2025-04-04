@@ -31,7 +31,7 @@ void LevelPrototypeNMMN::levelInit() {
 
     ParallaxObject* background = new ParallaxObject(0.0f, 7.3f, 550.0f, false, player, true);
     background->setTexture("../Resource/Texture/OutskirtParallax/OSKT_P09_Sky.png");
-    objectsList.emplace_back(objectsList.begin(), background);
+    objectsList.emplace_back(background);
 
     ParallaxObject* spaceShip = new ParallaxObject(0.0f, 7.3f, 450.0f, false, player, true);
     spaceShip->setTexture("../Resource/Texture/OutskirtParallax/OSKT_P08_Spaceship.png");
