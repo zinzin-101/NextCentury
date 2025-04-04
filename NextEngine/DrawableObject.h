@@ -68,7 +68,7 @@ class DrawableObject {
 		bool getMarkedForDelete() const;
 
 		void setRenderBrightness(float brightness);
-		void setRenderOpacity(float opacity);
+		virtual void setRenderOpacity(float opacity);
 
 		static void destroyObject(DrawableObject* obj);
 };

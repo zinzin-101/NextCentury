@@ -30,5 +30,6 @@ public:
 	bool isAnimated();
 	static PlayerObject* player;
 	void setPlayer(PlayerObject* player);
+	void setRenderOpacity(float opacity) override;
 	~ParallaxObject();
 };

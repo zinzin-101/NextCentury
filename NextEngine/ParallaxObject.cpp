@@ -151,6 +151,12 @@ bool ParallaxObject::isAnimated() {
 	return TexturedObject::isAnimated();
 }
 
+void ParallaxObject::setRenderOpacity(float opacity) {
+	this->DrawableObject::setRenderOpacity(opacity);
+	loopObjectL->DrawableObject::setRenderOpacity(opacity);
+	loopObjectR->DrawableObject::setRenderOpacity(opacity);
+}
+
 ParallaxObject::~ParallaxObject() {
 	if (loopObjectR != nullptr) {
 		delete loopObjectR;
