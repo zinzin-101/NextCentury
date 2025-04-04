@@ -44,6 +44,7 @@
     <ClCompile Include="GameEngine.cpp" />
     <ClCompile Include="GameStateController.cpp" />
     <ClCompile Include="GLRenderer.cpp" />
+    <ClCompile Include="IngameUI.cpp" />
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="Level.cpp" />
     <ClCompile Include="LevelAlphaTest.cpp" />
@@ -113,6 +114,7 @@
     <ClInclude Include="GameStateList.h" />
     <ClInclude Include="GLRenderer.h" />
     <ClInclude Include="HitScanDamage.h" />
+    <ClInclude Include="IngameUI.h" />
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="InteractableObject.h" />
     <ClInclude Include="Level.h" />

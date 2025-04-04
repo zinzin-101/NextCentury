@@ -1,18 +1,13 @@
 #include "UI.h"
 #include <iostream>
 #include <SDL.h>  // Include SDL for key input
-
 UI::UI() {
     buttons.resize(4); // Set the correct size
     selectedButtonIndex = 0; // Start with the first button selected
 }
 
 void UI::initUI(std::list<DrawableObject*>& objectsList) {
-    /*healthBar = new SimpleObject();
-    healthBar->setColor(1.0f, 0.0f, 0.0f);
-    healthBar->getTransform().setScale(glm::vec3(2.0f, 0.2f, 0.0f));
-    healthBar->getTransform().setPosition(glm::vec3(0.0f, 0.0f, 0.0f));
-    objectsList.push_back(healthBar);*/
+    
 
     // First button
     buttons[0] = new Button("Start", "Start");
@@ -49,6 +44,7 @@ void UI::initUI(std::list<DrawableObject*>& objectsList) {
     objectsList.push_back(buttons[3]);
 
     buttons[selectedButtonIndex]->setColor(1.0f, 1.0f, 0.0f); // Yellow for selection
+    ingameUI.initUI(objectsList);
 }
 
 void UI::updateUI(PlayerObject& playerObject, glm::vec3 camPos) {
