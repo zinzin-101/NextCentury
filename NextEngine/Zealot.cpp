@@ -4,6 +4,10 @@
 
 Zealot::Zealot(const EnemyInfo& enemyinfo) : EnemyObject(enemyinfo) {
 	cout << attackCooldown << endl;
+
+	getTransform().setScale(1.3f, 1.8f);
+	getColliderComponent()->setDimension(0.5f, 0.85f);
+	getColliderComponent()->getTransform().setPosition(0.0f, -0.15f);
 }
 void Zealot::start(list<DrawableObject*>& objectsList) {
 	//setTexture("../Resource/Texture/incineratorSizeFlip.png");
@@ -79,6 +83,10 @@ void Zealot::updateBehavior(list<DrawableObject*>& objectsList) {
 	/// testing ///
 	emitter->update(objectsList);
 	///
+
+	if (isInKnockback) {
+		return;
+	}
 
 	float dt = GameEngine::getInstance()->getTime()->getDeltaTime();
 
