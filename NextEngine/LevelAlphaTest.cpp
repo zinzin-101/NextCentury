@@ -11,6 +11,7 @@ void LevelAlphaTest::levelLoad() {
 }
 
 void LevelAlphaTest::levelInit() {
+    UIobject = new IngameUI();
     GameEngine::getInstance()->getRenderer()->setClearColor(0.1f, 0.1f, 0.1f);
 
     ParallaxObject* background = new ParallaxObject(0.0f, 7.3f, 550.0f, false, player, true);
@@ -70,12 +71,14 @@ void LevelAlphaTest::levelInit() {
     player->getDamageCollider()->setFollowOffset(glm::vec3(0.5f, -0.5f, 0));
 
     GameEngine::getInstance()->freezeGameForSeconds(0.5f);
+    UIobject->initUI(objectsList);
 }
 
 void LevelAlphaTest::levelUpdate() {
     updateObjects(objectsList);
+   
     GameEngine::getInstance()->getRenderer()->updateCamera(glm::vec3());
-
+     
 
     // Placeholder death logic
     for (std::list<DrawableObject*>::iterator itr = objectsList.begin(); itr != objectsList.end(); ++itr) {
@@ -86,6 +89,9 @@ void LevelAlphaTest::levelUpdate() {
             }
         }
     }
+    
+    GameEngine::getInstance()->getRenderer()->updateCamera(camPos);
+    UIobject->updateUI(*player, camPos);
 }
 
 void LevelAlphaTest::levelDraw() {

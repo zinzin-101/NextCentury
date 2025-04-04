@@ -5,7 +5,10 @@
 class LevelAlphaTest : public Level {
 private:
     list<DrawableObject*> objectsList;
+    list<DrawableObject*> UIobjectsList;
     PlayerObject* player = nullptr;
+    IngameUI* UIobject;
+    glm::vec3 camPos = glm::vec3(0.0f, 0.0f, 0.0f);
 
 public:
     virtual void levelLoad();
