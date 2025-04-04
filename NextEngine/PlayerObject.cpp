@@ -406,10 +406,7 @@ void PlayerObject::resetAttack() {
 }
 
 void PlayerObject::flinch(float duration) {
-    bool grounded = this->getColliderComponent()->getCollisionFlag() & COLLISION_DOWN;
-    if (!grounded) {
-        isJumping = false;
-        knockback(glm::vec2(0.0f, 10.0f), 0.5f);
+    if (isJumping) {
         return;
     }
 
