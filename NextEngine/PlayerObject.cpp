@@ -99,6 +99,7 @@ PlayerObject::PlayerObject() : LivingEntity("Player", PlayerStat::MAX_HEALTH) {
     staminaRechargeTimer = 0.0f;
 
     currentNumOfBullets = PlayerStat::MAX_BULLET;
+    bulletRechargeTimer = PlayerStat::BULLET_RECHARGE_TIMER;
 }
 
 PlayerObject::~PlayerObject() {
@@ -213,6 +214,9 @@ void PlayerObject::updateStat() {
             }
         }
     }
+
+    std::cout << "stamina: " << stamina << std::endl;
+    std::cout << "bullet: " << currentNumOfBullets << std::endl;
 }
 
 void PlayerObject::updateBehavior(list<DrawableObject*>& objectsList) {
@@ -444,7 +448,6 @@ void PlayerObject::rangeAttack(std::list<DrawableObject*>& objectsList) {
         baseRangeDamage * rangeDamageMultiplier[currentRangeCharge],
         PlayerStat::RANGE_ATTACK_LIFESPAN
     );
-    cout << "current charge: " << currentRangeCharge << endl;
     ///temporary pos, new adjustment later
     glm::vec3 currentPos = this->getTransform().getPosition();
     currentPos.y -= 0.25f;
@@ -537,11 +540,11 @@ void PlayerObject::startRangeAttack(float dt) {
         return;
     }
 
-    if (rangeAttackCooldownRemaining > 0.0f || currentNumOfBullets < rangeChargeDuration[PlayerRangeCharge::CHARGE_1]) {
+    if (rangeAttackCooldownRemaining > 0.0f) {
         return;
     }
 
-    if (stamina < PlayerStat::RANGE_STAMINA_CONSUMPTION) {
+    if (stamina < PlayerStat::RANGE_STAMINA_CONSUMPTION || currentNumOfBullets < PlayerStat::NUM_OF_BULLET_PER_SHOT_1) {
         return;
     }
 

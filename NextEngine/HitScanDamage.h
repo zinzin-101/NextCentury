@@ -28,8 +28,9 @@ HitScanDamage<TargetEntity>::HitScanDamage(glm::vec3 pos, glm::vec3 dir, float l
 
 template <class TargetEntity>
 void HitScanDamage<TargetEntity>::onCollisionEnter(Collider* collider) {
-
-	cout << "hitscan collided with " << collider->getObject()->getName() << endl;
+	if (used) {
+		return;
+	}
 
 	TargetEntity* entity = dynamic_cast<TargetEntity*>(collider->getObject());
 	if (entity != NULL) {
@@ -70,8 +71,6 @@ void HitScanDamage<TargetEntity>::update(std::list<DrawableObject*>& objectsList
 	}
 
 	closestEntity->takeDamage(damage);
-
-	cout << "range damage = " << damage << endl;
 
 	used = true;
 }
