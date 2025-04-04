@@ -11,6 +11,7 @@
 #include "LevelEnemTest.h"
 #include "LevelPrototype.h"
 #include "LevelPrototypeNMMN.h"
+#include "LevelLoading.h"
 
 GameStateController::GameStateController() {
 	// set the initial game state
