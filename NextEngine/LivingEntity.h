@@ -19,6 +19,10 @@ class LivingEntity : public TexturedObject {
         list<Status> statusList;
         bool isAffectedByLighting;
 
+        void handleKnockback();
+        void handleDamageOverlay();
+        void handleLighting(list<DrawableObject*>& objectsList);
+
     protected:
         bool isFacingRight;
 
@@ -64,12 +68,9 @@ class LivingEntity : public TexturedObject {
         void applyStatus(float dt);
 
         virtual void takeDamage(int damage);
-        void handleDamageOverlay();
 
         void knockback(glm::vec2 velocityDirection, float duration);
-        void handleKnockback();
 
-        void handleLighting(list<DrawableObject*>& objectsList);
         void setAffectedByLighting(bool value);
 
         virtual void update(list<DrawableObject*>& objectsList);

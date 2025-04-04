@@ -22,7 +22,7 @@ void TexturedObject::setTexture(string path) {
 
 void TexturedObject::render(glm::mat4 globalModelTransform) {
 	if (animation != nullptr) {
-		animation->render(globalModelTransform, this->transform, colorOverlay, renderBrightness);
+		animation->render(globalModelTransform, this->transform, colorOverlay, renderBrightness, renderOpacity);
 		return;
 	}
 
@@ -36,6 +36,7 @@ void TexturedObject::render(glm::mat4 globalModelTransform) {
 	GLuint scaleYId = GameEngine::getInstance()->getRenderer()->getScaleYUniformId();
 	GLuint colorOverlayId = GameEngine::getInstance()->getRenderer()->getColorOverlayUniformId();
 	GLuint brightnessId = GameEngine::getInstance()->getRenderer()->getBrightnessUniformId();
+	GLuint opacityId = GameEngine::getInstance()->getRenderer()->getOpacityUniformId();
 
 	if (modelMatixId == -1) {
 		cout << "Error: Can't perform transformation " << endl;
@@ -61,6 +62,7 @@ void TexturedObject::render(glm::mat4 globalModelTransform) {
 		glUniform1i(renderModeId, 1);
 		glUniform4f(colorOverlayId, colorOverlay.x, colorOverlay.y, colorOverlay.z, colorOverlay.w);
 		glUniform1f(brightnessId, renderBrightness);
+		glUniform1f(opacityId, renderOpacity);
 		glBindTexture(GL_TEXTURE_2D, texture);
 		squareMesh->render();
 

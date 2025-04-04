@@ -1,5 +1,5 @@
 #include "BlightFlame.h"
-#include "FlameDamage.h"
+#include "ObjectHeader.h"
 #include "Random.h"
 
 BlightFlame::BlightFlame(const EnemyInfo& enemyinfo) : EnemyObject(enemyinfo) {
@@ -21,8 +21,10 @@ void BlightFlame::start(list<DrawableObject*>& objectsList) {
 	getAnimationComponent()->addState("WindDown", 4, 0, 4, false);
 	getAnimationComponent()->addState("Stunned", 5, 0, 3, true);
 	getAnimationComponent()->setState("Idle");
-	attackHitbox = nullptr;
-	flameHitbox = new FlameDamage<PlayerObject>(this, damage, 0.2f);
+	attackHitbox = new DamageCollider<PlayerObject>(this, BlightFlameStat::MELEE_DAMAGE, -1);
+	attackHitbox->setActive(false);
+	objectsList.emplace_back(attackHitbox);
+	flameHitbox = new FlameDamage<PlayerObject>(this, BlightFlameStat::FLAME_DAMAGE, 0.2f);
 	flameHitbox->DrawableObject::setActive(false);
 	flameHitbox->setFollowOwner(true);
 	flameHitbox->setFollowOffset(glm::vec3(0.5f, 0, 0));
@@ -30,6 +32,8 @@ void BlightFlame::start(list<DrawableObject*>& objectsList) {
 	objectsList.emplace_back(flameHitbox);
 
 	targetEntity = EnemyObject::findPlayer(objectsList);
+	
+	currentAttackType = AttackType::FLAME;
 }
 
 BlightFlame::~BlightFlame() {
@@ -82,6 +86,14 @@ void BlightFlame::updateState() {
 		return;
 	}
 	currentState = State::ATTACKING;
+
+	if (distance <= BlightFlameStat::MELEE_ATTACK_DISTANCE) {
+		currentAttackType = AttackType::MELEE;
+	}
+	else {
+		currentAttackType = AttackType::FLAME;
+	}
+
 	// facing target
 	if (targetEntity != nullptr) {
 		isFacingRight = this->getTransform().getPosition().x < targetEntity->getTransform().getPosition().x;
@@ -120,29 +132,7 @@ void BlightFlame::updateBehavior(list<DrawableObject*>& objectsList) {
 		break;
 
 	case ATTACKING: {
-		Animation::State currAnim = getAnimationComponent()->getCurrentAnimationState();
-		if (currAnim.name == "Idle" || currAnim.name == "Moving" || currAnim.name == "Stunned") {
-			getAnimationComponent()->setState("WindUp");
-		}
-		if (currAnim.name == "WindUp" && !currAnim.isPlaying) {
-			flameTimeKeep = flameTime;
-			startAttack();
-			getAnimationComponent()->setState("Attack");
-		}
-		if (currAnim.name == "Attack") {
-			if (flameTimeKeep > 0) {
-				flameTimeKeep -= dt;
-			}
-			else {
-				endAttack();
-				getAnimationComponent()->setState("WindDown");
-			}
-		}
-		if (currAnim.name == "WindDown") {
-			if (!currAnim.isPlaying) {
-				attackCooldownTimer = attackCooldown;
-			}
-		}
+		(distance <= BlightFlameStat::MELEE_ATTACK_DISTANCE) ? handleMeleeAttack() : handleFlameAttack();
 		break;
 	}
 	case STUNNED:
@@ -205,4 +195,60 @@ void BlightFlame::startAttack() {
 
 void BlightFlame::endAttack() {
 	flameHitbox->setActive(false);
+}
+
+void BlightFlame::handleFlameAttack() {
+	float dt = GameEngine::getInstance()->getTime()->getDeltaTime();
+
+	Animation::State currAnim = getAnimationComponent()->getCurrentAnimationState();
+	if (currAnim.name == "Idle" || currAnim.name == "Moving" || currAnim.name == "Stunned") {
+		getAnimationComponent()->setState("WindUp");
+	}
+	if (currAnim.name == "WindUp" && !currAnim.isPlaying) {
+		flameTimeKeep = flameTime;
+		startAttack();
+		getAnimationComponent()->setState("Attack");
+	}
+	if (currAnim.name == "Attack") {
+		if (flameTimeKeep > 0) {
+			flameTimeKeep -= dt;
+		}
+		else {
+			endAttack();
+			getAnimationComponent()->setState("WindDown");
+		}
+	}
+	if (currAnim.name == "WindDown") {
+		if (!currAnim.isPlaying) {
+			attackCooldownTimer = attackCooldown;
+		}
+	}
+}
+
+void BlightFlame::handleMeleeAttack() {
+	float dt = GameEngine::getInstance()->getTime()->getDeltaTime();
+
+	Animation::State currAnim = getAnimationComponent()->getCurrentAnimationState();
+	if (currAnim.name == "Idle" || currAnim.name == "Moving" || currAnim.name == "Stunned") {
+		getAnimationComponent()->setState("WindUp");
+	}
+	if (currAnim.name == "WindUp" && !currAnim.isPlaying) {
+		flameTimeKeep = flameTime;
+		EnemyObject::startAttack();
+		getAnimationComponent()->setState("Attack");
+	}
+	if (currAnim.name == "Attack") {
+		if (flameTimeKeep > 0) {
+			flameTimeKeep -= dt;
+		}
+		else {
+			attackHitbox->setActive(false);
+			getAnimationComponent()->setState("WindDown");
+		}
+	}
+	if (currAnim.name == "WindDown") {
+		if (!currAnim.isPlaying) {
+			attackCooldownTimer = attackCooldown;
+		}
+	}
 }

@@ -9,6 +9,7 @@ uniform float scaleY;
  
 uniform vec4 colorOverlay;
 uniform float brightness;
+uniform float opacity;
 
 in vec3 OutColor;
 in vec2 TexCoord;
@@ -20,10 +21,12 @@ void main()
 	if(renderMode == 0)
 	{
 		finalColor = vec4( OutColor, 1.0 );
-		finalColor.a *= brightness;
+		finalColor.a *= opacity;
 	}
 	else if (renderMode == 1){
     	finalColor = texture(ourTexture, TexCoord);
+		finalColor.a *= opacity;
+
 	}
     else
     {
@@ -38,5 +41,6 @@ void main()
 		finalColor = ((1-colorOverlay.a) * finalColor) + (colorOverlay * colorOverlay.a);
 		finalColor.a = prevAlpha;
  
+		finalColor.a *= opacity;
     }
 }
