@@ -1,5 +1,6 @@
 #pragma once
 #define DEBUG_MODE_ON // Launch in debug mode
+//#define DEBUG_NO_EDITOR
 
 // imgui
 #ifdef DEBUG_MODE_ON

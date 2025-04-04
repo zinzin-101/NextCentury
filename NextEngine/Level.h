@@ -28,10 +28,8 @@ protected:
     map<unsigned int, float> mouseHeldDuration;
     map<unsigned int, int> mouseBuffer;
 
-    #ifdef DEBUG_MODE_ON
     static void appendEnemyData(std::ofstream& output, EnemyObject* enemy);
     static void readEnemyData(std::ifstream& file, std::string type, std::list<DrawableObject*>& objectsList, bool setDrawCollider);
-    #endif
 
 public:
     //SimpleObject* healthBar = nullptr;
@@ -59,7 +57,7 @@ public:
 
     #ifdef DEBUG_MODE_ON
     static void drawImGui(std::list<DrawableObject*>& objectsList);
+    #endif
     static void exportTransformData(std::list<DrawableObject*>& objectsList, std::string fileName);
     static void importTransformData(std::list<DrawableObject*>& objectsList, std::string fileName, bool drawOutline);
-    #endif
 };

@@ -1,10 +1,7 @@
 #include "Level.h"
 #include "CollisionHandler.h"
 #include "MapLoader.h"
-
-#ifdef DEBUG_MODE_ON
 #include <fstream>
-#endif
 
 void Level::levelLoad() {
     SquareMeshVbo* square = new SquareMeshVbo();
@@ -567,6 +564,7 @@ void Level::drawImGui(std::list<DrawableObject*>& objectList) {
 
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 }
+#endif
 
 void Level::exportTransformData(std::list<DrawableObject*>& objectsList, std::string fileName) {
     std::ofstream output("../Resource/output/" + fileName + ".txt");
@@ -841,5 +839,3 @@ void Level::readEnemyData(std::ifstream& file, std::string type, std::list<Drawa
         enemy->setDrawCollider(true);
     }
 }
-
-#endif
