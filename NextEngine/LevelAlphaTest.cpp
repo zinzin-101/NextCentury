@@ -70,8 +70,9 @@ void LevelAlphaTest::levelInit() {
 
     player->getDamageCollider()->setFollowOffset(glm::vec3(0.5f, -0.5f, 0));
 
-    GameEngine::getInstance()->freezeGameForSeconds(0.5f);
     UIobject->initUI(objectsList);
+
+    GameEngine::getInstance()->freezeGameForSeconds(0.5f);
 }
 
 void LevelAlphaTest::levelUpdate() {
@@ -107,6 +108,8 @@ void LevelAlphaTest::levelFree() {
         delete obj;
     }
     objectsList.clear();
+
+    delete UIobject;
 }
 
 void LevelAlphaTest::levelUnload() {
