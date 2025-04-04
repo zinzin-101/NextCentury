@@ -214,9 +214,6 @@ void PlayerObject::updateStat() {
             }
         }
     }
-
-    std::cout << "stamina: " << stamina << std::endl;
-    std::cout << "bullet: " << currentNumOfBullets << std::endl;
 }
 
 void PlayerObject::updateBehavior(list<DrawableObject*>& objectsList) {
