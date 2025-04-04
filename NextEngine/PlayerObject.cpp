@@ -375,11 +375,13 @@ void PlayerObject::heavyAttack() {
     switch (currentHeavyCharge) {
         case PlayerHeavyCharge::LEVEL_1:
             this->getAnimationComponent()->setState("Charge1");
+            attackHitbox->setDamageTag("HeavyAttack1");
             stamina -= PlayerStat::HEAVY1_STAMINA_CONSUMPTION;
             break;
 
         case PlayerHeavyCharge::LEVEL_2:
             this->getAnimationComponent()->setState("Charge2");
+            attackHitbox->setDamageTag("HeavyAttack2");
             stamina -= PlayerStat::HEAVY2_STAMINA_CONSUMPTION;
             break;
     }
@@ -727,7 +729,6 @@ void PlayerObject::handleHeavyAttack() {
         }
 
         if (currentFrame == heavyAttackFrame[currentHeavyCharge].startAttackFrame + 1) {
-            attackHitbox->setDamageTag("HeavyAttack");
             startMeleeAttack();
             return;
         }
