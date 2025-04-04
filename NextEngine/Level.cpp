@@ -856,6 +856,5 @@ void Level::removeLoadingScreen() {
 }
 
 void Level::LoadContent() {
-	GameEngine::getInstance()->getAudio()->loadAudio("../Resource/audio/NextEngine/NextEngine.wav", "NextEngine");
-	GameEngine::getInstance()->getAudio()->playAudio("NextEngine", 0.0f, 0.0f, 1.0f);
+
 }
