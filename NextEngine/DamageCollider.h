@@ -5,6 +5,8 @@
 #include "ParticleProperties.h"
 #include "PlayerObject.h"
 #include "Zealot.h"
+#include "BlightFlame.h"
+#include "FlameDamage.h"
 #include "SquareBorderMesh.h"
 
 #include "random.h"
@@ -43,6 +45,7 @@ class DamageCollider : public ColliderObject {
 		void setDamageTag(std::string tag);
 
 		LivingEntity* getOwner() const;
+		std::string getDamageTag() const;
 
 		virtual void render(glm::mat4 globalModelTransform);
 		virtual void drawCollider();
@@ -55,7 +58,7 @@ DamageCollider<TargetEntityType>::DamageCollider(LivingEntity* owner, int damage
 	this->timeRemaining = 0.0f;
 	this->setActive(false);
 	this->followOwner = false;
-	this->setDrawCollider(true); // for debug
+	//this->setDrawCollider(true); // for debug
 	this->canDecreaseTimeRemaining = true;
 	damageTag = "";
 }
@@ -102,8 +105,30 @@ void DamageCollider<TargetEntityType>::onCollisionEnter(Collider* collider) {
 			}
 
 			Zealot* zealot = dynamic_cast<Zealot*>(obj);
-			if (zealot != NULL && (damageTag == "HeavyAttack" || damageTag == "FinalNormalAttack")) {
+			if (zealot != NULL && (damageTag == "HeavyAttack1" || damageTag == "HeavyAttack2" || damageTag == "FinalNormalAttack")) {
 				zealot->setCurrentState(EnemyObject::FLINCH);
+				entity->takeDamage(damage);
+				return;
+			}
+
+			BlightFlame* bf = dynamic_cast<BlightFlame*>(obj);
+			if (bf != NULL) {
+				entity->takeDamage(damage);
+
+				if (damageTag == "FinalNormalAttack") {
+					bf->setCurrentState(EnemyObject::FLINCH);
+					return;
+				}
+
+				if (damageTag == "HeavyAttack2") {
+					float playerX = playerAsOwner->getTransform().getPosition().x;
+					float bfX = bf->getTransform().getPosition().x;
+					(playerX <= bfX) ? bf->knockback(glm::vec2(5.0f, 5.0f), 0.5f) : bf->knockback(glm::vec2(-5.0f, 5.0f), 0.5f);
+					FlameDamage<PlayerObject>* flameDamage = bf->getFlameCollider();
+					flameDamage->reset();
+					bf->setCurrentState(EnemyObject::FLINCH);
+					return;
+				}
 			}
 		}
 		
@@ -120,14 +145,13 @@ void DamageCollider<TargetEntityType>::onCollisionEnter(Collider* collider) {
 template <class TargetEntityType>
 void DamageCollider<TargetEntityType>::onTriggerEnter(Collider* collider) { // for handling parrying from player
 	DrawableObject* obj = collider->getObject();
-	DamageCollider<EnemyObject>* damageCollider = dynamic_cast<DamageCollider<EnemyObject>*>(obj);
+	DamageCollider<EnemyObject>* playerDamageCollider = dynamic_cast<DamageCollider<EnemyObject>*>(obj);
 
-	if (damageCollider != NULL) {
-		PlayerObject* player = dynamic_cast<PlayerObject*>(damageCollider->getOwner());
+	if (playerDamageCollider != NULL) {
+		PlayerObject* player = dynamic_cast<PlayerObject*>(playerDamageCollider->getOwner());
 		if (player != NULL) {
 			if (player->getIsParrying()) {
-				// implement stun later
-				std::cout << owner->getName() << " got parried" << std::endl;
+				//std::cout << owner->getName() << " got parried" << std::endl;
 				GameEngine::getInstance()->getRenderer()->getCamera()->startShake(0.3f);
 				EnemyObject* enemyObj = dynamic_cast<EnemyObject*>(this->getOwner());
 
@@ -138,14 +162,40 @@ void DamageCollider<TargetEntityType>::onTriggerEnter(Collider* collider) { // f
 						ParticleProperties particleProps = ParticleProperties(
 							enemyObj->getTransform().getPosition(),
 							20.0f * glm::vec2(parryDirection * Random::Float(), Random::Float()),
-							glm::vec2(-0.1f, 0.1f), 
+							glm::vec2(-0.1f, 0.1f),
 							glm::vec3(0.8f, 0, 0),
 							0.2f, 0.1f, 0.05f, 1.0f
 						);
 						enemyObj->getEmitter()->emit(particleProps);
 					}
 
+					return;
 				}
+			}
+
+			Zealot* zealot = dynamic_cast<Zealot*>(this->getOwner());
+			if (zealot != NULL && playerDamageCollider->getDamageTag() == "HeavyAttack2") {
+				GameEngine::getInstance()->getRenderer()->getCamera()->startShake(0.3f);
+				zealot->setCurrentState(EnemyObject::STUNNED);
+				float parryDirection = (player->getTransform().getPosition().x < zealot->getTransform().getPosition().x) ? 1.0f : -1.0f;
+				for (int i = 0; i < 5; i++) {
+					ParticleProperties particleProps = ParticleProperties(
+						zealot->getTransform().getPosition(),
+						20.0f * glm::vec2(parryDirection * Random::Float(), Random::Float()),
+						glm::vec2(-0.1f, 0.1f),
+						glm::vec3(0.8f, 0, 0),
+						0.2f, 0.1f, 0.05f, 1.0f
+					);
+					zealot->getEmitter()->emit(particleProps);
+				}
+
+				return;
+			}
+
+			BlightFlame* bf = dynamic_cast<BlightFlame*>(this->getOwner());
+			if (bf != NULL && (playerDamageCollider->getDamageTag() == "HeavyAttack1" || playerDamageCollider->getDamageTag() == "HeavyAttack2")) {
+				bf->setCurrentState(EnemyObject::FLINCH);
+				return;
 			}
 		}
 	}
@@ -207,6 +257,11 @@ void DamageCollider<TargetEntityType>::setDamageTag(std::string tag) {
 template <class TargetEntityType>
 LivingEntity* DamageCollider<TargetEntityType>::getOwner() const {
 	return owner;
+}
+
+template <class TargetEntityType>
+std::string DamageCollider<TargetEntityType>::getDamageTag() const {
+	return damageTag;
 }
 
 template <class TargetEntityType>
