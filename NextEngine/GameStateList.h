@@ -6,6 +6,8 @@ enum GameState {
 	GS_LEVEL2,
 	GS_LEVEL3,
 	GS_COL_TEST,
+	GS_LOADING,
+	
 
 	// special game state. Do not change
 	GS_RESTART,
