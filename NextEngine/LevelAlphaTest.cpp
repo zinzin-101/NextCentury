@@ -49,13 +49,13 @@ void LevelAlphaTest::levelInit() {
     objectsList.emplace_back(Ground);
 
 
-    Level::importTransformData(objectsList, "alpha1", true);
+    Level::importTransformData(objectsList, "alpha1", false);
 
     player = new PlayerObject();
     player->getTransform().setScale(4.166f, 2.5f);
     player->getColliderComponent()->getTransform().translate(0.0f, -0.44f);
     player->getColliderComponent()->setDimension(0.25f, 0.65f);
-    player->setDrawCollider(true);
+    //player->setDrawCollider(true);
     objectsList.emplace_back(player);
 
 
@@ -81,9 +81,11 @@ void LevelAlphaTest::levelInit() {
 
     UIobject->initUI(objectsList);
 
+    GameEngine::getInstance()->getRenderer()->getCamera()->setOffset(glm::vec3(0.0f, -0.5f, 0.0f));
+    GameEngine::getInstance()->getRenderer()->setToggleViewport(true);
+
     GameEngine::getInstance()->freezeGameForSeconds(0.5f);
 
-    GameEngine::getInstance()->getRenderer()->getCamera()->setOffset(glm::vec3(0.0f, -0.5f, 0.0f));
 }
 
 void LevelAlphaTest::levelUpdate() {

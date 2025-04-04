@@ -523,7 +523,7 @@ void Level::drawImGui(std::list<DrawableObject*>& objectList) {
     if (ImGui::Button("Spawn Zealot")) {
         Zealot* zealot = new Zealot(DefaultEnemyStat::ZEALOT_INFO);
         zealot->getTransform().setPosition(posX, posY);
-        zealot->getTransform().setScale(scaleX, scaleY);
+        //zealot->getTransform().setScale(scaleX, scaleY);
         zealot->setDrawCollider(drawOutline);
         objectList.emplace_back(zealot);
         zealot->start(objectList);
@@ -531,7 +531,7 @@ void Level::drawImGui(std::list<DrawableObject*>& objectList) {
     if (ImGui::Button("Spawn BlightFlame")) {
         BlightFlame* bf = new BlightFlame(DefaultEnemyStat::BLIGHT_FLAME_INFO);
         bf->getTransform().setPosition(posX, posY);
-        bf->getTransform().setScale(scaleX, scaleY);
+        //bf->getTransform().setScale(scaleX, scaleY);
         bf->setDrawCollider(drawOutline);
         objectList.emplace_back(bf);
         bf->start(objectList);
