@@ -93,6 +93,9 @@ PlayerObject::PlayerObject() : LivingEntity("Player", PlayerStat::MAX_HEALTH) {
     attackHitbox = nullptr;
 
     iFrameTimeRemaining = 0.0f;
+
+    stamina = PlayerStat::MAX_STAMINA;
+    currentNumOfBullets = PlayerStat::MAX_BULLET;
 }
 
 PlayerObject::~PlayerObject() {
@@ -163,9 +166,24 @@ void PlayerObject::start(list<DrawableObject*>& objectsList) {
     this->getAnimationComponent()->setState("Idle");
 }
 
+void PlayerObject::updateStat() {
+    float dt = GameEngine::getInstance()->getTime()->getDeltaTime();
+
+    if (bulletRechargeTimer > 0.0f && currentNumOfBullets < PlayerStat::MAX_BULLET) {
+        bulletRechargeTimer -= dt;
+    }
+
+    if (currentNumOfBullets < PlayerStat::MAX_BULLET && bulletRechargeTimer <= 0.0f) {
+        bulletRechargeTimer = PlayerStat::BULLET_RECHARGE_TIMER;
+        currentNumOfBullets++;
+    }
+}
+
 void PlayerObject::updateBehavior(list<DrawableObject*>& objectsList) {
     float dt = GameEngine::getInstance()->getTime()->getDeltaTime();
     glm::vec2 vel = this->physics->getVelocity();
+
+    updateStat();
 
     if (iFrameTimeRemaining > 0.0f) {
         this->setCanTakeDamage(false);
@@ -382,6 +400,7 @@ void PlayerObject::rangeAttack(std::list<DrawableObject*>& objectsList) {
 
     objectsList.emplace_back(hitscan);
     rangeAttackCooldownRemaining = rangeAttackCooldown[currentRangeCharge];
+    currentNumOfBullets -= rangeDamageMultiplier[currentRangeCharge];
     currentRangeCharge = PlayerRangeCharge::CHARGE_0;
     rangeHeldDuration = 0.0f;
 }
@@ -457,7 +476,7 @@ void PlayerObject::startRangeAttack(float dt) {
         return;
     }
 
-    if (rangeAttackCooldownRemaining > 0.0f) {
+    if (rangeAttackCooldownRemaining > 0.0f || currentNumOfBullets < rangeChargeDuration[PlayerRangeCharge::CHARGE_1]) {
         return;
     }
 
@@ -465,14 +484,14 @@ void PlayerObject::startRangeAttack(float dt) {
 
     rangeHeldDuration += dt;
 
-    if (rangeHeldDuration > rangeChargeDuration[PlayerRangeCharge::CHARGE_3]) {
+    if (rangeHeldDuration > rangeChargeDuration[PlayerRangeCharge::CHARGE_3] && currentNumOfBullets >= rangeChargeDuration[PlayerRangeCharge::CHARGE_3]) {
         currentRangeCharge = PlayerRangeCharge::CHARGE_3;
         this->getAnimationComponent()->setState("GunCharge3");
         //GameEngine::getInstance()->getRenderer()->getCamera()->shake = true;
         return;
     }
 
-    if (rangeHeldDuration > rangeChargeDuration[PlayerRangeCharge::CHARGE_2]) {
+    if (rangeHeldDuration > rangeChargeDuration[PlayerRangeCharge::CHARGE_2] && currentNumOfBullets >= rangeChargeDuration[PlayerRangeCharge::CHARGE_2]) {
         currentRangeCharge = PlayerRangeCharge::CHARGE_2;
         this->getAnimationComponent()->setState("GunCharge2");
         return;
@@ -768,4 +787,8 @@ void PlayerObject::takeDamage(int damage) {
 
     this->LivingEntity::takeDamage(damage);
     iFrameTimeRemaining = PlayerStat::INVINCIBLE_DURATION_AFTER_TAKING_DAMAGE;
+}
+
+int PlayerObject::getStamina() const {
+    return stamina;
 }

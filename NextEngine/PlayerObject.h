@@ -47,8 +47,21 @@ namespace PlayerStat {
 
     constexpr float INVINCIBLE_DURATION_AFTER_TAKING_DAMAGE = 0.3f;
 
+    constexpr float FLINCH_TIME = 0.2f;
+
     //+ placeholder player health
     constexpr int MAX_HEALTH = 100;
+    constexpr int MAX_STAMINA = 100;
+    constexpr int MAX_BULLET = 3;
+
+    constexpr float BULLET_RECHARGE_TIMER = 1.0f;
+
+    constexpr int JUMP_STAMINA_CONSUMPTION = 1;
+    constexpr int DODGE_STAMINA_CONSUMPTION = 1;
+    constexpr int MELEE_STAMINA_CONSUMPTION = 1;
+    constexpr int HEAVY1_STAMINA_CONSUMPTION = 1;
+    constexpr int HEAVY2_STAMINA_CONSUMPTION = 1;
+    constexpr int PARRY_STAMINA_CONSUMPTION = 1;
 }
 
 class EnemyObject;
@@ -149,6 +162,11 @@ class PlayerObject : public LivingEntity {
 
         glm::vec3 moveDirection;
 
+        int stamina;
+
+        int currentNumOfBullets;
+        float bulletRechargeTimer;
+
     public:
         PlayerObject();
         ~PlayerObject();
@@ -166,6 +184,7 @@ class PlayerObject : public LivingEntity {
 
         virtual void start(list<DrawableObject*>& objectsList);
         virtual void updateBehavior(list<DrawableObject*>& objectsList);
+        void updateStat();
 
         void move(glm::vec2 direction);
         void jump();
@@ -177,9 +196,7 @@ class PlayerObject : public LivingEntity {
         DamageCollider<EnemyObject>* getDamageCollider() const;
 
         virtual void takeDamage(int damage);
-
-        /// debugging ///
-        virtual void onTriggerEnter(Collider* collider);
-
         void flinch(float duration);
+
+        int getStamina() const;
 };
