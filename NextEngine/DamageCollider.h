@@ -7,7 +7,6 @@
 #include "Zealot.h"
 #include "SquareBorderMesh.h"
 
-/// testing ///
 #include "random.h"
 
 template <class TargetEntityType>
