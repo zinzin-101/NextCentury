@@ -9,9 +9,13 @@ void IngameUI::initUI(std::list<DrawableObject*>& objectsList) {
 }
 
 void IngameUI::updateUI(PlayerObject& playerObject, glm::vec3 camPos) {
-    float healthPercentage = static_cast<float>(playerObject.getHealth()) / 100;
-    float healthBarWidth = healthPercentage * 2.0f;
-    healthBar->getTransform().setScale(glm::vec3(healthBarWidth, 0.2f, 0.0f));
-    healthBar->getTransform().setPosition(glm::vec3(playerObject.getTransform().getPosition().x , playerObject.getTransform().getPosition().y +0.3f, 0.0f));
+    float healthPercentage = static_cast<float>(playerObject.getHealth()) / 100.0f;
+    float fullBarWidth = 2.0f; 
+    float healthBarWidth = healthPercentage * fullBarWidth;
 
+    glm::vec3 playerPos = playerObject.getTransform().getPosition();
+    float leftAlignedX = playerPos.x - (fullBarWidth / 2.0f) + (healthBarWidth / 2.0f);
+
+    healthBar->getTransform().setScale(glm::vec3(healthBarWidth, 0.2f, 0.0f));
+    healthBar->getTransform().setPosition(glm::vec3(leftAlignedX, playerPos.y + 0.3f, 0.0f));
 }
