@@ -276,10 +276,10 @@ void Level::drawImGui(std::list<DrawableObject*>& objectList) {
             }
             static float increment = 0.1f;
             ImGui::InputFloat("Custom Increment", &increment);
-            ImGui::SameLine();
             if (ImGui::Button("-")) {
                 inputNum -= increment;
             }
+            ImGui::SameLine();
             if (ImGui::Button("+")) {
                 inputNum += increment;
             }
