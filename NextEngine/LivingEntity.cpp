@@ -211,7 +211,7 @@ void LivingEntity::handleKnockback() {
         if (abs(vel.x) > 0.1f) {
             float dragDir = vel.x > 0.0f ? -1.0f : 1.0f;
             vel.x *= dragDir;
-            vel.x /= knockbackDurationRemaining;
+            vel.x = knockbackDurationRemaining / vel.x;
         }
 
         this->physics->addVelocity(glm::vec2(vel.x * dt, 0.0f));
