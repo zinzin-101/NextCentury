@@ -29,5 +29,5 @@ void IngameUI::updateUI(PlayerObject& playerObject, glm::vec3 camPos) {
     float staminaBarWidth = staminaPercentage * fullBarWidth;
     float leftAlignedXS = playerPos.x - (fullBarWidth / 2.0f) + (healthBarWidth / 2.0f);
     staminaBar->getTransform().setScale(glm::vec3(staminaBarWidth, 0.2f, 0.0f));
-    staminaBar->getTransform().setPosition(glm::vec3(leftAlignedXH, playerPos.y + 0.1f, 0.0f));
+    staminaBar->getTransform().setPosition(glm::vec3(leftAlignedXS, playerPos.y + 0.1f, 0.0f));
 }
