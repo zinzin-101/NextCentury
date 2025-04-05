@@ -135,7 +135,6 @@ void LevelAlphaTest::handleKey(InputManager& input) {
     // For debugging
     if (input.getButton(SDLK_z)) GameEngine::getInstance()->getRenderer()->increaseZoomRatio(0.1f);
     if (input.getButton(SDLK_x)) GameEngine::getInstance()->getRenderer()->decreaseZoomRatio(0.1f);
-    if (input.getButtonDown(SDLK_b)) player->knockback(glm::vec2(0.0f, 10.0f), 0.5f);
 
     float dt = GameEngine::getInstance()->getTime()->getDeltaTime();
 

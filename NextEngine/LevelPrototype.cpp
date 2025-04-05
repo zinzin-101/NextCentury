@@ -143,6 +143,11 @@ void LevelPrototype::levelInit() {
     testLight->getTransform().translate(0, 1);
     testLight->setDrawCollider(true);
     objectsList.emplace_back(testLight);
+
+    //fd = new FlameDamage<PlayerObject>(player, 1, 0.2f);
+    //fd->setActive(false);
+    //fd->getTransform().setPosition(player->getTransform().getPosition());
+    //objectsList.emplace_back(fd);
 }
 
 void LevelPrototype::levelUpdate() {
@@ -254,7 +259,8 @@ void LevelPrototype::handleKey(InputManager& input) {
     if (input.getButton(SDLK_z)) GameEngine::getInstance()->getRenderer()->increaseZoomRatio(0.1f);
     if (input.getButton(SDLK_x)) GameEngine::getInstance()->getRenderer()->decreaseZoomRatio(0.1f);
     // test knockback
-    if (input.getButton(SDLK_b)) player->knockback(glm::vec2(10,25), 0.5f);
+    //if (input.getButton(SDLK_b)) fd->trigger(fd->getTransform().getPosition(), true);
+    //if (input.getButton(SDLK_n)) fd->setActive(false);
 
     /// Use processed key here ///
     if (keyHeldDuration[SDLK_k] < PlayerStat::DURATION_TO_START_HEAVY_ATTACK) {

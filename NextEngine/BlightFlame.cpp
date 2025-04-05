@@ -228,11 +228,13 @@ void BlightFlame::handleFlameAttack() {
 	Animation::State currAnim = getAnimationComponent()->getCurrentAnimationState();
 	if (currAnim.name == "Idle" || currAnim.name == "Moving" || currAnim.name == "Stunned") {
 		getAnimationComponent()->setState("WindUp");
+		return;
 	}
 	if (currAnim.name == "WindUp" && !currAnim.isPlaying) {
 		flameTimeKeep = flameTime;
 		startAttack();
 		getAnimationComponent()->setState("Attack");
+		return;
 	}
 	if (currAnim.name == "Attack") {
 		if (flameTimeKeep > 0) {
@@ -241,11 +243,13 @@ void BlightFlame::handleFlameAttack() {
 		else {
 			endAttack();
 			getAnimationComponent()->setState("WindDown");
+			return;
 		}
 	}
 	if (currAnim.name == "WindDown") {
 		if (!currAnim.isPlaying) {
 			attackCooldownTimer = attackCooldown;
+			return;
 		}
 	}
 }

@@ -14,6 +14,8 @@ class LevelPrototype : public Level {
 
         bool viewMarker;
 
+        //FlameDamage<PlayerObject>* fd;
+
 
     public:
         virtual void levelLoad();
