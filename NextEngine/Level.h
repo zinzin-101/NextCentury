@@ -13,6 +13,10 @@
 #include "UI.h"
 #include "Dialogue.h"
 
+namespace LevelConstant {
+    constexpr float DEFAULT_BUFFER_DURATION = 0.3f;
+}
+
 class Level
 {
 private:
@@ -24,10 +28,10 @@ private:
 
 protected:
     map<SDL_Keycode, float> keyHeldDuration;
-    map<SDL_Keycode, int> keyBuffer;
+    map<SDL_Keycode, float> keyBuffer;
 
     map<unsigned int, float> mouseHeldDuration;
-    map<unsigned int, int> mouseBuffer;
+    map<unsigned int, float> mouseBuffer;
 
     static void appendEnemyData(std::ofstream& output, EnemyObject* enemy);
     static void readEnemyData(std::ifstream& file, std::string type, std::list<DrawableObject*>& objectsList, bool setDrawCollider);
@@ -47,7 +51,10 @@ public:
     void processKeyBuffer(InputManager& input, SDL_Keycode key);
     void processHeldMouse(InputManager& input, unsigned int mouse);
     void processMouseBuffer(InputManager& input, unsigned int mouse);
+    bool isKeyInBuffer(SDL_Keycode key) const;
+    bool isMouseInBuffer(unsigned int mouse) const;
     void clearKeyBuffer(SDL_Keycode key);
+    void clearMouseBuffer(unsigned int mouse);
     virtual void handleMouse(int type, int x, int y);
     virtual void handleAnalogStick(int type, float amount);
 
