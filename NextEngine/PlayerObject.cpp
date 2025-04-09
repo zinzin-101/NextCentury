@@ -150,7 +150,7 @@ void PlayerObject::jump() {
 }
 
 void PlayerObject::dodge() {
-    if (!canDodge || !canMove || isJumping) {
+    if (!canDodge || !canMove || isJumping || isDodging) {
         return;
     }
 
@@ -169,7 +169,11 @@ void PlayerObject::dodge() {
 
 void PlayerObject::dodge(float xDirection) {
     dodge();
-    isFacingRight = xDirection > 0.0f;
+
+    if (!isDodging) {
+        isFacingRight = xDirection > 0.0f;
+
+    }
 }
 
 void PlayerObject::start(list<DrawableObject*>& objectsList) {
