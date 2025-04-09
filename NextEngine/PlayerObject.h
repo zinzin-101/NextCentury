@@ -119,6 +119,7 @@ class PlayerObject : public LivingEntity {
 
         AttackFrame parryFrame;
         bool isParrying;
+        bool successfulParry;
 
         int rangeDamageMultiplier[3];
 
@@ -159,7 +160,7 @@ class PlayerObject : public LivingEntity {
         void handleJumpMovement();
     
         void resetAttack();
-        
+
         void handleFlinch();
         float flinchTimeRemaining;
 
@@ -202,6 +203,8 @@ class PlayerObject : public LivingEntity {
         bool getCanMove() const;
         bool getIsParrying() const;
         DamageCollider<EnemyObject>* getDamageCollider() const;
+
+        void signalSuccessfulParry();
 
         virtual void takeDamage(int damage);
         void flinch(float duration);

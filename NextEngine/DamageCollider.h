@@ -169,6 +169,8 @@ void DamageCollider<TargetEntityType>::onTriggerEnter(Collider* collider) { // f
 						enemyObj->getEmitter()->emit(particleProps);
 					}
 
+					player->signalSuccessfulParry();
+
 					return;
 				}
 			}
