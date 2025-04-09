@@ -249,13 +249,13 @@ void PlayerObject::updateBehavior(list<DrawableObject*>& objectsList) {
         rangeAttackCooldownRemaining -= dt;
     }
 
-    if (isInRangeAttack) {
-        handleRangeAttack();
+    if (isParrying) {
+        handleParryAttack();
         return;
     }
 
-    if (isParrying) {
-        handleParryAttack();
+    if (isInRangeAttack) {
+        handleRangeAttack();
         return;
     }
 
@@ -392,7 +392,7 @@ void PlayerObject::heavyAttack() {
 }
 
 void PlayerObject::parryAttack() {
-    if (isParrying || isDodging || isAttacking || isInHeavyAttack || isJumping) {
+    if (isParrying || isDodging || isAttacking || isInHeavyAttack || isJumping || isInRangeAttack) {
         return;
     }
 
