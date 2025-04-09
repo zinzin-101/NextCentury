@@ -36,7 +36,7 @@ class LivingEntity : public TexturedObject {
         enum StatusType {
             STUN,
             POISON,
-            MOODENG
+            BURNING
         };
 
         struct Status {

@@ -151,12 +151,12 @@ void Level::updateObjects(list<DrawableObject*>& objectsList) {
 
     handleObjectCollision(objectsList);
 
-    for (std::list<DrawableObject*>::iterator itr = objectsList.begin(); itr != objectsList.end(); itr++) {
+    for (std::list<DrawableObject*>::iterator itr = objectsList.begin(); itr != objectsList.end(); ++itr) {
         DrawableObject* obj = *itr;
         if (obj->getMarkedForDelete()) {
             delete obj;
             itr = objectsList.erase(itr);
-            if (itr != objectsList.begin()) itr--;
+            if (itr != objectsList.begin()) --itr;
             if (itr == objectsList.end()) break;
         }
     }
