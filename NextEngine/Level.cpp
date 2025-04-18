@@ -64,8 +64,12 @@ void Level::processKeyBuffer(InputManager& input, SDL_Keycode key) {
     float dt = GameEngine::getInstance()->getTime()->getDeltaTime();
     
     if (input.getButtonDown(key)) {
-        keyBuffer[key]++;
+        keyBuffer[key] = LevelConstant::DEFAULT_BUFFER_DURATION;
         return;
+    }
+
+    if (keyBuffer[key] > 0.0f) {
+        keyBuffer[key] -= dt;
     }
 }
 
@@ -86,15 +90,32 @@ void Level::processHeldMouse(InputManager& input, unsigned int mouse) {
 void Level::processMouseBuffer(InputManager& input, unsigned int mouse) {
     float dt = GameEngine::getInstance()->getTime()->getDeltaTime();
 
-    if (input.getButtonDown(mouse)) {
-        mouseBuffer[mouse]++;
+    if (input.getMouseButtonDown(mouse)) {
+        mouseBuffer[mouse] = LevelConstant::DEFAULT_BUFFER_DURATION;
         return;
+    }
+
+    if (mouseBuffer[mouse] > 0.0f) {
+        mouseBuffer[mouse] -= dt;
     }
 }
 
-void Level::clearKeyBuffer(SDL_Keycode key) {
-    keyBuffer[key] = 0;
+bool Level::isKeyInBuffer(SDL_Keycode key) const {
+    return keyBuffer.at(key) > 0.0f;
 }
+
+bool Level::isMouseInBuffer(unsigned int mouse) const {
+    return keyBuffer.at(mouse) > 0.0f;
+}
+
+void Level::clearKeyBuffer(SDL_Keycode key) {
+    keyBuffer[key] = 0.0f;
+}
+
+void Level::clearMouseBuffer(unsigned int mouse) {
+    mouseBuffer[mouse] = 0.0f;
+}
+
 
 void Level::handleMouse(int type, int x, int y) {
     /// Will be implemented in inherited level when used ///
@@ -130,12 +151,12 @@ void Level::updateObjects(list<DrawableObject*>& objectsList) {
 
     handleObjectCollision(objectsList);
 
-    for (std::list<DrawableObject*>::iterator itr = objectsList.begin(); itr != objectsList.end(); itr++) {
+    for (std::list<DrawableObject*>::iterator itr = objectsList.begin(); itr != objectsList.end(); ++itr) {
         DrawableObject* obj = *itr;
         if (obj->getMarkedForDelete()) {
             delete obj;
             itr = objectsList.erase(itr);
-            if (itr != objectsList.begin()) itr--;
+            if (itr != objectsList.begin()) --itr;
             if (itr == objectsList.end()) break;
         }
     }

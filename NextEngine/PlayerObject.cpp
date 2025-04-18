@@ -150,7 +150,7 @@ void PlayerObject::jump() {
 }
 
 void PlayerObject::dodge() {
-    if (!canDodge || !canMove || isJumping) {
+    if (!canDodge || !canMove || isJumping || isDodging) {
         return;
     }
 
@@ -169,7 +169,11 @@ void PlayerObject::dodge() {
 
 void PlayerObject::dodge(float xDirection) {
     dodge();
-    isFacingRight = xDirection > 0.0f;
+
+    if (!isDodging) {
+        isFacingRight = xDirection > 0.0f;
+
+    }
 }
 
 void PlayerObject::start(list<DrawableObject*>& objectsList) {
@@ -249,13 +253,13 @@ void PlayerObject::updateBehavior(list<DrawableObject*>& objectsList) {
         rangeAttackCooldownRemaining -= dt;
     }
 
-    if (isInRangeAttack) {
-        handleRangeAttack();
+    if (isParrying) {
+        handleParryAttack();
         return;
     }
 
-    if (isParrying) {
-        handleParryAttack();
+    if (isInRangeAttack) {
+        handleRangeAttack();
         return;
     }
 
@@ -392,7 +396,7 @@ void PlayerObject::heavyAttack() {
 }
 
 void PlayerObject::parryAttack() {
-    if (isParrying || isDodging || isAttacking || isInHeavyAttack || isJumping) {
+    if (isParrying || isDodging || isAttacking || isInHeavyAttack || isJumping || isInRangeAttack) {
         return;
     }
 
@@ -411,6 +415,8 @@ void PlayerObject::parryAttack() {
     isInAttackState = false;
     currentCombo = PlayerCombo::NONE;
 
+    isFacingRight = (moveDirection.x > 0.0f) ? true : ((moveDirection.x < 0.0f) ? false : isFacingRight);
+
     canChangeFacingDirection = false;
 
     if (moveDirection.x != 0.0f) {
@@ -419,6 +425,7 @@ void PlayerObject::parryAttack() {
 
     this->getAnimationComponent()->setState("Parrying");
     isParrying = true;
+    successfulParry = false;
 
     attackHitbox->setDamage(0);
 }
@@ -480,6 +487,7 @@ void PlayerObject::resetAttack() {
     rangeHeldDuration = 0.0f;
 
     isParrying = false;
+    successfulParry = false;
     isInRangeAttack = false;
 }
 
@@ -605,7 +613,18 @@ void PlayerObject::handleMovement() {
         this->physics->setVelocity(vel);
     }
 
-    vel.x == 0.0f ? this->getAnimationComponent()->setState("Idle") : this->getAnimationComponent()->setState("Walking");
+    if (vel.x == 0.0f) {
+        Animation::State currentState = this->getAnimationComponent()->getCurrentAnimationState();
+        if (currentState.name != "Parrying") {
+            this->getAnimationComponent()->setState("Idle");
+        }
+        else if (currentState.name == "Parrying" && !currentState.isPlaying) {
+            this->getAnimationComponent()->setState("Idle");
+        }
+    }
+    else {
+        this->getAnimationComponent()->setState("Walking");
+    }
 
     vel = this->physics->getVelocity();
     if (vel.x != 0.0f && moveDirection.x == 0.0f) {
@@ -799,10 +818,19 @@ void PlayerObject::handleParryAttack() {
         return;
     }
 
-    if (currentFrame == parryFrame.allowNextComboFrame + 1) {
+    if (currentFrame == parryFrame.allowNextComboFrame + 1 || (successfulParry && moveDirection.x != 0.0f)) {
         endMeleeAttack();
         this->setCanTakeDamage(true);
-        attackCooldownRemaining = PlayerStat::ATTACK_COOLDOWN;
+        attackCooldownRemaining = successfulParry ? 0.0f : PlayerStat::ATTACK_COOLDOWN;
+
+        if (successfulParry) {
+            successfulParry = false;
+
+            canMove = true;
+            isParrying = false;
+            moveDirection.x = 0.0f;
+        }
+
         return;
     }
 
@@ -840,6 +868,10 @@ bool PlayerObject::getIsParrying() const {
 
 DamageCollider<EnemyObject>* PlayerObject::getDamageCollider() const {
     return attackHitbox;
+}
+
+void PlayerObject::signalSuccessfulParry() {
+    successfulParry = true;
 }
 
 void PlayerObject::takeDamage(int damage) {

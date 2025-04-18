@@ -147,12 +147,12 @@ void LevelAlphaTest::handleKey(InputManager& input) {
     processHeldMouse(input, SDL_BUTTON_MIDDLE);
 
     // add key that requires buffering here
+    processKeyBuffer(input, SDLK_SPACE);
     processKeyBuffer(input, SDLK_LSHIFT);
 
     // handle event here
-    if (input.getButton(SDLK_SPACE)) player->jump();
-    if (input.getButton(SDLK_a)) player->move(glm::vec2(-1, 0));
-    if (input.getButton(SDLK_d)) player->move(glm::vec2(1, 0));
+    if (input.getButton(SDLK_a) && !input.getButton(SDLK_d)) player->move(glm::vec2(-1, 0));
+    if (input.getButton(SDLK_d) && !input.getButton(SDLK_a)) player->move(glm::vec2(1, 0));
     if (input.getButtonDown(SDLK_j)) player->parryAttack();
     if (input.getMouseButtonDown(SDL_BUTTON_RIGHT)) player->parryAttack();
 
@@ -199,7 +199,8 @@ void LevelAlphaTest::handleKey(InputManager& input) {
         player->startRangeAttack(dt);
     }
 
-    if (keyBuffer[SDLK_LSHIFT] > 0 && player->getCanMove()) {
+    if ((isKeyInBuffer(SDLK_LSHIFT) || (isKeyInBuffer(SDLK_SPACE))) && player->getCanMove()) {
+        clearKeyBuffer(SDLK_SPACE);
         clearKeyBuffer(SDLK_LSHIFT);
 
         if (input.getButton(SDLK_a)) {

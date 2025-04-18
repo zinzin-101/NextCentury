@@ -68,7 +68,7 @@ void LivingEntity::deleteStatus(int index) {
 }
 
 std::list<LivingEntity::Status>::iterator LivingEntity::deleteStatus(std::list<Status>::iterator itr) {
-    //std::cout << "deleting status" << endl;
+    std::cout << "deleting status" << endl;
     return statusList.erase(itr);
 }
 
@@ -92,6 +92,16 @@ void LivingEntity::applyStatus(float dt) { // NOt required???
     }
 
     //cout << "applying" << endl;
+    
+    //for (std::list<DrawableObject*>::iterator itr = objectsList.begin(); itr != objectsList.end(); itr++) {
+    //    DrawableObject* obj = *itr;
+    //    if (obj->getMarkedForDelete()) {
+    //        delete obj;
+    //        itr = objectsList.erase(itr);
+    //        if (itr != objectsList.begin()) itr--;
+    //        if (itr == objectsList.end()) break;
+    //    }
+    //}
 
     for (std::list<Status>::iterator itr = statusList.begin(); itr != statusList.end(); ++itr) {
 
@@ -118,10 +128,13 @@ void LivingEntity::applyStatus(float dt) { // NOt required???
 
             itr = deleteStatus(itr);
             --itr;
-            if (itr == statusList.end()) break;
         }
         else {
             status.remainingTime -= dt;
+        }
+
+        if (itr == statusList.end()){
+            break;
         }
     }
 }
