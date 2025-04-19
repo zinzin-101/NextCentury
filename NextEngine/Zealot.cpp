@@ -3,7 +3,7 @@
 #include "Random.h"
 
 Zealot::Zealot(const EnemyInfo& enemyinfo) : EnemyObject(enemyinfo) {
-	cout << attackCooldown << endl;
+	//cout << attackCooldown << endl;
 
 	getTransform().setScale(1.3f, 1.8f);
 	getColliderComponent()->setDimension(0.5f, 0.85f);

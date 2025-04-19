@@ -23,7 +23,7 @@ void Camera::followTarget() {
     glm::vec3 newPos;
     float x;
     float y = target->getTransform().getPosition().y + offset.y;
-    cout << y << endl;
+    //cout << y << endl;
     
     if (GameEngine::getInstance()->getRenderer()->getIsViewportEnabled()) {
         if (abs(target->getTransform().getPosition().x - position.x) > deadZoneX) {
