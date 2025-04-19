@@ -65,7 +65,7 @@ FlameDamage<TargetEntityType>::FlameDamage(LivingEntity* owner, int damage, floa
 	owner(owner), damage(damage), delayBetweenDamage(delayBetweenDamage), delayTimer(0.0f) {
 	this->getColliderComponent()->setTrigger(true);
 	this->setName(owner->getName() + "FlameDamage");
-	this->setActive(false);
+	this->DrawableObject::setActive(false);
 	this->followOwner = false;
 	this->setDrawCollider(true);
 
@@ -258,5 +258,6 @@ void FlameDamage<TargetEntityType>::reset() {
 	flameStart = false;
 	isWaitingToDeactivate = false;
 	canDamage = false;
-	this->setActive(false);
+	delayTimer = 0.0f;
+	this->DrawableObject::setActive(false);
 }

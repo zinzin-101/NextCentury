@@ -20,19 +20,19 @@ void LevelAlphaTest::levelInit() {
     background->setTexture("../Resource/Texture/OutskirtParallax/OSKT_P09_Sky.png");
     objectsList.emplace(objectsList.begin(), background);
 
-    ParallaxObject* spaceShip = new ParallaxObject(0.0f, 0.0f, 450.0f, false, player, true);
-    spaceShip->setTexture("../Resource/Texture/OutskirtParallax/OSKT_P08_Spaceship.png");
-    objectsList.emplace_back(spaceShip);
+    //ParallaxObject* spaceShip = new ParallaxObject(0.0f, 0.0f, 450.0f, false, player, true); // Should be a moving object
+    //spaceShip->setTexture("../Resource/Texture/OutskirtParallax/OSKT_P08_Spaceship.png");
+    //objectsList.emplace_back(spaceShip);
 
-    ParallaxObject* Mountain1 = new ParallaxObject(0.0f, 0.0f, 350.0f, false, player, true);
+    ParallaxObject* Mountain1 = new ParallaxObject(0.0f, 1.5f, 250.0f, false, player, true);
     Mountain1->setTexture("../Resource/Texture/OutskirtParallax/OSKT_P06_Mountain01.png");
     objectsList.emplace_back(Mountain1);
 
-    ParallaxObject* Mountain2 = new ParallaxObject(0.0f, 0.0f, 200.0f, false, player, true);
+    ParallaxObject* Mountain2 = new ParallaxObject(0.0f, 1.25f, 200.0f, false, player, true);
     Mountain2->setTexture("../Resource/Texture/OutskirtParallax/OSKT_P07_Mountain02.png");
     objectsList.emplace_back(Mountain2);
 
-    ParallaxObject* MidGround1 = new ParallaxObject(0.0f, 0.0f, 150.0f, false, player, true);
+    ParallaxObject* MidGround1 = new ParallaxObject(0.0f, 0.75f, 150.0f, false, player, true);
     MidGround1->setTexture("../Resource/Texture/OutskirtParallax/OSKT_P05_MidGround01.png");
     objectsList.emplace_back(MidGround1);
 
