@@ -282,4 +282,5 @@ void DrawableObject::setRenderOpacity(float opacity) {
 
 void DrawableObject::destroyObject(DrawableObject* obj) {
 	obj->isMarkedForDelete = true;
+	obj->setActive(false);
 }

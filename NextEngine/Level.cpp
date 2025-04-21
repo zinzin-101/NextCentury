@@ -254,6 +254,10 @@ void Level::drawImGui(std::list<DrawableObject*>& objectList) {
             }
         }
 
+        if (obj->getMarkedForDelete()) {
+            continue;
+        }
+
         ImGui::PushID(objectCounter);
 
         if (ImGui::CollapsingHeader(obj->getName().c_str())) {
