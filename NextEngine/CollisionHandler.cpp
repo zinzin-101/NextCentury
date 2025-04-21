@@ -94,7 +94,7 @@ bool checkCollisionPoint(Collider* col, Transform& t, glm::vec2 point) {
 void updateCollisionState(Collider* col1, Collider* col2, bool collided) {
 	std::map<Collider*, Collider::CollisionState>& colMap1 = col1->getCollisionMap();
 
-	bool found = colMap1.find(col2) != colMap1.end();
+	bool found = colMap1.find(col2) != colMap1.end() && colMap1.at(col2) != Collider::NONE;
 	if (collided) {
 		if (!found) {
 			colMap1[col2] = Collider::ENTER;
@@ -107,10 +107,7 @@ void updateCollisionState(Collider* col1, Collider* col2, bool collided) {
 
 	if (found) {
 		if (colMap1[col2] == Collider::EXIT) {
-			colMap1.erase(col2);
-
-			std::map<Collider*, Collider::CollisionState>& colMap2 = col2->getCollisionMap();
-			colMap2.erase(col1);
+			colMap1[col2] = Collider::NONE;
 
 			return;
 		}
@@ -131,7 +128,6 @@ void handleObjectCollision(list<DrawableObject*>& objects) {
 			if (i == j) {
 				continue;
 			}
-
 
 			DrawableObject* obj1 = *i;
 			DrawableObject* obj2 = *j;
@@ -159,6 +155,11 @@ void handleObjectCollision(list<DrawableObject*>& objects) {
 			bool collided = false;
 
 			Physics* phys1 = obj1->getPhysicsComponent();
+			Physics* phys2 = obj2->getPhysicsComponent();
+
+			if (phys1 != nullptr && phys2 != nullptr) {
+				continue;
+			}
 
 			if (!obj1->getIsActive() || !obj2->getIsActive()) {
 				collided = false;
@@ -170,7 +171,8 @@ void handleObjectCollision(list<DrawableObject*>& objects) {
 				collided = checkCollisionRay(ray2, col1, t1);
 			}
 			else if (phys1 != nullptr) {
-				Collider tempCol = *col1; // shallow copy
+				Collider tempCol(nullptr);
+				tempCol = *col1;
 				glm::vec3 dir = t1.getPosition() - phys1->getLastPosition();
 				dir /= (float)COLLISION_RESOLUTION;
 				for (int k = 0; k < COLLISION_RESOLUTION; k++) {
@@ -182,6 +184,22 @@ void handleObjectCollision(list<DrawableObject*>& objects) {
 					}
 
 					t1.translate(dir);
+				}
+			}
+			else if (phys2 != nullptr) {
+				Collider tempCol(nullptr);
+				tempCol = *col2;
+				glm::vec3 dir = t2.getPosition() - phys2->getLastPosition();
+				dir /= (float)COLLISION_RESOLUTION;
+				for (int k = 0; k < COLLISION_RESOLUTION; k++) {
+					collided = checkCollision(&tempCol, t2, col1, t1);
+
+					if (collided) {
+						obj2->getTransform() = t2;
+						break;
+					}
+
+					t2.translate(dir);
 				}
 			}
 			else {

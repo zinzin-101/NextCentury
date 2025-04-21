@@ -33,6 +33,7 @@ class Collider {
 
 		Collider(DrawableObject* object);
 		Collider(DrawableObject* object, float width, float height);
+		void operator=(const Collider& other);
 		~Collider();
 		void setEnableCollision(bool value);
 		void setTrigger(bool value);

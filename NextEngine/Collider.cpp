@@ -27,6 +27,16 @@ Collider::~Collider() {
 	}
 }
 
+void Collider::operator=(const Collider& other) {
+	this->width = other.width;
+	this->height = other.height;
+	this->enableCollision = other.enableCollision;
+	this->trigger = other.trigger;
+	this->transform = other.transform;
+	this->collisionFlag = other.collisionFlag;
+	this->collisionMap = std::map<Collider*, CollisionState>();
+}
+
 void Collider::setEnableCollision(bool value) {
 	enableCollision = value;
 }
