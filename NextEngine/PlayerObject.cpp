@@ -168,12 +168,11 @@ void PlayerObject::dodge() {
 }
 
 void PlayerObject::dodge(float xDirection) {
-    dodge();
-
     if (!isDodging) {
         isFacingRight = xDirection > 0.0f;
 
     }
+    dodge();
 }
 
 void PlayerObject::start(list<DrawableObject*>& objectsList) {
