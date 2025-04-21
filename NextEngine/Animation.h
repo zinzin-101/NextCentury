@@ -9,7 +9,7 @@
 using namespace std;
 
 namespace AnimationData {
-	constexpr float DEFAULT_TIME_PER_FRAME = 0.12f;
+	constexpr float DEFAULT_TIME_PER_FRAME = 0.166f;
 	//constexpr float DEFAULT_TIME_PER_FRAME = 0.5f;
 }
 
