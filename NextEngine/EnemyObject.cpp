@@ -37,6 +37,8 @@ EnemyObject::EnemyObject(const EnemyInfo& enemyInfo) : LivingEntity(enemyInfo.na
 	attackFrameStart = 2;
 	attackFrameEnd = 4;
 
+	canMoveTowardTarget = true;
+
 	/// testing ///
 	emitter = new ParticleSystem();
 }
@@ -131,7 +133,8 @@ float EnemyObject::getAttackCooldown() const {
 }
 
 void EnemyObject::moveTowardsTarget() {
-	if (targetEntity == nullptr) {
+	if (targetEntity == nullptr || !canMoveTowardTarget) {
+		this->getAnimationComponent()->setState("Idle");
 		return;
 	}
 
@@ -340,6 +343,35 @@ void EnemyObject::updateBehavior(list<DrawableObject*>& objectsList) {
 	}
 }
 
+void EnemyObject::postUpdateBehavior() {
+	canMoveTowardTarget = true;
+}
+
 DamageCollider<PlayerObject>* EnemyObject::getDamageCollider() const {
 	return attackHitbox;
+}
+
+void EnemyObject::onCollisionStay(Collider* collider) {
+	if (targetEntity == nullptr) {
+		return;
+	}
+
+	if (this->getDistanceFromTarget() > this->getAggroRange()) {
+		return;
+	}
+
+	EnemyObject* otherEnemy = dynamic_cast<EnemyObject*>(collider->getObject());
+	if (otherEnemy != NULL) {
+		float currentXPos = this->getTransform().getPosition().x;
+		
+		float targetXPos = targetEntity->getTransform().getPosition().x;
+		float targetXOffset = targetXPos - currentXPos;
+
+		float otherXPos = otherEnemy->getTransform().getPosition().x;
+		float otherXOffset = otherXPos - currentXPos;
+
+		if ((otherXOffset > 0.0f) == (targetXOffset > 0.0f)) {
+			canMoveTowardTarget = false;
+		}
+	}
 }

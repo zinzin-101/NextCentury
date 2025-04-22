@@ -159,13 +159,13 @@ void handleObjectCollision(list<DrawableObject*>& objects) {
 
 			Physics* phys1 = obj1->getPhysicsComponent();
 			Physics* phys2 = obj2->getPhysicsComponent();
-
-			if (phys1 != nullptr && phys2 != nullptr) {
-				continue;
-			}
+			bool bothPhys = phys1 != nullptr && phys2 != nullptr;
 
 			if (!obj1->getIsActive() || !obj2->getIsActive()) {
 				collided = false;
+			}
+			else if (bothPhys) {
+				collided = checkCollision(col1, t1, col2, t2);
 			}
 			else if (ray1 != NULL) {
 				collided = checkCollisionRay(ray1, col2, t2);
@@ -215,7 +215,7 @@ void handleObjectCollision(list<DrawableObject*>& objects) {
 				//system("cls");
 				//cout << obj1->getName() << " collided with " << obj2->getName() << endl;
 
-				if (col1->isTrigger() || col2->isTrigger()) {
+				if (col1->isTrigger() || col2->isTrigger() || bothPhys) {
 					//cout << "Trigger collision" << endl;
 					/// Do nothing
 					continue;

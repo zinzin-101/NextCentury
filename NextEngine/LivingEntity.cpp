@@ -216,8 +216,11 @@ bool LivingEntity::getIsFacingRight() const {
     return isFacingRight;
 }
 
+void LivingEntity::postUpdateBehavior() {};
+
 void LivingEntity::update(list<DrawableObject*>& objectsList) {
     updateBehavior(objectsList);
+    postUpdateBehavior();
 
     handleKnockback();
 

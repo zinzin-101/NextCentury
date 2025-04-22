@@ -33,6 +33,8 @@ class EnemyObject : public LivingEntity {
         //float hitboxActiveTime;
         //float hitboxTimer;
 
+        bool canMoveTowardTarget;
+
         State currentState;
         float aggroRange;
         float attackRange;
@@ -88,6 +90,7 @@ class EnemyObject : public LivingEntity {
 
         virtual void start(list<DrawableObject*>& objectsList);
         virtual void updateState();
+        virtual void postUpdateBehavior();
         virtual void updateBehavior(list<DrawableObject*>& objectsList);
 
         DamageCollider<PlayerObject>* getDamageCollider() const;
@@ -98,4 +101,6 @@ class EnemyObject : public LivingEntity {
         virtual void render(glm::mat4 globalModelTransform) { TexturedObject::render(glm::mat4()); emitter->render(glm::mat4()); };
 
         virtual ~EnemyObject();
+
+        virtual void onCollisionStay(Collider* collider);
 };

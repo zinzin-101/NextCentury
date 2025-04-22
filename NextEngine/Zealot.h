@@ -13,7 +13,6 @@ protected:
 	};
 	AttackVariation currentAttack = Variation1;
 
-	void moveTowardsTarget();
 	void startAttack();
 	void endAttack();
 

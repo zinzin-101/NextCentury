@@ -73,6 +73,7 @@ class LivingEntity : public TexturedObject {
 
         void setAffectedByLighting(bool value);
 
+        virtual void postUpdateBehavior();
         virtual void update(list<DrawableObject*>& objectsList);
         virtual void updateBehavior(list<DrawableObject*>& objectsList) = 0;
  };

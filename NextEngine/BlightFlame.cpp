@@ -181,39 +181,6 @@ void BlightFlame::updateBehavior(list<DrawableObject*>& objectsList) {
 	}
 }
 
-void BlightFlame::moveTowardsTarget() {
-	if (targetEntity == nullptr) {
-		return;
-	}
-
-	glm::vec3 targetPos = targetEntity->getTransform().getPosition();
-
-	glm::vec3 currentPos = this->transform.getPosition();
-	glm::vec2 newVelocity = this->physics->getVelocity();
-
-	bool grounded = this->collider->getCollisionFlag() & COLLISION_DOWN;
-
-	/// Disable jumping
-	//if (targetPos.y > currentPos.y + this->collider->getHeight() * 0.5f && grounded) {
-	//	newVelocity.y = movementInfo.jumpVelocity;
-	//	//cout << "jump" << endl;
-	//}
-
-	float moveAmount = targetPos.x - currentPos.x;
-	moveAmount = moveAmount > 0 ? 1 : -1;
-	moveAmount *= movementInfo.speed;
-	newVelocity.x = moveAmount;
-
-	isFacingRight = currentPos.x < targetPos.x;
-
-	this->physics->setVelocity(newVelocity);
-
-	glm::vec2 vel = this->physics->getVelocity();
-	//cout << "x: " << vel.x << " y: " << vel.y << endl;
-	//cout << boolalpha;
-	//cout << "grounded: " << grounded << endl;
-}
-
 void BlightFlame::startAttack() {
 	flameHitbox->trigger(transform.getPosition(), isFacingRight);
 }
