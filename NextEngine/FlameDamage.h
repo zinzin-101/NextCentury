@@ -56,7 +56,8 @@ void FlameDamage<TargetEntityType>::onCollisionStay(Collider* col) {
 	DrawableObject* obj = col->getObject();
 	TargetEntityType* entity = dynamic_cast<TargetEntityType*>(obj);
 	if (entity != NULL) {
-		entity->takeDamage(damage);
+		//entity->takeDamage(damage);
+		entity->addStatus(LivingEntity::Status(LivingEntity::StatusType::BURNING, 3));
 	}
 }
 

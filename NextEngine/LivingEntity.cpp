@@ -10,7 +10,7 @@ LivingEntity::Status::Status(StatusType type, float cooldown) {
 }
 
 LivingEntity::LivingEntity() : health(100), isStun(false), canTakeDamage(true), isFacingRight(false),
-isDamageOverlayed(false), damageOverlayTimeRemaining(0.0f), knockbackDurationRemaining(0.0f), isAffectedByLighting(false) {}
+isDamageOverlayed(false), damageOverlayTimeRemaining(0.0f), isInKnockback(false), knockbackDurationRemaining(0.0f), isAffectedByLighting(false) {}
 
 LivingEntity::LivingEntity(int hp) : health(hp), isStun(false), canTakeDamage(true), isFacingRight(false),
 isDamageOverlayed(false), damageOverlayTimeRemaining(0.0f), isInKnockback(false), knockbackDurationRemaining(0.0f), isAffectedByLighting(false) {}
@@ -45,7 +45,6 @@ bool LivingEntity::getIsDead() const {
 }
 
 void LivingEntity::addStatus(Status newStatus) { 
-    std::cout << "Adding";
     std::list<Status>::iterator itr = std::find(statusList.begin(), statusList.end(), newStatus);
     if (itr != statusList.end()) {
         Status& status = *itr;
@@ -54,8 +53,6 @@ void LivingEntity::addStatus(Status newStatus) {
     }
 
     statusList.emplace_back(newStatus);
-    std::cout << newStatus.type;
-    cout << "added" << endl;
 }
 
 void LivingEntity::deleteStatus(int index) {
@@ -68,7 +65,6 @@ void LivingEntity::deleteStatus(int index) {
 }
 
 std::list<LivingEntity::Status>::iterator LivingEntity::deleteStatus(std::list<Status>::iterator itr) {
-    //std::cout << "deleting status" << endl;
     return statusList.erase(itr);
 }
 
@@ -104,11 +100,11 @@ void LivingEntity::applyStatus(float dt) { // NOt required???
                 break;
 
             case POISON:
-                takeDamage(1);
+                //takeDamage(1);
                 break;
 
             case BURNING:
-
+                takeDamage(1);
                 break;
         }
         if (status.remainingTime <= 0.0f) {
@@ -117,7 +113,7 @@ void LivingEntity::applyStatus(float dt) { // NOt required???
             }
 
             itr = deleteStatus(itr);
-            --itr;
+            if (itr != statusList.begin()) --itr;
             if (itr == statusList.end()) break;
         }
         else {
