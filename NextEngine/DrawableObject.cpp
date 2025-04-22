@@ -257,7 +257,7 @@ void DrawableObject::setActive(bool value) {
 	if (collider != nullptr && !isActive) {
 		std::map<Collider*, Collider::CollisionState>& colMap = collider->getCollisionMap();
 		for (std::pair<Collider*, Collider::CollisionState> pair : colMap) {
-			colMap[pair.first] = Collider::NONE;
+			colMap[pair.first] = Collider::EXIT;
 		}
 	}
 }
