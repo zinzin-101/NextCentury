@@ -100,6 +100,8 @@ PlayerObject::PlayerObject() : LivingEntity("Player", PlayerStat::MAX_HEALTH) {
 
     currentNumOfBullets = PlayerStat::MAX_BULLET;
     bulletRechargeTimer = PlayerStat::BULLET_RECHARGE_TIMER;
+
+    emitter = new ParticleSystem();
 }
 
 PlayerObject::~PlayerObject() {
@@ -220,6 +222,10 @@ void PlayerObject::updateStat() {
 }
 
 void PlayerObject::updateBehavior(list<DrawableObject*>& objectsList) {
+    /// Using particle emitter ///
+    emitter->update(objectsList);
+    ///
+
     float dt = GameEngine::getInstance()->getTime()->getDeltaTime();
     glm::vec2 vel = this->physics->getVelocity();
 

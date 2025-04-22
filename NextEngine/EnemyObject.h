@@ -97,11 +97,6 @@ class EnemyObject : public LivingEntity {
 
         DamageCollider<PlayerObject>* getDamageCollider() const;
 
-        /// Particle System Example ///
-        ParticleSystem* emitter;
-        ParticleSystem* getEmitter() { return emitter; };
-        virtual void render(glm::mat4 globalModelTransform) { TexturedObject::render(glm::mat4()); emitter->render(glm::mat4()); };
-
         virtual ~EnemyObject();
 
         virtual void onCollisionStay(Collider* collider);

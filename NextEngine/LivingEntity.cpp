@@ -1,6 +1,7 @@
 #include "GameEngine.h"
 #include "LightSource.h"
 #include "LivingEntity.h"
+#include "Random.h"
 #include <iostream>
 
 LivingEntity::Status::Status(StatusType type, float cooldown) {
@@ -10,19 +11,32 @@ LivingEntity::Status::Status(StatusType type, float cooldown) {
 }
 
 LivingEntity::LivingEntity() : health(100), isStun(false), canTakeDamage(true), isFacingRight(false),
-isDamageOverlayed(false), damageOverlayTimeRemaining(0.0f), isInKnockback(false), knockbackDurationRemaining(0.0f), isAffectedByLighting(false) {}
+isDamageOverlayed(false), damageOverlayTimeRemaining(0.0f), isInKnockback(false), knockbackDurationRemaining(0.0f), isAffectedByLighting(false) {
+    emitter = new ParticleSystem();
+}
 
 LivingEntity::LivingEntity(int hp) : health(hp), isStun(false), canTakeDamage(true), isFacingRight(false),
-isDamageOverlayed(false), damageOverlayTimeRemaining(0.0f), isInKnockback(false), knockbackDurationRemaining(0.0f), isAffectedByLighting(false) {}
+isDamageOverlayed(false), damageOverlayTimeRemaining(0.0f), isInKnockback(false), knockbackDurationRemaining(0.0f), isAffectedByLighting(false) {
+    emitter = new ParticleSystem();
+}
 
 LivingEntity::LivingEntity(std::string name) : TexturedObject(name), health(100), isStun(false), canTakeDamage(true),
 isFacingRight(false), isDamageOverlayed(false), damageOverlayTimeRemaining(0.0f), isInKnockback(false), knockbackDurationRemaining(0.0f), 
-isAffectedByLighting(false) {}
+isAffectedByLighting(false) {
+    emitter = new ParticleSystem();
+}
 
 LivingEntity::LivingEntity(std::string name, int hp) : TexturedObject(name), health(hp), isStun(false), canTakeDamage(true),
 isFacingRight(false), isDamageOverlayed(false), damageOverlayTimeRemaining(0.0f), isInKnockback(false), knockbackDurationRemaining(0.0f), 
-isAffectedByLighting(false) {}
+isAffectedByLighting(false) {
+    emitter = new ParticleSystem();
+}
 
+LivingEntity::~LivingEntity() {
+    if (emitter != nullptr) {
+        delete emitter;
+    }
+}
 
 void LivingEntity::setHealth(int hp) {
     this->health = hp;
@@ -104,7 +118,7 @@ void LivingEntity::applyStatus(float dt) { // NOt required???
                 break;
 
             case BURNING:
-                takeDamage(1);
+                handleBurning();
                 break;
         }
         if (status.remainingTime <= 0.0f) {
@@ -118,6 +132,31 @@ void LivingEntity::applyStatus(float dt) { // NOt required???
         }
         else {
             status.remainingTime -= dt;
+        }
+    }
+}
+
+void LivingEntity::handleBurning() {
+    takeDamage(1);
+
+    static float timer = 0.0f;
+    static const float timeBetweenEmit = 0.166f;
+
+    float dt = GameEngine::getInstance()->getTime()->getDeltaTime();
+
+    timer += dt;
+
+    if (timer > timeBetweenEmit) {
+        timer = 0.0f;
+        for (int i = 0; i < 3; i++) {
+            ParticleProperties particleProps = ParticleProperties(
+                this->getTransform().getPosition(),
+                glm::vec2(0.35f * Random::Float(), 2.5f * Random::Float()),
+                glm::vec2(-0.1f, 0.1f),
+                glm::vec3(1.0f, 0.47f, 0),
+                0.2f, 0.1f, 0.02f, 0.5f
+            );
+            this->emitter->emit(particleProps);
         }
     }
 }
@@ -215,6 +254,8 @@ bool LivingEntity::getIsFacingRight() const {
 void LivingEntity::postUpdateBehavior() {};
 
 void LivingEntity::update(list<DrawableObject*>& objectsList) {
+    applyStatus(GameEngine::getInstance()->getTime()->getDeltaTime());
+
     updateBehavior(objectsList);
     postUpdateBehavior();
 
@@ -231,9 +272,6 @@ void LivingEntity::update(list<DrawableObject*>& objectsList) {
     glm::vec3 currentScale = this->transform.getScale();
     currentScale.x = abs(currentScale.x);
     isFacingRight ? this->transform.setScale(currentScale.x, currentScale.y) : this->transform.setScale(-currentScale.x, currentScale.y);
-
-
-    applyStatus(GameEngine::getInstance()->getTime()->getDeltaTime());
 }
 
 bool operator==(LivingEntity::Status s1, LivingEntity::Status s2) {

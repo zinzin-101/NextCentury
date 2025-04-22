@@ -39,7 +39,6 @@ void ParticleSystem::updateParticlePool(unsigned int startIndex, unsigned int en
 
 void ParticleSystem::emit(const ParticleProperties& particleProperties) {
 	Particle& particle = particlePool[poolIndex];
-	particle.setActive(true);
 	particle.getTransform().setPosition(particleProperties.position);
 	particle.getTransform().setRotation(Random::Float() * 2.0f * glm::pi<float>());
 
@@ -55,6 +54,8 @@ void ParticleSystem::emit(const ParticleProperties& particleProperties) {
 	particle.setLifeRemaining(particleProperties.lifespan);
 	particle.setInitSize(particleProperties.initSize);
 	particle.setEndSize(particleProperties.endSize);
+
+	particle.setActive(true);
 
 	poolIndex = --poolIndex % MAX_PARTICLE;
 }

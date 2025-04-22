@@ -209,5 +209,5 @@ class PlayerObject : public LivingEntity {
         virtual void takeDamage(int damage);
         void flinch(float duration);
 
-        int getStamina() const;
+        int getStamina() const;   
 };

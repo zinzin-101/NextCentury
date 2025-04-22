@@ -1,4 +1,5 @@
 #pragma once
+#include "ParticleSystem.h"
 #include "TexturedObject.h"
 #include <list>
 
@@ -23,6 +24,8 @@ class LivingEntity : public TexturedObject {
         void handleDamageOverlay();
         void handleLighting(list<DrawableObject*>& objectsList);
 
+        void handleBurning();
+
     protected:
         bool isFacingRight;
 
@@ -31,6 +34,8 @@ class LivingEntity : public TexturedObject {
 
         float isInKnockback;
         float knockbackDurationRemaining;
+
+        ParticleSystem* emitter;
 
     public:
         enum StatusType {
@@ -50,6 +55,7 @@ class LivingEntity : public TexturedObject {
         LivingEntity(int hp);
         LivingEntity(string name);
         LivingEntity(string name, int hp);
+        ~LivingEntity();
 
         void setHealth(int hp);
         void setCanTakeDamage(bool value);
@@ -76,6 +82,10 @@ class LivingEntity : public TexturedObject {
         virtual void postUpdateBehavior();
         virtual void update(list<DrawableObject*>& objectsList);
         virtual void updateBehavior(list<DrawableObject*>& objectsList) = 0;
+
+        /// Particle System ///
+        ParticleSystem* getEmitter() { return emitter; };
+        virtual void render(glm::mat4 globalModelTransform) { TexturedObject::render(glm::mat4()); emitter->render(glm::mat4()); };
  };
 
 bool operator==(LivingEntity::Status s1, LivingEntity::Status s2);

@@ -38,19 +38,11 @@ EnemyObject::EnemyObject(const EnemyInfo& enemyInfo) : LivingEntity(enemyInfo.na
 	attackFrameEnd = 4;
 
 	canMoveTowardTarget = true;
-
-	/// testing ///
-	emitter = new ParticleSystem();
 }
 
 EnemyObject::~EnemyObject() {
 	if (attackHitbox != nullptr) {
 		destroyObject(attackHitbox);
-	}
-
-	/// testing ///
-	if (emitter != nullptr) {
-		delete emitter;
 	}
 }
 
@@ -262,7 +254,7 @@ void EnemyObject::updateState() {
 }
 
 void EnemyObject::updateBehavior(list<DrawableObject*>& objectsList) {
-	/// testing ///
+	/// Using particle emitter ///
 	emitter->update(objectsList);
 	///
 
