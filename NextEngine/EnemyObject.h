@@ -88,6 +88,8 @@ class EnemyObject : public LivingEntity {
 
         void setCanAttack(bool value);
 
+        MovementInfo getMovementInfo() const;
+
         virtual void start(list<DrawableObject*>& objectsList);
         virtual void updateState();
         virtual void postUpdateBehavior();

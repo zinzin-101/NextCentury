@@ -362,6 +362,11 @@ void EnemyObject::onCollisionStay(Collider* collider) {
 
 	EnemyObject* otherEnemy = dynamic_cast<EnemyObject*>(collider->getObject());
 	if (otherEnemy != NULL) {
+		MovementInfo otherMovement = otherEnemy->getMovementInfo();
+		if (this->movementInfo.speed > otherMovement.speed) {
+			return;
+		}
+
 		float currentXPos = this->getTransform().getPosition().x;
 		
 		float targetXPos = targetEntity->getTransform().getPosition().x;
@@ -374,4 +379,8 @@ void EnemyObject::onCollisionStay(Collider* collider) {
 			canMoveTowardTarget = false;
 		}
 	}
+}
+
+MovementInfo EnemyObject::getMovementInfo() const {
+	return movementInfo;
 }
