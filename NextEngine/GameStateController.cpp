@@ -1,6 +1,7 @@
 #include "GameStateController.h"
 #include "Level.h"
 #include "LevelAlphaTest.h"
+#include "LevelAlphaNMMN.h"
 #include "LevelParallax.h"
 #include "LevelTest.h"
 #include "LevelAnimTest.h"
@@ -31,14 +32,14 @@ void GameStateController::loadLevel() {
 	cout << gameStateCurr << endl;
 	switch (gameStateCurr) {
 		case GameState::GS_LEVEL1:
-			currentLevel = new LevelAlphaTest();
+			currentLevel = new LevelAlphaNMMN();
 			break;
 		case GameState::GS_LEVEL2:
 			currentLevel = new LevelPrototype();
 			break;
 		case GameState::GS_LEVEL3:
 			//cout << "in" << endl;
-			currentLevel = new LevelImgui();
+			currentLevel = new LevelUITest();
 			break;
 		default:
 			cout << "gGameStateCurr : invalid state!!" << endl;

@@ -2,6 +2,7 @@
 
 #include "TextObject.h"
 #include "SimpleObject.h"
+#include <queue>
 
 class Dialogue : public DrawableObject
 {
@@ -10,7 +11,7 @@ private:
 	int fontsize;
 	bool isActive;
 	TextObject text;
-	list<string> sentences;
+	queue<string> sentences;
 	SimpleObject placeHolderBG;
 
 public:
@@ -19,6 +20,6 @@ public:
 	void render(glm::mat4 globalModelTransform);
 	void nextSentence();
 	void addSentence(string s);
-	void setSentences(list<string> s);
+	void setSentences(queue<string> s);
 	void checkActiveRange(glm::vec3 playerPos);
 };

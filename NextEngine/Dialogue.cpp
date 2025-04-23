@@ -5,6 +5,7 @@ Dialogue::Dialogue(int fontSize) {
 	text = TextObject();
 	fontsize = fontSize;
 	placeHolderBG = SimpleObject();
+	placeHolderBG.getTransform().setScale(100, 100);
 	activeRange = 3.0f;
 	isActive = false;
 }
@@ -20,19 +21,20 @@ void Dialogue::render(glm::mat4 globalModelTransform) {
 
 void Dialogue::update(list<DrawableObject*>& objectsList) {
 	if (text.getText() != sentences.front()) {
+		
 		text.loadText(sentences.front(), { 255, 255, 255, 255 }, fontsize);
 	}
 }
 
 void Dialogue::nextSentence() {
-	sentences.pop_front();
+	sentences.pop();
 }
 
 void Dialogue::addSentence(string s) {
-	sentences.push_back(s);
+	sentences.push(s);
 }
 
-void Dialogue::setSentences(list<string> s) {
+void Dialogue::setSentences(queue<string> s) {
 	sentences = s;
 }
 
