@@ -157,6 +157,7 @@ void DamageCollider<TargetEntityType>::onTriggerEnter(Collider* collider) { // f
 
 				if (enemyObj != NULL) {
 					enemyObj->setCurrentState(EnemyObject::STUNNED);
+
 					float parryDirection = (player->getTransform().getPosition().x < enemyObj->getTransform().getPosition().x) ? 1.0f : -1.0f;
 					for (int i = 0; i < 5; i++) {
 						ParticleProperties particleProps = ParticleProperties(
@@ -168,6 +169,8 @@ void DamageCollider<TargetEntityType>::onTriggerEnter(Collider* collider) { // f
 						);
 						enemyObj->getEmitter()->emit(particleProps);
 					}
+
+					GameEngine::getInstance()->freezeGameForSeconds(0.3f); // hitstop
 
 					player->signalSuccessfulParry();
 
