@@ -19,6 +19,7 @@ class LivingEntity : public TexturedObject {
         bool isStun; // for when any status that can cause a stun
         list<Status> statusList;
         bool isAffectedByLighting;
+        bool forceIgnoreLighting;
 
         void handleKnockback();
         void handleDamageOverlay();
