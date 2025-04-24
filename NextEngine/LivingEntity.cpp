@@ -143,22 +143,29 @@ void LivingEntity::applyStatus(float dt) { // NOt required???
 }
 
 void LivingEntity::handleBurning() {
-    takeDamage(1); // fire damage per damage cooldown
-
-    static float timer = 0.0f;
+    static float emitTimer = 0.0f;
     static const float timeBetweenEmit = 0.0833f;
+
+    static float damageTimer = 0.0f;
+    static const float timeBetweenFireDamage = 0.4f;
 
     float dt = GameEngine::getInstance()->getTime()->getDeltaTime();
 
-    timer += dt;
+    emitTimer += dt;
+    damageTimer += dt;
 
-    if (timer > timeBetweenEmit) {
-        timer = 0.0f;
+    if (damageTimer > timeBetweenFireDamage) {
+        damageTimer = 0.0f;
+        LivingEntity::takeDamage(1); // fire damage per damage cooldown
+    }
+
+    if (emitTimer > timeBetweenEmit) {
+        emitTimer = 0.0f;
         int randEmitNum = Random::Int() % 3 + 3;
         for (int i = 0; i < randEmitNum; i++) {
             ParticleProperties particleProps = ParticleProperties(
-                this->getTransform().getPosition() + glm::vec3(0.15f * Random::Float() - 0.2f, 0.15f * Random::Float() - 0.2f, 0),
-                glm::vec2(0.5f * Random::Float() - 0.5f, 2.5f * Random::Float() + 0.25f),
+                this->getTransform().getPosition() + glm::vec3(0.4f * Random::Float() - 0.2f, 0.15f * Random::Float() - 0.2f, 0),
+                glm::vec2(1.0f * Random::Float() - 0.5f, 2.5f * Random::Float() + 0.25f),
                 glm::vec2(-0.25f, 0.25f),
                 glm::vec3(1.0f, 0.47f, 0),
                 glm::vec3(0.2f, 0.2f, 0.2f),
