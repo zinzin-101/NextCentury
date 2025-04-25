@@ -21,7 +21,7 @@ void Dialogue::render(glm::mat4 globalModelTransform) {
 }
 
 void Dialogue::update(list<DrawableObject*>& objectsList) {
-	DrawableObject::setActive(isActive);
+	//DrawableObject::setActive(isActive);
 	if (text.getText() != sentences.front()) {
 		
 		text.loadText(sentences.front(), { 0, 0, 0, 0 }, fontsize);
