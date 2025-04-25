@@ -125,7 +125,6 @@ void DamageCollider<TargetEntityType>::onCollisionEnter(Collider* collider) {
 					float bfX = bf->getTransform().getPosition().x;
 					(playerX <= bfX) ? bf->knockback(glm::vec2(5.0f, 5.0f), 0.5f) : bf->knockback(glm::vec2(-5.0f, 5.0f), 0.5f);
 					FlameDamage<PlayerObject>* flameDamage = bf->getFlameCollider();
-					flameDamage->reset();
 					bf->setCurrentState(EnemyObject::FLINCH);
 					return;
 				}

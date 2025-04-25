@@ -13,17 +13,11 @@ class FlameDamage : public ColliderObject, public TexturedObject {
 		LivingEntity* owner;
 		int damage;
 
-		float delayBetweenDamage;
-		float delayTimer;
-
 		bool followOwner;
 		glm::vec3 followOffset;
 
 		bool flameStart;
 		bool isWaitingToDeactivate;
-
-		bool canDamage;
-
 
 public:
 	FlameDamage(LivingEntity* owner, int damage, float delayBetweenDamage);
@@ -49,10 +43,6 @@ public:
 
 template <class TargetEntityType>
 void FlameDamage<TargetEntityType>::onCollisionStay(Collider* col) {
-	if (!canDamage) {
-		return;
-	}
-
 	DrawableObject* obj = col->getObject();
 	TargetEntityType* entity = dynamic_cast<TargetEntityType*>(obj);
 	if (entity != NULL) {
@@ -63,7 +53,7 @@ void FlameDamage<TargetEntityType>::onCollisionStay(Collider* col) {
 
 template <class TargetEntityType>
 FlameDamage<TargetEntityType>::FlameDamage(LivingEntity* owner, int damage, float delayBetweenDamage) : TexturedObject(),
-	owner(owner), damage(damage), delayBetweenDamage(delayBetweenDamage), delayTimer(0.0f) {
+	owner(owner), damage(damage) {
 	this->getColliderComponent()->setTrigger(true);
 	this->setName(owner->getName() + "FlameDamage");
 	this->DrawableObject::setActive(false);
@@ -89,19 +79,16 @@ void FlameDamage<TargetEntityType>::update(std::list<DrawableObject*>& objectsLi
 		if (currentState.name == "Start") {
 			if (!currentState.isPlaying) {
 				this->getAnimationComponent()->setState("Blast");
-				canDamage = true;
 			}
 		}
 		else if (currentState.name == "Blast") {
 			if (isWaitingToDeactivate) {
 				this->getAnimationComponent()->setState("End");
-				canDamage = false;
 			}
 		}
 		else if (currentState.name == "End" && isWaitingToDeactivate) {
 			if (!currentState.isPlaying) {
 				DrawableObject::setActive(false);
-				delayTimer = 0.0f;
 				isWaitingToDeactivate = false;
 				flameStart = false;
 			}
@@ -114,13 +101,6 @@ void FlameDamage<TargetEntityType>::update(std::list<DrawableObject*>& objectsLi
 		pos += owner->getTransform().getPosition();
 		this->transform.setPosition(pos);
 	}
-
-	float dt = GameEngine::getInstance()->getTime()->getDeltaTime();
-	if (delayTimer > 0.0f) {
-		delayTimer -= dt;
-	}
-
-	//std::cout << "delay timer " << delayTimer << std::endl;
 }
 
 template <class TargetEntityType>
@@ -206,7 +186,7 @@ void FlameDamage<TargetEntityType>::render(glm::mat4 globalModelTransform){
 		return;
 	}
 
-	if (!canDrawCollider || !this->getIsActive() || !canDamage) {
+	if (!canDrawCollider || !this->getIsActive()) {
 		return;
 	}
 
@@ -258,7 +238,5 @@ template <class TargetEntityType>
 void FlameDamage<TargetEntityType>::reset() {
 	flameStart = false;
 	isWaitingToDeactivate = false;
-	canDamage = false;
-	delayTimer = 0.0f;
 	this->DrawableObject::setActive(false);
 }
