@@ -16,6 +16,7 @@ class DamageCollider;
 
 namespace EnemyStat {
     constexpr float FLINCH_TIME = 0.2f;
+    constexpr int NUM_OF_BULLET_TO_STUN = 3;
 }
 
 class EnemyObject : public LivingEntity {
@@ -55,6 +56,8 @@ class EnemyObject : public LivingEntity {
 
         float flinchTimer;
 
+        int bulletHitCounter;
+
         float getDistanceFromTarget() const;
         virtual void moveTowardsTarget();
         virtual void startAttack();
@@ -89,6 +92,8 @@ class EnemyObject : public LivingEntity {
         void setCanAttack(bool value);
 
         MovementInfo getMovementInfo() const;
+
+        void signalBulletHit(int numOfBullet);
 
         virtual void start(list<DrawableObject*>& objectsList);
         virtual void updateState();

@@ -8,4 +8,5 @@ class Random {
 	public:
 		static void Init();
 		static float Float();
+		static int Int();
 };

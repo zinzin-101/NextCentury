@@ -4,7 +4,7 @@
 
 BlightFlame::BlightFlame(const EnemyInfo& enemyinfo) : EnemyObject(enemyinfo) {
 	flameHitbox = nullptr;
-
+	stunnedTime = BlightFlameStat::STUN_DURATION;
 	getTransform().setScale(1.0f, 1.6f);
 }
 void BlightFlame::start(list<DrawableObject*>& objectsList) {
@@ -147,7 +147,8 @@ void BlightFlame::updateBehavior(list<DrawableObject*>& objectsList) {
 	}
 	case STUNNED:
 		getAnimationComponent()->setState("Stunned");
-
+		attackHitbox->setActive(false);
+		flameHitbox->reset();
 		cout << "stun" << endl;
 		if (currentStunnedTime > 0) {
 			currentStunnedTime -= dt;

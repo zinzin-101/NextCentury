@@ -456,7 +456,8 @@ void PlayerObject::rangeAttack(std::list<DrawableObject*>& objectsList) {
         glm::vec3(),
         direction, 
         PlayerStat::RANGE_ATTACK_DISTANCE, 
-        baseRangeDamage * rangeDamageMultiplier[currentRangeCharge],
+        baseRangeDamage,
+        rangeDamageMultiplier[currentRangeCharge],
         PlayerStat::RANGE_ATTACK_LIFESPAN
     );
     ///temporary pos, new adjustment later

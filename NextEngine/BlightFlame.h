@@ -9,6 +9,8 @@ namespace BlightFlameStat {
 	constexpr int MELEE_DAMAGE = 5;
 
 	constexpr float MELEE_ATTACK_DISTANCE = 2.0f;
+
+	constexpr float STUN_DURATION = 2.0f;
 }
 
 class BlightFlame : public EnemyObject {

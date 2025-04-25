@@ -11,7 +11,7 @@ namespace PlayerStat {
     constexpr float TIME_TO_RESET_COMBO = 0.8f;
     constexpr float ATTACK_COOLDOWN = 0.1f;
     constexpr float LAST_COMBO_COOLDOWN = 0.5f;
-    constexpr float ATTACK_DASH_VELOCITY = 0.8f;
+    constexpr float ATTACK_DASH_VELOCITY = 0.4f;
     constexpr float AFTER_ATTACK_MOVE_DELAY_TIME = 0.3f;
     constexpr float DURATION_TO_START_HEAVY_ATTACK = 0.5f;
     constexpr float DURATION_TO_START_CHARGED_BULLET = 0.5f;
@@ -29,12 +29,12 @@ namespace PlayerStat {
     constexpr int NUM_OF_BULLET_PER_SHOT_1 = 1;
     constexpr int NUM_OF_BULLET_PER_SHOT_2 = 2;
     constexpr int NUM_OF_BULLET_PER_SHOT_3 = 3;
-    constexpr float RANGE_CHARGE_DURATION_1 = 1.0f;
-    constexpr float RANGE_CHARGE_DURATION_2 = 2.0f;
-    constexpr float RANGE_CHARGE_DURATION_3 = 3.0f;
-    constexpr float RANGE_ATTACK_COOLDOWN_1 = 2.0f;
-    constexpr float RANGE_ATTACK_COOLDOWN_2 = 3.0f;
-    constexpr float RANGE_ATTACK_COOLDOWN_3 = 4.0f;
+    constexpr float RANGE_CHARGE_DURATION_1 = 0.0f;
+    constexpr float RANGE_CHARGE_DURATION_2 = 0.5f;
+    constexpr float RANGE_CHARGE_DURATION_3 = 1.0f;
+    constexpr float RANGE_ATTACK_COOLDOWN_1 = 0.5f;
+    constexpr float RANGE_ATTACK_COOLDOWN_2 = 0.75f;
+    constexpr float RANGE_ATTACK_COOLDOWN_3 = 1.25f;
     constexpr float RANGE_ATTACK_DISTANCE = 5.0f;
     constexpr float RANGE_ATTACK_LIFESPAN = 0.5f;
 
@@ -58,7 +58,7 @@ namespace PlayerStat {
     constexpr float STAMINA_RECHARGE_TIMER = 0.3f;
     constexpr int STAMINA_RECHARGE_AMOUNT = 10.0f;
 
-    constexpr float BULLET_RECHARGE_TIMER = 4.0f;
+    constexpr float BULLET_RECHARGE_TIMER = 2.0f;
 
     constexpr int JUMP_STAMINA_CONSUMPTION = 10;
     constexpr int DODGE_STAMINA_CONSUMPTION = 20;

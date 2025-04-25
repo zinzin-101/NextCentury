@@ -55,6 +55,7 @@ void LevelAlphaTest::levelInit() {
     player->getTransform().setScale(4.166f, 2.5f);
     player->getColliderComponent()->getTransform().translate(0.0f, -0.44f);
     player->getColliderComponent()->setDimension(0.25f, 0.65f);
+    //player->setAffectedByLighting(true);
     //player->setDrawCollider(true);
     objectsList.emplace_back(player);
 

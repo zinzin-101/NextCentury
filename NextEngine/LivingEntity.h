@@ -19,6 +19,7 @@ class LivingEntity : public TexturedObject {
         bool isStun; // for when any status that can cause a stun
         list<Status> statusList;
         bool isAffectedByLighting;
+        bool forceIgnoreLighting;
 
         void handleKnockback();
         void handleDamageOverlay();
@@ -74,6 +75,7 @@ class LivingEntity : public TexturedObject {
         void applyStatus(float dt);
 
         virtual void takeDamage(int damage);
+        virtual void takeDamage(int damage, bool ignoreCanTakeDamage);
 
         void knockback(glm::vec2 velocityDirection, float duration);
 

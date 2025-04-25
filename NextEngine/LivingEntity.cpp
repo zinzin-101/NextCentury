@@ -11,24 +11,26 @@ LivingEntity::Status::Status(StatusType type, float cooldown) {
 }
 
 LivingEntity::LivingEntity() : health(100), isStun(false), canTakeDamage(true), isFacingRight(false),
-isDamageOverlayed(false), damageOverlayTimeRemaining(0.0f), isInKnockback(false), knockbackDurationRemaining(0.0f), isAffectedByLighting(false) {
+isDamageOverlayed(false), damageOverlayTimeRemaining(0.0f), isInKnockback(false), knockbackDurationRemaining(0.0f),
+isAffectedByLighting(false), forceIgnoreLighting(false) {
     emitter = new ParticleSystem();
 }
 
 LivingEntity::LivingEntity(int hp) : health(hp), isStun(false), canTakeDamage(true), isFacingRight(false),
-isDamageOverlayed(false), damageOverlayTimeRemaining(0.0f), isInKnockback(false), knockbackDurationRemaining(0.0f), isAffectedByLighting(false) {
+isDamageOverlayed(false), damageOverlayTimeRemaining(0.0f), isInKnockback(false), knockbackDurationRemaining(0.0f),
+isAffectedByLighting(false), forceIgnoreLighting(false) {
     emitter = new ParticleSystem();
 }
 
 LivingEntity::LivingEntity(std::string name) : TexturedObject(name), health(100), isStun(false), canTakeDamage(true),
 isFacingRight(false), isDamageOverlayed(false), damageOverlayTimeRemaining(0.0f), isInKnockback(false), knockbackDurationRemaining(0.0f), 
-isAffectedByLighting(false) {
+isAffectedByLighting(false), forceIgnoreLighting(false) {
     emitter = new ParticleSystem();
 }
 
 LivingEntity::LivingEntity(std::string name, int hp) : TexturedObject(name), health(hp), isStun(false), canTakeDamage(true),
 isFacingRight(false), isDamageOverlayed(false), damageOverlayTimeRemaining(0.0f), isInKnockback(false), knockbackDurationRemaining(0.0f), 
-isAffectedByLighting(false) {
+isAffectedByLighting(false), forceIgnoreLighting(false) {
     emitter = new ParticleSystem();
 }
 
@@ -125,6 +127,10 @@ void LivingEntity::applyStatus(float dt) { // NOt required???
             if (status.type == STUN) {
                 isStun = false;
             }
+            else if (status.type == BURNING) {
+                forceIgnoreLighting = false;
+            }
+            
 
             itr = deleteStatus(itr);
             if (itr != statusList.begin()) --itr;
@@ -137,28 +143,40 @@ void LivingEntity::applyStatus(float dt) { // NOt required???
 }
 
 void LivingEntity::handleBurning() {
-    takeDamage(1);
+    static float emitTimer = 0.0f;
+    static const float timeBetweenEmit = 0.0833f;
 
-    static float timer = 0.0f;
-    static const float timeBetweenEmit = 0.166f;
+    static float damageTimer = 0.0f;
+    static const float timeBetweenFireDamage = 0.4f;
 
     float dt = GameEngine::getInstance()->getTime()->getDeltaTime();
 
-    timer += dt;
+    emitTimer += dt;
+    damageTimer += dt;
 
-    if (timer > timeBetweenEmit) {
-        timer = 0.0f;
-        for (int i = 0; i < 3; i++) {
+    if (damageTimer > timeBetweenFireDamage) {
+        damageTimer = 0.0f;
+        LivingEntity::takeDamage(1, true); // fire damage per damage cooldown
+    }
+
+    if (emitTimer > timeBetweenEmit) {
+        emitTimer = 0.0f;
+        int randEmitNum = Random::Int() % 3 + 3;
+        for (int i = 0; i < randEmitNum; i++) {
             ParticleProperties particleProps = ParticleProperties(
-                this->getTransform().getPosition(),
-                glm::vec2(0.35f * Random::Float(), 2.5f * Random::Float()),
-                glm::vec2(-0.1f, 0.1f),
+                this->getTransform().getPosition() + glm::vec3(0.4f * Random::Float() - 0.2f, 0.15f * Random::Float() - 0.2f, 0),
+                glm::vec2(1.0f * Random::Float() - 0.5f, 2.5f * Random::Float() + 0.25f),
+                glm::vec2(-0.25f, 0.25f),
                 glm::vec3(1.0f, 0.47f, 0),
-                0.2f, 0.1f, 0.02f, 0.5f
+                glm::vec3(0.2f, 0.2f, 0.2f),
+                0.2f, 0.1f, 0.02f, 1.0f
             );
             this->emitter->emit(particleProps);
         }
     }
+
+    forceIgnoreLighting = true;
+    renderBrightness = 1.0f;
 }
 
 void LivingEntity::takeDamage(int damage) {
@@ -166,6 +184,13 @@ void LivingEntity::takeDamage(int damage) {
         return;
     }
 
+    health -= damage;
+
+    isDamageOverlayed = true;
+    damageOverlayTimeRemaining = LivingEntityStat::DAMAGE_OVERLAY_DURATION;
+}
+
+void LivingEntity::takeDamage(int damage, bool ignoreCanTakeDamage) {
     health -= damage;
 
     isDamageOverlayed = true;
@@ -263,7 +288,7 @@ void LivingEntity::update(list<DrawableObject*>& objectsList) {
 
     DrawableObject::update(objectsList);
 
-    if (isAffectedByLighting) {
+    if (isAffectedByLighting && !forceIgnoreLighting) {
         handleLighting(objectsList);
     }
 

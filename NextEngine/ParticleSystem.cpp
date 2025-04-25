@@ -48,7 +48,9 @@ void ParticleSystem::emit(const ParticleProperties& particleProperties) {
 	variableVel.y += particleProperties.velocityVariation.y * (Random::Float() - 0.5f);
 	particle.getPhysicsComponent()->setVelocity(variableVel);
 
-	particle.setColor(particleProperties.color);
+	//particle.setColor(particleProperties.color);
+	particle.setInitColor(particleProperties.initColor);
+	particle.setEndColor(particleProperties.endColor);
 
 	particle.setLifespan(particleProperties.lifespan);
 	particle.setLifeRemaining(particleProperties.lifespan);

@@ -37,6 +37,8 @@ EnemyObject::EnemyObject(const EnemyInfo& enemyInfo) : LivingEntity(enemyInfo.na
 	attackFrameStart = 2;
 	attackFrameEnd = 4;
 
+	bulletHitCounter = 0;
+
 	canMoveTowardTarget = true;
 }
 
@@ -375,4 +377,13 @@ void EnemyObject::onCollisionStay(Collider* collider) {
 
 MovementInfo EnemyObject::getMovementInfo() const {
 	return movementInfo;
+}
+
+void EnemyObject::signalBulletHit(int numOfBullet) {
+	bulletHitCounter += numOfBullet;
+
+	if (bulletHitCounter >= EnemyStat::NUM_OF_BULLET_TO_STUN) {
+		bulletHitCounter = 0;
+		this->setCurrentState(State::STUNNED);
+	}
 }
