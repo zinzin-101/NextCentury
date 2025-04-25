@@ -75,6 +75,7 @@ class LivingEntity : public TexturedObject {
         void applyStatus(float dt);
 
         virtual void takeDamage(int damage);
+        virtual void takeDamage(int damage, bool ignoreCanTakeDamage);
 
         void knockback(glm::vec2 velocityDirection, float duration);
 

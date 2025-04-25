@@ -156,7 +156,7 @@ void LivingEntity::handleBurning() {
 
     if (damageTimer > timeBetweenFireDamage) {
         damageTimer = 0.0f;
-        LivingEntity::takeDamage(1); // fire damage per damage cooldown
+        LivingEntity::takeDamage(1, true); // fire damage per damage cooldown
     }
 
     if (emitTimer > timeBetweenEmit) {
@@ -184,6 +184,13 @@ void LivingEntity::takeDamage(int damage) {
         return;
     }
 
+    health -= damage;
+
+    isDamageOverlayed = true;
+    damageOverlayTimeRemaining = LivingEntityStat::DAMAGE_OVERLAY_DURATION;
+}
+
+void LivingEntity::takeDamage(int damage, bool ignoreCanTakeDamage) {
     health -= damage;
 
     isDamageOverlayed = true;

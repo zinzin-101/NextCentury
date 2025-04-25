@@ -170,7 +170,7 @@ void DamageCollider<TargetEntityType>::onTriggerEnter(Collider* collider) { // f
 						enemyObj->getEmitter()->emit(particleProps);
 					}
 
-					GameEngine::getInstance()->freezeGameForSeconds(0.3f); // hitstop
+					GameEngine::getInstance()->freezeGameForSeconds(0.2f); // hitstop
 
 					player->signalSuccessfulParry();
 
