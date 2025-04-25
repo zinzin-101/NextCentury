@@ -78,7 +78,11 @@ void LevelAlphaNMMN::levelInit() {
     Dialogue* d1 = new Dialogue(36);
     d1->getTransform().setPosition(glm::vec3(0.0f, 0.0f, 0.0f));
     d1->addSentence("LIN");
+    d1->addSentence("GAN");
+    d1->addSentence("GULI");
+    d1->addSentence("GULI2");
     objectsList.emplace_back(d1);
+    dialogueList.push(d1);
 
     startObjects(objectsList);
 
@@ -218,5 +222,9 @@ void LevelAlphaNMMN::handleKey(InputManager& input) {
         else {
             player->dodge();
         }
+    }
+
+    if (input.getButtonDown(SDLK_e)) {
+        
     }
 }
