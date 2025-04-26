@@ -167,7 +167,6 @@ void GLRenderer::render(list<DrawableObject*>& objList, bool clear) {
     // Calculate the model matrix if necessary, or use the default
     glm::mat4 cam = glm::mat4(1.0f); 
 
-    applyViewMatrix();
     
     // Loop through objects and call render with the model transform
     
@@ -175,16 +174,23 @@ void GLRenderer::render(list<DrawableObject*>& objList, bool clear) {
         if (!obj->getIsActive()) {
             continue;
         }
-        TextObject* txt = dynamic_cast<TextObject*>(obj);
-        Dialogue* di = dynamic_cast<Dialogue*>(obj);
-        if (txt != nullptr || di != nullptr) {
-            setOrthoProjection(-960, 960, -540, 540);
-            glUniformMatrix4fv(pMatrixId, 1, GL_FALSE, glm::value_ptr(this->projectionMatrix));
-        }
+        //TextObject* txt = dynamic_cast<TextObject*>(obj);
+        //Dialogue* di = dynamic_cast<Dialogue*>(obj);
+        //if (txt != nullptr || di != nullptr) {
+        //    setOrthoProjection(-960, 960, -540, 540);
+        //    glUniformMatrix4fv(pMatrixId, 1, GL_FALSE, glm::value_ptr(this->projectionMatrix));
+        //}
+        //else {
+        //    setOrthoProjection(-8, 8, -4.5, 4.5);
+        //    glUniformMatrix4fv(pMatrixId, 1, GL_FALSE, glm::value_ptr(this->projectionMatrix));
+        //}
+        //applyViewMatrix();
         obj->render(cam); 
         obj->drawCollider();
-        setOrthoProjection(-8, 8, -4.5, 4.5);
-        glUniformMatrix4fv(pMatrixId, 1, GL_FALSE, glm::value_ptr(this->projectionMatrix));
+        //setViewMatrix(view);
+        //applyViewMatrix();
+        //glUniformMatrix4fv(pMatrixId, 1, GL_FALSE, glm::value_ptr(this->projectionMatrix));
+
     }
 
     // Draw the camera outline
