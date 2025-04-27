@@ -3,11 +3,14 @@
 
 class Wailer : public EnemyObject {
 protected:
-	enum AttackVariation {
-		Variation1,
-		Variation2
+	enum AttackStates {
+		Preparing,
+		SonicBlast,
+		Summoning,
+		None
 	};
-	AttackVariation currentAttack = Variation1;
+
+	AttackStates currentAttackState = None;
 
 	void startAttack();
 	void endAttack();

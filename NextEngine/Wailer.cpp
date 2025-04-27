@@ -97,25 +97,7 @@ void Wailer::updateBehavior(list<DrawableObject*>& objectsList) {
 		break;
 
 	case ATTACKING: {
-		if (currentAttack == Variation1) {
-			getAnimationComponent()->setState("Attack1");
-		}
-		else {
-			getAnimationComponent()->setState("Attack2");
-		}
 
-		int currentAnimFrame = getAnimationComponent()->getCurrentFrame();
-
-		if (currentAnimFrame == attackFrameStart + 1) {
-			startAttack();
-			break;
-		}
-
-		if (currentAnimFrame == attackFrameEnd + 1) {
-			endAttack();
-			//cout << attackCooldownTimer << endl;
-			break;
-		}
 		break;
 	}
 	case STUNNED:
@@ -145,18 +127,5 @@ void Wailer::startAttack() {
 }
 
 void Wailer::endAttack() {
-	if (currentAttack == Variation1) {
-		if (Random::Float() <= 0.3f) {
-			currentAttack = Variation2;
-			cout << "attack2" << endl;
-		}
-		else {
-			attackCooldownTimer = attackCooldown;
-		}
-	}
-	else {
-		currentAttack = Variation1;
-		attackCooldownTimer = attackCooldown;
-	}
-	attackHitbox->setActive(false);
+
 }
