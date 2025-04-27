@@ -75,6 +75,7 @@
     <ClCompile Include="Dialogue.cpp" />
     <ClCompile Include="LevelAlphaTest.cpp" />
     <ClCompile Include="IngameUI.cpp" />
+    <ClCompile Include="SonicWave.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
@@ -168,6 +169,7 @@
     <ClInclude Include="LevelAlphaTest.h" />
     <ClInclude Include="ObjectHeader.h" />
     <ClInclude Include="IngameUI.h" />
+    <ClInclude Include="SonicWave.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Resource\Shader\fragment.shd" />
