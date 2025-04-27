@@ -97,7 +97,7 @@ void Wailer::updateBehavior(list<DrawableObject*>& objectsList) {
 		break;
 
 	case ATTACKING: {
-
+		handleAttackState();
 		break;
 	}
 	case STUNNED:
@@ -119,6 +119,20 @@ void Wailer::updateBehavior(list<DrawableObject*>& objectsList) {
 	if (attackCooldownTimer > 0.0f) {
 		attackCooldownTimer -= dt;
 	}
+}
+
+void Wailer::handleAttackState() {
+
+}
+
+void Wailer::handlePrepareState() {
+
+}
+void Wailer::handleSonicBlastState() {
+
+}
+void Wailer::handleSummoningState() {
+
 }
 
 void Wailer::startAttack() {
