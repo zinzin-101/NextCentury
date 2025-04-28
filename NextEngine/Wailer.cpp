@@ -7,15 +7,23 @@ Wailer::Wailer(const EnemyInfo& enemyinfo) : EnemyObject(enemyinfo) {
 	currentState = State::IDLE;
 	currentAttackState = AttackState::NONE;
 	repositionTimer = 0.0f;
+	isInSonicAttack = false;
 }
+
+Wailer::~Wailer() {
+	if (sonicAttack != nullptr) {
+		destroyObject(sonicAttack);
+	}
+}
+
 void Wailer::start(list<DrawableObject*>& objectsList) {
 	setTexture("../Resource/Texture/wailerPlacholder.png");
 	initAnimation(8, 6);
 	getAnimationComponent()->addState("Idle", 0, 0, 6, true);
 	getAnimationComponent()->addState("Moving", 1, 0, 6, true);
-	getAnimationComponent()->addState("WindUp", 2, 0, 3, false);
-	getAnimationComponent()->addState("SonicAttack", 3, 0, 4, false);
-	getAnimationComponent()->addState("WindDown", 4, 0, 3, false);
+	getAnimationComponent()->addState("WindUp", 2, 0, 3, false, 0.4f);
+	getAnimationComponent()->addState("SonicAttack", 3, 0, 4, false, 0.2f);
+	getAnimationComponent()->addState("WindDown", 4, 0, 3, false, 0.4f);
 	getAnimationComponent()->addState("Summoning", 5, 0, 4, false);
 	getAnimationComponent()->addState("Stunned", 6, 0, 3, true);
 
@@ -23,7 +31,9 @@ void Wailer::start(list<DrawableObject*>& objectsList) {
 	sonicAttack->setName("WailerSonicWave");
 	objectsList.emplace_back(sonicAttack);
 
-	targetEntity = EnemyObject::findPlayer(objectsList);;
+	targetEntity = EnemyObject::findPlayer(objectsList);
+
+	setDrawCollider(true);
 }
 
 void Wailer::updateState() {
@@ -188,8 +198,9 @@ void Wailer::handleAttackState(std::list<DrawableObject*>& objectlist) {
 
 void Wailer::handleSonicBlastState() {
 	Animation::State animState = this->getAnimationComponent()->getCurrentAnimationState();
-	if (animState.name != "WindUp") {
+	if (animState.name != "WindUp" && !isInSonicAttack) {
 		this->getAnimationComponent()->setState("WindUp");
+		isInSonicAttack = true;
 		sonicAttack->mark(targetEntity->getTransform().getPosition());
 		return;
 	}
@@ -208,6 +219,8 @@ void Wailer::handleSonicBlastState() {
 	if (animState.name == "WindDown" && !animState.isPlaying) {
 		currentAttackState = AttackState::NONE;
 		currentState = State::IDLE;
+		isInSonicAttack = false;
+		attackCooldownTimer = attackCooldown;
 		return;
 	}
 }
@@ -224,6 +237,7 @@ void Wailer::handleSummoningState(std::list<DrawableObject*>& objectlist) {
 
 	currentAttackState = AttackState::NONE;
 	currentState = State::IDLE;
+	attackCooldownTimer = attackCooldown;
 }
 
 void Wailer::setCurrentState(State state) {

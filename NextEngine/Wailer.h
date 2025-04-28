@@ -30,6 +30,7 @@ protected:
 
 	State currentState;
 	SonicWave* sonicAttack;
+	bool isInSonicAttack;
 	AttackState currentAttackState;
 	void handleAttackState(std::list<DrawableObject*>& objectlist);
 	void handleSonicBlastState();
@@ -41,6 +42,7 @@ protected:
 
 public:
 	Wailer(const EnemyInfo& enemyinfo);
+	~Wailer();
 	void start(list<DrawableObject*>& objectsList);
 	virtual void setCurrentState(State state);
 	virtual void updateState();

@@ -5,15 +5,16 @@
 SonicWave::SonicWave() {
 	groundOffset = -1.0f;
 
-	addColliderComponent();
+	this->addColliderComponent();
+	this->getColliderComponent()->setTrigger(true);
 	this->setDrawCollider(true);
 	this->setDrawColliderColor(glm::vec3(1, 0, 0));
 
 	/// set texture and init animation ///
 	setTexture("../Resource/Texture/BOOM.png");
 	initAnimation(1, 9);
-	getAnimationComponent()->addState("Marking", 0, 0, 4, false);
-	getAnimationComponent()->addState("Attack", 0, 4, 5, false);
+	getAnimationComponent()->addState("Marking", 0, 0, 4, false, 0.4f);
+	getAnimationComponent()->addState("Attack", 0, 4, 5, false, 0.4f);
 
 	damageStartFrame = 4;
 
