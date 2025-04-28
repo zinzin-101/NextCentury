@@ -10,30 +10,30 @@
 PlayerObject::PlayerObject() : LivingEntity("Player", PlayerStat::MAX_HEALTH) {
     //this->damage = playerInfo.damage;
 
-    setTexture("../Resource/Texture/playerAlpha.png");
-    initAnimation(15, 8);
+    setTexture("../Resource/Texture/MCFINAL3.png");
+    initAnimation(17, 8);
 
     getAnimationComponent()->addState("Idle", 0, 0, 6, true);
     getAnimationComponent()->addState("Walking", 1, 0, 6, true);
-    getAnimationComponent()->addState("Jumping", 10, 0, 6, false, 0.2f);
+    getAnimationComponent()->addState("Jumping", 2, 0, 4, false, 0.2f);
 
-    getAnimationComponent()->addState("Dodging", 9, 0, 5, false, PlayerStat::DODGE_DURATION / 6.0f);
+    getAnimationComponent()->addState("Dodging", 3, 0, 5, false, PlayerStat::DODGE_DURATION / 6.0f);
 
-    getAnimationComponent()->addState("Combo1", 2, 0, 5, false);
-    getAnimationComponent()->addState("Combo2", 3, 0, 5, false);
-    getAnimationComponent()->addState("Combo3", 4, 0, 5, false);
+    getAnimationComponent()->addState("Combo1", 4, 0, 5, false);
+    getAnimationComponent()->addState("Combo2", 5, 0, 5, false);
+    getAnimationComponent()->addState("Combo3", 6, 0, 5, false);
 
-    getAnimationComponent()->addState("Charging", 5, 0, 6, false);
-    getAnimationComponent()->addState("MaxCharging", 5, 1, 3, true);
-    getAnimationComponent()->addState("Charge1", 6, 0, 4, false);
-    getAnimationComponent()->addState("Charge2", 7, 0, 4, false);
+    getAnimationComponent()->addState("Charging", 7, 0, 6, false);
+    getAnimationComponent()->addState("MaxCharging", 7, 3, 6, true);
+    getAnimationComponent()->addState("Charge1", 8, 0, 4, false);
+    getAnimationComponent()->addState("Charge2", 9, 0, 4, false);
 
-    getAnimationComponent()->addState("Parrying", 8, 0, 8, false);
+    getAnimationComponent()->addState("Parrying", 14, 0, 8, false);
 
-    getAnimationComponent()->addState("GunCharge1", 11, 0, 5, true);
-    getAnimationComponent()->addState("GunCharge2", 12, 0, 5, true);
-    getAnimationComponent()->addState("GunCharge3", 13, 0, 5, true);
-    getAnimationComponent()->addState("GunShoot", 14, 0, 4, false);
+    getAnimationComponent()->addState("GunCharge1", 11, 0, 6, true);
+    getAnimationComponent()->addState("GunCharge2", 12, 0, 6, true);
+    getAnimationComponent()->addState("GunCharge3", 13, 0, 6, true);
+    getAnimationComponent()->addState("GunShoot", 10, 0, 3, false);
     Animation::State& gunShotAnim = getAnimationComponent()->getAnimationStateRef("GunShoot");
     gunShotAnim.timePerFrame = 0.08f;
 

@@ -167,7 +167,7 @@ void GLRenderer::render(list<DrawableObject*>& objList, bool clear) {
     // Calculate the model matrix if necessary, or use the default
     glm::mat4 objCam = glm::mat4(1.0f);
     glm::vec3 translate = -camera->getPosition();
-    glm::vec3 scale = glm::vec3(120.0f, 120.0f, 0.0f);
+    glm::vec3 scale = glm::vec3(1.0f/120.0f, 1.0f/120.0f, 0.0f);
     objCam = glm::translate(objCam, translate);
     objCam = glm::scale(objCam, scale);
 
@@ -185,13 +185,14 @@ void GLRenderer::render(list<DrawableObject*>& objList, bool clear) {
         }
         TextObject* txt = dynamic_cast<TextObject*>(obj);
         Dialogue* di = dynamic_cast<Dialogue*>(obj);
-        setOrthoProjection(-960, 960, -540, 540);
+        //setOrthoProjection(-960, 960, -540, 540);
+        setOrthoProjection(-8, 8, -4.5, 4.5);
         if (txt != nullptr || di != nullptr) {
-            glUniformMatrix4fv(pMatrixId, 1, GL_FALSE, glm::value_ptr(txtCam * this->projectionMatrix));
+            glUniformMatrix4fv(pMatrixId, 1, GL_FALSE, glm::value_ptr(objCam * this->projectionMatrix));
         }
         else {
             //setOrthoProjection(-8, 8, -4.5, 4.5);
-            glUniformMatrix4fv(pMatrixId, 1, GL_FALSE, glm::value_ptr(objCam * this->projectionMatrix));
+            glUniformMatrix4fv(pMatrixId, 1, GL_FALSE, glm::value_ptr(txtCam * this->projectionMatrix));
         }
         obj->render(glm::mat4()); 
         obj->drawCollider();
