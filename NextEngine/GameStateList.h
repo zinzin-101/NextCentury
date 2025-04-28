@@ -5,8 +5,6 @@ enum GameState {
 	GS_LEVEL1 = 0,
 	GS_LEVEL2,
 	GS_LEVEL3,
-	GS_COL_TEST,
-	GS_LOADING,
 	GS_ACT1,
 	GS_ACT2,
 	GS_ACT3,

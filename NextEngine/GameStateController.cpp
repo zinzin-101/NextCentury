@@ -13,6 +13,7 @@
 #include "LevelPrototype.h"
 #include "LevelPrototypeNMMN.h"
 #include "LevelAct1.h"
+#include "LevelAct2.h"
 
 GameStateController::GameStateController() {
 	// set the initial game state
@@ -39,9 +40,16 @@ void GameStateController::loadLevel() {
 			currentLevel = new LevelPrototype();
 			break;
 		case GameState::GS_LEVEL3:
+			break;
+		case GameState::GS_ACT1:
 			cout << "Act1 load" << endl;
 			currentLevel = new LevelAct1();
 			break;
+		case GameState::GS_ACT2:
+			cout << "Act1 load" << endl;
+			currentLevel = new LevelAct2();
+			break;
+
 		default:
 			cout << "gGameStateCurr : invalid state!!" << endl;
 			exit(1);

@@ -3,7 +3,7 @@
 #include "Level.h"
 #include "ObjectHeader.h"
 
-class LevelAct1 : public Level {
+class LevelAct2 : public Level {
 private:
     list<DrawableObject*> objectsList;
     list<DrawableObject*> UIobjectsList;
