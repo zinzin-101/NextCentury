@@ -104,6 +104,10 @@ void DamageCollider<TargetEntityType>::onCollisionEnter(Collider* collider) {
 				return;
 			}
 
+			if (damageTag == "HeavyAttack2") {
+				GameEngine::getInstance()->freezeGameForSeconds(0.2f); // hitstop
+			}
+
 			Zealot* zealot = dynamic_cast<Zealot*>(obj);
 			if (zealot != NULL && (damageTag == "HeavyAttack1" || damageTag == "HeavyAttack2" || damageTag == "FinalNormalAttack")) {
 				zealot->setCurrentState(EnemyObject::FLINCH);

@@ -35,6 +35,7 @@ DrawableObject::DrawableObject(){
 	collider = nullptr;
 
 	canDrawCollider = false;
+	drawColliderColor = glm::vec3(0, 1, 0);
 
 	isActive = true;
 	isMarkedForDelete = false;
@@ -53,11 +54,13 @@ DrawableObject::DrawableObject(string name) {
 	collider = nullptr;
 
 	canDrawCollider = false;
+	drawColliderColor = glm::vec3(0, 1, 0);
 
 	isActive = true;
 	isMarkedForDelete = false;
 
 	renderBrightness = 1.0f;
+	renderOpacity = 1.0f;
 }
 
 DrawableObject::~DrawableObject() {
@@ -196,6 +199,10 @@ void DrawableObject::setDrawCollider(bool value) {
 	canDrawCollider = value;
 }
 
+void DrawableObject::setDrawColliderColor(glm::vec3 color) {
+	drawColliderColor = color;
+}
+
 void DrawableObject::drawCollider() {
 	if (collider == nullptr) {
 		return;
@@ -244,7 +251,7 @@ void DrawableObject::drawCollider() {
 
 		//currentMatrix = globalModelTransform * currentMatrix;
 		glUniformMatrix4fv(modelMatixId, 1, GL_FALSE, glm::value_ptr(currentMatrix));
-		glUniform3f(colorId, 0, 1, 0);
+		glUniform3f(colorId, drawColliderColor.r, drawColliderColor.g, drawColliderColor.b);
 		glUniform1f(brightnessId, 1);
 		glUniform1i(renderModeId, 0);
 		squareBorderMesh->render();

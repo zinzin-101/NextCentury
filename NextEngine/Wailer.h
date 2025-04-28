@@ -1,13 +1,28 @@
 #pragma once
 #include "EnemyObject.h"
+#include "SonicWave.h"
+
+namespace WailerStat {
+	constexpr float SONIC_BLAST_COOLDOWN = 3.0f;
+	constexpr float SUMMON_COOLDOWN = 15.0f;
+
+}
 
 class Wailer : public EnemyObject {
 protected:
-	enum AttackVariation {
-		Variation1,
-		Variation2
+	enum AttackStates {
+		Preparing,
+		SonicBlast,
+		Summoning,
+		None
 	};
-	AttackVariation currentAttack = Variation1;
+
+	SonicWave* sonicAttack;
+	AttackStates currentAttackState = None;
+	void handleAttackState();
+	void handlePrepareState();
+	void handleSonicBlastState();
+	void handleSummoningState();
 
 	void startAttack();
 	void endAttack();

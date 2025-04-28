@@ -24,6 +24,7 @@ PlayerObject::PlayerObject() : LivingEntity("Player", PlayerStat::MAX_HEALTH) {
     getAnimationComponent()->addState("Combo3", 4, 0, 5, false);
 
     getAnimationComponent()->addState("Charging", 5, 0, 6, false);
+    getAnimationComponent()->addState("MaxCharging", 5, 1, 3, true);
     getAnimationComponent()->addState("Charge1", 6, 0, 4, false);
     getAnimationComponent()->addState("Charge2", 7, 0, 4, false);
 
@@ -386,12 +387,14 @@ void PlayerObject::heavyAttack() {
             this->getAnimationComponent()->setState("Charge1");
             attackHitbox->setDamageTag("HeavyAttack1");
             stamina -= PlayerStat::HEAVY1_STAMINA_CONSUMPTION;
+            //cout << "lvl 1" << endl;
             break;
 
         case PlayerHeavyCharge::LEVEL_2:
             this->getAnimationComponent()->setState("Charge2");
             attackHitbox->setDamageTag("HeavyAttack2");
             stamina -= PlayerStat::HEAVY2_STAMINA_CONSUMPTION;
+            //cout << "lvl 2" << endl;
             break;
     }
     resetStaminaRechargeDelay();
@@ -540,11 +543,21 @@ void PlayerObject::startHeavyAttack() {
     }
 
     isInHeavyAttack = true;
-    this->getAnimationComponent()->setState("Charging");
-    currentHeavyCharge = PlayerHeavyCharge::LEVEL_1;
 
     if (currentCombo == PlayerCombo::NONE) {
         currentCombo = PlayerCombo::FIRST;
+    }
+
+    Animation::State currentState = this->getAnimationComponent()->getCurrentAnimationState();
+    if (currentState.name != "MaxCharging") {
+        this->getAnimationComponent()->setState("Charging");
+        currentHeavyCharge = PlayerHeavyCharge::LEVEL_1;
+    }
+    
+    if (!currentState.isPlaying && currentState.name == "Charging") {
+        currentHeavyCharge = PlayerHeavyCharge::LEVEL_2;
+        this->getAnimationComponent()->setState("MaxCharging");
+        return;
     }
 }
 
@@ -780,11 +793,6 @@ void PlayerObject::handleHeavyAttack() {
     }
 
     this->getPhysicsComponent()->setVelocity(glm::vec2(0.0f, vel.y));
-
-    if (!currentState.isPlaying) {
-        currentHeavyCharge = PlayerHeavyCharge::LEVEL_2;
-    }
-
 }
 
 void PlayerObject::handleRangeAttack() {
