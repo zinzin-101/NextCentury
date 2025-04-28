@@ -3,17 +3,30 @@
 #include "TexturedObject.h"
 #include "PlayerObject.h"
 
+namespace SonicWaveStat {
+	constexpr int SONIC_WAVE_DAMAGE = 10;
+}
+
 class SonicWave : public TexturedObject {
 	private:
-		bool initiated;
-		glm::vec3 currentPosition;
-		ColliderObject* groundMarker;
+		enum DamageStage {
+			MARKING,
+			DAMAGE,
+			NONE
+		};
+		DamageStage currentStage;
+		float groundOffset;
+		int damageStartFrame;
 
 	public:
 		SonicWave();
 		virtual void onCollisionEnter(Collider* collider);
-		void trigger(glm::vec3 position);
+
+		void setGroundOffset(float offset);
+
+		void trigger();
+		void mark(glm::vec3 position);
+		void reset();
 		
-		virtual void start(std::list<DrawableObject*>& objectsList);
 		virtual void update(std::list<DrawableObject*>& objectsList);
 };

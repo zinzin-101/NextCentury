@@ -2,30 +2,28 @@
 #include "Random.h"
 #include "ObjectHeader.h"
 
-Wailer::Wailer(EnemyInfo& enemyinfo) : EnemyObject(enemyinfo) {
-	cout << attackCooldown << endl;
+Wailer::Wailer(const EnemyInfo& enemyinfo) : EnemyObject(enemyinfo) {
+	sonicAttack = nullptr;
+	currentState = State::IDLE;
+	currentAttackState = AttackState::NONE;
+	repositionTimer = 0.0f;
 }
 void Wailer::start(list<DrawableObject*>& objectsList) {
-	//setTexture("../Resource/Texture/incineratorSizeFlip.png");
-	setTexture("../Resource/Texture/Zealotplaceholder3.png");
-	//initAnimation(6, 2);
-	initAnimation(5, 6);
-	targetEntity = nullptr;
-	//getAnimationComponent()->addState("Idle", 0, 6);
-	//getAnimationComponent()->addState("Moving", 1, 5);
-	//getAnimationComponent()->addState("Attacking", 1, 5);
+	setTexture("../Resource/Texture/wailerPlacholder.png");
+	initAnimation(8, 6);
 	getAnimationComponent()->addState("Idle", 0, 0, 6, true);
-	getAnimationComponent()->addState("Moving", 1, 0, 5, true);
-	getAnimationComponent()->addState("Attack1", 2, 0, 6, false);
-	getAnimationComponent()->addState("Attack2", 3, 0, 6, false);
-	getAnimationComponent()->addState("Stunned", 4, 0, 3, true);
-	getAnimationComponent()->setState("Idle");
-	attackHitbox = new DamageCollider<PlayerObject>(this, damage, -1);
-	attackHitbox->setActive(false);
-	attackHitbox->setFollowOwner(true);
-	attackHitbox->setFollowOffset(glm::vec3(0.5f, 0, 0));
-	attackHitbox->getColliderComponent()->setWidth(1.5f);
-	objectsList.emplace_back(attackHitbox);
+	getAnimationComponent()->addState("Moving", 1, 0, 6, true);
+	getAnimationComponent()->addState("WindUp", 2, 0, 3, false);
+	getAnimationComponent()->addState("SonicAttack", 3, 0, 4, false);
+	getAnimationComponent()->addState("WindDown", 4, 0, 3, false);
+	getAnimationComponent()->addState("Summoning", 5, 0, 4, false);
+	getAnimationComponent()->addState("Stunned", 6, 0, 3, true);
+
+	sonicAttack = new SonicWave();
+	sonicAttack->setName("WailerSonicWave");
+	objectsList.emplace_back(sonicAttack);
+
+	targetEntity = EnemyObject::findPlayer(objectsList);;
 }
 
 void Wailer::updateState() {
@@ -33,18 +31,26 @@ void Wailer::updateState() {
 	float dt = GameEngine::getInstance()->getTime()->getDeltaTime();
 
 	if (currentState == State::STUNNED) {
-		attackHitbox->setActive(false);
 		return;
 	}
 
 	if (prevState == State::ATTACKING && attackCooldownTimer <= 0.0f) {
 		Animation::State animState = getAnimationComponent()->getCurrentAnimationState();
-		if (animState.name == "Attack1" && animState.isPlaying || animState.name == "Attack2" && animState.isPlaying) {
+		if (animState.name == "WindUp" && animState.isPlaying ||
+			animState.name == "SonicAttack" && animState.isPlaying ||
+			animState.name == "WindDown" && animState.isPlaying) {
 			return;
 		}
 	}
 
 	float distance = getDistanceFromTarget();
+	if (distance < WailerStat::DISTANCE_FROM_PLAYER_TO_REPOSITION) {
+		currentState = State::REPOSITIONING;
+		return;
+	}
+
+	repositionTimer = 0.0f;
+
 	if (distance > aggroRange) {
 		currentState = State::IDLE;
 		return;
@@ -63,6 +69,44 @@ void Wailer::updateState() {
 	currentState = State::ATTACKING;
 	// facing target
 	isFacingRight = this->getTransform().getPosition().x < targetEntity->getTransform().getPosition().x;
+}
+
+
+void Wailer::handleReposition(float dt) {
+	repositionTimer += dt;
+	if (repositionTimer < WailerStat::TIME_UNTIL_REPOSITION) {
+		return;
+	}
+	
+	float targetXPos = targetEntity->getTransform().getPosition().x;
+	float currentXPos = this->getTransform().getPosition().x;
+	float offsetFromTarget = targetXPos - currentXPos;
+
+	float newDistance = WailerStat::DISTANCE_FROM_PLAYER_TO_REPOSITION + 0.1f;
+	float newXPos = offsetFromTarget > 0.0f ? currentXPos - newDistance : currentXPos + newDistance;
+	moveTowardsPosition(newXPos);
+	this->getAnimationComponent()->setState("Moving");
+}
+
+void Wailer::moveTowardsPosition(float xPosition) {
+	glm::vec3 targetPos = this->getTransform().getPosition();
+	targetPos.x = xPosition;
+
+	glm::vec3 currentPos = this->transform.getPosition();
+	glm::vec2 newVelocity = this->physics->getVelocity();
+
+	bool grounded = this->collider->getCollisionFlag() & COLLISION_DOWN;
+
+	float moveAmount = targetPos.x - currentPos.x;
+	moveAmount = moveAmount > 0 ? 1 : -1;
+	moveAmount *= movementInfo.speed;
+	newVelocity.x = moveAmount;
+
+	isFacingRight = currentPos.x < targetPos.x;
+
+	this->physics->setVelocity(newVelocity);
+
+	glm::vec2 vel = this->physics->getVelocity();
 }
 
 void Wailer::updateBehavior(list<DrawableObject*>& objectsList) {
@@ -86,6 +130,9 @@ void Wailer::updateBehavior(list<DrawableObject*>& objectsList) {
 		getAnimationComponent()->setState("Idle");
 		break;
 
+	case REPOSITIONING:
+		handleReposition(dt);
+		break;
 	case AGGRO:
 		if (distance <= attackRange) {
 			getAnimationComponent()->setState("Idle");
@@ -97,7 +144,7 @@ void Wailer::updateBehavior(list<DrawableObject*>& objectsList) {
 		break;
 
 	case ATTACKING: {
-		handleAttackState();
+		handleAttackState(objectsList);
 		break;
 	}
 	case STUNNED:
@@ -110,9 +157,6 @@ void Wailer::updateBehavior(list<DrawableObject*>& objectsList) {
 		else {
 			currentState = IDLE;
 		}
-		//if (currentStunnedTime < 0.6f) {
-		//	GameEngine::getInstance()->getRenderer()->getCamera()->CanShake = false;
-		//}
 		break;
 	}
 
@@ -121,25 +165,74 @@ void Wailer::updateBehavior(list<DrawableObject*>& objectsList) {
 	}
 }
 
-void Wailer::handleAttackState() {
+void Wailer::handleAttackState(std::list<DrawableObject*>& objectlist) {
+	if (attackCooldownTimer > 0.0f) {
+		return;
+	}
 
+	if (currentAttackState == AttackState::NONE) {
+		currentAttackState = (Random::Float() <= 0.5f) ? AttackState::SONICBLAST : AttackState::SUMMONING;
+	}
+
+	switch (currentAttackState) {
+		case AttackState::SONICBLAST:
+			handleSonicBlastState();
+			break;
+
+		case AttackState::SUMMONING:
+			this->getAnimationComponent()->setState("Summoning");
+			handleSummoningState(objectlist);
+			break;
+	}
 }
 
-void Wailer::handlePrepareState() {
-
-}
 void Wailer::handleSonicBlastState() {
+	Animation::State animState = this->getAnimationComponent()->getCurrentAnimationState();
+	if (animState.name != "WindUp") {
+		this->getAnimationComponent()->setState("WindUp");
+		sonicAttack->mark(targetEntity->getTransform().getPosition());
+		return;
+	}
 
+	if (animState.name == "WindUp" && !animState.isPlaying) {
+		this->getAnimationComponent()->setState("SonicAttack");
+		sonicAttack->trigger();
+		return;
+	}
+
+	if (animState.name == "SonicAttack" && !animState.isPlaying) {
+		this->getAnimationComponent()->setState("WindDown");
+		return;
+	}
+
+	if (animState.name == "WindDown" && !animState.isPlaying) {
+		currentAttackState = AttackState::NONE;
+		currentState = State::IDLE;
+		return;
+	}
 }
-void Wailer::handleSummoningState() {
 
+void Wailer::handleSummoningState(std::list<DrawableObject*>& objectlist) {
+	Animation::State animState = this->getAnimationComponent()->getCurrentAnimationState();
+	if (animState.isPlaying) {
+		return;
+	}
+
+	// summon enemy
+	//+
+	std::cout << "summoning enemies" << std::endl;
+
+	currentAttackState = AttackState::NONE;
+	currentState = State::IDLE;
 }
 
-void Wailer::startAttack() {
-	attackHitbox->trigger(transform.getPosition());
-	attackHitbox->setCanDecreaseTime(false);
-}
-
-void Wailer::endAttack() {
-
+void Wailer::setCurrentState(State state) {
+	if (state == STUNNED) {
+		currentStunnedTime = stunnedTime;
+	}
+	else if (state == FLINCH) {
+		flinchTimer = EnemyStat::FLINCH_TIME;
+		attackCooldownTimer = attackCooldown;
+	}
+	currentState = state;
 }
