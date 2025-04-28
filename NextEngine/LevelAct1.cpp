@@ -60,9 +60,9 @@ void LevelAct1::levelInit() {
     ground->setTexture("../Resource/Texture/Act1/City_P11_Ground.png");
     objectsList.emplace_back(ground);
 
-    /*for (auto a : objectsList) {
+    for (auto a : objectsList) {
         a->getTransform().setScale(35.0f,6.0f);
-    }*/
+    }
 
     lightPole->getTransform().setScale(42.0f,8.0f);
 
