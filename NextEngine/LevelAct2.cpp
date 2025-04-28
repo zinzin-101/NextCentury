@@ -37,7 +37,7 @@ void LevelAct1::levelInit() {
 
     ParallaxObject* newsBoard = new ParallaxObject(0.0f, -1.75f, 150.0f, false, player, true);
     newsBoard->setTexture("../Resource/Texture/Act1/City_P05_NewsBoardandBins.png");
-	newsBoard->getTransform().setScale(70.0f, 15.0f);
+    newsBoard->getTransform().setScale(70.0f, 15.0f);
     objectsList.emplace_back(newsBoard);
 
     ParallaxObject* lightPole = new ParallaxObject(0.0f, -1.25f, 100.0f, false, player, true);
@@ -64,7 +64,7 @@ void LevelAct1::levelInit() {
         a->getTransform().setScale(35.0f,6.0f);
     }*/
 
-    lightPole->getTransform().setScale(42.0f,8.0f);
+    lightPole->getTransform().setScale(42.0f, 8.0f);
 
     Level::importTransformData(objectsList, "alpha1", false);
 
