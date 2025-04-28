@@ -6,6 +6,7 @@ enum EnemyType {
 	NORMAL,
 	ZEALOT,
 	BLIGHTFLAME,
+	WAILER,
 	SPECIAL
 };
 
