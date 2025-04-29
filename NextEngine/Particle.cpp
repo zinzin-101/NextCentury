@@ -17,6 +17,7 @@ void Particle::update(std::list<DrawableObject*>& objectsList) {
 	this->getTransform().setScale(size);
 	glm::vec3 color = endColor * (1.0f - interval) + initColor * interval; // had to switch init and end values for the color to be correct for some reason
 	this->setColor(color);
+	this->setRenderOpacity(glm::clamp(interval / 0.2f, 0.0f, 1.0f));
 
 	SimpleObject::update(objectsList);
 }
