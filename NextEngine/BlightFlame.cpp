@@ -106,9 +106,10 @@ void BlightFlame::updateState() {
 }
 
 void BlightFlame::updateBehavior(list<DrawableObject*>& objectsList) {
-	/// testing ///
-	emitter->update(objectsList);
-	///
+	if (emitter != nullptr) {
+		emitter->update(objectsList);
+
+	}
 
 	if (isInKnockback) {
 		return;

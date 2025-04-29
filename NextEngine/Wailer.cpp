@@ -118,9 +118,10 @@ void Wailer::moveTowardsPosition(float xPosition) {
 }
 
 void Wailer::updateBehavior(list<DrawableObject*>& objectsList) {
-	/// testing ///
-	emitter->update(objectsList);
-	///
+	if (emitter != nullptr) {
+		emitter->update(objectsList);
+
+	}
 
 	float dt = GameEngine::getInstance()->getTime()->getDeltaTime();
 

@@ -94,17 +94,6 @@ void LevelAlphaTest::levelUpdate() {
    
     GameEngine::getInstance()->getRenderer()->updateCamera(glm::vec3());
      
-
-    // Placeholder death logic
-    for (std::list<DrawableObject*>::iterator itr = objectsList.begin(); itr != objectsList.end(); ++itr) {
-        EnemyObject* enemy = dynamic_cast<EnemyObject*>(*itr);
-        if (enemy != NULL) {
-            if (enemy->getHealth() <= 0) {
-                DrawableObject::destroyObject(enemy);
-            }
-        }
-    }
-    
     GameEngine::getInstance()->getRenderer()->updateCamera(camPos);
     UIobject->updateUI(*player, camPos);
 }

@@ -188,10 +188,10 @@ void DamageCollider<TargetEntityType>::onTriggerEnter(Collider* collider) { // f
 					for (int i = 0; i < 5; i++) {
 						ParticleProperties particleProps = ParticleProperties(
 							enemyObj->getTransform().getPosition(),
-							20.0f * glm::vec2(parryDirection * Random::Float(), Random::Float()),
+							glm::vec2(parryDirection * (30.0f * Random::Float() + 20.f), 10.0f * Random::Float() + 20.0f),
 							glm::vec2(-0.1f, 0.1f),
-							glm::vec3(0.8f, 0, 0),
-							0.2f, 0.1f, 0.05f, 1.0f
+							glm::vec3(0.976f, 0.914f, 0.035f),
+							0.15f, 0.1f, 0.05f
 						);
 						enemyObj->getEmitter()->emit(particleProps);
 					}

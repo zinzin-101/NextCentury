@@ -27,6 +27,10 @@ class LivingEntity : public TexturedObject {
 
         void handleBurning();
 
+        void handleHealth(list<DrawableObject*>& objectsList);
+
+        virtual void onDeath(list<DrawableObject*>& objectsList);
+
     protected:
         bool isFacingRight;
 
@@ -64,6 +68,7 @@ class LivingEntity : public TexturedObject {
         int getHealth() const;
         bool getCanTakeDamage() const;
         bool getIsDead() const;
+        bool getIsAlive() const;
         bool getIsStun() const;
         bool getIsFacingRight() const;
 

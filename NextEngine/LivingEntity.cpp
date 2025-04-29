@@ -57,8 +57,20 @@ bool LivingEntity::getCanTakeDamage() const {
 }
 
 bool LivingEntity::getIsDead() const {
+    return health <= 0;
+}
+
+bool LivingEntity::getIsAlive() const {
     return health > 0;
 }
+
+void LivingEntity::handleHealth(list<DrawableObject*>& objectsList) {
+    if (this->getIsDead()) {
+        this->onDeath(objectsList);
+    }
+}
+
+void LivingEntity::onDeath(list<DrawableObject*>& objectsList) {}
 
 void LivingEntity::addStatus(Status newStatus) { 
     std::list<Status>::iterator itr = std::find(statusList.begin(), statusList.end(), newStatus);
@@ -281,8 +293,11 @@ void LivingEntity::postUpdateBehavior() {};
 void LivingEntity::update(list<DrawableObject*>& objectsList) {
     applyStatus(GameEngine::getInstance()->getTime()->getDeltaTime());
 
+    handleHealth(objectsList);
+    
     updateBehavior(objectsList);
     postUpdateBehavior();
+    
 
     handleKnockback();
 
@@ -297,6 +312,7 @@ void LivingEntity::update(list<DrawableObject*>& objectsList) {
     glm::vec3 currentScale = this->transform.getScale();
     currentScale.x = abs(currentScale.x);
     isFacingRight ? this->transform.setScale(currentScale.x, currentScale.y) : this->transform.setScale(-currentScale.x, currentScale.y);
+
 }
 
 bool operator==(LivingEntity::Status s1, LivingEntity::Status s2) {

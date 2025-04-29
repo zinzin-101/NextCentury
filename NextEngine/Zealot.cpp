@@ -89,9 +89,10 @@ void Zealot::updateState() {
 }
 
 void Zealot::updateBehavior(list<DrawableObject*>& objectsList) {
-	/// testing ///
-	emitter->update(objectsList);
-	///
+	if (emitter != nullptr) {
+		emitter->update(objectsList);
+
+	}
 
 	if (isInKnockback) {
 		return;
