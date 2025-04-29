@@ -240,8 +240,20 @@ void Wailer::handleSummoningState(std::list<DrawableObject*>& objectlist) {
 		return;
 	}
 
-	// summon enemy
-	//+
+	EnemyInfo summonedZealotInfo = DefaultEnemyStat::ZEALOT_INFO;
+	summonedZealotInfo.aggroRange = 100.0f;
+	Zealot* rightZealot = new Zealot(summonedZealotInfo);
+	Zealot* leftZealot = new Zealot(summonedZealotInfo);
+	glm::vec3 playerPos = targetEntity->getTransform().getPosition();
+	rightZealot->getTransform().setPosition(playerPos.x + WailerStat::DISTANCE_TO_SPAWN_ZEALOT, playerPos.y + 1.0f);
+	leftZealot->getTransform().setPosition(playerPos.x - WailerStat::DISTANCE_TO_SPAWN_ZEALOT, playerPos.y + 1.0f);
+
+	objectlist.emplace_back(rightZealot);
+	objectlist.emplace_back(leftZealot);
+
+	rightZealot->start(objectlist);
+	leftZealot->start(objectlist);
+
 	std::cout << "summoning enemies" << std::endl;
 
 	currentAttackState = AttackState::NONE;

@@ -7,6 +7,8 @@ namespace WailerStat {
 	constexpr float SUMMON_COOLDOWN = 15.0f;
 	constexpr float DISTANCE_FROM_PLAYER_TO_REPOSITION = 3.0f;
 	constexpr float TIME_UNTIL_REPOSITION = 3.0f;
+
+	constexpr float DISTANCE_TO_SPAWN_ZEALOT = 20.0f;
 }
 
 class Wailer : public EnemyObject {
