@@ -17,10 +17,11 @@ class SonicWave : public TexturedObject {
 		DamageStage currentStage;
 		float groundOffset;
 		int damageStartFrame;
+		bool used;
 
 	public:
 		SonicWave();
-		virtual void onCollisionEnter(Collider* collider);
+		virtual void onCollisionStay(Collider* collider);
 
 		void setGroundOffset(float offset);
 
