@@ -44,13 +44,8 @@ void Wailer::updateState() {
 		return;
 	}
 
-	if (prevState == State::ATTACKING && attackCooldownTimer <= 0.0f) {
-		Animation::State animState = getAnimationComponent()->getCurrentAnimationState();
-		if (animState.name == "WindUp" && animState.isPlaying ||
-			animState.name == "SonicAttack" && animState.isPlaying ||
-			animState.name == "WindDown" && animState.isPlaying) {
-			return;
-		}
+	if (prevState == State::ATTACKING) {
+		return;
 	}
 
 	float distance = getDistanceFromTarget();
@@ -85,6 +80,7 @@ void Wailer::updateState() {
 void Wailer::handleReposition(float dt) {
 	repositionTimer += dt;
 	if (repositionTimer < WailerStat::TIME_UNTIL_REPOSITION) {
+		this->getAnimationComponent()->setState("Idle");
 		return;
 	}
 	
@@ -136,38 +132,49 @@ void Wailer::updateBehavior(list<DrawableObject*>& objectsList) {
 	getPhysicsComponent()->setVelocity(vel);
 
 	switch (currentState) {
-	case IDLE:
-		getAnimationComponent()->setState("Idle");
-		break;
-
-	case REPOSITIONING:
-		handleReposition(dt);
-		break;
-	case AGGRO:
-		if (distance <= attackRange) {
+		case IDLE:
 			getAnimationComponent()->setState("Idle");
-		}
-		else {
-			getAnimationComponent()->setState("Moving");
-			moveTowardsTarget();
-		}
-		break;
+			break;
 
-	case ATTACKING: {
-		handleAttackState(objectsList);
-		break;
-	}
-	case STUNNED:
-		getAnimationComponent()->setState("Stunned");
+		case REPOSITIONING:
+			handleReposition(dt);
+			break;
+		case AGGRO:
+			if (distance <= attackRange) {
+				getAnimationComponent()->setState("Idle");
+			}
+			else {
+				getAnimationComponent()->setState("Moving");
+				moveTowardsTarget();
+			}
+			break;
 
-		cout << "stun" << endl;
-		if (currentStunnedTime > 0) {
-			currentStunnedTime -= dt;
+		case ATTACKING: {
+			handleAttackState(objectsList);
+			break;
 		}
-		else {
-			currentState = IDLE;
-		}
-		break;
+		case STUNNED:
+			getAnimationComponent()->setState("Stunned");
+			resetAttack();
+			cout << "stun" << endl;
+			if (currentStunnedTime > 0) {
+				currentStunnedTime -= dt;
+			}
+			else {
+				currentState = IDLE;
+			}
+			break;
+		case FLINCH:
+			getAnimationComponent()->setState("Idle");
+			resetAttack();
+			if (flinchTimer > 0) {
+				flinchTimer -= dt;
+			}
+			else {
+				currentState = IDLE;
+			}
+
+			break;
 	}
 
 	if (attackCooldownTimer > 0.0f) {
@@ -176,7 +183,8 @@ void Wailer::updateBehavior(list<DrawableObject*>& objectsList) {
 }
 
 void Wailer::handleAttackState(std::list<DrawableObject*>& objectlist) {
-	if (attackCooldownTimer > 0.0f) {
+	if (attackCooldownTimer > 0.0f && currentAttackState == AttackState::NONE) {
+		this->getAnimationComponent()->setState("Idle");
 		return;
 	}
 
@@ -249,4 +257,12 @@ void Wailer::setCurrentState(State state) {
 		attackCooldownTimer = attackCooldown;
 	}
 	currentState = state;
+}
+
+void Wailer::resetAttack() {
+	currentState = State::IDLE;
+	currentAttackState = AttackState::NONE;
+	repositionTimer = 0.0f;
+	isInSonicAttack = false;
+	sonicAttack->reset();
 }

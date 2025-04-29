@@ -43,6 +43,9 @@ protected:
 public:
 	Wailer(const EnemyInfo& enemyinfo);
 	~Wailer();
+
+	void resetAttack();
+
 	void start(list<DrawableObject*>& objectsList);
 	virtual void setCurrentState(State state);
 	virtual void updateState();
