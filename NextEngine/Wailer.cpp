@@ -24,7 +24,7 @@ void Wailer::start(list<DrawableObject*>& objectsList) {
 	getAnimationComponent()->addState("WindUp", 2, 0, 3, false, 0.67f);
 	getAnimationComponent()->addState("SonicAttack", 3, 0, 4, false, 0.2f);
 	getAnimationComponent()->addState("WindDown", 4, 0, 3, false, 0.4f);
-	getAnimationComponent()->addState("Summoning", 5, 0, 4, false);
+	getAnimationComponent()->addState("Summoning", 5, 0, 4, false, 0.67f);
 	getAnimationComponent()->addState("Stunned", 6, 0, 3, true);
 
 	sonicAttack = new SonicWave();

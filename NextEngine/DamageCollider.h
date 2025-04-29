@@ -141,14 +141,18 @@ void DamageCollider<TargetEntityType>::onCollisionEnter(Collider* collider) {
 				if (damageTag == "HeavyAttack1" || damageTag == "HeavyAttack2" || damageTag == "FinalNormalAttack") {
 					Animation::State animState = wailer->getAnimationComponent()->getCurrentAnimationState();
 					
-					if (animState.name != "WindUp") {
+					if (animState.name == "WindUp") {
+						float playerX = playerAsOwner->getTransform().getPosition().x;
+						float wailerX = wailer->getTransform().getPosition().x;
+						(playerX <= wailerX) ? wailer->knockback(glm::vec2(5.0f, 5.0f), 0.5f) : wailer->knockback(glm::vec2(-5.0f, 5.0f), 0.5f);
+						wailer->setCurrentState(Wailer::FLINCH);
 						return;
 					}
 
-					float playerX = playerAsOwner->getTransform().getPosition().x;
-					float wailerX = wailer->getTransform().getPosition().x;
-					(playerX <= wailerX) ? wailer->knockback(glm::vec2(5.0f, 5.0f), 0.5f) : wailer->knockback(glm::vec2(-5.0f, 5.0f), 0.5f);
-					wailer->setCurrentState(Wailer::FLINCH);
+					if (animState.name == "Summoning" && animState.isPlaying) {
+						wailer->setCurrentState(Wailer::FLINCH);
+					}
+
 					return;
 				}
 			}
