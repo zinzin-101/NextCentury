@@ -8,6 +8,7 @@ Wailer::Wailer(const EnemyInfo& enemyinfo) : EnemyObject(enemyinfo) {
 	currentAttackState = AttackState::NONE;
 	repositionTimer = 0.0f;
 	isInSonicAttack = false;
+	zealotCounter = 0;
 }
 
 Wailer::~Wailer() {
@@ -191,6 +192,10 @@ void Wailer::handleAttackState(std::list<DrawableObject*>& objectlist) {
 
 	if (currentAttackState == AttackState::NONE) {
 		currentAttackState = (Random::Float() <= 0.5f) ? AttackState::SONICBLAST : AttackState::SUMMONING;
+
+		if (currentAttackState == AttackState::SUMMONING && zealotCounter >= WailerStat::MAX_ZEALOT_PER_WAILER) {
+			currentAttackState = AttackState::SONICBLAST;
+		}
 	}
 
 	switch (currentAttackState) {
@@ -234,25 +239,29 @@ void Wailer::handleSonicBlastState() {
 	}
 }
 
+void Wailer::spawnZealot(glm::vec3 playerPos, std::list<DrawableObject*>& objectlist) {
+	EnemyInfo summonedZealotInfo = DefaultEnemyStat::ZEALOT_INFO;
+	summonedZealotInfo.aggroRange = 100.0f;
+	Zealot* zealot = new Zealot(summonedZealotInfo);
+
+	float xPos = (Random::Float() >= 0.5f ? -WailerStat::DISTANCE_TO_SPAWN_ZEALOT : WailerStat::DISTANCE_TO_SPAWN_ZEALOT);
+
+	zealot->getTransform().setPosition(playerPos.x + xPos, playerPos.y + 1.0f);
+
+	objectlist.emplace_back(zealot);
+	zealot->start(objectlist);
+
+	zealot->setWailerSummoner(this);
+	zealotCounter++;
+}
+
 void Wailer::handleSummoningState(std::list<DrawableObject*>& objectlist) {
 	Animation::State animState = this->getAnimationComponent()->getCurrentAnimationState();
 	if (animState.isPlaying) {
 		return;
 	}
 
-	EnemyInfo summonedZealotInfo = DefaultEnemyStat::ZEALOT_INFO;
-	summonedZealotInfo.aggroRange = 100.0f;
-	Zealot* rightZealot = new Zealot(summonedZealotInfo);
-	Zealot* leftZealot = new Zealot(summonedZealotInfo);
-	glm::vec3 playerPos = targetEntity->getTransform().getPosition();
-	rightZealot->getTransform().setPosition(playerPos.x + WailerStat::DISTANCE_TO_SPAWN_ZEALOT, playerPos.y + 1.0f);
-	leftZealot->getTransform().setPosition(playerPos.x - WailerStat::DISTANCE_TO_SPAWN_ZEALOT, playerPos.y + 1.0f);
-
-	objectlist.emplace_back(rightZealot);
-	objectlist.emplace_back(leftZealot);
-
-	rightZealot->start(objectlist);
-	leftZealot->start(objectlist);
+	spawnZealot(targetEntity->getTransform().getPosition(), objectlist);
 
 	std::cout << "summoning enemies" << std::endl;
 
@@ -277,4 +286,8 @@ void Wailer::resetAttack() {
 	repositionTimer = 0.0f;
 	isInSonicAttack = false;
 	sonicAttack->reset();
+}
+
+void Wailer::removeSummonedZealot() {
+	zealotCounter--;
 }

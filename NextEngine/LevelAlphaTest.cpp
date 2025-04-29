@@ -49,7 +49,7 @@ void LevelAlphaTest::levelInit() {
     objectsList.emplace_back(Ground);
 
 
-    Level::importTransformData(objectsList, "alpha1", false);
+    Level::importTransformData(objectsList, "alpha2", false);
 
     player = new PlayerObject();
     player->getTransform().setScale(4.166f, 2.5f);

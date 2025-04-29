@@ -9,6 +9,7 @@ namespace WailerStat {
 	constexpr float TIME_UNTIL_REPOSITION = 3.0f;
 
 	constexpr float DISTANCE_TO_SPAWN_ZEALOT = 20.0f;
+	constexpr int MAX_ZEALOT_PER_WAILER = 1;
 }
 
 class Wailer : public EnemyObject {
@@ -29,6 +30,7 @@ class Wailer : public EnemyObject {
 		};
 
 		float repositionTimer;
+		int zealotCounter;
 
 		Wailer::State currentState;
 		SonicWave* sonicAttack;
@@ -40,12 +42,14 @@ class Wailer : public EnemyObject {
 
 		void handleReposition(float dt);
 
+		void spawnZealot(glm::vec3 playerPos, std::list<DrawableObject*>& objectlist);
 		void moveTowardsPosition(float xPosition);
 
 	public:
 		Wailer(const EnemyInfo& enemyinfo);
 		~Wailer();
 
+		void removeSummonedZealot();
 		void resetAttack();
 
 		void start(list<DrawableObject*>& objectsList);
