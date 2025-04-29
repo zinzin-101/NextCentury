@@ -107,6 +107,9 @@ void DamageCollider<TargetEntityType>::onCollisionEnter(Collider* collider) {
 
 			if (damageTag == "HeavyAttack2") {
 				GameEngine::getInstance()->freezeGameForSeconds(0.2f); // hitstop
+				float playerX = playerAsOwner->getTransform().getPosition().x;
+				float enemyX = enemy->getTransform().getPosition().x;
+				(playerX <= enemyX) ? enemy->knockback(glm::vec2(5.0f, 5.0f), 0.5f) : enemy->knockback(glm::vec2(-5.0f, 5.0f), 0.5f);
 			}
 
 			Zealot* zealot = dynamic_cast<Zealot*>(obj);
@@ -196,7 +199,7 @@ void DamageCollider<TargetEntityType>::onTriggerEnter(Collider* collider) { // f
 						enemyObj->getEmitter()->emit(particleProps);
 					}
 
-					GameEngine::getInstance()->freezeGameForSeconds(0.2f); // hitstop
+					GameEngine::getInstance()->freezeGameForSeconds(0.1f); // hitstop
 
 					player->signalSuccessfulParry();
 
