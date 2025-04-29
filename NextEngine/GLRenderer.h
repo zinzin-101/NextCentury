@@ -7,6 +7,7 @@
 #include <map>
 #include <list>
 #include <string>
+#include <unordered_map>
 #include "MeshVbo.h"
 #include "glm.hpp"
 #include "DrawableObject.h"
@@ -44,6 +45,8 @@ protected:
     Camera* camera;
     bool isViewportEnabled = true;
     float zoomRatio = 1.0f;
+
+    std::unordered_map<std::string, unsigned int> textureHash;
     
 public:
 
