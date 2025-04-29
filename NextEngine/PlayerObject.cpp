@@ -24,7 +24,7 @@ PlayerObject::PlayerObject() : LivingEntity("Player", PlayerStat::MAX_HEALTH) {
     getAnimationComponent()->addState("Combo3", 6, 0, 5, false);
 
     getAnimationComponent()->addState("Charging", 7, 0, 6, false);
-    getAnimationComponent()->addState("MaxCharging", 7, 3, 6, true);
+    getAnimationComponent()->addState("MaxCharging", 7, 1, 3, true);
     getAnimationComponent()->addState("Charge1", 8, 0, 4, false);
     getAnimationComponent()->addState("Charge2", 9, 0, 4, false);
 
@@ -33,9 +33,7 @@ PlayerObject::PlayerObject() : LivingEntity("Player", PlayerStat::MAX_HEALTH) {
     getAnimationComponent()->addState("GunCharge1", 11, 0, 6, true);
     getAnimationComponent()->addState("GunCharge2", 12, 0, 6, true);
     getAnimationComponent()->addState("GunCharge3", 13, 0, 6, true);
-    getAnimationComponent()->addState("GunShoot", 10, 0, 3, false);
-    Animation::State& gunShotAnim = getAnimationComponent()->getAnimationStateRef("GunShoot");
-    gunShotAnim.timePerFrame = 0.08f;
+    getAnimationComponent()->addState("GunShoot", 10, 0, 3, false, 0.08f);
 
 
     //getTransform().setScale(1, 1);
