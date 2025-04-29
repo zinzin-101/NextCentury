@@ -40,7 +40,8 @@ void Wailer::updateState() {
 	State prevState = currentState;
 	float dt = GameEngine::getInstance()->getTime()->getDeltaTime();
 
-	if (currentState == State::STUNNED) {
+	if (currentState == State::STUNNED || currentState == State::FLINCH) {
+		resetAttack();
 		return;
 	}
 
@@ -248,7 +249,7 @@ void Wailer::handleSummoningState(std::list<DrawableObject*>& objectlist) {
 	attackCooldownTimer = attackCooldown;
 }
 
-void Wailer::setCurrentState(State state) {
+void Wailer::setCurrentState(Wailer::State state) {
 	if (state == STUNNED) {
 		currentStunnedTime = stunnedTime;
 	}

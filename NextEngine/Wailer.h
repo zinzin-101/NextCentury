@@ -28,7 +28,7 @@ class Wailer : public EnemyObject {
 
 		float repositionTimer;
 
-		State currentState;
+		Wailer::State currentState;
 		SonicWave* sonicAttack;
 		bool isInSonicAttack;
 		AttackState currentAttackState;
@@ -47,7 +47,7 @@ class Wailer : public EnemyObject {
 		void resetAttack();
 
 		void start(list<DrawableObject*>& objectsList);
-		virtual void setCurrentState(State state);
+		virtual void setCurrentState(Wailer::State state);
 		virtual void updateState();
 		virtual void updateBehavior(std::list<DrawableObject*>& objectlist);
 		void render(glm::mat4 globalModelTransform) { TexturedObject::render(glm::mat4()); emitter->render(glm::mat4()); };
