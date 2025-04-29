@@ -10,45 +10,45 @@ namespace WailerStat {
 }
 
 class Wailer : public EnemyObject {
-protected:
-	enum State {
-		IDLE,
-		AGGRO,
-		REPOSITIONING,
-		ATTACKING,
-		STUNNED,
-		FLINCH
-	};
+	public:
+		enum State {
+			IDLE,
+			AGGRO,
+			REPOSITIONING,
+			ATTACKING,
+			STUNNED,
+			FLINCH
+		};
+	protected:
+		enum AttackState {
+			SONICBLAST,
+			SUMMONING,
+			NONE
+		};
 
-	enum AttackState {
-		SONICBLAST,
-		SUMMONING,
-		NONE
-	};
+		float repositionTimer;
 
-	float repositionTimer;
+		State currentState;
+		SonicWave* sonicAttack;
+		bool isInSonicAttack;
+		AttackState currentAttackState;
+		void handleAttackState(std::list<DrawableObject*>& objectlist);
+		void handleSonicBlastState();
+		void handleSummoningState(std::list<DrawableObject*>& objectlist);
 
-	State currentState;
-	SonicWave* sonicAttack;
-	bool isInSonicAttack;
-	AttackState currentAttackState;
-	void handleAttackState(std::list<DrawableObject*>& objectlist);
-	void handleSonicBlastState();
-	void handleSummoningState(std::list<DrawableObject*>& objectlist);
+		void handleReposition(float dt);
 
-	void handleReposition(float dt);
+		void moveTowardsPosition(float xPosition);
 
-	void moveTowardsPosition(float xPosition);
+	public:
+		Wailer(const EnemyInfo& enemyinfo);
+		~Wailer();
 
-public:
-	Wailer(const EnemyInfo& enemyinfo);
-	~Wailer();
+		void resetAttack();
 
-	void resetAttack();
-
-	void start(list<DrawableObject*>& objectsList);
-	virtual void setCurrentState(State state);
-	virtual void updateState();
-	virtual void updateBehavior(std::list<DrawableObject*>& objectlist);
-	void render(glm::mat4 globalModelTransform) { TexturedObject::render(glm::mat4()); emitter->render(glm::mat4()); };
+		void start(list<DrawableObject*>& objectsList);
+		virtual void setCurrentState(State state);
+		virtual void updateState();
+		virtual void updateBehavior(std::list<DrawableObject*>& objectlist);
+		void render(glm::mat4 globalModelTransform) { TexturedObject::render(glm::mat4()); emitter->render(glm::mat4()); };
 };

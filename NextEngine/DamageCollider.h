@@ -6,6 +6,7 @@
 #include "PlayerObject.h"
 #include "Zealot.h"
 #include "BlightFlame.h"
+#include "Wailer.h"
 #include "FlameDamage.h"
 #include "SquareBorderMesh.h"
 
@@ -128,8 +129,26 @@ void DamageCollider<TargetEntityType>::onCollisionEnter(Collider* collider) {
 					float playerX = playerAsOwner->getTransform().getPosition().x;
 					float bfX = bf->getTransform().getPosition().x;
 					(playerX <= bfX) ? bf->knockback(glm::vec2(5.0f, 5.0f), 0.5f) : bf->knockback(glm::vec2(-5.0f, 5.0f), 0.5f);
-					FlameDamage<PlayerObject>* flameDamage = bf->getFlameCollider();
 					bf->setCurrentState(EnemyObject::FLINCH);
+					return;
+				}
+			}
+
+			Wailer* wailer = dynamic_cast<Wailer*>(obj);
+			if (wailer != NULL) {
+				wailer->takeDamage(damage);
+
+				if (damageTag == "HeavyAttack1" || damageTag == "HeavyAttack2" || damageTag == "FinalNormalAttack") {
+					Animation::State animState = wailer->getAnimationComponent()->getCurrentAnimationState();
+					
+					if (animState.name != "WindUp") {
+						return;
+					}
+
+					float playerX = playerAsOwner->getTransform().getPosition().x;
+					float wailerX = wailer->getTransform().getPosition().x;
+					(playerX <= wailerX) ? wailer->knockback(glm::vec2(5.0f, 5.0f), 0.5f) : wailer->knockback(glm::vec2(-5.0f, 5.0f), 0.5f);
+					wailer->setCurrentState(Wailer::FLINCH);
 					return;
 				}
 			}
