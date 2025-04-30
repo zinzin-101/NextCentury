@@ -3,6 +3,8 @@
 #include "gtc/type_ptr.hpp"
 #include "SDL_surface.h"
 #include "SDL_image.h"
+#include "TextObject.h"
+#include "Dialogue.h"
 
 using namespace std;
 GLRenderer::GLRenderer(int w, int h) : winWidth(w), winHeight(h), camera(new Camera()) {}
@@ -154,7 +156,7 @@ void GLRenderer::render(list<DrawableObject*>& objList, bool clear) {
 
     // Update window with OpenGL rendering
     glUseProgram(gProgramId);
-
+    
     // Set projection matrix
     glUniformMatrix4fv(pMatrixId, 1, GL_FALSE, glm::value_ptr(this->projectionMatrix));
 
@@ -163,17 +165,33 @@ void GLRenderer::render(list<DrawableObject*>& objList, bool clear) {
     setViewMatrix(view);
 
     // Calculate the model matrix if necessary, or use the default
-    glm::mat4 cam = glm::mat4(1.0f); 
+    glm::mat4 txtToCam = glm::mat4(1.0f);
+    glm::mat4 objToCam = glm::mat4(1.0f);
+
+    objToCam = glm::translate(txtToCam, -camera->getPosition());
+
+    txtToCam = glm::translate(txtToCam, -camera->getPosition());
+    txtToCam = glm::scale(txtToCam, glm::vec3(1.0f / 120.0f, 1.0f / 120.0f, 0.0f));
 
     applyViewMatrix();
-
+    
     // Loop through objects and call render with the model transform
+    
     for (DrawableObject* obj : objList) {
         if (!obj->getIsActive()) {
             continue;
         }
-
-        obj->render(cam); 
+        TextObject* txt = dynamic_cast<TextObject*>(obj);
+        Dialogue* di = dynamic_cast<Dialogue*>(obj);
+        //setOrthoProjection(-960, 960, -540, 540);
+        setOrthoProjection(-8, 8, -4.5, 4.5);
+        if (txt != nullptr || di != nullptr) {
+            glUniformMatrix4fv(pMatrixId, 1, GL_FALSE, glm::value_ptr(this->projectionMatrix * txtToCam));
+        }
+        else {
+            glUniformMatrix4fv(pMatrixId, 1, GL_FALSE, glm::value_ptr(this->projectionMatrix * objToCam));
+        }
+        obj->render(glm::mat4()); 
         obj->drawCollider();
     }
 
