@@ -8,7 +8,7 @@ namespace WailerStat {
 	constexpr float DISTANCE_FROM_PLAYER_TO_REPOSITION = 3.0f;
 	constexpr float TIME_UNTIL_REPOSITION = 3.0f;
 
-	constexpr float DISTANCE_TO_SPAWN_ZEALOT = 20.0f;
+	constexpr float DISTANCE_TO_SPAWN_ZEALOT = 17.0f;
 	constexpr int MAX_ZEALOT_PER_WAILER = 1;
 }
 

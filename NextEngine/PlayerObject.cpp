@@ -185,6 +185,10 @@ void PlayerObject::start(list<DrawableObject*>& objectsList) {
     attackHitbox->getColliderComponent()->setWidth(1.5f);
     objectsList.emplace_back(attackHitbox);
 
+    this->getTransform().setScale(3.5f, 2.5f);
+    this->getColliderComponent()->getTransform().translate(0.0f, -0.44f);
+    this->getColliderComponent()->setDimension(0.25f, 0.65f);
+
     this->getAnimationComponent()->setState("Idle");
 }
 
@@ -499,7 +503,7 @@ void PlayerObject::resetAttack() {
 }
 
 void PlayerObject::flinch(float duration) {
-    if (isJumping) {
+    if (isJumping || isDodging) {
         return;
     }
 

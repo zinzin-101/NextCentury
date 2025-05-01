@@ -3,6 +3,7 @@
 #include "GameEngine.h"
 #include "PlayerObject.h"
 #include "RayObject.h"
+#include "Wailer.h"
 
 template <class TargetEntity>
 class HitScanDamage : public RayObject {
@@ -83,6 +84,13 @@ void HitScanDamage<TargetEntity>::update(std::list<DrawableObject*>& objectsList
 	EnemyObject* enemy = dynamic_cast<EnemyObject*>(closestEntity);
 	if (enemy != NULL) {
 		enemy->signalBulletHit(multiplier);
+		Wailer* wailer = dynamic_cast<Wailer*>(enemy);
+		if (wailer != NULL) {
+			wailer->setCurrentState(Wailer::State::FLINCH);
+		}
+		else {
+			enemy->setCurrentState(EnemyObject::State::FLINCH);
+		}
 	}
 
 	used = true;

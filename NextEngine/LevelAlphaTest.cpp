@@ -52,9 +52,6 @@ void LevelAlphaTest::levelInit() {
     Level::importTransformData(objectsList, "alpha2", false);
 
     player = new PlayerObject();
-    player->getTransform().setScale(3.5f, 2.5f);
-    player->getColliderComponent()->getTransform().translate(0.0f, -0.44f);
-    player->getColliderComponent()->setDimension(0.25f, 0.65f);
     //player->setAffectedByLighting(true);
     player->setDrawCollider(true);
     objectsList.emplace_back(player);
