@@ -46,6 +46,7 @@
     <ClCompile Include="GLRenderer.cpp" />
     <ClCompile Include="IngameUI.cpp" />
     <ClCompile Include="InputManager.cpp" />
+    <ClCompile Include="InteractableObject.cpp" />
     <ClCompile Include="Level.cpp" />
     <ClCompile Include="LevelAct1.cpp" />
     <ClCompile Include="LevelAct2.cpp" />

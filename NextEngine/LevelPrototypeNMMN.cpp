@@ -152,11 +152,11 @@ void LevelPrototypeNMMN::levelInit() {
     player->getDamageCollider()->setFollowOffset(glm::vec3(1.0f, -1.0f, 0));
     player->getDamageCollider()->getTransform().scales(2);
 
-    Dialogue* d1 = new Dialogue(24);
-    d1->getTransform().setPosition(glm::vec3(5.0f, 5.0f, 0.0f));
-    d1->addSentence("This is sentence1");
-    d1->addSentence("This is \nsentence2");
-    UIObjects.emplace_back(d1);
+    //Dialogue* d1 = new Dialogue(24);
+    //d1->getTransform().setPosition(glm::vec3(5.0f, 5.0f, 0.0f));
+    //d1->addSentence("This is sentence1");
+    //d1->addSentence("This is \nsentence2");
+    //UIObjects.emplace_back(d1);
 
     GameEngine::getInstance()->getRenderer()->toggleViewport();
     GameEngine::getInstance()->getRenderer()->getCamera()->setTarget(player);
