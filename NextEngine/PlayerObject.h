@@ -67,6 +67,10 @@ namespace PlayerStat {
     constexpr int HEAVY2_STAMINA_CONSUMPTION = 50;
     constexpr int PARRY_STAMINA_CONSUMPTION = 20;
     constexpr int RANGE_STAMINA_CONSUMPTION = 15;
+
+    constexpr int MAX_HEALTH_POTION = 3;
+    constexpr int HEAL_AMOUNT = MAX_HEALTH / 2;
+    constexpr float POTION_RECHARGE_TIMER = 5.0f;
 }
 
 class EnemyObject;
@@ -176,6 +180,14 @@ class PlayerObject : public LivingEntity {
         int currentNumOfBullets;
         float bulletRechargeTimer;
 
+        int currentNumOfPotion;
+        float potionRechargeTimer;
+        bool isHealing;
+        bool healed;
+        int healFrame;
+        void resetHealing();
+        void handleHealing();
+
     public:
         PlayerObject();
         ~PlayerObject();
@@ -199,6 +211,9 @@ class PlayerObject : public LivingEntity {
         void jump();
         void dodge();
         void dodge(float xDirection);
+
+        void useHealthPotion();
+        void resetNumOfPotion();
 
         bool getCanMove() const;
         bool getIsParrying() const;

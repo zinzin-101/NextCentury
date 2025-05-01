@@ -201,4 +201,8 @@ void LevelAlphaTest::handleKey(InputManager& input) {
             player->dodge();
         }
     }
+
+    if (input.getButtonDown(SDLK_e)) {
+        player->useHealthPotion();
+    }
 }

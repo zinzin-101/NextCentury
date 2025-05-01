@@ -83,7 +83,6 @@ void HitScanDamage<TargetEntity>::update(std::list<DrawableObject*>& objectsList
 	closestEntity->takeDamage(damage * multiplier);
 	EnemyObject* enemy = dynamic_cast<EnemyObject*>(closestEntity);
 	if (enemy != NULL) {
-		enemy->signalBulletHit(multiplier);
 		Wailer* wailer = dynamic_cast<Wailer*>(enemy);
 		if (wailer != NULL) {
 			wailer->setCurrentState(Wailer::State::FLINCH);
@@ -91,6 +90,7 @@ void HitScanDamage<TargetEntity>::update(std::list<DrawableObject*>& objectsList
 		else {
 			enemy->setCurrentState(EnemyObject::State::FLINCH);
 		}
+		enemy->signalBulletHit(multiplier);
 	}
 
 	used = true;
