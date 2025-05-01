@@ -131,7 +131,6 @@ void LevelCollisionTest::handleKey(char key) {
 	case 'g': player->getPhysicsComponent()->setEnableGravity(!player->getPhysicsComponent()->isGravityEnable()); break;
 	case 'q': GameEngine::getInstance()->getStateController()->gameStateNext = GameState::GS_QUIT; ; break;
 	case 'r': GameEngine::getInstance()->getStateController()->gameStateNext = GameState::GS_RESTART; ; break;
-	case 'e': GameEngine::getInstance()->getStateController()->gameStateNext = GameState::GS_COL_TEST; ; break;
 	case 'z': GameEngine::getInstance()->getRenderer()->increaseZoomRatio(0.1f); break;
 	case 'x': GameEngine::getInstance()->getRenderer()->decreaseZoomRatio(0.1f); break;
 	}

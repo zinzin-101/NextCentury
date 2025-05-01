@@ -24,7 +24,7 @@ private:
     list<DrawableObject*> UIobjectsList;
     PlayerObject* player;
     UI* UIobject;
-	SimpleObject* blackLoadingScreen;
+	SimpleObject blackLoadingScreen;
 
 protected:
     map<SDL_Keycode, float> keyHeldDuration;
@@ -69,7 +69,7 @@ public:
     static void exportTransformData(std::list<DrawableObject*>& objectsList, std::string fileName);
     static void importTransformData(std::list<DrawableObject*>& objectsList, std::string fileName, bool drawOutline);
 
-	virtual void addLoadingScreen();
-	virtual void removeLoadingScreen();
+	virtual void addLoadingScreen(std::list<DrawableObject*>& objectsList);
+	virtual void removeLoadingScreen(std::list<DrawableObject*>& objectsList);
 	virtual void LoadContent();
 };
