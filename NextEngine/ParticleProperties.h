@@ -5,22 +5,19 @@ struct ParticleProperties {
 	ParticleProperties(glm::vec3 position, glm::vec2 velocity, glm::vec2 velocityVariation,
 		glm::vec3 color, float initSize, float endSize, float sizeVariation, float lifespan = 1.0f):
 		position(position), velocity(velocity), velocityVariation(velocityVariation), initColor(color), endColor(color),
-		initSize(initSize), endSize(endSize), sizeVariation(sizeVariation), lifespan(lifespan), isPhysics(false) {}
+		initSize(initSize), endSize(endSize), sizeVariation(sizeVariation), lifespan(lifespan), isPhysics(false), isRealTime(false) {}
 	ParticleProperties(glm::vec3 position, glm::vec2 velocity, glm::vec2 velocityVariation,
 		glm::vec3 initColor, glm::vec3 endColor, float initSize, float endSize, float sizeVariation, float lifespan = 1.0f) :
 		position(position), velocity(velocity), velocityVariation(velocityVariation), initColor(initColor), endColor(endColor),
-		initSize(initSize), endSize(endSize), sizeVariation(sizeVariation), lifespan(lifespan), isPhysics(false) {
-	}
+		initSize(initSize), endSize(endSize), sizeVariation(sizeVariation), lifespan(lifespan), isPhysics(false), isRealTime(false) {}
 	ParticleProperties(glm::vec3 position, glm::vec2 velocity, glm::vec2 velocityVariation,
-		glm::vec3 color, float initSize, float endSize, float sizeVariation, bool isPhysics, float lifespan = 1.0f) :
+		glm::vec3 color, float initSize, float endSize, float sizeVariation, bool isPhysics, float lifespan = 1.0f, bool isRealTime = false) :
 		position(position), velocity(velocity), velocityVariation(velocityVariation), initColor(color), endColor(color),
-		initSize(initSize), endSize(endSize), sizeVariation(sizeVariation), lifespan(lifespan), isPhysics(isPhysics) {
-	}
+		initSize(initSize), endSize(endSize), sizeVariation(sizeVariation), lifespan(lifespan), isPhysics(isPhysics), isRealTime(isRealTime) {}
 	ParticleProperties(glm::vec3 position, glm::vec2 velocity, glm::vec2 velocityVariation,
-		glm::vec3 initColor, glm::vec3 endColor, float initSize, float endSize, float sizeVariation, bool isPhysics, float lifespan = 1.0f) :
+		glm::vec3 initColor, glm::vec3 endColor, float initSize, float endSize, float sizeVariation, bool isPhysics, float lifespan = 1.0f, bool isRealTime = false) :
 		position(position), velocity(velocity), velocityVariation(velocityVariation), initColor(initColor), endColor(endColor),
-		initSize(initSize), endSize(endSize), sizeVariation(sizeVariation), lifespan(lifespan), isPhysics(isPhysics) {
-	}
+		initSize(initSize), endSize(endSize), sizeVariation(sizeVariation), lifespan(lifespan), isPhysics(isPhysics), isRealTime(isRealTime) {}
 
 	glm::vec3 position;
 	glm::vec2 velocity;
@@ -32,4 +29,5 @@ struct ParticleProperties {
 	float sizeVariation;
 	float lifespan;
 	bool isPhysics;
+	bool isRealTime;
 };

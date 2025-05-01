@@ -40,7 +40,6 @@ void Particle::setLifespan(float lifespan){
 void Particle::setLifeRemaining(float lifeRemaining) {
 	this->lifeRemaining = lifeRemaining;
 }
-
 void Particle::decrementLife(float amount){
 	this->lifeRemaining -= amount;
 }

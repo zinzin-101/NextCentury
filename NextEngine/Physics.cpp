@@ -14,6 +14,7 @@ Physics::Physics(Transform& transform): enableGravity(true), enablePhysics(true)
 	mass = 1.0f;
 	force = glm::vec2();
 	drag = 0.1f;
+	isRealTime = false;
 }
 
 void Physics::setVelocity(glm::vec2 vel) {
@@ -61,7 +62,7 @@ void Physics::update(Transform& transform) {
 		applyGravity();
 	}
 
-	float deltaTime = GameEngine::getInstance()->getTime()->getDeltaTime();
+	float deltaTime = (!isRealTime) ? (GameEngine::getInstance()->getTime()->getDeltaTime()) : (GameEngine::getInstance()->getTime()->getDeltaTimeRealTime());
 
 	force *= drag;
 
@@ -120,4 +121,8 @@ bool Physics::isGravityEnable() const {
 
 bool Physics::isPhysicsEnable() const {
 	return enablePhysics;
+}
+
+void Physics::setRealTime(bool value) {
+	isRealTime = value;
 }

@@ -63,6 +63,7 @@ void ParticleSystem::emit(const ParticleProperties& particleProperties) {
 	particle.setEndSize(particleProperties.endSize);
 
 	particle.getPhysicsComponent()->setEnableGravity(particleProperties.isPhysics);
+	particle.getPhysicsComponent()->setRealTime(particleProperties.isRealTime);
 
 	particle.setActive(true);
 
