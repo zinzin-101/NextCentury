@@ -6,6 +6,7 @@
 #include "PlayerObject.h"
 #include "Zealot.h"
 #include "BlightFlame.h"
+#include "Wailer.h"
 #include "FlameDamage.h"
 #include "SquareBorderMesh.h"
 
@@ -104,6 +105,13 @@ void DamageCollider<TargetEntityType>::onCollisionEnter(Collider* collider) {
 				return;
 			}
 
+			if (damageTag == "HeavyAttack2") {
+				GameEngine::getInstance()->freezeGameForSeconds(0.2f); // hitstop
+				float playerX = playerAsOwner->getTransform().getPosition().x;
+				float enemyX = enemy->getTransform().getPosition().x;
+				(playerX <= enemyX) ? enemy->knockback(glm::vec2(5.0f, 5.0f), 0.5f) : enemy->knockback(glm::vec2(-5.0f, 5.0f), 0.5f);
+			}
+
 			Zealot* zealot = dynamic_cast<Zealot*>(obj);
 			if (zealot != NULL && (damageTag == "HeavyAttack1" || damageTag == "HeavyAttack2" || damageTag == "FinalNormalAttack")) {
 				zealot->setCurrentState(EnemyObject::FLINCH);
@@ -124,8 +132,30 @@ void DamageCollider<TargetEntityType>::onCollisionEnter(Collider* collider) {
 					float playerX = playerAsOwner->getTransform().getPosition().x;
 					float bfX = bf->getTransform().getPosition().x;
 					(playerX <= bfX) ? bf->knockback(glm::vec2(5.0f, 5.0f), 0.5f) : bf->knockback(glm::vec2(-5.0f, 5.0f), 0.5f);
-					FlameDamage<PlayerObject>* flameDamage = bf->getFlameCollider();
 					bf->setCurrentState(EnemyObject::FLINCH);
+					return;
+				}
+			}
+
+			Wailer* wailer = dynamic_cast<Wailer*>(obj);
+			if (wailer != NULL) {
+				wailer->takeDamage(damage);
+
+				if (damageTag == "HeavyAttack1" || damageTag == "HeavyAttack2" || damageTag == "FinalNormalAttack") {
+					Animation::State animState = wailer->getAnimationComponent()->getCurrentAnimationState();
+					
+					if (animState.name == "WindUp") {
+						float playerX = playerAsOwner->getTransform().getPosition().x;
+						float wailerX = wailer->getTransform().getPosition().x;
+						(playerX <= wailerX) ? wailer->knockback(glm::vec2(5.0f, 5.0f), 0.5f) : wailer->knockback(glm::vec2(-5.0f, 5.0f), 0.5f);
+						wailer->setCurrentState(Wailer::FLINCH);
+						return;
+					}
+
+					if (animState.name == "Summoning" && animState.isPlaying) {
+						wailer->setCurrentState(Wailer::FLINCH);
+					}
+
 					return;
 				}
 			}
@@ -161,15 +191,15 @@ void DamageCollider<TargetEntityType>::onTriggerEnter(Collider* collider) { // f
 					for (int i = 0; i < 5; i++) {
 						ParticleProperties particleProps = ParticleProperties(
 							enemyObj->getTransform().getPosition(),
-							20.0f * glm::vec2(parryDirection * Random::Float(), Random::Float()),
+							glm::vec2(parryDirection * (30.0f * Random::Float() + 20.f), 10.0f * Random::Float() + 20.0f),
 							glm::vec2(-0.1f, 0.1f),
-							glm::vec3(0.8f, 0, 0),
-							0.2f, 0.1f, 0.05f, 1.0f
+							glm::vec3(0.976f, 0.914f, 0.035f),
+							0.15f, 0.1f, 0.05f
 						);
 						enemyObj->getEmitter()->emit(particleProps);
 					}
 
-					GameEngine::getInstance()->freezeGameForSeconds(0.2f); // hitstop
+					GameEngine::getInstance()->freezeGameForSeconds(0.1f); // hitstop
 
 					player->signalSuccessfulParry();
 

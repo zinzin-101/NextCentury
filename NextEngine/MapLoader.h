@@ -8,6 +8,7 @@
 #include "FlameDamage.h"
 #include "Zealot.h"
 #include "BlightFlame.h"
+#include "Wailer.h"
 #include "SimpleObject.h"
 #include "Transform.h"
 #include "PlayerObject.h"

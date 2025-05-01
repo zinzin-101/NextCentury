@@ -1,21 +1,60 @@
 #pragma once
 #include "EnemyObject.h"
+#include "SonicWave.h"
+
+namespace WailerStat {
+	constexpr float SONIC_BLAST_COOLDOWN = 3.0f;
+	constexpr float SUMMON_COOLDOWN = 15.0f;
+	constexpr float DISTANCE_FROM_PLAYER_TO_REPOSITION = 3.0f;
+	constexpr float TIME_UNTIL_REPOSITION = 3.0f;
+
+	constexpr float DISTANCE_TO_SPAWN_ZEALOT = 20.0f;
+	constexpr int MAX_ZEALOT_PER_WAILER = 1;
+}
 
 class Wailer : public EnemyObject {
-protected:
-	enum AttackVariation {
-		Variation1,
-		Variation2
-	};
-	AttackVariation currentAttack = Variation1;
+	public:
+		enum State {
+			IDLE,
+			AGGRO,
+			REPOSITIONING,
+			ATTACKING,
+			STUNNED,
+			FLINCH
+		};
+	protected:
+		enum AttackState {
+			SONICBLAST,
+			SUMMONING,
+			NONE
+		};
 
-	void startAttack();
-	void endAttack();
+		float repositionTimer;
+		int zealotCounter;
 
-public:
-	Wailer(EnemyInfo& enemyinfo);
-	void start(list<DrawableObject*>& objectsList);
-	void updateState();
-	void updateBehavior(list<DrawableObject*>& objectlist);
-	void render(glm::mat4 globalModelTransform) { TexturedObject::render(glm::mat4()); emitter->render(glm::mat4()); };
+		Wailer::State currentState;
+		SonicWave* sonicAttack;
+		bool isInSonicAttack;
+		AttackState currentAttackState;
+		void handleAttackState(std::list<DrawableObject*>& objectlist);
+		void handleSonicBlastState();
+		void handleSummoningState(std::list<DrawableObject*>& objectlist);
+
+		void handleReposition(float dt);
+
+		void spawnZealot(glm::vec3 playerPos, std::list<DrawableObject*>& objectlist);
+		void moveTowardsPosition(float xPosition);
+
+	public:
+		Wailer(const EnemyInfo& enemyinfo);
+		~Wailer();
+
+		void removeSummonedZealot();
+		void resetAttack();
+
+		void start(list<DrawableObject*>& objectsList);
+		virtual void setCurrentState(Wailer::State state);
+		virtual void updateState();
+		virtual void updateBehavior(std::list<DrawableObject*>& objectlist);
+		void render(glm::mat4 globalModelTransform) { TexturedObject::render(glm::mat4()); emitter->render(glm::mat4()); };
 };

@@ -48,6 +48,59 @@ EnemyObject::~EnemyObject() {
 	}
 }
 
+void EnemyObject::onDeath(std::list<DrawableObject*>& objectsList) {
+	if (targetEntity == nullptr) {
+		destroyObject(this);
+		return;
+	}
+	
+	GameEngine::getInstance()->freezeGameForSeconds(0.125f);
+
+	float direction = (targetEntity->getTransform().getPosition().x < this->getTransform().getPosition().x) ? 1.0f : -1.0f;
+
+	for (int i = 0; i < 8; i++) {
+		float angle = (static_cast<float>(i) / 8.0f) * 2.0f * glm::pi<float>();
+		glm::vec2 vel1(
+			direction * (15.0f * Random::Float() + 35.0f),
+			glm::sin(angle) * 50.0f
+		);
+
+		glm::vec2 vel2(
+			direction * (15.0f * Random::Float() + 25.0f),
+			glm::sin(angle) * 40.0f
+		);
+
+		ParticleProperties p1 = ParticleProperties(
+			this->getTransform().getPosition(),
+			vel1,
+			glm::vec2(-2.5f, 2.5f),
+			glm::vec3(0.863f, 0.078f, 0.235f),
+			glm::vec3(0.733f, 0.039f, 0.118f),
+			0.3f, 0.2f, 0.15f, true
+		);
+
+		ParticleProperties p2 = ParticleProperties(
+			this->getTransform().getPosition(),
+			vel2,
+			glm::vec2(-2.5f, 2.5f),
+			glm::vec3(0.863f, 0.078f, 0.235f),
+			glm::vec3(0.733f, 0.039f, 0.118f),
+			0.3f, 0.2f, 0.15f, true
+		);
+
+		this->emitter->emit(p1);
+		this->emitter->emit(p2);
+	}
+
+	objectsList.emplace_back(this->emitter);
+	this->emitter->setName("Emitter");
+	this->emitter->setDestroyOnInactive(true);
+	this->emitter = nullptr;
+
+	destroyObject(this);
+	GameEngine::getInstance()->getRenderer()->getCamera()->startShake(0.3f);
+}
+
 void EnemyObject::setCurrentState(State state) {
 	if (state == STUNNED) {
 		currentStunnedTime = stunnedTime;

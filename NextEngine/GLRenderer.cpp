@@ -331,6 +331,10 @@ GLuint GLRenderer::getOpacityUniformId() {
 }
 
 GLuint GLRenderer::LoadTexture(string path) {
+    if (textureHash.count(path) == 1) {
+        return textureHash.at(path);
+    }
+
     glActiveTexture(GL_TEXTURE0);
     SDL_Surface* image = IMG_Load(path.c_str());
     if (image == NULL) {
@@ -354,6 +358,8 @@ GLuint GLRenderer::LoadTexture(string path) {
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
     SDL_FreeSurface(image);
+
+    textureHash[path] = texture;
 
     return texture;
 }

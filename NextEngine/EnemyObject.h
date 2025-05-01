@@ -63,6 +63,8 @@ class EnemyObject : public LivingEntity {
         virtual void startAttack();
         virtual void endAttack();
 
+        virtual void onDeath(std::list<DrawableObject*>& objectsList);
+
     public:
         EnemyObject(const EnemyInfo& enemyInfo);
         virtual void setCurrentState(State state);

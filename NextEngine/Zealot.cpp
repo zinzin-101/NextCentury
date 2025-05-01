@@ -5,10 +5,19 @@
 Zealot::Zealot(const EnemyInfo& enemyinfo) : EnemyObject(enemyinfo) {
 	//cout << attackCooldown << endl;
 
+	wailerSummonner = nullptr;
+
 	getTransform().setScale(1.3f, 1.8f);
 	getColliderComponent()->setDimension(0.5f, 0.85f);
 	getColliderComponent()->getTransform().setPosition(0.0f, -0.15f);
 }
+
+Zealot::~Zealot() {
+	if (wailerSummonner != nullptr) {
+		wailerSummonner->removeSummonedZealot();
+	}
+}
+
 void Zealot::start(list<DrawableObject*>& objectsList) {
 	//setTexture("../Resource/Texture/incineratorSizeFlip.png");
 	setTexture("../Resource/Texture/Purifier.png");
@@ -80,9 +89,10 @@ void Zealot::updateState() {
 }
 
 void Zealot::updateBehavior(list<DrawableObject*>& objectsList) {
-	/// testing ///
-	emitter->update(objectsList);
-	///
+	if (emitter != nullptr) {
+		emitter->update(objectsList);
+
+	}
 
 	if (isInKnockback) {
 		return;
@@ -189,4 +199,8 @@ void Zealot::endAttack() {
 		attackCooldownTimer = attackCooldown;
 	}
 	attackHitbox->setActive(false);
+}
+
+void Zealot::setWailerSummoner(Wailer* wailer) {
+	this->wailerSummonner = wailer;
 }

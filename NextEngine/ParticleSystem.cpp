@@ -1,24 +1,23 @@
 #include "GameEngine.h"
 #include "ParticleSystem.h"
 #include "Random.h"
-#include <thread>
 
 ParticleSystem::ParticleSystem() {
 	particlePool.resize(MAX_PARTICLE);
 	poolIndex = MAX_PARTICLE - 1;
-	midIndex = MAX_PARTICLE / 2;
+
+	canDestroyOnInactive = false;
 }
 
 void ParticleSystem::update(std::list<DrawableObject*>& objectsList) {
-	//std::thread t1(&ParticleSystem::updateParticlePool, 0, midIndex, objectsList);
-	//std::thread t2(&ParticleSystem::updateParticlePool, midIndex + 1, MAX_PARTICLE - 1, objectsList);
-	//t1.join();
-	//t2.join();
 	updateParticlePool(0, MAX_PARTICLE - 1, objectsList);
 }
 
 void ParticleSystem::updateParticlePool(unsigned int startIndex, unsigned int endIndex, std::list<DrawableObject*>& objectsList) {
 	float dt = GameEngine::getInstance()->getTime()->getDeltaTime();
+
+	bool isSomeActive = false;
+
 	for (unsigned int i = startIndex; i <= endIndex; i++) {
 		Particle& particle = particlePool[i];
 		
@@ -31,9 +30,15 @@ void ParticleSystem::updateParticlePool(unsigned int startIndex, unsigned int en
 			continue;
 		}
 
+		isSomeActive = true;
+
 		particle.decrementLife(dt);
 		particle.getTransform().rotateRad(0.01f * dt);
 		particle.update(objectsList);
+	}
+
+	if (!isSomeActive && canDestroyOnInactive) {
+		destroyObject(this);
 	}
 }
 
@@ -57,6 +62,8 @@ void ParticleSystem::emit(const ParticleProperties& particleProperties) {
 	particle.setInitSize(particleProperties.initSize);
 	particle.setEndSize(particleProperties.endSize);
 
+	particle.getPhysicsComponent()->setEnableGravity(particleProperties.isPhysics);
+
 	particle.setActive(true);
 
 	poolIndex = --poolIndex % MAX_PARTICLE;
@@ -70,4 +77,8 @@ void ParticleSystem::render(glm::mat4 globalModelTransform) {
 			p.render(globalModelTransform);
 		}
 	}
+}
+
+void ParticleSystem::setDestroyOnInactive(bool value) {
+	this->canDestroyOnInactive = value;
 }

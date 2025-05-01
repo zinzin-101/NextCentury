@@ -11,12 +11,14 @@ class ParticleSystem : virtual public DrawableObject {
 	private:
 		std::vector<Particle> particlePool;
 		unsigned int poolIndex;
-		unsigned int midIndex;
 		void updateParticlePool(unsigned int startIndex, unsigned int endIndex, std::list<DrawableObject*>& objectsList);
+		bool canDestroyOnInactive;
 
 	public:
 		ParticleSystem();
 		virtual void update(std::list<DrawableObject*>& objectsList);
 		void emit(const ParticleProperties& particleProperties);
 		virtual void render(glm::mat4 globalModelTransform);
+
+		void setDestroyOnInactive(bool value);
 };

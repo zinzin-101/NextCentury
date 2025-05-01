@@ -22,6 +22,7 @@ class DrawableObject {
 		Collider* collider;
 
 		bool canDrawCollider;
+		glm::vec3 drawColliderColor;
 
 		float renderBrightness;
 		float renderOpacity;
@@ -59,6 +60,7 @@ class DrawableObject {
 		virtual ~DrawableObject();
 		virtual void render(glm::mat4 globalModelTransform) = 0;
 		void setDrawCollider(bool value);
+		void setDrawColliderColor(glm::vec3 color);
 		virtual void drawCollider();
 
 		virtual void setActive(bool value);
