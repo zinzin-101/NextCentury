@@ -54,7 +54,8 @@ void EnemyObject::onDeath(std::list<DrawableObject*>& objectsList) {
 		return;
 	}
 	
-	GameEngine::getInstance()->freezeGameForSeconds(0.125f);
+	GameEngine::getInstance()->pauseTimeForSeconds(0.125f);
+	//GameEngine::getInstance()->freezeGameForSeconds(0.125f);
 
 	float direction = (targetEntity->getTransform().getPosition().x < this->getTransform().getPosition().x) ? 1.0f : -1.0f;
 
@@ -76,7 +77,7 @@ void EnemyObject::onDeath(std::list<DrawableObject*>& objectsList) {
 			glm::vec2(-2.5f, 2.5f),
 			glm::vec3(0.863f, 0.078f, 0.235f),
 			glm::vec3(0.733f, 0.039f, 0.118f),
-			0.3f, 0.2f, 0.15f, true
+			0.3f, 0.2f, 0.15f, true, 1.0f, true
 		);
 
 		ParticleProperties p2 = ParticleProperties(
@@ -85,7 +86,7 @@ void EnemyObject::onDeath(std::list<DrawableObject*>& objectsList) {
 			glm::vec2(-2.5f, 2.5f),
 			glm::vec3(0.863f, 0.078f, 0.235f),
 			glm::vec3(0.733f, 0.039f, 0.118f),
-			0.3f, 0.2f, 0.15f, true
+			0.3f, 0.2f, 0.15f, true, 1.0f, true
 		);
 
 		this->emitter->emit(p1);
