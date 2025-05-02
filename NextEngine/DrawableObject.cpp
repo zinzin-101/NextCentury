@@ -208,7 +208,7 @@ void DrawableObject::drawCollider() {
 		return;
 	}
 
-	if (!canDrawCollider) {
+	if (!canDrawCollider || !collider->isEnable()) {
 		return;
 	}
 

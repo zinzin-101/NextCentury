@@ -9,6 +9,7 @@ namespace BlightFlameStat {
 	constexpr int MELEE_DAMAGE = 5;
 
 	constexpr float MELEE_ATTACK_DISTANCE = 2.0f;
+	constexpr float FLAME_ATTACK_DURATION = 10.0f;
 
 	constexpr float STUN_DURATION = 2.0f;
 }
@@ -27,11 +28,8 @@ class BlightFlame : public EnemyObject {
 		void handleMeleeAttack();
 
 protected:
-	float flameTime = 3.0f;
+	float flameTime = BlightFlameStat::FLAME_ATTACK_DURATION;
 	float flameTimeKeep = 0;
-
-	float meleeTime = 0.5f;
-	float meleeTimeKeep = 0;
 
 	virtual void startAttack();
 	virtual void endAttack();
