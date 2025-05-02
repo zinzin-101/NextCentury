@@ -19,20 +19,20 @@ PlayerObject::PlayerObject() : LivingEntity("Player", PlayerStat::MAX_HEALTH) {
 
     getAnimationComponent()->addState("Dodging", 3, 0, 5, false, PlayerStat::DODGE_DURATION / 6.0f);
 
-    getAnimationComponent()->addState("Combo1", 4, 0, 5, false);
-    getAnimationComponent()->addState("Combo2", 5, 0, 5, false);
-    getAnimationComponent()->addState("Combo3", 6, 0, 5, false);
+    getAnimationComponent()->addState("Combo1", 4, 0, 5, false, PlayerStat::ATTACK_ANIMATION_TIME_PER_FRAME);
+    getAnimationComponent()->addState("Combo2", 5, 0, 5, false, PlayerStat::ATTACK_ANIMATION_TIME_PER_FRAME);
+    getAnimationComponent()->addState("Combo3", 6, 0, 5, false, PlayerStat::ATTACK_ANIMATION_TIME_PER_FRAME);
 
-    getAnimationComponent()->addState("Charging", 7, 0, 6, false);
-    getAnimationComponent()->addState("MaxCharging", 7, 1, 3, true);
-    getAnimationComponent()->addState("Charge1", 8, 0, 4, false);
-    getAnimationComponent()->addState("Charge2", 9, 0, 4, false);
+    getAnimationComponent()->addState("Charging", 7, 0, 6, false, PlayerStat::CHARGE_ANIMATION_TIME_PER_FRAME);
+    getAnimationComponent()->addState("MaxCharging", 7, 1, 3, true, PlayerStat::CHARGE_ANIMATION_TIME_PER_FRAME);
+    getAnimationComponent()->addState("Charge1", 8, 0, 4, false, PlayerStat::ATTACK_ANIMATION_TIME_PER_FRAME);
+    getAnimationComponent()->addState("Charge2", 9, 0, 4, false, PlayerStat::ATTACK_ANIMATION_TIME_PER_FRAME);
 
     getAnimationComponent()->addState("Parrying", 14, 0, 8, false);
 
-    getAnimationComponent()->addState("GunCharge1", 11, 0, 6, true);
-    getAnimationComponent()->addState("GunCharge2", 12, 0, 6, true);
-    getAnimationComponent()->addState("GunCharge3", 13, 0, 6, true);
+    getAnimationComponent()->addState("GunCharge1", 11, 0, 6, true, PlayerStat::GUN_CHARGE_ANIMATION_TIME_PER_FRAME);
+    getAnimationComponent()->addState("GunCharge2", 12, 0, 6, true, PlayerStat::GUN_CHARGE_ANIMATION_TIME_PER_FRAME);
+    getAnimationComponent()->addState("GunCharge3", 13, 0, 6, true, PlayerStat::GUN_CHARGE_ANIMATION_TIME_PER_FRAME);
     getAnimationComponent()->addState("GunShoot", 10, 0, 3, false, 0.08f);
 
     getAnimationComponent()->addState("Healing", 15, 0, 7, false);
