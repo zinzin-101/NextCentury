@@ -23,7 +23,8 @@ void Dialogue::render(glm::mat4 globalModelTransform) {
 }
 
 void Dialogue::update(list<DrawableObject*>& objectsList) {
-	text.getTransform().setPosition(glm::vec3(this->getTransform().getPosition().x * 120, this->getTransform().getPosition().y * 120, 0.0f));
+	placeHolderBG.getTransform().setScale(glm::vec3(text.getTransform().getScale().x + 10.0f, text.getTransform().getScale().y, 0.0f));
+	text.getTransform().setPosition(glm::vec3(this->getTransform().getPosition().x * 120, this->getTransform().getPosition().y * -120, 0.0f));
 	placeHolderBG.getTransform().setPosition(glm::vec3(this->getTransform().getPosition().x * 120, this->getTransform().getPosition().y * 120, 0.0f));
 	if (isActiveByPosition) {
 		checkActiveRange();
@@ -32,7 +33,7 @@ void Dialogue::update(list<DrawableObject*>& objectsList) {
 		
 		text.loadText(sentences.front(), { 0, 0, 0, 0 }, fontsize);
 	}
-	placeHolderBG.getTransform().setScale(glm::vec3(text.getTransform().getScale().x + 10.0f, text.getTransform().getScale().y, 0.0f));
+	
 	//placeHolderBG.getTransform().setPosition(glm::vec3(placeHolderBG.getTransform().getPosition().x + 0, placeHolderBG.getTransform().getPosition().y + 2.5f, 0.0f));
 }
 

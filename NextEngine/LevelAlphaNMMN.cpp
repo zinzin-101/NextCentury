@@ -93,12 +93,16 @@ void LevelAlphaNMMN::levelInit() {
     objectsList.emplace_back(d2);
     dialogueList.push(d2);
     
-    InteractableObject* it = new InteractableObject("a box of chocolate", player);
+    /////////////////
+    Dialogue* d4intobj = new Dialogue(16, player, false); // Must add to the queue in the order that you'll faced them
+    objectsList.emplace_back(d4intobj);
+    InteractableObject* it = new InteractableObject("a box of chocolate", player, d4intobj);
     it->setTexture("../Resource/Texture/BoardNeon.png");
     it->getTransform().setPosition(glm::vec3(5.0f, -2.0f, 0.0f));
     it->initAnimation(2,1);
     it->getAnimationComponent()->addState("idle", 0, 0, 1, true);
     it->getAnimationComponent()->addState("clickAble", 1, 0, 1, true);
+    it->getAnimationComponent()->setState("idle");
     objectsList.emplace_back(it);
     interactableList.push_back(it);
 
