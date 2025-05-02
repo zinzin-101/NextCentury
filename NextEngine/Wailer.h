@@ -1,6 +1,9 @@
 #pragma once
 #include "EnemyObject.h"
 #include "SonicWave.h"
+#include <set>
+
+class Zealot;
 
 namespace WailerStat {
 	constexpr float SONIC_BLAST_COOLDOWN = 3.0f;
@@ -40,6 +43,8 @@ class Wailer : public EnemyObject {
 		void handleSonicBlastState();
 		void handleSummoningState(std::list<DrawableObject*>& objectlist);
 
+		std::set<Zealot*> summonedZealots;
+
 		void handleReposition(float dt);
 
 		void spawnZealot(glm::vec3 playerPos, std::list<DrawableObject*>& objectlist);
@@ -49,7 +54,7 @@ class Wailer : public EnemyObject {
 		Wailer(const EnemyInfo& enemyinfo);
 		~Wailer();
 
-		void removeSummonedZealot();
+		void removeSummonedZealot(Zealot* zealot);
 		void resetAttack();
 
 		void start(list<DrawableObject*>& objectsList);
