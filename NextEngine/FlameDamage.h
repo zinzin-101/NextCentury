@@ -83,13 +83,11 @@ void FlameDamage<TargetEntityType>::update(std::list<DrawableObject*>& objectsLi
 
 		Animation::State currentState = this->getAnimationComponent()->getCurrentAnimationState();
 		if (currentState.name == "Start") {
-			cout << "in flame start" << endl;
 			if (!currentState.isPlaying) {
 				this->getAnimationComponent()->setState("Blast");
 			}
 		}
 		else if (currentState.name == "Blast") {
-			cout << "in flame blast" << endl;
 			this->getColliderComponent()->setEnableCollision(true);
 			if (isWaitingToDeactivate) {
 				this->getAnimationComponent()->setState("End");
@@ -97,14 +95,10 @@ void FlameDamage<TargetEntityType>::update(std::list<DrawableObject*>& objectsLi
 			}
 		}
 		else if (currentState.name == "End") {
-			cout << "in flame end" << endl;
 			if (!currentState.isPlaying) {
 				reset();
 			}
 		}
-	}
-	else {
-		reset();
 	}
 
 	if (followOwner) {
@@ -131,9 +125,11 @@ void FlameDamage<TargetEntityType>::setActive(bool value) {
 
 template <class TargetEntityType>
 void FlameDamage<TargetEntityType>::trigger(glm::vec3 pos, bool facingRight) {
-	if (flameStart) {
-		return;
-	}
+	//if (flameStart) {
+	//	return;
+	//}
+
+	reset();
 
 	this->transform.setPosition(pos);
 
@@ -149,9 +145,11 @@ void FlameDamage<TargetEntityType>::trigger(glm::vec3 pos, bool facingRight) {
 
 template <class TargetEntityType>
 void FlameDamage<TargetEntityType>::trigger(glm::vec3 pos, glm::vec3 offset, bool facingRight) {
-	if (flameStart) {
-		return;
-	}
+	//if (flameStart) {
+	//	return;
+	//}
+
+	reset();
 
 	this->transform.setPosition(pos + offset);
 	

@@ -165,7 +165,7 @@ void BlightFlame::updateBehavior(list<DrawableObject*>& objectsList) {
 	}
 	case STUNNED:
 		getAnimationComponent()->setState("Stunned");
-		cout << "stun" << endl;
+		//cout << "stun" << endl;
 		if (currentStunnedTime > 0) {
 			currentStunnedTime -= dt;
 		}
@@ -177,7 +177,7 @@ void BlightFlame::updateBehavior(list<DrawableObject*>& objectsList) {
 
 	case FLINCH:
 		getAnimationComponent()->setState("Idle");
-		cout << "blightflame flinching" << endl;
+		//cout << "blightflame flinching" << endl;
 		if (flinchTimer > 0) {
 			flinchTimer -= dt;
 		}
@@ -195,12 +195,12 @@ void BlightFlame::updateBehavior(list<DrawableObject*>& objectsList) {
 }
 
 void BlightFlame::startAttack() {
-	cout << "start attack called" << endl;
+	//cout << "start attack called" << endl;
 	flameHitbox->trigger(transform.getPosition(), isFacingRight);
 }
 
 void BlightFlame::endAttack() {
-	cout << "end attack called" << endl;
+	//cout << "end attack called" << endl;
 	flameHitbox->setActive(false);
 }
 
@@ -208,10 +208,6 @@ void BlightFlame::handleFlameAttack() {
 	float dt = GameEngine::getInstance()->getTime()->getDeltaTime();
 
 	Animation::State currAnim = getAnimationComponent()->getCurrentAnimationState();
-
-	if (currAnim.name == "Attack") {
-		cout << "attack flame timer: " << flameTimeKeep << endl;
-	}
 
 	if (currAnim.name == "Idle" || currAnim.name == "Moving" || currAnim.name == "Stunned") {
 		getAnimationComponent()->setState("WindUp");
