@@ -64,9 +64,9 @@ FlameDamage<TargetEntityType>::FlameDamage(LivingEntity* owner, int damage, floa
 
 	this->setTexture("../Resource/Texture/BlightFlameFixed3.png");
 	this->initAnimation(9, 11);
-	this->getAnimationComponent()->addState("Start", 3, 1, 4, false, 0.25f);
+	this->getAnimationComponent()->addState("Start", 3, 1, 4, false);
 	this->getAnimationComponent()->addState("Blast", 3, 8, 3, true);
-	this->getAnimationComponent()->addState("End", 4, 0, 9, false, 0.25f);
+	this->getAnimationComponent()->addState("End", 4, 0, 9, false);
 
 	this->getTransform().setScale(2.0f, 1.0f);
 
