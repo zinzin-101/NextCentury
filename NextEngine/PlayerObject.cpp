@@ -254,7 +254,7 @@ void PlayerObject::updateStat() {
         potionRechargeTimer = PlayerStat::POTION_RECHARGE_TIMER;
         currentNumOfPotion++;
     }
-    cout << "potion left: " << currentNumOfPotion << endl;
+    //cout << "potion left: " << currentNumOfPotion << endl;
 }
 
 void PlayerObject::updateBehavior(list<DrawableObject*>& objectsList) {
@@ -883,8 +883,12 @@ void PlayerObject::handleParryAttack() {
     Animation::State currentState = this->getAnimationComponent()->getCurrentAnimationState();
     int currentFrame = currentState.currentFrame;
 
-    if (currentFrame < parryFrame.startAttackFrame + 1) {
+    if (currentFrame == parryFrame.startAttackFrame) {
         this->setCanTakeDamage(false);
+        return;
+    }
+
+    if (currentFrame < parryFrame.startAttackFrame + 1) {
         return;
     }
 
@@ -953,7 +957,7 @@ void PlayerObject::takeDamage(int damage) {
     if (!this->getCanTakeDamage()) {
         return;
     }
-
+    //cout << "took damage" << endl;
     this->LivingEntity::takeDamage(damage);
     iFrameTimeRemaining = PlayerStat::INVINCIBLE_DURATION_AFTER_TAKING_DAMAGE;
 }

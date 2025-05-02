@@ -24,7 +24,7 @@ namespace PlayerStat {
     constexpr int COMBO_DAMAGE_2 = 15;
     constexpr int COMBO_DAMAGE_3 = 17;
     
-    constexpr float CHARGE_DAMAGE_MULTIPLIER_1 = 1.5f;
+    constexpr float CHARGE_DAMAGE_MULTIPLIER_1 = 1.0f;
     constexpr float CHARGE_DAMAGE_MULTIPLIER_2 = 2.0f;
     constexpr float HEAVY_ATTACK_COOLDOWN_1 = 0.5f;
     constexpr float HEAVY_ATTACK_COOLDOWN_2 = 0.8f;
