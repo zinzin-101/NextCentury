@@ -55,16 +55,20 @@ template <class TargetEntityType>
 FlameDamage<TargetEntityType>::FlameDamage(LivingEntity* owner, int damage, float delayBetweenDamage) : TexturedObject(),
 	owner(owner), damage(damage) {
 	this->getColliderComponent()->setTrigger(true);
+	this->getColliderComponent()->setEnableCollision(false);
 	this->setName(owner->getName() + "FlameDamage");
 	this->DrawableObject::setActive(false);
 	this->followOwner = false;
-	this->setDrawCollider(true);
 
-	this->setTexture("../Resource/Texture/fire.png");
-	this->initAnimation(3, 10);
-	this->getAnimationComponent()->addState("Start", 0, 0, 3, false);
-	this->getAnimationComponent()->addState("Blast", 1, 0, 6, true);
-	this->getAnimationComponent()->addState("End", 2, 0, 2, false);
+	this->setDrawCollider(true); // debug
+
+	this->setTexture("../Resource/Texture/BlightFlameFixed3.png");
+	this->initAnimation(9, 11);
+	this->getAnimationComponent()->addState("Start", 3, 1, 4, false);
+	this->getAnimationComponent()->addState("Blast", 3, 8, 3, true);
+	this->getAnimationComponent()->addState("End", 4, 0, 9, false);
+
+	this->getTransform().setScale(2.0f, 1.0f);
 
 	reset();
 }
@@ -75,6 +79,8 @@ void FlameDamage<TargetEntityType>::update(std::list<DrawableObject*>& objectsLi
 	this->getAnimationComponent()->updateCurrentState();
 
 	if (flameStart) {
+
+
 		Animation::State currentState = this->getAnimationComponent()->getCurrentAnimationState();
 		if (currentState.name == "Start") {
 			if (!currentState.isPlaying) {
@@ -82,15 +88,15 @@ void FlameDamage<TargetEntityType>::update(std::list<DrawableObject*>& objectsLi
 			}
 		}
 		else if (currentState.name == "Blast") {
+			this->getColliderComponent()->setEnableCollision(true);
 			if (isWaitingToDeactivate) {
 				this->getAnimationComponent()->setState("End");
+				this->getColliderComponent()->setEnableCollision(false);
 			}
 		}
-		else if (currentState.name == "End" && isWaitingToDeactivate) {
+		else if (currentState.name == "End") {
 			if (!currentState.isPlaying) {
-				DrawableObject::setActive(false);
-				isWaitingToDeactivate = false;
-				flameStart = false;
+				reset();
 			}
 		}
 	}
@@ -119,9 +125,11 @@ void FlameDamage<TargetEntityType>::setActive(bool value) {
 
 template <class TargetEntityType>
 void FlameDamage<TargetEntityType>::trigger(glm::vec3 pos, bool facingRight) {
-	if (flameStart) {
-		return;
-	}
+	//if (flameStart) {
+	//	return;
+	//}
+
+	reset();
 
 	this->transform.setPosition(pos);
 
@@ -137,9 +145,11 @@ void FlameDamage<TargetEntityType>::trigger(glm::vec3 pos, bool facingRight) {
 
 template <class TargetEntityType>
 void FlameDamage<TargetEntityType>::trigger(glm::vec3 pos, glm::vec3 offset, bool facingRight) {
-	if (flameStart) {
-		return;
-	}
+	//if (flameStart) {
+	//	return;
+	//}
+
+	reset();
 
 	this->transform.setPosition(pos + offset);
 	
@@ -236,6 +246,7 @@ void FlameDamage<TargetEntityType>::drawCollider() {
 
 template <class TargetEntityType>
 void FlameDamage<TargetEntityType>::reset() {
+	this->getColliderComponent()->setEnableCollision(false);
 	flameStart = false;
 	isWaitingToDeactivate = false;
 	this->DrawableObject::setActive(false);

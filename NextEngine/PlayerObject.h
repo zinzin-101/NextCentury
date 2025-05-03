@@ -16,11 +16,15 @@ namespace PlayerStat {
     constexpr float DURATION_TO_START_HEAVY_ATTACK = 0.5f;
     constexpr float DURATION_TO_START_CHARGED_BULLET = 0.5f;
 
+    constexpr float ATTACK_ANIMATION_TIME_PER_FRAME = 0.12f;
+    constexpr float CHARGE_ANIMATION_TIME_PER_FRAME = 0.12f;
+    constexpr float GUN_CHARGE_ANIMATION_TIME_PER_FRAME = 0.12f;
+
     constexpr int COMBO_DAMAGE_1 = 10;
     constexpr int COMBO_DAMAGE_2 = 15;
     constexpr int COMBO_DAMAGE_3 = 17;
     
-    constexpr float CHARGE_DAMAGE_MULTIPLIER_1 = 1.5f;
+    constexpr float CHARGE_DAMAGE_MULTIPLIER_1 = 1.0f;
     constexpr float CHARGE_DAMAGE_MULTIPLIER_2 = 2.0f;
     constexpr float HEAVY_ATTACK_COOLDOWN_1 = 0.5f;
     constexpr float HEAVY_ATTACK_COOLDOWN_2 = 0.8f;
@@ -67,6 +71,10 @@ namespace PlayerStat {
     constexpr int HEAVY2_STAMINA_CONSUMPTION = 50;
     constexpr int PARRY_STAMINA_CONSUMPTION = 20;
     constexpr int RANGE_STAMINA_CONSUMPTION = 15;
+
+    constexpr int MAX_HEALTH_POTION = 3;
+    constexpr int HEAL_AMOUNT = MAX_HEALTH / 2;
+    constexpr float POTION_RECHARGE_TIMER = 5.0f;
 }
 
 class EnemyObject;
@@ -176,6 +184,14 @@ class PlayerObject : public LivingEntity {
         int currentNumOfBullets;
         float bulletRechargeTimer;
 
+        int currentNumOfPotion;
+        float potionRechargeTimer;
+        bool isHealing;
+        bool healed;
+        int healFrame;
+        void resetHealing();
+        void handleHealing();
+
     public:
         PlayerObject();
         ~PlayerObject();
@@ -199,6 +215,9 @@ class PlayerObject : public LivingEntity {
         void jump();
         void dodge();
         void dodge(float xDirection);
+
+        void useHealthPotion();
+        void resetNumOfPotion();
 
         bool getCanMove() const;
         bool getIsParrying() const;

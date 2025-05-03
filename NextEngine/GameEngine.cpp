@@ -4,6 +4,9 @@ GameEngine* GameEngine::instance = nullptr;
 
 GameEngine::GameEngine() {
 	renderer = nullptr;
+
+	engineTimer = 0.0f;
+	isGamePaused = false;
 }
 
 GameEngine * GameEngine::getInstance() {
@@ -41,6 +44,17 @@ void GameEngine::init(int width, int height) {
 
 	time = new Time();
 	inputHandler = new InputManager();  
+}
+
+void GameEngine::updateEngineComponent() {
+	if (engineTimer > 0.0f && isGamePaused) {
+		engineTimer -= time->getDeltaTimeRealTime();
+	}
+
+	if (engineTimer <= 0.0f && isGamePaused) {
+		isGamePaused = false;
+		time->setTimeScale(1.0f);
+	}
 }
 
 void GameEngine::render(list<DrawableObject*> renderObjects, bool clear) {
@@ -101,4 +115,14 @@ void GameEngine::freezeGameForSeconds(float duration) {
 		time->updateTick(SDL_GetTicks());
 		duration -= time->getDeltaTimeRealTime();
 	}
+}
+
+void GameEngine::pauseTimeForSeconds(float duration) {
+	engineTimer = duration;
+	isGamePaused = true;
+	time->setTimeScale(0.0f);
+}
+
+bool GameEngine::getIsGamePaused() const {
+	return isGamePaused;
 }

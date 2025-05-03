@@ -195,7 +195,9 @@ void Level::drawImGui(std::list<DrawableObject*>& objectList) {
     ImGui::Checkbox("Free Viewport", &enableFreeViewPort);
     GameEngine::getInstance()->getRenderer()->setToggleViewport(!enableFreeViewPort);
 
-    pauseGame ? GameEngine::getInstance()->getTime()->setTimeScale(0.0f) : GameEngine::getInstance()->getTime()->setTimeScale(1.0f);
+    if (!GameEngine::getInstance()->getIsGamePaused()) {
+        pauseGame ? GameEngine::getInstance()->getTime()->setTimeScale(0.0f) : GameEngine::getInstance()->getTime()->setTimeScale(1.0f);
+    }
 
     if (ImGui::Button("Reset Scene")) {
         GameEngine::getInstance()->getStateController()->gameStateNext = GameState::GS_RESTART;

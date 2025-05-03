@@ -114,7 +114,7 @@ void Camera::startShake(float duration) {
 }
 
 void Camera::updateCamera() {
-    float dt = GameEngine::getInstance()->getTime()->getDeltaTime();
+    float dt = GameEngine::getInstance()->getTime()->getDeltaTimeRealTime();
     
     if (shakeDurationRemaining > 0.0f && isShaking) {
         shakeDurationRemaining -= dt;

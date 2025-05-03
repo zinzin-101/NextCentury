@@ -21,6 +21,7 @@ class Physics {
 		float drag;
 		bool enablePhysics;
 		bool enableGravity;
+		bool isRealTime;
 
 	public:
 		Physics(Transform& transform);
@@ -48,6 +49,8 @@ class Physics {
 
 		bool isGravityEnable() const;
 		bool isPhysicsEnable() const;
+
+		void setRealTime(bool value);
 
 		//void operator=(Physics& other);
 };

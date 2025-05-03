@@ -7,6 +7,7 @@ using namespace std;
 
 namespace LivingEntityStat {
     constexpr float DAMAGE_OVERLAY_DURATION = 0.2f;
+    constexpr int BURNING_DAMAGE = 5;
 }
 
 class LivingEntity : public TexturedObject {
@@ -14,6 +15,7 @@ class LivingEntity : public TexturedObject {
         struct Status;
 
     private:
+        int maxHealth;
         int health;
         bool canTakeDamage;
         bool isStun; // for when any status that can cause a stun
@@ -63,9 +65,11 @@ class LivingEntity : public TexturedObject {
         ~LivingEntity();
 
         void setHealth(int hp);
+        void setMaxHealth(int hp);
         void setCanTakeDamage(bool value);
 
         int getHealth() const;
+        int getMaxHealth() const;
         bool getCanTakeDamage() const;
         bool getIsDead() const;
         bool getIsAlive() const;
@@ -81,6 +85,8 @@ class LivingEntity : public TexturedObject {
 
         virtual void takeDamage(int damage);
         virtual void takeDamage(int damage, bool ignoreCanTakeDamage);
+
+        void heal(int amount);
 
         void knockback(glm::vec2 velocityDirection, float duration);
 

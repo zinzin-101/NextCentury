@@ -10,24 +10,27 @@ Zealot::Zealot(const EnemyInfo& enemyinfo) : EnemyObject(enemyinfo) {
 	getTransform().setScale(1.3f, 1.8f);
 	getColliderComponent()->setDimension(0.5f, 0.85f);
 	getColliderComponent()->getTransform().setPosition(0.0f, -0.15f);
+
+	attackFrameStart = 2;
+	attackFrameEnd = 3;
 }
 
 Zealot::~Zealot() {
 	if (wailerSummonner != nullptr) {
-		wailerSummonner->removeSummonedZealot();
+		wailerSummonner->removeSummonedZealot(this);
 	}
 }
 
 void Zealot::start(list<DrawableObject*>& objectsList) {
 	//setTexture("../Resource/Texture/incineratorSizeFlip.png");
-	setTexture("../Resource/Texture/Purifier.png");
+	setTexture("../Resource/Texture/Purifier2.png");
 	//initAnimation(6, 2);
 	initAnimation(6, 8);
 	targetEntity = nullptr;
 	getAnimationComponent()->addState("Idle", 0, 0, 6, true);
-	getAnimationComponent()->addState("Moving", 1, 0, 5, true);
-	getAnimationComponent()->addState("Attack1", 2, 0, 6, false);
-	getAnimationComponent()->addState("Attack2", 2, 0, 6, false);
+	getAnimationComponent()->addState("Moving", 1, 0, 8, true);
+	getAnimationComponent()->addState("Attack1", 2, 0, 5, false);
+	getAnimationComponent()->addState("Attack2", 2, 0, 5, false);
 	getAnimationComponent()->addState("Stunned", 4, 0, 2, true);
 	getAnimationComponent()->setState("Idle");
 	attackHitbox = new DamageCollider<PlayerObject>(this, damage, -1);
@@ -150,7 +153,7 @@ void Zealot::updateBehavior(list<DrawableObject*>& objectsList) {
 		getAnimationComponent()->setState("Stunned");
 		attackHitbox->setActive(false);
 
-		cout << "stun" << endl;
+		//cout << "stun" << endl;
 		if (currentStunnedTime > 0) {
 			currentStunnedTime -= dt;
 		}
@@ -163,7 +166,7 @@ void Zealot::updateBehavior(list<DrawableObject*>& objectsList) {
 	case FLINCH:
 		getAnimationComponent()->setState("Idle");
 		attackHitbox->setActive(false);
-		cout << "flinching" << endl;
+		//cout << "flinching" << endl;
 		if (flinchTimer > 0) {
 			flinchTimer -= dt;
 		}
@@ -188,7 +191,7 @@ void Zealot::endAttack() {
 	if (currentAttack == Variation1) {
 		if (Random::Float() <= 0.3f) {
 			currentAttack = Variation2;
-			cout << "attack2" << endl;
+			//cout << "attack2" << endl;
 		}
 		else {
 			attackCooldownTimer = attackCooldown;

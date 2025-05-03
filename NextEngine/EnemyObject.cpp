@@ -38,6 +38,7 @@ EnemyObject::EnemyObject(const EnemyInfo& enemyInfo) : LivingEntity(enemyInfo.na
 	attackFrameEnd = 4;
 
 	bulletHitCounter = 0;
+	bulletHitResetTimer = 0.0f;
 
 	canMoveTowardTarget = true;
 }
@@ -54,7 +55,8 @@ void EnemyObject::onDeath(std::list<DrawableObject*>& objectsList) {
 		return;
 	}
 	
-	GameEngine::getInstance()->freezeGameForSeconds(0.125f);
+	GameEngine::getInstance()->pauseTimeForSeconds(0.125f);
+	//GameEngine::getInstance()->freezeGameForSeconds(0.125f);
 
 	float direction = (targetEntity->getTransform().getPosition().x < this->getTransform().getPosition().x) ? 1.0f : -1.0f;
 
@@ -76,7 +78,7 @@ void EnemyObject::onDeath(std::list<DrawableObject*>& objectsList) {
 			glm::vec2(-2.5f, 2.5f),
 			glm::vec3(0.863f, 0.078f, 0.235f),
 			glm::vec3(0.733f, 0.039f, 0.118f),
-			0.3f, 0.2f, 0.15f, true
+			0.3f, 0.2f, 0.15f, true, 1.0f, true
 		);
 
 		ParticleProperties p2 = ParticleProperties(
@@ -85,7 +87,7 @@ void EnemyObject::onDeath(std::list<DrawableObject*>& objectsList) {
 			glm::vec2(-2.5f, 2.5f),
 			glm::vec3(0.863f, 0.078f, 0.235f),
 			glm::vec3(0.733f, 0.039f, 0.118f),
-			0.3f, 0.2f, 0.15f, true
+			0.3f, 0.2f, 0.15f, true, 1.0f, true
 		);
 
 		this->emitter->emit(p1);
@@ -392,6 +394,15 @@ void EnemyObject::updateBehavior(list<DrawableObject*>& objectsList) {
 
 void EnemyObject::postUpdateBehavior() {
 	canMoveTowardTarget = true;
+
+	if (bulletHitCounter > 0) {
+		bulletHitResetTimer -= GameEngine::getInstance()->getTime()->getDeltaTime();
+
+		if (bulletHitResetTimer <= 0.0f) {
+			bulletHitCounter = 0;
+		}
+	}
+	//cout << "bullet count: " << bulletHitCounter << endl;
 }
 
 DamageCollider<PlayerObject>* EnemyObject::getDamageCollider() const {
@@ -434,6 +445,7 @@ MovementInfo EnemyObject::getMovementInfo() const {
 
 void EnemyObject::signalBulletHit(int numOfBullet) {
 	bulletHitCounter += numOfBullet;
+	bulletHitResetTimer = EnemyStat::TIME_FOR_BULLET_HIT_TO_BE_RESET;
 
 	if (bulletHitCounter >= EnemyStat::NUM_OF_BULLET_TO_STUN) {
 		bulletHitCounter = 0;

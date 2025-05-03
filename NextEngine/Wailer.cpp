@@ -9,11 +9,19 @@ Wailer::Wailer(const EnemyInfo& enemyinfo) : EnemyObject(enemyinfo) {
 	repositionTimer = 0.0f;
 	isInSonicAttack = false;
 	zealotCounter = 0;
+
+	getTransform().setScale(1.3f, 1.8f);
+	getColliderComponent()->setDimension(0.5f, 0.85f);
+	getColliderComponent()->getTransform().setPosition(0.0f, -0.15f);
 }
 
 Wailer::~Wailer() {
 	if (sonicAttack != nullptr) {
 		destroyObject(sonicAttack);
+	}
+
+	for (Zealot* zealot : summonedZealots) {
+		zealot->setWailerSummoner(nullptr);
 	}
 }
 
@@ -159,7 +167,7 @@ void Wailer::updateBehavior(list<DrawableObject*>& objectsList) {
 		case STUNNED:
 			getAnimationComponent()->setState("Stunned");
 			resetAttack();
-			cout << "stun" << endl;
+			//cout << "stun" << endl;
 			if (currentStunnedTime > 0) {
 				currentStunnedTime -= dt;
 			}
@@ -216,7 +224,7 @@ void Wailer::handleSonicBlastState() {
 	if (animState.name != "WindUp" && !isInSonicAttack) {
 		this->getAnimationComponent()->setState("WindUp");
 		isInSonicAttack = true;
-		sonicAttack->mark(targetEntity->getTransform().getPosition());
+		sonicAttack->mark(targetEntity->getTransform().getPosition() + glm::vec3(0, 0, 50.0f));
 		return;
 	}
 
@@ -254,6 +262,8 @@ void Wailer::spawnZealot(glm::vec3 playerPos, std::list<DrawableObject*>& object
 
 	zealot->setWailerSummoner(this);
 	zealotCounter++;
+
+	summonedZealots.insert(zealot);
 }
 
 void Wailer::handleSummoningState(std::list<DrawableObject*>& objectlist) {
@@ -289,6 +299,7 @@ void Wailer::resetAttack() {
 	sonicAttack->reset();
 }
 
-void Wailer::removeSummonedZealot() {
+void Wailer::removeSummonedZealot(Zealot* zealot) {
 	zealotCounter--;
+	summonedZealots.erase(zealot);
 }

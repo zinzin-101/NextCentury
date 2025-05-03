@@ -23,6 +23,9 @@ class GameEngine {
 	SDL_Window* gameWindow;
 	SDL_GLContext* glContext;
 
+	float engineTimer;
+	bool isGamePaused;
+
 	GameEngine();
 public:
 	static GameEngine* getInstance();
@@ -31,6 +34,7 @@ public:
 	Time* getTime();
 	InputManager* getInputHandler();// Getter for input handler
 	void init(int width, int height);
+	void updateEngineComponent();
 	void setDrawArea(float left, float right, float bottom, float top);
 	void setBackgroundColor(float r, float g, float b);
 	void addMesh(string name, MeshVbo* mesh);
@@ -43,6 +47,8 @@ public:
 	void setSDLWindow(SDL_Window* window);
 	void setGlContext(SDL_GLContext* glContext);
 	void freezeGameForSeconds(float duration);
+	void pauseTimeForSeconds(float duration);
+	bool getIsGamePaused() const;
 
 	SDL_Window* getSDLWindow() const;
 	SDL_GLContext* getGLContextPtr() const;

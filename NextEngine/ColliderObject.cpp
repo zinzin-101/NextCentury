@@ -21,7 +21,7 @@ void ColliderObject::render(glm::mat4 globalModelTransform) {
 		return;
 	}
 
-	if (!canDrawCollider) {
+	if (!canDrawCollider || !collider->isEnable()) {
 		return;
 	}
 

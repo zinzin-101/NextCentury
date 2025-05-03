@@ -14,24 +14,28 @@ LivingEntity::LivingEntity() : health(100), isStun(false), canTakeDamage(true), 
 isDamageOverlayed(false), damageOverlayTimeRemaining(0.0f), isInKnockback(false), knockbackDurationRemaining(0.0f),
 isAffectedByLighting(false), forceIgnoreLighting(false) {
     emitter = new ParticleSystem();
+    maxHealth = health;
 }
 
 LivingEntity::LivingEntity(int hp) : health(hp), isStun(false), canTakeDamage(true), isFacingRight(false),
 isDamageOverlayed(false), damageOverlayTimeRemaining(0.0f), isInKnockback(false), knockbackDurationRemaining(0.0f),
 isAffectedByLighting(false), forceIgnoreLighting(false) {
     emitter = new ParticleSystem();
+    maxHealth = health;
 }
 
 LivingEntity::LivingEntity(std::string name) : TexturedObject(name), health(100), isStun(false), canTakeDamage(true),
 isFacingRight(false), isDamageOverlayed(false), damageOverlayTimeRemaining(0.0f), isInKnockback(false), knockbackDurationRemaining(0.0f), 
 isAffectedByLighting(false), forceIgnoreLighting(false) {
     emitter = new ParticleSystem();
+    maxHealth = health;
 }
 
 LivingEntity::LivingEntity(std::string name, int hp) : TexturedObject(name), health(hp), isStun(false), canTakeDamage(true),
 isFacingRight(false), isDamageOverlayed(false), damageOverlayTimeRemaining(0.0f), isInKnockback(false), knockbackDurationRemaining(0.0f), 
 isAffectedByLighting(false), forceIgnoreLighting(false) {
     emitter = new ParticleSystem();
+    maxHealth = health;
 }
 
 LivingEntity::~LivingEntity() {
@@ -44,12 +48,20 @@ void LivingEntity::setHealth(int hp) {
     this->health = hp;
 }
 
+void LivingEntity::setMaxHealth(int hp) {
+    this->maxHealth = hp;
+}
+
 void LivingEntity::setCanTakeDamage(bool value) {
     canTakeDamage = value;
 }
 
 int LivingEntity::getHealth() const {
     return health;
+}
+
+int LivingEntity::getMaxHealth() const {
+    return maxHealth;
 }
 
 bool LivingEntity::getCanTakeDamage() const {
@@ -168,7 +180,7 @@ void LivingEntity::handleBurning() {
 
     if (damageTimer > timeBetweenFireDamage) {
         damageTimer = 0.0f;
-        LivingEntity::takeDamage(1, true); // fire damage per damage cooldown
+        LivingEntity::takeDamage(LivingEntityStat::BURNING_DAMAGE, true); // fire damage per damage cooldown
     }
 
     if (emitTimer > timeBetweenEmit) {
@@ -207,6 +219,14 @@ void LivingEntity::takeDamage(int damage, bool ignoreCanTakeDamage) {
 
     isDamageOverlayed = true;
     damageOverlayTimeRemaining = LivingEntityStat::DAMAGE_OVERLAY_DURATION;
+}
+
+void LivingEntity::heal(int amount) {
+    health += amount;
+
+    if (health > maxHealth) {
+        health = maxHealth;
+    }
 }
 
 void LivingEntity::handleDamageOverlay() {

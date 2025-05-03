@@ -19,22 +19,23 @@ PlayerObject::PlayerObject() : LivingEntity("Player", PlayerStat::MAX_HEALTH) {
 
     getAnimationComponent()->addState("Dodging", 3, 0, 5, false, PlayerStat::DODGE_DURATION / 6.0f);
 
-    getAnimationComponent()->addState("Combo1", 4, 0, 5, false);
-    getAnimationComponent()->addState("Combo2", 5, 0, 5, false);
-    getAnimationComponent()->addState("Combo3", 6, 0, 5, false);
+    getAnimationComponent()->addState("Combo1", 4, 0, 5, false, PlayerStat::ATTACK_ANIMATION_TIME_PER_FRAME);
+    getAnimationComponent()->addState("Combo2", 5, 0, 5, false, PlayerStat::ATTACK_ANIMATION_TIME_PER_FRAME);
+    getAnimationComponent()->addState("Combo3", 6, 0, 5, false, PlayerStat::ATTACK_ANIMATION_TIME_PER_FRAME);
 
-    getAnimationComponent()->addState("Charging", 7, 0, 6, false);
-    getAnimationComponent()->addState("MaxCharging", 7, 1, 3, true);
-    getAnimationComponent()->addState("Charge1", 8, 0, 4, false);
-    getAnimationComponent()->addState("Charge2", 9, 0, 4, false);
+    getAnimationComponent()->addState("Charging", 7, 0, 6, false, PlayerStat::CHARGE_ANIMATION_TIME_PER_FRAME);
+    getAnimationComponent()->addState("MaxCharging", 7, 1, 3, true, PlayerStat::CHARGE_ANIMATION_TIME_PER_FRAME);
+    getAnimationComponent()->addState("Charge1", 8, 0, 4, false, PlayerStat::ATTACK_ANIMATION_TIME_PER_FRAME);
+    getAnimationComponent()->addState("Charge2", 9, 0, 4, false, PlayerStat::ATTACK_ANIMATION_TIME_PER_FRAME);
 
     getAnimationComponent()->addState("Parrying", 14, 0, 8, false);
 
-    getAnimationComponent()->addState("GunCharge1", 11, 0, 6, true);
-    getAnimationComponent()->addState("GunCharge2", 12, 0, 6, true);
-    getAnimationComponent()->addState("GunCharge3", 13, 0, 6, true);
+    getAnimationComponent()->addState("GunCharge1", 11, 0, 6, true, PlayerStat::GUN_CHARGE_ANIMATION_TIME_PER_FRAME);
+    getAnimationComponent()->addState("GunCharge2", 12, 0, 6, true, PlayerStat::GUN_CHARGE_ANIMATION_TIME_PER_FRAME);
+    getAnimationComponent()->addState("GunCharge3", 13, 0, 6, true, PlayerStat::GUN_CHARGE_ANIMATION_TIME_PER_FRAME);
     getAnimationComponent()->addState("GunShoot", 10, 0, 3, false, 0.08f);
 
+    getAnimationComponent()->addState("Healing", 15, 0, 7, false);
 
     //getTransform().setScale(1, 1);
     addColliderComponent();
@@ -97,8 +98,10 @@ PlayerObject::PlayerObject() : LivingEntity("Player", PlayerStat::MAX_HEALTH) {
     staminaRechargeDelayTimer = 0.0f;
     staminaRechargeTimer = 0.0f;
 
-    currentNumOfBullets = PlayerStat::MAX_BULLET;
-    bulletRechargeTimer = PlayerStat::BULLET_RECHARGE_TIMER;
+
+    resetNumOfPotion();
+    resetHealing();
+    healFrame = 4;
 
     emitter = new ParticleSystem();
 }
@@ -176,6 +179,26 @@ void PlayerObject::dodge(float xDirection) {
     dodge();
 }
 
+void PlayerObject::useHealthPotion() {
+    if (isHealing || isAttacking || isParrying || isDodging || isJumping) {
+        return;
+    }
+
+    if (currentNumOfPotion <= 0) {
+        return;
+    }
+
+    if (this->getHealth() == this->getMaxHealth()) {
+        return;
+    }
+
+    isHealing = true;
+    healed = false;
+
+    currentNumOfPotion--;
+    this->getAnimationComponent()->setState("Healing");
+}
+
 void PlayerObject::start(list<DrawableObject*>& objectsList) {
     attackHitbox = new DamageCollider<EnemyObject>(this, 0, -1);
     //attackHitbox = new DamageCollider<EnemyObject>(this, damage, 2.5f);
@@ -184,6 +207,10 @@ void PlayerObject::start(list<DrawableObject*>& objectsList) {
     attackHitbox->setFollowOffset(glm::vec3(0.5f, 0.0f, 0));
     attackHitbox->getColliderComponent()->setWidth(1.5f);
     objectsList.emplace_back(attackHitbox);
+
+    this->getTransform().setScale(3.5f, 2.5f);
+    this->getColliderComponent()->getTransform().translate(0.0f, -0.44f);
+    this->getColliderComponent()->setDimension(0.25f, 0.65f);
 
     this->getAnimationComponent()->setState("Idle");
 }
@@ -218,6 +245,16 @@ void PlayerObject::updateStat() {
             }
         }
     }
+
+    if (potionRechargeTimer > 0.0f && currentNumOfPotion < PlayerStat::MAX_HEALTH_POTION) {
+        potionRechargeTimer -= dt;
+    }
+
+    if (currentNumOfPotion < PlayerStat::MAX_HEALTH_POTION && potionRechargeTimer <= 0.0f) {
+        potionRechargeTimer = PlayerStat::POTION_RECHARGE_TIMER;
+        currentNumOfPotion++;
+    }
+    //cout << "potion left: " << currentNumOfPotion << endl;
 }
 
 void PlayerObject::updateBehavior(list<DrawableObject*>& objectsList) {
@@ -255,6 +292,11 @@ void PlayerObject::updateBehavior(list<DrawableObject*>& objectsList) {
 
     if (rangeAttackCooldownRemaining > 0.0f) {
         rangeAttackCooldownRemaining -= dt;
+    }
+
+    if (isHealing) {
+        handleHealing();
+        return;
     }
 
     if (isParrying) {
@@ -309,7 +351,7 @@ void PlayerObject::updateBehavior(list<DrawableObject*>& objectsList) {
 }
 
 void PlayerObject::normalAttack() {
-    if (isAttacking || isParrying || isDodging || isJumping) {
+    if (isAttacking || isParrying || isDodging || isJumping || isHealing) {
         return;
     }
 
@@ -402,7 +444,7 @@ void PlayerObject::heavyAttack() {
 }
 
 void PlayerObject::parryAttack() {
-    if (isParrying || isDodging || isAttacking || isInHeavyAttack || isJumping || isInRangeAttack) {
+    if (isParrying || isDodging || isAttacking || isInHeavyAttack || isJumping || isInRangeAttack || isHealing) {
         return;
     }
 
@@ -499,9 +541,11 @@ void PlayerObject::resetAttack() {
 }
 
 void PlayerObject::flinch(float duration) {
-    if (isJumping) {
+    if (isJumping || isDodging) {
         return;
     }
+
+    resetHealing();
 
     this->flinchTimeRemaining = duration;
     resetAttack();
@@ -528,7 +572,7 @@ void PlayerObject::endMeleeAttack() {
 }
 
 void PlayerObject::startHeavyAttack() {
-    if (isAttacking || isParrying || isDodging || isJumping) {
+    if (isAttacking || isParrying || isDodging || isJumping || isHealing) {
         return;
     }
 
@@ -560,7 +604,7 @@ void PlayerObject::startHeavyAttack() {
 }
 
 void PlayerObject::startRangeAttack(float dt) {
-    if (isAttacking || isParrying || isDodging || isJumping || isInAttackState || isInHeavyAttack) {
+    if (isAttacking || isParrying || isDodging || isJumping || isInAttackState || isInHeavyAttack || isHealing) {
         return;
     }
 
@@ -688,6 +732,25 @@ void PlayerObject::handleJumpMovement() {
     }
 
     currentState.currentFrame = midAirFrameNum;
+}
+
+void PlayerObject::handleHealing() {
+    glm::vec2 vel = this->getPhysicsComponent()->getVelocity();
+    vel.x = 0.0f;
+    this->getPhysicsComponent()->setVelocity(vel);
+
+    Animation::State animState = this->getAnimationComponent()->getCurrentAnimationState();
+    if (animState.currentFrame == healFrame && !healed) {
+        this->heal(PlayerStat::HEAL_AMOUNT);
+        healed = true;
+        return;
+    }
+
+    if (!animState.isPlaying) {
+        isHealing = false;
+        this->getAnimationComponent()->setState("Idle");
+        return;
+    }
 }
 
 void PlayerObject::handleNormalAttack() {
@@ -820,8 +883,12 @@ void PlayerObject::handleParryAttack() {
     Animation::State currentState = this->getAnimationComponent()->getCurrentAnimationState();
     int currentFrame = currentState.currentFrame;
 
-    if (currentFrame < parryFrame.startAttackFrame + 1) {
+    if (currentFrame == parryFrame.startAttackFrame) {
         this->setCanTakeDamage(false);
+        return;
+    }
+
+    if (currentFrame < parryFrame.startAttackFrame + 1) {
         return;
     }
 
@@ -890,7 +957,7 @@ void PlayerObject::takeDamage(int damage) {
     if (!this->getCanTakeDamage()) {
         return;
     }
-
+    //cout << "took damage" << endl;
     this->LivingEntity::takeDamage(damage);
     iFrameTimeRemaining = PlayerStat::INVINCIBLE_DURATION_AFTER_TAKING_DAMAGE;
 }
@@ -899,6 +966,15 @@ void PlayerObject::resetStaminaRechargeDelay() {
     staminaRechargeDelayTimer = PlayerStat::STAMINA_RECHARGE_DELAY;
 }
 
+void PlayerObject::resetNumOfPotion() {
+    currentNumOfBullets = PlayerStat::MAX_BULLET;
+    bulletRechargeTimer = PlayerStat::BULLET_RECHARGE_TIMER;
+}
+
+void PlayerObject::resetHealing() {
+    isHealing = false;
+    healed = false;
+}
 
 int PlayerObject::getStamina() const {
     return stamina;
