@@ -165,15 +165,13 @@ void GLRenderer::render(list<DrawableObject*>& objList, bool clear) {
     setViewMatrix(view);
 
     // Calculate the model matrix if necessary, or use the default
-    glm::mat4 objCam = glm::mat4(1.0f);
-    glm::vec3 translate = -camera->getPosition();
-    glm::vec3 scale = glm::vec3(120.0f, 120.0f, 0.0f);
-    objCam = glm::translate(objCam, translate);
-    objCam = glm::scale(objCam, scale);
+    glm::mat4 txtToCam = glm::mat4(1.0f);
+    glm::mat4 objToCam = glm::mat4(1.0f);
 
-    glm::mat4 txtCam = glm::mat4(1.0f);
-    txtCam = glm::translate(txtCam, translate);
-    //txtCam = glm::scale(txtCam, scale);
+    objToCam = glm::translate(txtToCam, -camera->getPosition());
+
+    txtToCam = glm::translate(txtToCam, -camera->getPosition());
+    txtToCam = glm::scale(txtToCam, glm::vec3(1.0f / 120.0f, 1.0f / 120.0f, 0.0f));
 
     applyViewMatrix();
     
@@ -185,20 +183,16 @@ void GLRenderer::render(list<DrawableObject*>& objList, bool clear) {
         }
         TextObject* txt = dynamic_cast<TextObject*>(obj);
         Dialogue* di = dynamic_cast<Dialogue*>(obj);
-        setOrthoProjection(-960, 960, -540, 540);
+        //setOrthoProjection(-960, 960, -540, 540);
+        setOrthoProjection(-8, 8, -4.5, 4.5);
         if (txt != nullptr || di != nullptr) {
-            glUniformMatrix4fv(pMatrixId, 1, GL_FALSE, glm::value_ptr(txtCam * this->projectionMatrix));
+            glUniformMatrix4fv(pMatrixId, 1, GL_FALSE, glm::value_ptr(this->projectionMatrix * txtToCam));
         }
         else {
-            //setOrthoProjection(-8, 8, -4.5, 4.5);
-            glUniformMatrix4fv(pMatrixId, 1, GL_FALSE, glm::value_ptr(objCam * this->projectionMatrix));
+            glUniformMatrix4fv(pMatrixId, 1, GL_FALSE, glm::value_ptr(this->projectionMatrix * objToCam));
         }
         obj->render(glm::mat4()); 
         obj->drawCollider();
-        //setViewMatrix(view);
-        //applyViewMatrix();
-        //glUniformMatrix4fv(pMatrixId, 1, GL_FALSE, glm::value_ptr(this->projectionMatrix));
-
     }
 
     // Draw the camera outline
