@@ -49,6 +49,10 @@
     <ClCompile Include="Level.cpp" />
     <ClCompile Include="LevelAct1.cpp" />
     <ClCompile Include="LevelAct2.cpp" />
+    <ClCompile Include="LevelAct3.cpp" />
+    <ClCompile Include="LevelAct4.cpp" />
+    <ClCompile Include="LevelAct5.cpp" />
+    <ClCompile Include="LevelAct6.cpp" />
     <ClCompile Include="LevelAlphaNMMN.cpp" />
     <ClCompile Include="LevelAlphaTest.cpp" />
     <ClCompile Include="LevelAnimTest.cpp" />
@@ -117,6 +121,10 @@
     <ClInclude Include="GameStateList.h" />
     <ClInclude Include="GLRenderer.h" />
     <ClInclude Include="LevelAct2.h" />
+    <ClInclude Include="LevelAct3.h" />
+    <ClInclude Include="LevelAct4.h" />
+    <ClInclude Include="LevelAct5.h" />
+    <ClInclude Include="LevelAct6.h" />
     <ClInclude Include="LevelLoading.h" />
     <ClInclude Include="HitScanDamage.h" />
     <ClInclude Include="IngameUI.h" />

@@ -15,6 +15,9 @@
 #include "LevelAct1.h"
 #include "LevelAct2.h"
 #include "LevelAct3.h"
+#include "LevelAct4.h"
+#include "LevelAct5.h"
+#include "LevelAct6.h"
 
 GameStateController::GameStateController() {
 	// set the initial game state
@@ -53,6 +56,18 @@ void GameStateController::loadLevel() {
 		case GameState::GS_ACT3:
 			cout << "Act1 load" << endl;
 			currentLevel = new LevelAct3();
+			break;
+		case GameState::GS_ACT4:
+			cout << "Act1 load" << endl;
+			currentLevel = new LevelAct4();
+			break;
+		case GameState::GS_ACT5:
+			cout << "Act1 load" << endl;
+			currentLevel = new LevelAct5();
+			break;
+		case GameState::GS_ACT6:
+			cout << "Act1 load" << endl;
+			currentLevel = new LevelAct6();
 			break;
 
 		default:

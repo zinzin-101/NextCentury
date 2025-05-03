@@ -202,7 +202,7 @@ void Level::drawImGui(std::list<DrawableObject*>& objectList) {
     }
     ImGui::SameLine();
     if (ImGui::Button("Switch Scene")) {
-        GameEngine::getInstance()->getStateController()->gameStateNext = (GameState)((GameEngine::getInstance()->getStateController()->gameStateCurr + 1) % 6);
+        GameEngine::getInstance()->getStateController()->gameStateNext = (GameState)((GameEngine::getInstance()->getStateController()->gameStateCurr + 1) % 9);
     }
 
     static char stringBuffer[50] = "\0";

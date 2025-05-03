@@ -1,6 +1,6 @@
-#include "LevelAct2.h"
+#include "LevelAct4.h"
 
-void LevelAct2::levelLoad() {
+void LevelAct4::levelLoad() {
     SquareMeshVbo* square = new SquareMeshVbo();
     square->loadData();
     GameEngine::getInstance()->addMesh(SquareMeshVbo::MESH_NAME, square);
@@ -15,44 +15,45 @@ void LevelAct2::levelLoad() {
     removeLoadingScreen(objectsList);
 }
 
-void LevelAct2::levelInit() {
+void LevelAct4::levelInit() {
     UIobject = new IngameUI();
     GameEngine::getInstance()->getRenderer()->setClearColor(0.1f, 0.1f, 0.1f);
 
-    ParallaxObject* backGround1 = new ParallaxObject(0.0f, -1.5f, 250.0f, false, player, true);
+	TexturedObject* backGround1 = new TexturedObject();
     backGround1->setTexture("../Resource/Texture/Act2/RSDT_P01_Background01.png");
     objectsList.emplace(objectsList.begin(), backGround1);
 
-    ParallaxObject* backGround2 = new ParallaxObject(0.0f, -1.5f, 240.0f, false, player, true);
+    TexturedObject* backGround2 = new TexturedObject();
     backGround2->setTexture("../Resource/Texture/Act2/RSDT_P02_Background02.png");
     objectsList.emplace_back(backGround2);
 
-    ParallaxObject* midGround1 = new ParallaxObject(0.0f, -1.5f, 230.0f, false, player, true);
+    TexturedObject* midGround1 = new TexturedObject();
     midGround1->setTexture("../Resource/Texture/Act2/RSDT_P03_MidGround01.png");
     objectsList.emplace_back(midGround1);
 
-    ParallaxObject* midGround2 = new ParallaxObject(0.0f, -1.5f, 220.0f, false, player, true);
+    TexturedObject* midGround2 = new TexturedObject();
     midGround2->setTexture("../Resource/Texture/Act2/RSDT_P04_MidGround02.png");
     objectsList.emplace_back(midGround2);
 
-    ParallaxObject* midGround3 = new ParallaxObject(0.0f, -1.5f, 150.0f, false, player, true);
+    TexturedObject* midGround3 = new TexturedObject();
     midGround3->setTexture("../Resource/Texture/Act2/RSDT_P06_MidGround03.png");
     objectsList.emplace_back(midGround3);
 
-    ParallaxObject* door = new ParallaxObject(0.0f, -1.5f, 160.0f, false, player, true);
+    TexturedObject* door = new TexturedObject();
     door->setTexture("../Resource/Texture/Act2/RSDT_P05_Door.png");
     objectsList.emplace_back(door);
 
-    ParallaxObject* barrier = new ParallaxObject(0.0f, -1.5f, 70.0f, false, player, true);
+    TexturedObject* barrier = new TexturedObject();
     barrier->setTexture("../Resource/Texture/Act2/RSDT_P07_Barrier.png");
     objectsList.emplace_back(barrier);
 
-    ParallaxObject* foreGround = new ParallaxObject(0.0f, -1.5f, 60.0f, false, player, true);
+    TexturedObject* foreGround = new TexturedObject();
     foreGround->setTexture("../Resource/Texture/Act2/RSDT_P08_Foreground01.png");
     objectsList.emplace_back(foreGround);
 
-   for (auto a : objectsList) {
-        a->getTransform().setScale(24.999984f,9.0f);
+    for (auto a : objectsList) {
+        a->getTransform().setScale(17.77778f, 10.0f);
+        a->getTransform().setPosition(0.0f, -1.0f);
     }
 
 
@@ -88,7 +89,7 @@ void LevelAct2::levelInit() {
 
 }
 
-void LevelAct2::levelUpdate() {
+void LevelAct4::levelUpdate() {
     updateObjects(objectsList);
 
     GameEngine::getInstance()->getRenderer()->updateCamera(glm::vec3());
@@ -108,7 +109,7 @@ void LevelAct2::levelUpdate() {
     //UIobject->updateUI(*player, camPos);
 }
 
-void LevelAct2::levelDraw() {
+void LevelAct4::levelDraw() {
     GameEngine::getInstance()->render(objectsList);
 
 #ifdef DEBUG_MODE_ON
@@ -116,7 +117,7 @@ void LevelAct2::levelDraw() {
 #endif
 }
 
-void LevelAct2::levelFree() {
+void LevelAct4::levelFree() {
     for (DrawableObject* obj : objectsList) {
         delete obj;
     }
@@ -125,13 +126,13 @@ void LevelAct2::levelFree() {
     delete UIobject;
 }
 
-void LevelAct2::levelUnload() {
+void LevelAct4::levelUnload() {
     GameEngine::getInstance()->clearMesh();
     GameEngine::getInstance()->getRenderer()->setClearColor(0.1f, 0.1f, 0.1f);
     //cout << "Unload Level" << endl;
 }
 
-void LevelAct2::handleKey(InputManager& input) {
+void LevelAct4::handleKey(InputManager& input) {
     // For debugging
     if (input.getButton(SDLK_z)) GameEngine::getInstance()->getRenderer()->increaseZoomRatio(0.1f);
     if (input.getButton(SDLK_x)) GameEngine::getInstance()->getRenderer()->decreaseZoomRatio(0.1f);
