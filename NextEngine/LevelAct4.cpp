@@ -51,10 +51,17 @@ void LevelAct4::levelInit() {
     foreGround->setTexture("../Resource/Texture/Act2/RSDT_P08_Foreground01.png");
     objectsList.emplace_back(foreGround);
 
+    TexturedObject* ground = new TexturedObject();
+    ground->setTexture("../Resource/Texture/Act1/City_P11_Ground.png");
+    objectsList.emplace_back(ground);
+
+    float height = 8.0f;
+    float width = height * 2.7778f;
     for (auto a : objectsList) {
-        a->getTransform().setScale(17.77778f, 10.0f);
-        a->getTransform().setPosition(0.0f, -1.0f);
+        a->getTransform().setScale(width, height);
+        a->getTransform().setPosition(0.0f, -0.75f);
     }
+
 
 
     Level::importTransformData(objectsList, "alpha1", false);

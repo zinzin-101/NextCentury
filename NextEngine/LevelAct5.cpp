@@ -23,27 +23,27 @@ void LevelAct5::levelInit() {
     sky->setTexture("../Resource/Texture/Act5/OSKT_P09_Sky.png");
     objectsList.emplace(objectsList.begin(), sky);
 
-    ParallaxObject* mountain1 = new ParallaxObject(0.0f, -0.5f, 350.0f, false, player, true);
+    ParallaxObject* mountain1 = new ParallaxObject(0.0f, -0.0f, 350.0f, false, player, true);
     mountain1->setTexture("../Resource/Texture/Act5/OSKT_P06_Mountain01.png");
     objectsList.emplace_back(mountain1);
 
-    ParallaxObject* mountain2 = new ParallaxObject(0.0f, -0.5f, 300.0f, false, player, true);
+    ParallaxObject* mountain2 = new ParallaxObject(0.0f, -0.0f, 300.0f, false, player, true);
     mountain2->setTexture("../Resource/Texture/Act5/OSKT_P07_Mountain02.png");
     objectsList.emplace_back(mountain2);
 
-    ParallaxObject* midGround1 = new ParallaxObject(0.0f, -0.5f, 250.0f, false, player, true);
+    ParallaxObject* midGround1 = new ParallaxObject(0.0f, -0.0f, 250.0f, false, player, true);
     midGround1->setTexture("../Resource/Texture/Act5/OSKT_P05_MidGround01.png");
     objectsList.emplace_back(midGround1);
 
-    ParallaxObject* midGround2 = new ParallaxObject(0.0f, -1.75f, 150.0f, false, player, true);
+    ParallaxObject* midGround2 = new ParallaxObject(0.0f, -0.0f, 150.0f, false, player, true);
     midGround2->setTexture("../Resource/Texture/Act5/OSKT_P04_MidGround02.png");
     objectsList.emplace_back(midGround2);
 
-    ParallaxObject* midGround3 = new ParallaxObject(0.0f, -1.25f, 100.0f, false, player, true);
+    ParallaxObject* midGround3 = new ParallaxObject(0.0f, -0.0f, 100.0f, false, player, true);
     midGround3->setTexture("../Resource/Texture/Act5/OSKT_P03_MidGround03.png");
     objectsList.emplace_back(midGround3);
 
-    ParallaxObject* spaceShip = new ParallaxObject(0.0f, -1.75f, 90.0f, false, player, true);
+    ParallaxObject* spaceShip = new ParallaxObject(0.0f, -0.0f, 90.0f, false, player, true);
     spaceShip->setTexture("../Resource/Texture/Act5/OSKT_P08_Spaceship.png");
     objectsList.emplace_back(spaceShip);
 
@@ -51,12 +51,14 @@ void LevelAct5::levelInit() {
     fog->setTexture("../Resource/Texture/Act5/OSKT_P01_Fog.png");
     objectsList.emplace_back(fog);
 
-    ParallaxObject* ground = new ParallaxObject(0.0f, -1.75f, 0.0f, false, player, true);
+    ParallaxObject* ground = new ParallaxObject(0.0f, -0.0f, 0.0f, false, player, true);
     ground->setTexture("../Resource/Texture/Act5/OSKT_P02_Ground.png");
     objectsList.emplace_back(ground);
 
+    float height = 8.0f;
+    float width = height * 1.467889908256881;
     for (auto a : objectsList) {
-        a->getTransform().setScale(35.0f, 6.0f);
+        a->getTransform().setScale(width, height);
     }
     Level::importTransformData(objectsList, "alpha1", false);
 

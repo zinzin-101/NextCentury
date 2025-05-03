@@ -19,41 +19,48 @@ void LevelAct2::levelInit() {
     UIobject = new IngameUI();
     GameEngine::getInstance()->getRenderer()->setClearColor(0.1f, 0.1f, 0.1f);
 
-    ParallaxObject* backGround1 = new ParallaxObject(0.0f, -1.5f, 250.0f, false, player, true);
+    ParallaxObject* backGround1 = new ParallaxObject(0.0f, -1.0f, 250.0f, false, player, true);
     backGround1->setTexture("../Resource/Texture/Act2/RSDT_P01_Background01.png");
     objectsList.emplace(objectsList.begin(), backGround1);
 
-    ParallaxObject* backGround2 = new ParallaxObject(0.0f, -1.5f, 240.0f, false, player, true);
+    ParallaxObject* backGround2 = new ParallaxObject(0.0f, -1.0f, 240.0f, false, player, true);
     backGround2->setTexture("../Resource/Texture/Act2/RSDT_P02_Background02.png");
     objectsList.emplace_back(backGround2);
 
-    ParallaxObject* midGround1 = new ParallaxObject(0.0f, -1.5f, 230.0f, false, player, true);
+    ParallaxObject* midGround1 = new ParallaxObject(0.0f, -1.0f, 230.0f, false, player, true);
     midGround1->setTexture("../Resource/Texture/Act2/RSDT_P03_MidGround01.png");
     objectsList.emplace_back(midGround1);
 
-    ParallaxObject* midGround2 = new ParallaxObject(0.0f, -1.5f, 220.0f, false, player, true);
+    ParallaxObject* midGround2 = new ParallaxObject(0.0f, -1.0f, 220.0f, false, player, true);
     midGround2->setTexture("../Resource/Texture/Act2/RSDT_P04_MidGround02.png");
     objectsList.emplace_back(midGround2);
 
-    ParallaxObject* midGround3 = new ParallaxObject(0.0f, -1.5f, 150.0f, false, player, true);
+    ParallaxObject* midGround3 = new ParallaxObject(0.0f, -1.0f, 150.0f, false, player, true);
     midGround3->setTexture("../Resource/Texture/Act2/RSDT_P06_MidGround03.png");
     objectsList.emplace_back(midGround3);
 
-    ParallaxObject* door = new ParallaxObject(0.0f, -1.5f, 160.0f, false, player, true);
+    ParallaxObject* door = new ParallaxObject(0.0f, -1.0f, 220.0f, false, player, true);
     door->setTexture("../Resource/Texture/Act2/RSDT_P05_Door.png");
     objectsList.emplace_back(door);
 
-    ParallaxObject* barrier = new ParallaxObject(0.0f, -1.5f, 70.0f, false, player, true);
+    ParallaxObject* barrier = new ParallaxObject(0.0f, -1.0f, 70.0f, false, player, true);
     barrier->setTexture("../Resource/Texture/Act2/RSDT_P07_Barrier.png");
     objectsList.emplace_back(barrier);
 
-    ParallaxObject* foreGround = new ParallaxObject(0.0f, -1.5f, 60.0f, false, player, true);
+    ParallaxObject* foreGround = new ParallaxObject(0.0f, -0.5f, 60.0f, false, player, true);
     foreGround->setTexture("../Resource/Texture/Act2/RSDT_P08_Foreground01.png");
     objectsList.emplace_back(foreGround);
 
-   for (auto a : objectsList) {
-        a->getTransform().setScale(24.999984f,9.0f);
+    ParallaxObject* ground = new ParallaxObject(0.0f, -1.0f, 0.0f, false, player, true);
+    ground->setTexture("../Resource/Texture/Act1/City_P11_Ground.png");
+    objectsList.emplace_back(ground);
+
+    float height = 7.0f;
+    float width = height * 2.7778f;
+    for (auto a : objectsList) {
+        a->getTransform().setScale(width, height);
     }
+
 
 
     Level::importTransformData(objectsList, "alpha1", false);

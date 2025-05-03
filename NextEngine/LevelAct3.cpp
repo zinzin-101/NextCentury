@@ -49,9 +49,11 @@ void LevelAct3::levelInit() {
     docs->setTexture("../Resource/Texture/Act3/MCR_P05_Doc.png");
     objectsList.emplace_back(docs);
 
+    float height = 8.0f;
+    float width = height * 1.777777777777778;
     for (auto a : objectsList) {
-        a->getTransform().setScale(17.77778f, 10.0f);
-        a->getTransform().setPosition(0.0f, -1.0f);
+        a->getTransform().setScale(width, height);
+        a->getTransform().setPosition(0.0f, -0.75f);
     }
 
 

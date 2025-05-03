@@ -19,7 +19,7 @@ void LevelAct1::levelInit() {
     UIobject = new IngameUI();
     GameEngine::getInstance()->getRenderer()->setClearColor(0.1f, 0.1f, 0.1f);
 
-    ParallaxObject* sky = new ParallaxObject(0.0f, 0.0f, 550.0f, false, player, true);
+    ParallaxObject* sky = new ParallaxObject(0.0f, 1.0f, 550.0f, false, player, true);
     sky->setTexture("../Resource/Texture/Act1/City_P01_Sky.png");
     objectsList.emplace(objectsList.begin(), sky);
 
@@ -35,20 +35,20 @@ void LevelAct1::levelInit() {
     city3->setTexture("../Resource/Texture/Act1/City_P04_City3.png");
     objectsList.emplace_back(city3);
 
-    ParallaxObject* newsBoard = new ParallaxObject(0.0f, -1.75f, 150.0f, false, player, true);
+    ParallaxObject* newsBoard = new ParallaxObject(0.0f, -0.75f, 150.0f, false, player, true);
     newsBoard->setTexture("../Resource/Texture/Act1/City_P05_NewsBoardandBins.png");
 	newsBoard->getTransform().setScale(70.0f, 15.0f);
     objectsList.emplace_back(newsBoard);
 
-    ParallaxObject* lightPole = new ParallaxObject(0.0f, -1.25f, 100.0f, false, player, true);
+    ParallaxObject* lightPole = new ParallaxObject(0.0f, -0.75f, 100.0f, false, player, true);
     lightPole->setTexture("../Resource/Texture/Act1/City_P09_Lightpole.png");
     objectsList.emplace_back(lightPole);
 
-    ParallaxObject* car = new ParallaxObject(0.0f, -1.75f, 90.0f, false, player, true);
+    ParallaxObject* car = new ParallaxObject(0.0f, -1.0f, 90.0f, false, player, true);
     car->setTexture("../Resource/Texture/Act1/City_P10_Car.png");
     objectsList.emplace_back(car);
 
-    ParallaxObject* pole = new ParallaxObject(0.0f, -1.75f, 70.0f, false, player, true);
+    ParallaxObject* pole = new ParallaxObject(0.0f, 0.0f, 70.0f, false, player, true);
     pole->setTexture("../Resource/Texture/Act1/City_P12_FGPole.png");
     objectsList.emplace_back(pole);
 
@@ -56,15 +56,20 @@ void LevelAct1::levelInit() {
     fog->setTexture("../Resource/Texture/Act1/City_P13_Fog.png");
     objectsList.emplace_back(fog);
 
-    ParallaxObject* ground = new ParallaxObject(0.0f, -1.75f, 0.0f, false, player, true);
+    ParallaxObject* ground = new ParallaxObject(0.0f, -1.0f, 0.0f, false, player, true);
     ground->setTexture("../Resource/Texture/Act1/City_P11_Ground.png");
     objectsList.emplace_back(ground);
 
+	float height = 7.0f; 
+	float width = height * 5.3333333f;
     for (auto a : objectsList) {
-        a->getTransform().setScale(35.0f,6.0f);
+        a->getTransform().setScale(width, height);
     }
 
-    lightPole->getTransform().setScale(42.0f,8.0f);
+
+    lightPole->getTransform().setScale(47.999999f, 9.0f);
+
+    sky->getTransform().setScale(500.f, 500.f);
 
     Level::importTransformData(objectsList, "alpha1", false);
 
