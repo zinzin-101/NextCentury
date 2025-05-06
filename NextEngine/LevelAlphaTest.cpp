@@ -14,8 +14,6 @@ void LevelAlphaTest::levelInit() {
     UIobject = new IngameUI();
     GameEngine::getInstance()->getRenderer()->setClearColor(0.1f, 0.1f, 0.1f);
 
-    
-
     ParallaxObject* background = new ParallaxObject(0.0f, 0.0f, 550.0f, false, player, true);
     background->setTexture("../Resource/Texture/OutskirtParallax/OSKT_P09_Sky.png");
     objectsList.emplace(objectsList.begin(), background);
@@ -120,11 +118,11 @@ void LevelAlphaTest::levelUnload() {
 }
 
 void LevelAlphaTest::handleKey(InputManager& input) {
-    // For debugging
-    if (input.getButton(SDLK_z)) GameEngine::getInstance()->getRenderer()->increaseZoomRatio(0.1f);
-    if (input.getButton(SDLK_x)) GameEngine::getInstance()->getRenderer()->decreaseZoomRatio(0.1f);
-
     float dt = GameEngine::getInstance()->getTime()->getDeltaTime();
+
+    // For debugging
+    if (input.getButton(SDLK_z)) GameEngine::getInstance()->getRenderer()->increaseZoomRatio(2.5f * dt);
+    if (input.getButton(SDLK_x)) GameEngine::getInstance()->getRenderer()->decreaseZoomRatio(2.5f * dt);
 
     /// Process key ///
     // add key that requires hold duration here
