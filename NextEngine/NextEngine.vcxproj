@@ -67,6 +67,7 @@
     <ClCompile Include="MeshVbo.cpp" />
     <ClCompile Include="ParallaxObject.cpp" />
     <ClCompile Include="Particle.cpp" />
+    <ClCompile Include="SimpleParticle.cpp" />
     <ClCompile Include="ParticleSystem.cpp" />
     <ClCompile Include="pch.cpp" />
     <ClCompile Include="Physics.cpp" />
@@ -80,6 +81,7 @@
     <ClCompile Include="SquareMeshVbo.cpp" />
     <ClCompile Include="TextObject.cpp" />
     <ClCompile Include="TexturedObject.cpp" />
+    <ClCompile Include="TexturedParticle.cpp" />
     <ClCompile Include="Time.cpp" />
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="TriangleMeshVbo.cpp" />
@@ -142,6 +144,7 @@
     <ClInclude Include="ParallaxBackground.h" />
     <ClInclude Include="ParallaxObject.h" />
     <ClInclude Include="Particle.h" />
+    <ClInclude Include="SimpleParticle.h" />
     <ClInclude Include="ParticleProperties.h" />
     <ClInclude Include="ParticleSystem.h" />
     <ClInclude Include="pch.h" />
@@ -159,6 +162,7 @@
     <ClInclude Include="SquareMeshVbo.h" />
     <ClInclude Include="TextObject.h" />
     <ClInclude Include="TexturedObject.h" />
+    <ClInclude Include="TexturedParticle.h" />
     <ClInclude Include="Time.h" />
     <ClInclude Include="Transform.h" />
     <ClInclude Include="TriangleMeshVbo.h" />
