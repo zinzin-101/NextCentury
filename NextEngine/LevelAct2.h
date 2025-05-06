@@ -1,16 +1,15 @@
 #pragma once
+
 #include "Level.h"
 #include "ObjectHeader.h"
 
-class LevelAlphaNMMN : public Level {
+class LevelAct2 : public Level {
 private:
     list<DrawableObject*> objectsList;
     list<DrawableObject*> UIobjectsList;
     PlayerObject* player = nullptr;
     IngameUI* UIobject;
     glm::vec3 camPos = glm::vec3(0.0f, 0.0f, 0.0f);
-    queue<Dialogue*> dialogueList;
-    list<InteractableObject*> interactableList;
 
 public:
     virtual void levelLoad();

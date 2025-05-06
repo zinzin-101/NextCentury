@@ -75,14 +75,36 @@ void LevelAlphaNMMN::levelInit() {
         }
     }
 
-    Dialogue* d1 = new Dialogue(36);
+    Dialogue* d1 = new Dialogue(36, player, true); // Must add to the queue in the order that you'll faced them
     d1->getTransform().setPosition(glm::vec3(0.0f, 0.0f, 0.0f));
-    d1->addSentence("LIN");
+    d1->addSentence("Let Me tell you a story. \nAbout a man. \na man whos manner than any man. \nmanny the man!!!");
     d1->addSentence("GAN");
     d1->addSentence("GULI");
     d1->addSentence("GULI2");
     objectsList.emplace_back(d1);
     dialogueList.push(d1);
+
+    Dialogue* d2 = new Dialogue(36, player, true); // Must add to the queue in the order that you'll faced them
+    d2->getTransform().setPosition(glm::vec3(8.0f, 0.0f, 0.0f));
+    d2->addSentence("LIN33");
+    d2->addSentence("GAN33");
+    d2->addSentence("GULI33");
+    d2->addSentence("GULI233");
+    objectsList.emplace_back(d2);
+    dialogueList.push(d2);
+    
+    /////////////////
+    Dialogue* d4intobj = new Dialogue(16, player, false); // Must add to the queue in the order that you'll faced them
+    objectsList.emplace_back(d4intobj);
+    InteractableObject* it = new InteractableObject("a box of chocolate", player, d4intobj);
+    it->setTexture("../Resource/Texture/BoardNeon.png");
+    it->getTransform().setPosition(glm::vec3(5.0f, -2.0f, 0.0f));
+    it->initAnimation(2,1);
+    it->getAnimationComponent()->addState("idle", 0, 0, 1, true);
+    it->getAnimationComponent()->addState("clickAble", 1, 0, 1, true);
+    it->getAnimationComponent()->setState("idle");
+    objectsList.emplace_back(it);
+    interactableList.push_back(it);
 
     startObjects(objectsList);
 
@@ -101,19 +123,9 @@ void LevelAlphaNMMN::levelInit() {
 
 void LevelAlphaNMMN::levelUpdate() {
     updateObjects(objectsList);
-   
+    
     GameEngine::getInstance()->getRenderer()->updateCamera(glm::vec3());
      
-
-    // Placeholder death logic
-    for (std::list<DrawableObject*>::iterator itr = objectsList.begin(); itr != objectsList.end(); ++itr) {
-        EnemyObject* enemy = dynamic_cast<EnemyObject*>(*itr);
-        if (enemy != NULL) {
-            if (enemy->getHealth() <= 0) {
-                DrawableObject::destroyObject(enemy);
-            }
-        }
-    }
     
     GameEngine::getInstance()->getRenderer()->updateCamera(camPos);
     UIobject->updateUI(*player, camPos);
@@ -224,7 +236,26 @@ void LevelAlphaNMMN::handleKey(InputManager& input) {
         }
     }
 
+    //Dialogue interact
     if (input.getButtonDown(SDLK_e)) {
-        
+        if (!dialogueList.empty()) {
+            Dialogue* currentDialogue = dialogueList.front();
+            if (currentDialogue->isDialogueActive) {
+                currentDialogue->nextSentence();
+                if (currentDialogue->sentences.empty()) {
+                    dialogueList.pop(); 
+                }
+            }
+        }
+
+        //InteractableObject* keep;
+        for (InteractableObject* keep : interactableList) {
+            if (keep->getDescriptionActive()) {
+                keep->descriptionText->isDialogueActive = !keep->descriptionText->isDialogueActive;
+            }
+            else {
+                keep->descriptionText->isDialogueActive = false;
+            }
+        }
     }
 }

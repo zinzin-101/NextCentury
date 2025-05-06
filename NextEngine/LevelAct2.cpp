@@ -1,6 +1,6 @@
-#include "LevelAct1.h"
+#include "LevelAct2.h"
 
-void LevelAct1::levelLoad() {
+void LevelAct2::levelLoad() {
     SquareMeshVbo* square = new SquareMeshVbo();
     square->loadData();
     GameEngine::getInstance()->addMesh(SquareMeshVbo::MESH_NAME, square);
@@ -15,56 +15,46 @@ void LevelAct1::levelLoad() {
     removeLoadingScreen(objectsList);
 }
 
-void LevelAct1::levelInit() {
+void LevelAct2::levelInit() {
     UIobject = new IngameUI();
     GameEngine::getInstance()->getRenderer()->setClearColor(0.1f, 0.1f, 0.1f);
 
-    ParallaxObject* sky = new ParallaxObject(0.0f, 0.0f, 550.0f, false, player, true);
-    sky->setTexture("../Resource/Texture/Act1/City_P01_Sky.png");
-    objectsList.emplace(objectsList.begin(), sky);
+    ParallaxObject* backGround1 = new ParallaxObject(0.0f, 0.0f, 550.0f, false, player, true);
+    backGround1->setTexture("../Resource/Texture/Act2/RSDT_P01_Background01.png");
+    objectsList.emplace(objectsList.begin(), backGround1);
 
-    ParallaxObject* city1 = new ParallaxObject(0.0f, -0.5f, 350.0f, false, player, true);
-    city1->setTexture("../Resource/Texture/Act1/City_P02_City1.png");
-    objectsList.emplace_back(city1);
+    ParallaxObject* backGround2 = new ParallaxObject(0.0f, -0.5f, 350.0f, false, player, true);
+    backGround2->setTexture("../Resource/Texture/Act2/RSDT_P02_Background02.png");
+    objectsList.emplace_back(backGround2);
 
-    ParallaxObject* city2 = new ParallaxObject(0.0f, -0.5f, 300.0f, false, player, true);
-    city2->setTexture("../Resource/Texture/Act1/City_P03_City2.png");
-    objectsList.emplace_back(city2);
+    ParallaxObject* midGround1 = new ParallaxObject(0.0f, -0.5f, 300.0f, false, player, true);
+    midGround1->setTexture("../Resource/Texture/Act2/RSDT_P03_MidGround01.png");
+    objectsList.emplace_back(midGround1);
 
-    ParallaxObject* city3 = new ParallaxObject(0.0f, -0.5f, 250.0f, false, player, true);
-    city3->setTexture("../Resource/Texture/Act1/City_P04_City3.png");
-    objectsList.emplace_back(city3);
+    ParallaxObject* midGround2 = new ParallaxObject(0.0f, -0.5f, 250.0f, false, player, true);
+    midGround2->setTexture("../Resource/Texture/Act2/RSDT_P04_MidGround02.png");
+    objectsList.emplace_back(midGround2);
 
-    ParallaxObject* newsBoard = new ParallaxObject(0.0f, -1.75f, 150.0f, false, player, true);
-    newsBoard->setTexture("../Resource/Texture/Act1/City_P05_NewsBoardandBins.png");
-	newsBoard->getTransform().setScale(70.0f, 15.0f);
-    objectsList.emplace_back(newsBoard);
+    ParallaxObject* midGround3 = new ParallaxObject(0.0f, -1.75f, 150.0f, false, player, true);
+    midGround3->setTexture("../Resource/Texture/Act2/RSDT_P06_MidGround03.png");
+    objectsList.emplace_back(midGround3);
 
-    ParallaxObject* lightPole = new ParallaxObject(0.0f, -1.25f, 100.0f, false, player, true);
-    lightPole->setTexture("../Resource/Texture/Act1/City_P09_Lightpole.png");
-    objectsList.emplace_back(lightPole);
+    ParallaxObject* door = new ParallaxObject(0.0f, -1.75f, 90.0f, false, player, true);
+    door->setTexture("../Resource/Texture/Act2/RSDT_P05_Door.png");
+    objectsList.emplace_back(door);
 
-    ParallaxObject* car = new ParallaxObject(0.0f, -1.75f, 90.0f, false, player, true);
-    car->setTexture("../Resource/Texture/Act1/City_P10_Car.png");
-    objectsList.emplace_back(car);
+    ParallaxObject* barrier = new ParallaxObject(0.0f, -1.75f, 70.0f, false, player, true);
+    barrier->setTexture("../Resource/Texture/Act2/RSDT_P07_Barrier.png");
+    objectsList.emplace_back(barrier);
 
-    ParallaxObject* pole = new ParallaxObject(0.0f, -1.75f, 70.0f, false, player, true);
-    pole->setTexture("../Resource/Texture/Act1/City_P12_FGPole.png");
-    objectsList.emplace_back(pole);
+    ParallaxObject* foreGround = new ParallaxObject(0.0f, -1.75f, 60.0f, false, player, true);
+    foreGround->setTexture("../Resource/Texture/Act2/RSDT_P08_Foreground01.png");
+    objectsList.emplace_back(foreGround);
 
-    ParallaxObject* fog = new ParallaxObject(0.0f, 0.0f, 60.0f, false, player, true);
-    fog->setTexture("../Resource/Texture/Act1/City_P13_Fog.png");
-    objectsList.emplace_back(fog);
-
-    ParallaxObject* ground = new ParallaxObject(0.0f, -1.75f, 0.0f, false, player, true);
-    ground->setTexture("../Resource/Texture/Act1/City_P11_Ground.png");
-    objectsList.emplace_back(ground);
-
-    for (auto a : objectsList) {
+   for (auto a : objectsList) {
         a->getTransform().setScale(35.0f,6.0f);
     }
 
-    lightPole->getTransform().setScale(42.0f,8.0f);
 
     Level::importTransformData(objectsList, "alpha1", false);
 
@@ -98,7 +88,7 @@ void LevelAct1::levelInit() {
 
 }
 
-void LevelAct1::levelUpdate() {
+void LevelAct2::levelUpdate() {
     updateObjects(objectsList);
 
     GameEngine::getInstance()->getRenderer()->updateCamera(glm::vec3());
@@ -118,7 +108,7 @@ void LevelAct1::levelUpdate() {
     //UIobject->updateUI(*player, camPos);
 }
 
-void LevelAct1::levelDraw() {
+void LevelAct2::levelDraw() {
     GameEngine::getInstance()->render(objectsList);
 
 #ifdef DEBUG_MODE_ON
@@ -126,7 +116,7 @@ void LevelAct1::levelDraw() {
 #endif
 }
 
-void LevelAct1::levelFree() {
+void LevelAct2::levelFree() {
     for (DrawableObject* obj : objectsList) {
         delete obj;
     }
@@ -135,13 +125,13 @@ void LevelAct1::levelFree() {
     delete UIobject;
 }
 
-void LevelAct1::levelUnload() {
+void LevelAct2::levelUnload() {
     GameEngine::getInstance()->clearMesh();
     GameEngine::getInstance()->getRenderer()->setClearColor(0.1f, 0.1f, 0.1f);
     //cout << "Unload Level" << endl;
 }
 
-void LevelAct1::handleKey(InputManager& input) {
+void LevelAct2::handleKey(InputManager& input) {
     // For debugging
     if (input.getButton(SDLK_z)) GameEngine::getInstance()->getRenderer()->increaseZoomRatio(0.1f);
     if (input.getButton(SDLK_x)) GameEngine::getInstance()->getRenderer()->decreaseZoomRatio(0.1f);

@@ -204,7 +204,7 @@ void Level::drawImGui(std::list<DrawableObject*>& objectList) {
     }
     ImGui::SameLine();
     if (ImGui::Button("Switch Scene")) {
-        GameEngine::getInstance()->getStateController()->gameStateNext = (GameState)((GameEngine::getInstance()->getStateController()->gameStateCurr + 1) % 3);
+        GameEngine::getInstance()->getStateController()->gameStateNext = (GameState)((GameEngine::getInstance()->getStateController()->gameStateCurr + 1) % 5);
     }
 
     static char stringBuffer[50] = "\0";
@@ -881,19 +881,18 @@ void Level::readEnemyData(std::ifstream& file, std::string type, std::list<Drawa
     }
 }
 
-void Level::addLoadingScreen() {
-	blackLoadingScreen = new SimpleObject();
-	blackLoadingScreen->setName("BlackLoadingScreen");
-	blackLoadingScreen->getTransform().setPosition(0.0f, 0.0f);
-	blackLoadingScreen->getTransform().setScale(2000.0f, 2000.0f);
-	blackLoadingScreen->setDrawCollider(false);
-	blackLoadingScreen->setColor(0.0f, 0.0f, 0.0f);
-	objectsList.emplace_back(blackLoadingScreen);
+void Level::addLoadingScreen(std::list<DrawableObject*>& objectsList) {
+	blackLoadingScreen = SimpleObject();
+	blackLoadingScreen.setName("BlackLoadingScreen");
+	blackLoadingScreen.getTransform().setPosition(0.0f, 0.0f);
+	blackLoadingScreen.getTransform().setScale(20000.0f, 20000.0f);
+	blackLoadingScreen.setDrawCollider(false);
+	blackLoadingScreen.setColor(0.0f, 0.0f, 0.0f);
+	objectsList.emplace_back(&blackLoadingScreen);
 }
 
-void Level::removeLoadingScreen() {
-	objectsList.remove(blackLoadingScreen);
-	blackLoadingScreen = nullptr;
+void Level::removeLoadingScreen(std::list<DrawableObject*>& objectsList) {
+	objectsList.clear();
 }
 
 void Level::LoadContent() {

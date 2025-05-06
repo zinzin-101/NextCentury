@@ -77,6 +77,9 @@
     <ClCompile Include="IngameUI.cpp" />
     <ClCompile Include="LevelAlphaNMMN.cpp" />
     <ClCompile Include="SonicWave.cpp" />
+    <ClCompile Include="LevelAct1.cpp" />
+    <ClCompile Include="LevelAct2.cpp" />
+    <ClCompile Include="InteractableObject.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
@@ -172,6 +175,9 @@
     <ClInclude Include="IngameUI.h" />
     <ClInclude Include="LevelAlphaNMMN.h" />
     <ClInclude Include="SonicWave.h" />
+    <ClInclude Include="LevelAct2.h" />
+    <ClInclude Include="LevelLoading.h" />
+    <ClInclude Include="LevelAct1.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Resource\Shader\fragment.shd" />
