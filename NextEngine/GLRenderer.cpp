@@ -180,25 +180,53 @@ void GLRenderer::render(list<DrawableObject*>& objList, bool clear) {
 
     applyViewMatrix();
     
-    // Loop through objects and call render with the model transform
-    
+    /// Container for objects based on their render order
+    std::map<int, std::list<DrawableObject*>> renderOrderToObjects;
+
+    /// Grouping the objects by its render order
     for (DrawableObject* obj : objList) {
-        if (!obj->getIsActive()) {
-            continue;
-        }
-        TextObject* txt = dynamic_cast<TextObject*>(obj);
-        Dialogue* di = dynamic_cast<Dialogue*>(obj);
-        //setOrthoProjection(-960, 960, -540, 540);
-        //setOrthoProjection(-8, 8, -4.5, 4.5);
-        if (txt != nullptr || di != nullptr) {
-            glUniformMatrix4fv(pMatrixId, 1, GL_FALSE, glm::value_ptr(this->projectionMatrix * txtToCam));
-        }
-        else {
-            glUniformMatrix4fv(pMatrixId, 1, GL_FALSE, glm::value_ptr(this->projectionMatrix * objToCam));
-        }
-        obj->render(glm::mat4()); 
-        obj->drawCollider();
+        renderOrderToObjects[obj->getRenderOrder()].emplace_back(obj);
     }
+
+    /// Loop through objects for each render order and render
+    for (const std::pair<int, std::list<DrawableObject*>>& renderOrderListPair : renderOrderToObjects) {
+        const std::list<DrawableObject*>& currentObjectList = renderOrderListPair.second;
+        for (DrawableObject* obj : currentObjectList) {
+            if (!obj->getIsActive()) {
+                continue;
+            }
+            TextObject* txt = dynamic_cast<TextObject*>(obj);
+            Dialogue* di = dynamic_cast<Dialogue*>(obj);
+            //setOrthoProjection(-960, 960, -540, 540);
+            //setOrthoProjection(-8, 8, -4.5, 4.5);
+            if (txt != nullptr || di != nullptr) {
+                glUniformMatrix4fv(pMatrixId, 1, GL_FALSE, glm::value_ptr(this->projectionMatrix * txtToCam));
+            }
+            else {
+                glUniformMatrix4fv(pMatrixId, 1, GL_FALSE, glm::value_ptr(this->projectionMatrix * objToCam));
+            }
+            obj->render(glm::mat4()); 
+            obj->drawCollider();
+        }
+    }
+
+    //for (DrawableObject* obj : objList) {
+    //    if (!obj->getIsActive()) {
+    //        continue;
+    //    }
+    //    TextObject* txt = dynamic_cast<TextObject*>(obj);
+    //    Dialogue* di = dynamic_cast<Dialogue*>(obj);
+    //    //setOrthoProjection(-960, 960, -540, 540);
+    //    //setOrthoProjection(-8, 8, -4.5, 4.5);
+    //    if (txt != nullptr || di != nullptr) {
+    //        glUniformMatrix4fv(pMatrixId, 1, GL_FALSE, glm::value_ptr(this->projectionMatrix * txtToCam));
+    //    }
+    //    else {
+    //        glUniformMatrix4fv(pMatrixId, 1, GL_FALSE, glm::value_ptr(this->projectionMatrix * objToCam));
+    //    }
+    //    obj->render(glm::mat4()); 
+    //    obj->drawCollider();
+    //}
 
     // Draw the camera outline
     //drawCameraOutline();

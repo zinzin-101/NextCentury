@@ -10,6 +10,8 @@ SonicWave::SonicWave() {
 	this->setDrawCollider(true);
 	this->setDrawColliderColor(glm::vec3(1, 0, 0));
 
+	this->setRenderOrder(1);
+
 	/// set texture and init animation ///
 	setTexture("../Resource/Texture/BOOM.png");
 	initAnimation(1, 9);

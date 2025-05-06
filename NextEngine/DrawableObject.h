@@ -14,6 +14,7 @@ class DrawableObject {
 	private:
 		bool isActive;
 		bool isMarkedForDelete;
+		int renderOrder;
 
 	protected:
 		string name;
@@ -71,6 +72,8 @@ class DrawableObject {
 
 		void setRenderBrightness(float brightness);
 		virtual void setRenderOpacity(float opacity);
+		void setRenderOrder(int renderOrder);
+		int getRenderOrder() const;
 
 		static void destroyObject(DrawableObject* obj);
 };
