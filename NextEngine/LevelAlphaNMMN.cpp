@@ -15,8 +15,10 @@ void LevelAlphaNMMN::levelInit() {
     GameEngine::getInstance()->getRenderer()->setClearColor(0.1f, 0.1f, 0.1f);
 
     
+    float pictureWidth = 640.0f;
+    float pictureHeight = 436.0f;
 
-    ParallaxObject* background = new ParallaxObject(0.0f, 0.0f, 550.0f, false, player, true);
+    ParallaxObject* background = new ParallaxObject(0.0f, 0.0f, 550.0f, false, player, true, pictureWidth, pictureHeight);
     background->setTexture("../Resource/Texture/OutskirtParallax/OSKT_P09_Sky.png");
     objectsList.emplace(objectsList.begin(), background);
 
@@ -24,27 +26,27 @@ void LevelAlphaNMMN::levelInit() {
     //spaceShip->setTexture("../Resource/Texture/OutskirtParallax/OSKT_P08_Spaceship.png");
     //objectsList.emplace_back(spaceShip);
 
-    ParallaxObject* Mountain1 = new ParallaxObject(0.0f, 1.5f, 250.0f, false, player, true);
+    ParallaxObject* Mountain1 = new ParallaxObject(0.0f, 1.5f, 250.0f, false, player, true, pictureWidth, pictureHeight);
     Mountain1->setTexture("../Resource/Texture/OutskirtParallax/OSKT_P06_Mountain01.png");
     objectsList.emplace_back(Mountain1);
 
-    ParallaxObject* Mountain2 = new ParallaxObject(0.0f, 1.25f, 200.0f, false, player, true);
+    ParallaxObject* Mountain2 = new ParallaxObject(0.0f, 1.25f, 200.0f, false, player, true, pictureWidth, pictureHeight);
     Mountain2->setTexture("../Resource/Texture/OutskirtParallax/OSKT_P07_Mountain02.png");
     objectsList.emplace_back(Mountain2);
 
-    ParallaxObject* MidGround1 = new ParallaxObject(0.0f, 0.75f, 150.0f, false, player, true);
+    ParallaxObject* MidGround1 = new ParallaxObject(0.0f, 0.75f, 150.0f, false, player, true, pictureWidth, pictureHeight);
     MidGround1->setTexture("../Resource/Texture/OutskirtParallax/OSKT_P05_MidGround01.png");
     objectsList.emplace_back(MidGround1);
 
-    ParallaxObject* MidGround2 = new ParallaxObject(0.0f, 0.0f, 80.0f, false, player, true);
+    ParallaxObject* MidGround2 = new ParallaxObject(0.0f, 0.0f, 80.0f, false, player, true, pictureWidth, pictureHeight);
     MidGround2->setTexture("../Resource/Texture/OutskirtParallax/OSKT_P04_MidGround02.png");
     objectsList.emplace_back(MidGround2);
 
-    ParallaxObject* MidGround3 = new ParallaxObject(0.0f, 0.0f, 50.0f, false, player, true);
+    ParallaxObject* MidGround3 = new ParallaxObject(0.0f, 0.0f, 50.0f, false, player, true, pictureWidth, pictureHeight);
     MidGround3->setTexture("../Resource/Texture/OutskirtParallax/Mid3.png");
     objectsList.emplace_back(MidGround3);
 
-    ParallaxObject* Ground = new ParallaxObject(0.0f, 0.0f, 0.0f, false, player, true);
+    ParallaxObject* Ground = new ParallaxObject(0.0f, 0.0f, 0.0f, false, player, true, pictureWidth, pictureHeight);
     Ground->setTexture("../Resource/Texture/OutskirtParallax/OSKT_P02_Ground.png");
     objectsList.emplace_back(Ground);
 
@@ -59,7 +61,7 @@ void LevelAlphaNMMN::levelInit() {
     objectsList.emplace_back(player);
 
 
-    ParallaxObject* Fog = new ParallaxObject(0.0f, 0.0f, 100.0f, false, player, true);
+    ParallaxObject* Fog = new ParallaxObject(0.0f, 0.0f, 100.0f, false, player, true, pictureWidth, pictureHeight);
     Fog->setTexture("../Resource/Texture/OutskirtParallax/OSKT_P01_Fog.png");
     Fog->setRenderOpacity(0.25f);
     objectsList.emplace_back(Fog);
