@@ -19,42 +19,47 @@ void LevelAct3::levelInit() {
     UIobject = new IngameUI();
     GameEngine::getInstance()->getRenderer()->setClearColor(0.1f, 0.1f, 0.1f);
 
-    TexturedObject* backGround2 = new TexturedObject();
-    backGround2->getTransform().setPosition(0.0f, 0.0f);
-    backGround2->setTexture("../Resource/Texture/Act3/MCR_P06_BlackFrame.png");
-    objectsList.emplace_back(backGround2);
+    float pictureWidth = 640.0f;
+    float pictureHeight = 360.0f;
+    float scaleX = (pictureWidth / pictureHeight) * 9.0f;
+    float scaleY = 9.0f;
 
     TexturedObject* backGround = new TexturedObject();
     backGround->getTransform().setPosition(0.0f, 0.0f);
     backGround->setTexture("../Resource/Texture/Act3/MCR_P01_RoomBase.png");
+    backGround->getTransform().setScale(scaleX, scaleY);
     objectsList.emplace_back(backGround);
 
     TexturedObject* midGround1 = new TexturedObject();
     midGround1->getTransform().setPosition(0.0f, 0.0f);
     midGround1->setTexture("../Resource/Texture/Act3/MCR_P02_Mid1.png");
+    midGround1->getTransform().setScale(scaleX, scaleY);
     objectsList.emplace_back(midGround1);
 
     TexturedObject* midGround2 = new TexturedObject();
     midGround2->getTransform().setPosition(0.0f, 0.0f);
     midGround2->setTexture("../Resource/Texture/Act3/MCR_P04_Mid2.png");
+    midGround2->getTransform().setScale(scaleX, scaleY);
     objectsList.emplace_back(midGround2);
 
     TexturedObject* windowLight = new TexturedObject();
-    midGround2->getTransform().setPosition(0.0f, 0.0f);
+    windowLight->getTransform().setPosition(0.0f, 0.0f);
     windowLight->setTexture("../Resource/Texture/Act3/MCR_P03_WindowLightray.png");
+    windowLight->getTransform().setScale(scaleX, scaleY);
     objectsList.emplace_back(windowLight);
 
     TexturedObject* docs = new TexturedObject();
     docs->getTransform().setPosition(0.0f, 0.0f);
     docs->setTexture("../Resource/Texture/Act3/MCR_P05_Doc.png");
+    docs->getTransform().setScale(scaleX, scaleY);
     objectsList.emplace_back(docs);
 
-    float height = 8.0f;
-    float width = height * 1.777777777777778;
-    for (auto a : objectsList) {
-        a->getTransform().setScale(width, height);
-        a->getTransform().setPosition(0.0f, -0.75f);
-    }
+    //float height = 8.0f;
+    //float width = height * 1.777777777777778;
+    //for (auto a : objectsList) {
+    //    a->getTransform().setScale(width, height);
+    //    a->getTransform().setPosition(0.0f, -0.75f);
+    //}
 
 
     Level::importTransformData(objectsList, "alpha1", false);
@@ -79,6 +84,12 @@ void LevelAct3::levelInit() {
     startObjects(objectsList);
 
     player->getDamageCollider()->setFollowOffset(glm::vec3(1.0f, -0.2f, 0));
+
+    TexturedObject* backGround2 = new TexturedObject();
+    backGround2->getTransform().setPosition(0.0f, 0.0f);
+    backGround2->setTexture("../Resource/Texture/Act3/MCR_P06_BlackFrame.png");
+    backGround2->getTransform().setScale(scaleX, scaleY);
+    objectsList.emplace_back(backGround2);
 
     //UIobject->initUI(objectsList);
 
