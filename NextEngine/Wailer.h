@@ -8,8 +8,9 @@ class Zealot;
 namespace WailerStat {
 	constexpr float SONIC_BLAST_COOLDOWN = 3.0f;
 	constexpr float SUMMON_COOLDOWN = 15.0f;
-	constexpr float DISTANCE_FROM_PLAYER_TO_REPOSITION = 3.0f;
-	constexpr float TIME_UNTIL_REPOSITION = 3.0f;
+	constexpr float DISTANCE_FROM_PLAYER_TO_REPOSITION = 10.0f;
+	constexpr float TIME_UNTIL_REPOSITION = 1.25f;
+	constexpr float REPOSITIONING_TIME = 2.5f;
 
 	constexpr float DISTANCE_TO_SPAWN_ZEALOT = 17.0f;
 	constexpr int MAX_ZEALOT_PER_WAILER = 1;
@@ -33,6 +34,8 @@ class Wailer : public EnemyObject {
 		};
 
 		float repositionTimer;
+		float repositioningTimer;
+		
 		int zealotCounter;
 
 		Wailer::State currentState;

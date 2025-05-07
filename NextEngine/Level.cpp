@@ -680,7 +680,7 @@ void Level::importTransformData(std::list<DrawableObject*>& objectsList, std::st
 
         std::string type = line;
 
-        if (type == "Zealot" || type == "BlightFlame") {
+        if (type == "Zealot" || type == "BlightFlame" || type == "Wailer") {
             readEnemyData(file, type, objectsList, drawOutline);
             continue;
         }
@@ -766,8 +766,9 @@ void Level::importTransformData(std::list<DrawableObject*>& objectsList, std::st
 void Level::appendEnemyData(std::ofstream& output, EnemyObject* enemy) {
     Zealot* zealot = dynamic_cast<Zealot*>(enemy);
     BlightFlame* bf = dynamic_cast<BlightFlame*>(enemy);
+    Wailer* wailer = dynamic_cast<Wailer*>(enemy);
 
-    if (zealot == NULL && bf == NULL) {
+    if (zealot == NULL && bf == NULL && wailer == NULL) {
         std::cout << "Invalid Enemy Type" << std::endl;
         return;
     }
@@ -777,6 +778,9 @@ void Level::appendEnemyData(std::ofstream& output, EnemyObject* enemy) {
     }
     else if (bf != NULL) {
         output << "BlightFlame,";
+    }
+    else if (wailer != NULL) {
+        output << "Wailer,";
     }
 
     output << enemy->getName() << ",";
@@ -851,6 +855,9 @@ void Level::readEnemyData(std::ifstream& file, std::string type, std::list<Drawa
     }
     else if (type == "BlightFlame") {
         enemy = new BlightFlame(DefaultEnemyStat::BLIGHT_FLAME_INFO);
+    }
+    else if (type == "Wailer") {
+        enemy = new Wailer(DefaultEnemyStat::WAILER_INFO);
     }
     else {
         std::cout << "Invalid Type When Reading Enemy Data" << std::endl;

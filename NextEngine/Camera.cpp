@@ -8,6 +8,9 @@ Camera::Camera()
     target(nullptr),   
     up(0.0f, 1.0f, 0.0f), 
     deadZoneX(2.0f), deadZoneY(0.0f){
+
+    isShaking = false;
+    shakeDurationRemaining = 0.0f;
 }
 
 void Camera::setPosition(const glm::vec3& pos) {

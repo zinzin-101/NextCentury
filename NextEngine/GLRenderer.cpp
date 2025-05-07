@@ -168,32 +168,65 @@ void GLRenderer::render(list<DrawableObject*>& objList, bool clear) {
     glm::mat4 txtToCam = glm::mat4(1.0f);
     glm::mat4 objToCam = glm::mat4(1.0f);
 
-    objToCam = glm::translate(txtToCam, -camera->getPosition());
+    if (!isViewportEnabled) {
+        objToCam = glm::scale(objToCam, glm::vec3(zoomRatio, zoomRatio, 0.0f));
+        txtToCam = glm::scale(txtToCam, glm::vec3(zoomRatio, zoomRatio, 0.0f));
+    }
+
+    objToCam = glm::translate(objToCam, -camera->getPosition());
 
     txtToCam = glm::translate(txtToCam, -camera->getPosition());
     txtToCam = glm::scale(txtToCam, glm::vec3(1.0f / 120.0f, 1.0f / 120.0f, 0.0f));
 
     applyViewMatrix();
     
-    // Loop through objects and call render with the model transform
-    
+    /// Container for objects based on their render order
+    std::map<int, std::list<DrawableObject*>> renderOrderToObjects;
+
+    /// Grouping the objects by its render order
     for (DrawableObject* obj : objList) {
-        if (!obj->getIsActive()) {
-            continue;
-        }
-        TextObject* txt = dynamic_cast<TextObject*>(obj);
-        Dialogue* di = dynamic_cast<Dialogue*>(obj);
-        //setOrthoProjection(-960, 960, -540, 540);
-        setOrthoProjection(-8, 8, -4.5, 4.5);
-        if (txt != nullptr || di != nullptr) {
-            glUniformMatrix4fv(pMatrixId, 1, GL_FALSE, glm::value_ptr(this->projectionMatrix * txtToCam));
-        }
-        else {
-            glUniformMatrix4fv(pMatrixId, 1, GL_FALSE, glm::value_ptr(this->projectionMatrix * objToCam));
-        }
-        obj->render(glm::mat4()); 
-        obj->drawCollider();
+        renderOrderToObjects[obj->getRenderOrder()].emplace_back(obj);
     }
+
+    /// Loop through objects for each render order and render
+    for (const std::pair<int, std::list<DrawableObject*>>& renderOrderListPair : renderOrderToObjects) {
+        const std::list<DrawableObject*>& currentObjectList = renderOrderListPair.second;
+        for (DrawableObject* obj : currentObjectList) {
+            if (!obj->getIsActive()) {
+                continue;
+            }
+            TextObject* txt = dynamic_cast<TextObject*>(obj);
+            Dialogue* di = dynamic_cast<Dialogue*>(obj);
+            //setOrthoProjection(-960, 960, -540, 540);
+            //setOrthoProjection(-8, 8, -4.5, 4.5);
+            if (txt != nullptr || di != nullptr) {
+                glUniformMatrix4fv(pMatrixId, 1, GL_FALSE, glm::value_ptr(this->projectionMatrix * txtToCam));
+            }
+            else {
+                glUniformMatrix4fv(pMatrixId, 1, GL_FALSE, glm::value_ptr(this->projectionMatrix * objToCam));
+            }
+            obj->render(glm::mat4()); 
+            obj->drawCollider();
+        }
+    }
+
+    //for (DrawableObject* obj : objList) {
+    //    if (!obj->getIsActive()) {
+    //        continue;
+    //    }
+    //    TextObject* txt = dynamic_cast<TextObject*>(obj);
+    //    Dialogue* di = dynamic_cast<Dialogue*>(obj);
+    //    //setOrthoProjection(-960, 960, -540, 540);
+    //    //setOrthoProjection(-8, 8, -4.5, 4.5);
+    //    if (txt != nullptr || di != nullptr) {
+    //        glUniformMatrix4fv(pMatrixId, 1, GL_FALSE, glm::value_ptr(this->projectionMatrix * txtToCam));
+    //    }
+    //    else {
+    //        glUniformMatrix4fv(pMatrixId, 1, GL_FALSE, glm::value_ptr(this->projectionMatrix * objToCam));
+    //    }
+    //    obj->render(glm::mat4()); 
+    //    obj->drawCollider();
+    //}
 
     // Draw the camera outline
     //drawCameraOutline();
@@ -364,15 +397,9 @@ void GLRenderer::setViewMatrix(const glm::mat4& viewMatrix) {
         glUniformMatrix4fv(viewMatrixId, 1, GL_FALSE, glm::value_ptr(viewMatrix));
     }
 }
-void GLRenderer::updateCamera(const glm::vec3& playerPosition) {
-    //camera->setPosition(glm::vec3(playerPosition.x + 1.0f, playerPosition.y + 1.0f, camera->getPosition().z));
-    
+void GLRenderer::updateCamera(const glm::vec3& playerPosition) { 
     camera->followTarget();
     camera->updateCamera();
-    updateViewport();
-    //if (isViewportEnabled) {
-    //    
-    //}
 }
 
 void GLRenderer::increaseZoomRatio(float newRatio) {
@@ -418,21 +445,21 @@ Camera* GLRenderer::getCamera() {
 }
 
 void GLRenderer::updateViewport() {
-    //camera.setPosition(glm::vec3(camera.getPosition().x, camera.getPosition().y, -100.0f));
-    glm::vec3 cameraPosition = camera->getPosition();
-    //cameraPosition.y += 190;
-    float aspectRatio = static_cast<float>(winWidth) / winHeight;
-    float left = cameraPosition.x - zoomRatio * aspectRatio;
-    float right = cameraPosition.x + zoomRatio * aspectRatio;
-    float bottom = cameraPosition.y  - zoomRatio;
-    float top = cameraPosition.y  + zoomRatio;
+    ////camera.setPosition(glm::vec3(camera.getPosition().x, camera.getPosition().y, -100.0f));
+    //glm::vec3 cameraPosition = camera->getPosition();
+    ////cameraPosition.y += 190;
+    //float aspectRatio = static_cast<float>(winWidth) / winHeight;
+    //float left = cameraPosition.x - zoomRatio * aspectRatio;
+    //float right = cameraPosition.x + zoomRatio * aspectRatio;
+    //float bottom = cameraPosition.y  - zoomRatio;
+    //float top = cameraPosition.y  + zoomRatio;
 
-    if (isViewportEnabled) {
-        setOrthoProjection(cameraPosition.x + -8, cameraPosition.x + 8, cameraPosition.y + -4.5, cameraPosition.y + 4.5);
-    }
-    else {
-        setOrthoProjection(left, right, bottom, top);
-    }
+    //if (isViewportEnabled) {
+    //    setOrthoProjection(cameraPosition.x + -8, cameraPosition.x + 8, cameraPosition.y + -4.5, cameraPosition.y + 4.5);
+    //}
+    //else {
+    //    setOrthoProjection(left, right, bottom, top);
+    //}
     
 }
 void GLRenderer::toggleViewport() {

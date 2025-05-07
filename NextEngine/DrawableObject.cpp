@@ -42,6 +42,7 @@ DrawableObject::DrawableObject(){
 	
 	renderBrightness = 1.0f;
 	renderOpacity = 1.0f;
+	renderOrder = 0;
 }
 
 DrawableObject::DrawableObject(string name) {
@@ -61,6 +62,7 @@ DrawableObject::DrawableObject(string name) {
 
 	renderBrightness = 1.0f;
 	renderOpacity = 1.0f;
+	renderOrder = 0;
 }
 
 DrawableObject::~DrawableObject() {
@@ -287,6 +289,14 @@ void DrawableObject::setRenderBrightness(float brightness) {
 
 void DrawableObject::setRenderOpacity(float opacity) {
 	this->renderOpacity = opacity;
+}
+
+void DrawableObject::setRenderOrder(int renderOrder) {
+	this->renderOrder = renderOrder;
+}
+
+int DrawableObject::getRenderOrder() const {
+	return this->renderOrder;
 }
 
 void DrawableObject::destroyObject(DrawableObject* obj) {

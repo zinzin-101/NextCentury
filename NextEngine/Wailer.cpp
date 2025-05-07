@@ -7,6 +7,7 @@ Wailer::Wailer(const EnemyInfo& enemyinfo) : EnemyObject(enemyinfo) {
 	currentState = State::IDLE;
 	currentAttackState = AttackState::NONE;
 	repositionTimer = 0.0f;
+	repositioningTimer = 0.0;
 	isInSonicAttack = false;
 	zealotCounter = 0;
 
@@ -59,12 +60,13 @@ void Wailer::updateState() {
 	}
 
 	float distance = getDistanceFromTarget();
-	if (distance < WailerStat::DISTANCE_FROM_PLAYER_TO_REPOSITION) {
+	if (distance < WailerStat::DISTANCE_FROM_PLAYER_TO_REPOSITION && repositioningTimer <= WailerStat::REPOSITIONING_TIME) {
 		currentState = State::REPOSITIONING;
 		return;
 	}
 
 	repositionTimer = 0.0f;
+	repositioningTimer = 0.0f;
 
 	if (distance > aggroRange) {
 		currentState = State::IDLE;
@@ -94,6 +96,8 @@ void Wailer::handleReposition(float dt) {
 		return;
 	}
 	
+	repositioningTimer += dt;
+
 	float targetXPos = targetEntity->getTransform().getPosition().x;
 	float currentXPos = this->getTransform().getPosition().x;
 	float offsetFromTarget = targetXPos - currentXPos;

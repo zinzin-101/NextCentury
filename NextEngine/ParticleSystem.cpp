@@ -3,24 +3,31 @@
 #include "Random.h"
 
 ParticleSystem::ParticleSystem() {
-	particlePool.resize(MAX_PARTICLE);
-	poolIndex = MAX_PARTICLE - 1;
+	simpleParticlePool.resize(MAX_PARTICLE);
+	simplePoolIndex = MAX_PARTICLE - 1;
+
+	texturedParticlePool.resize(MAX_PARTICLE);
+	texturedPoolIndex = MAX_PARTICLE - 1;
 
 	canDestroyOnInactive = false;
 }
 
 void ParticleSystem::update(std::list<DrawableObject*>& objectsList) {
-	updateParticlePool(0, MAX_PARTICLE - 1, objectsList);
+	bool simpleParticleActive = updateParticlePool<SimpleParticle>(this->simpleParticlePool, objectsList);
+	bool texturedParticleActive = updateParticlePool<TexturedParticle>(this->texturedParticlePool, objectsList);
+
+	if (!(simpleParticleActive || texturedParticleActive) && canDestroyOnInactive) {
+		destroyObject(this);
+	}
 }
 
-void ParticleSystem::updateParticlePool(unsigned int startIndex, unsigned int endIndex, std::list<DrawableObject*>& objectsList) {
+template <class ParticleType>
+bool ParticleSystem::updateParticlePool(std::vector<ParticleType>& particlePool, std::list<DrawableObject*>& objectsList) {
 	float dt = GameEngine::getInstance()->getTime()->getDeltaTime();
 
 	bool isSomeActive = false;
 
-	for (unsigned int i = startIndex; i <= endIndex; i++) {
-		Particle& particle = particlePool[i];
-		
+	for (ParticleType& particle : particlePool) {		
 		if (!particle.getIsActive()) {
 			continue;
 		}
@@ -37,13 +44,12 @@ void ParticleSystem::updateParticlePool(unsigned int startIndex, unsigned int en
 		particle.update(objectsList);
 	}
 
-	if (!isSomeActive && canDestroyOnInactive) {
-		destroyObject(this);
-	}
+	return isSomeActive;
 }
 
-void ParticleSystem::emit(const ParticleProperties& particleProperties) {
-	Particle& particle = particlePool[poolIndex];
+void ParticleSystem::emitSimpleParticle(const ParticleProperties& particleProperties) {
+	SimpleParticle& particle = simpleParticlePool[simplePoolIndex];
+
 	particle.getTransform().setPosition(particleProperties.position);
 	particle.getTransform().setRotation(Random::Float() * 2.0f * glm::pi<float>());
 
@@ -53,7 +59,6 @@ void ParticleSystem::emit(const ParticleProperties& particleProperties) {
 	variableVel.y += particleProperties.velocityVariation.y * (Random::Float() - 0.5f);
 	particle.getPhysicsComponent()->setVelocity(variableVel);
 
-	//particle.setColor(particleProperties.color);
 	particle.setInitColor(particleProperties.initColor);
 	particle.setEndColor(particleProperties.endColor);
 
@@ -67,13 +72,49 @@ void ParticleSystem::emit(const ParticleProperties& particleProperties) {
 
 	particle.setActive(true);
 
-	poolIndex = --poolIndex % MAX_PARTICLE;
+	simplePoolIndex = --simplePoolIndex % MAX_PARTICLE;
+}
+void ParticleSystem::emitTexturedParticle(const ParticleProperties& particleProperties) {
+	TexturedParticle& particle = texturedParticlePool[texturedPoolIndex];
+
+	particle.getTransform().setPosition(particleProperties.position);
+	particle.getTransform().setRotation(Random::Float() * 2.0f * glm::pi<float>());
+
+	particle.getPhysicsComponent()->setVelocity(particleProperties.velocity);
+	glm::vec2 variableVel = particle.getPhysicsComponent()->getVelocity();
+	variableVel.x += particleProperties.velocityVariation.x * (Random::Float() - 0.5f);
+	variableVel.y += particleProperties.velocityVariation.y * (Random::Float() - 0.5f);
+	particle.getPhysicsComponent()->setVelocity(variableVel);
+
+	particle.setTexture(particleProperties.texturePath);
+
+	particle.setLifespan(particleProperties.lifespan);
+	particle.setLifeRemaining(particleProperties.lifespan);
+	particle.setInitSize(particleProperties.initSize);
+	particle.setEndSize(particleProperties.endSize);
+
+	particle.getPhysicsComponent()->setEnableGravity(particleProperties.isPhysics);
+	particle.getPhysicsComponent()->setRealTime(particleProperties.isRealTime);
+
+	particle.setActive(true);
+
+	texturedPoolIndex = --texturedPoolIndex % MAX_PARTICLE;
+}
+
+void ParticleSystem::emit(const ParticleProperties& particleProperties) {
+	particleProperties.texturePath.empty() ? emitSimpleParticle(particleProperties) : emitTexturedParticle(particleProperties);
 }
 
 void ParticleSystem::render(glm::mat4 globalModelTransform) {
 	//DrawableObject::render(globalModelTransform);
 	
-	for (Particle& p : particlePool) {
+	for (SimpleParticle& p : simpleParticlePool) {
+		if (p.getIsActive()) {
+			p.render(globalModelTransform);
+		}
+	}
+
+	for (TexturedParticle& p : texturedParticlePool) {
 		if (p.getIsActive()) {
 			p.render(globalModelTransform);
 		}
