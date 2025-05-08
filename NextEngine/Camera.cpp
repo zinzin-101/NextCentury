@@ -33,17 +33,17 @@ void Camera::followTarget() {
         return;
     }
     glm::vec3 newPos;
-    float x;
+    float x = position.x;;
     float y = target->getTransform().getPosition().y + offset.y;
     //cout << y << endl;
     
     if (GameEngine::getInstance()->getRenderer()->getIsViewportEnabled()) {
         bool movable = true;
         if (isUsingDeadLimit) {
-            if (abs(target->getTransform().getPosition().x - deadLimitPosMin) < deadZoneX) { // Might need to change deadzone to some other number
+            if (abs(target->getTransform().getPosition().x - deadLimitPosMin) < deadZoneX + 1) { // Might need to change deadzone to some other number
                 movable = false;
             }
-            if (abs(target->getTransform().getPosition().x - deadLimitPosMax) < deadZoneX) {
+            if (abs(target->getTransform().getPosition().x - deadLimitPosMax) < deadZoneX + 1) {
                 movable = false;
             }
         }
