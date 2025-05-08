@@ -99,6 +99,9 @@ void LevelAct1::levelInit() {
 
     //UIobject->initUI(objectsList);
 
+    GameEngine::getInstance()->getRenderer()->getCamera()->setDeadLimitBool(true);
+    GameEngine::getInstance()->getRenderer()->getCamera()->setDeadLimitMinMax(-5.0f, 60.0f);
+
     GameEngine::getInstance()->getRenderer()->getCamera()->setOffset(glm::vec3(0.0f, -0.5f, 0.0f));
     GameEngine::getInstance()->getRenderer()->setToggleViewport(true);
 
