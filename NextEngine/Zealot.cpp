@@ -45,6 +45,8 @@ void Zealot::start(list<DrawableObject*>& objectsList) {
 	flinchTimer = 0.0f;
 
 	targetEntity = EnemyObject::findPlayer(objectsList);
+
+	endAttack();
 }
 
 void Zealot::updateState() {
