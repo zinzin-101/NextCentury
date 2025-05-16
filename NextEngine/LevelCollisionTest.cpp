@@ -95,7 +95,7 @@ void LevelCollisionTest::levelUpdate() {
 	cout << dt << endl;*/
 
 	glm::vec3 playerPosition = player->getTransform().getPosition();
-	GameEngine::getInstance()->getRenderer()->updateCamera(playerPosition);
+	GameEngine::getInstance()->getRenderer()->updateCamera();
 
 	//printCollisionState(player, ground);
 }

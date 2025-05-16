@@ -9,7 +9,9 @@ private:
     list<DrawableObject*> UIobjectsList;
     PlayerObject* player = nullptr;
     IngameUI* UIobject;
-    glm::vec3 camPos = glm::vec3(0.0f, 0.0f, 0.0f);
+    queue<Dialogue*> dialogueList;
+    list<InteractableObject*> interactableList;
+
 
 public:
     virtual void levelLoad();

@@ -4,18 +4,19 @@
 Dialogue::Dialogue(int fontSize, PlayerObject* player, bool isActiveByPosition) {
 	text = TextObject();
 	fontsize = fontSize;
-	placeHolderBG = SimpleObject();
-	placeHolderBG.setColor(255, 255, 255);
-	placeHolderBG.getTransform().setScale(100, 100);
+	Backdrop = TexturedObject();
+	Backdrop.setTexture("../Resource/Texture/StoryStuff/InteracableObject_DescriotionBox.png");
+	Backdrop.getTransform().setScale(100, 100);
 	activeRange = 2.0f;
 	isDialogueActive = false;
 	this->player = player;
 	this->isActiveByPosition = isActiveByPosition;
+	this->setRenderOrder(2);
 }
 
 void Dialogue::render(glm::mat4 globalModelTransform) {
 	if (isDialogueActive) {
-		placeHolderBG.render(globalModelTransform);
+		Backdrop.render(globalModelTransform);
 		text.render(globalModelTransform);
 	}
 	//placeHolderBG.render(globalModelTransform);
@@ -23,15 +24,15 @@ void Dialogue::render(glm::mat4 globalModelTransform) {
 }
 
 void Dialogue::update(list<DrawableObject*>& objectsList) {
-	placeHolderBG.getTransform().setScale(glm::vec3(text.getTransform().getScale().x + 10.0f, text.getTransform().getScale().y, 0.0f));
+	Backdrop.getTransform().setScale(glm::vec3(text.getTransform().getScale().x + 30.0f, text.getTransform().getScale().y - 30.0f, 0.0f));
 	text.getTransform().setPosition(glm::vec3(this->getTransform().getPosition().x * 120, this->getTransform().getPosition().y * -120, 0.0f));
-	placeHolderBG.getTransform().setPosition(glm::vec3(this->getTransform().getPosition().x * 120, this->getTransform().getPosition().y * 120, 0.0f));
+	Backdrop.getTransform().setPosition(glm::vec3(this->getTransform().getPosition().x * 120, this->getTransform().getPosition().y * 120, 0.0f));
 	if (isActiveByPosition) {
 		checkActiveRange();
 	}
 	if (!sentences.empty() && text.getText() != sentences.front()) {
 		
-		text.loadText(sentences.front(), { 0, 0, 0, 0 }, fontsize);
+		text.loadText(sentences.front(), { 255, 255, 255, 255 }, fontsize);
 	}
 	
 	//placeHolderBG.getTransform().setPosition(glm::vec3(placeHolderBG.getTransform().getPosition().x + 0, placeHolderBG.getTransform().getPosition().y + 2.5f, 0.0f));

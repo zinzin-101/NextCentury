@@ -80,6 +80,12 @@
     <ClCompile Include="LevelAct1.cpp" />
     <ClCompile Include="LevelAct2.cpp" />
     <ClCompile Include="InteractableObject.cpp" />
+    <ClCompile Include="LevelAct3.cpp" />
+    <ClCompile Include="LevelAct4.cpp" />
+    <ClCompile Include="LevelAct5.cpp" />
+    <ClCompile Include="LevelAct6.cpp" />
+    <ClCompile Include="SimpleParticle.cpp" />
+    <ClCompile Include="TexturedParticle.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
@@ -178,6 +184,12 @@
     <ClInclude Include="LevelAct2.h" />
     <ClInclude Include="LevelLoading.h" />
     <ClInclude Include="LevelAct1.h" />
+    <ClInclude Include="LevelAct3.h" />
+    <ClInclude Include="LevelAct4.h" />
+    <ClInclude Include="LevelAct5.h" />
+    <ClInclude Include="LevelAct6.h" />
+    <ClInclude Include="SimpleParticle.h" />
+    <ClInclude Include="TexturedParticle.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Resource\Shader\fragment.shd" />

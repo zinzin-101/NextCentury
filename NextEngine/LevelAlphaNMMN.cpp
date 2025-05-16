@@ -96,9 +96,7 @@ void LevelAlphaNMMN::levelInit() {
     dialogueList.push(d2);
     
     /////////////////
-    Dialogue* d4intobj = new Dialogue(16, player, false); // Must add to the queue in the order that you'll faced them
-    objectsList.emplace_back(d4intobj);
-    InteractableObject* it = new InteractableObject("a box of chocolate", player, d4intobj);
+    InteractableObject* it = new InteractableObject("a box of chocolate", player);
     it->setTexture("../Resource/Texture/BoardNeon.png");
     it->getTransform().setPosition(glm::vec3(5.0f, -2.0f, 0.0f));
     it->initAnimation(2,1);
@@ -126,10 +124,9 @@ void LevelAlphaNMMN::levelInit() {
 void LevelAlphaNMMN::levelUpdate() {
     updateObjects(objectsList);
     
-    GameEngine::getInstance()->getRenderer()->updateCamera(glm::vec3());
+    GameEngine::getInstance()->getRenderer()->updateCamera();
      
     
-    GameEngine::getInstance()->getRenderer()->updateCamera(camPos);
     UIobject->updateUI(*player, camPos);
 }
 

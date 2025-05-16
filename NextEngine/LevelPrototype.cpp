@@ -153,7 +153,7 @@ void LevelPrototype::levelInit() {
 void LevelPrototype::levelUpdate() {
     updateObjects(objectsList);
     glm::vec3 followPos = viewMarker ? marker->getTransform().getPosition() : player->getTransform().getPosition();
-    GameEngine::getInstance()->getRenderer()->updateCamera(followPos);
+    GameEngine::getInstance()->getRenderer()->updateCamera();
     if (ray != nullptr) ray->getTransform().setPosition(marker->getTransform().getPosition());
     // Update health bar position and size
     float healthPercentage = static_cast<float>(player->getHealth()) / 100;

@@ -13,7 +13,7 @@ private:
 	bool isActiveByPosition;
 	TextObject text;
 	
-	SimpleObject placeHolderBG;
+	TexturedObject Backdrop;
 	PlayerObject* player;
 
 public:

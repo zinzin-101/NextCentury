@@ -53,7 +53,7 @@ void LevelImgui::levelInit() {
 
 void LevelImgui::levelUpdate() {
     updateObjects(objectsList);
-    GameEngine::getInstance()->getRenderer()->updateCamera(glm::vec3());
+    GameEngine::getInstance()->getRenderer()->updateCamera();
 }
 
 void LevelImgui::levelDraw() {

@@ -397,7 +397,7 @@ void GLRenderer::setViewMatrix(const glm::mat4& viewMatrix) {
         glUniformMatrix4fv(viewMatrixId, 1, GL_FALSE, glm::value_ptr(viewMatrix));
     }
 }
-void GLRenderer::updateCamera(const glm::vec3& playerPosition) { 
+void GLRenderer::updateCamera() { 
     camera->followTarget();
     camera->updateCamera();
 }

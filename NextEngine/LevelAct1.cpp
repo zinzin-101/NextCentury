@@ -58,6 +58,18 @@ void LevelAct1::levelInit() {
     ground->setTexture("../Resource/Texture/Act1/City_P11_Ground.png");
     objectsList.emplace_back(ground);
 
+    player = new PlayerObject();
+
+    InteractableObject* it = new InteractableObject("../Resource/Texture/StoryStuff/NeonBoardDescription.txt", player);
+    it->setTexture("../Resource/Texture/StoryStuff/BoardNeon.png");
+    it->getTransform().setPosition(glm::vec3(25.0f, -0.85f, 0.0f));
+    it->initAnimation(2, 1);
+    it->getAnimationComponent()->addState("idle", 0, 0, 1, true);
+    it->getAnimationComponent()->addState("clickAble", 1, 0, 1, true);
+    it->getAnimationComponent()->setState("idle");
+    it->getTransform().setScale(glm::vec3(6.0f, 4.0f, 0.0f));
+    objectsList.emplace_back(it);
+    interactableList.push_back(it);
 
 	//float height = 7.0f; 
 	//float width = height * 5.3333333f;
@@ -72,7 +84,6 @@ void LevelAct1::levelInit() {
 
     Level::importTransformData(objectsList, "act1", false);
 
-    player = new PlayerObject();
     //player->getTransform().setScale(4.166f, 2.5f);
     //player->getColliderComponent()->getTransform().translate(0.0f, -0.44f);
     //player->getColliderComponent()->setDimension(0.25f, 0.65f);
@@ -99,7 +110,7 @@ void LevelAct1::levelInit() {
     player->getDamageCollider()->setFollowOffset(glm::vec3(1.0f, -0.2f, 0));
     player->getTransform().setPosition(glm::vec3( - 6.0f, -1.6f, 0.0f));
 
-    ParallaxObject* pole = new ParallaxObject(0.0f, 0.0f, 0.0f, false, player, true, pictureWidth, pictureHeight);
+    ParallaxObject* pole = new ParallaxObject(16.0f, 0.0f, 0.1f, false, player, true, pictureWidth, pictureHeight);
     pole->setTexture("../Resource/Texture/Act1/City_P12_FGPole.png");
     objectsList.emplace_back(pole);
 
@@ -118,7 +129,7 @@ void LevelAct1::levelInit() {
 void LevelAct1::levelUpdate() {
     updateObjects(objectsList);
 
-    GameEngine::getInstance()->getRenderer()->updateCamera(glm::vec3());
+    GameEngine::getInstance()->getRenderer()->updateCamera();
 
 
     // Placeholder death logic
@@ -130,8 +141,6 @@ void LevelAct1::levelUpdate() {
             }
         }
     }
-
-    GameEngine::getInstance()->getRenderer()->updateCamera(camPos);
     //UIobject->updateUI(*player, camPos);
 }
 
@@ -238,6 +247,29 @@ void LevelAct1::handleKey(InputManager& input) {
         }
         else {
             player->dodge();
+        }
+    }
+
+    //Dialogue interact
+    if (input.getButtonDown(SDLK_e)) {
+        if (!dialogueList.empty()) {
+            Dialogue* currentDialogue = dialogueList.front();
+            if (currentDialogue->isDialogueActive) {
+                currentDialogue->nextSentence();
+                if (currentDialogue->sentences.empty()) {
+                    dialogueList.pop();
+                }
+            }
+        }
+
+        //InteractableObject* keep;
+        for (InteractableObject* keep : interactableList) {
+            if (keep->getIsClickable()) {
+                keep->setDescriptionActive(!keep->getDescriptionActive());
+            }
+            else {
+                keep->descriptionText->isDialogueActive = false;
+            }
         }
     }
 }

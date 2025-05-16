@@ -39,7 +39,6 @@
     <ClCompile Include="ColliderObject.cpp" />
     <ClCompile Include="CollisionHandler.cpp" />
     <ClCompile Include="Dialogue.cpp" />
-    <ClCompile Include="DialogueList.cpp" />
     <ClCompile Include="DrawableObject.cpp" />
     <ClCompile Include="EnemyObject.cpp" />
     <ClCompile Include="GameEngine.cpp" />
@@ -116,7 +115,6 @@
     <ClInclude Include="DamageCollider.h" />
     <ClInclude Include="DebugMode.h" />
     <ClInclude Include="Dialogue.h" />
-    <ClInclude Include="DialogueList.h" />
     <ClInclude Include="DrawableObject.h" />
     <ClInclude Include="EnemyInfo.h" />
     <ClInclude Include="EnemyObject.h" />
