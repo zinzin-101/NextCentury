@@ -18,8 +18,8 @@ InteractableObject::InteractableObject(string fileName, PlayerObject* player) : 
 		string fontSize;
 		getline(meFile, myText);
 		Dialogue k = Dialogue(stoi(myText), player, false);
+		k.getTransform().setPosition(this->getTransform().getPosition());
 		k.addSentence(dialogueText);
-		
 		txtEachLine.emplace_back(k);
 	}
 	isShowingTxt = false;
@@ -31,7 +31,7 @@ InteractableObject::InteractableObject(string fileName, PlayerObject* player) : 
 	Backdrop.setTexture("../Resource/Texture/StoryStuff/InteracableObject_DescriotionBox_Blackdrop.png");
 	Backdrop.getTransform().setScale(16.0f,9.0f);
 	Backdrop.setActive(false);
-	Backdrop.setRenderOrder(1);
+	Backdrop.setRenderOrder(2);
 }
 
 void InteractableObject::update(list<DrawableObject*>& objectsList) {
@@ -67,7 +67,7 @@ void InteractableObject::update(list<DrawableObject*>& objectsList) {
 void InteractableObject::render(glm::mat4 globalModelTransform) {
 	TexturedObject::render(globalModelTransform);
 	if (Backdrop.getIsActive()) {
-		Backdrop.render(globalModelTransform);
+		//Backdrop.render(globalModelTransform);
 	}
 	for (int i = 0; i < txtEachLine.size(); i++) {
 		txtEachLine[i].render(globalModelTransform);

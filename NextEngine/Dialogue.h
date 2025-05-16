@@ -27,5 +27,4 @@ public:
 	void setSentences(queue<string> s);
 	void endDialogue();
 	void checkActiveRange();
-
 };

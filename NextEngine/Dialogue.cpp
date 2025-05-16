@@ -6,7 +6,7 @@ Dialogue::Dialogue(int fontSize, PlayerObject* player, bool isActiveByPosition) 
 	fontsize = fontSize;
 	Backdrop = TexturedObject();
 	Backdrop.setTexture("../Resource/Texture/StoryStuff/InteracableObject_DescriotionBox.png");
-	Backdrop.getTransform().setScale(100, 100);
+	Backdrop.getTransform().setScale(1000, 1000);
 	activeRange = 2.0f;
 	isDialogueActive = false;
 	this->player = player;
