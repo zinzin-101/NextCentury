@@ -5,24 +5,24 @@
 
 namespace PlayerStat {
     constexpr float DODGE_VELOCITY = 6.0f;
-    constexpr float DODGE_COOLDOWN = 0.2f;
-    constexpr float DODGE_DURATION = 0.5f;
+    constexpr float DODGE_COOLDOWN = 0.125f;
+    constexpr float DODGE_DURATION = 0.45f;
 
     constexpr float TIME_TO_RESET_COMBO = 0.8f;
-    constexpr float ATTACK_COOLDOWN = 0.1f;
-    constexpr float LAST_COMBO_COOLDOWN = 0.5f;
-    constexpr float ATTACK_DASH_VELOCITY = 0.4f;
+    constexpr float ATTACK_COOLDOWN = 0.05f;
+    constexpr float LAST_COMBO_COOLDOWN = 0.4f;
+    constexpr float ATTACK_DASH_VELOCITY = 0.2f;
     constexpr float AFTER_ATTACK_MOVE_DELAY_TIME = 0.3f;
-    constexpr float DURATION_TO_START_HEAVY_ATTACK = 0.5f;
+    constexpr float DURATION_TO_START_HEAVY_ATTACK = 0.3f;
     constexpr float DURATION_TO_START_CHARGED_BULLET = 0.5f;
 
-    constexpr float ATTACK_ANIMATION_TIME_PER_FRAME = 0.12f;
-    constexpr float CHARGE_ANIMATION_TIME_PER_FRAME = 0.12f;
-    constexpr float GUN_CHARGE_ANIMATION_TIME_PER_FRAME = 0.12f;
+    constexpr float ATTACK_ANIMATION_TIME_PER_FRAME = 0.1f;
+    constexpr float CHARGE_ANIMATION_TIME_PER_FRAME = 0.1f;
+    constexpr float GUN_CHARGE_ANIMATION_TIME_PER_FRAME = 0.1f;
 
     constexpr int COMBO_DAMAGE_1 = 10;
     constexpr int COMBO_DAMAGE_2 = 15;
-    constexpr int COMBO_DAMAGE_3 = 17;
+    constexpr int COMBO_DAMAGE_3 = 15;
     
     constexpr float CHARGE_DAMAGE_MULTIPLIER_1 = 1.0f;
     constexpr float CHARGE_DAMAGE_MULTIPLIER_2 = 2.0f;
@@ -39,7 +39,7 @@ namespace PlayerStat {
     constexpr float RANGE_ATTACK_COOLDOWN_1 = 0.5f;
     constexpr float RANGE_ATTACK_COOLDOWN_2 = 0.75f;
     constexpr float RANGE_ATTACK_COOLDOWN_3 = 1.25f;
-    constexpr float RANGE_ATTACK_DISTANCE = 5.0f;
+    constexpr float RANGE_ATTACK_DISTANCE = 10.0f;
     constexpr float RANGE_ATTACK_LIFESPAN = 0.5f;
 
     constexpr float MOVE_SPEED = 3.0f;
@@ -58,14 +58,14 @@ namespace PlayerStat {
     constexpr int MAX_STAMINA = 100;
     constexpr int MAX_BULLET = 3;
 
-    constexpr float STAMINA_RECHARGE_DELAY = 1.5f;
-    constexpr float STAMINA_RECHARGE_TIMER = 0.3f;
-    constexpr int STAMINA_RECHARGE_AMOUNT = 10.0f;
+    constexpr float STAMINA_RECHARGE_DELAY = 1.25f;
+    constexpr float STAMINA_RECHARGE_TIMER = 0.1f;
+    constexpr int STAMINA_RECHARGE_AMOUNT = 5.0f;
 
     constexpr float BULLET_RECHARGE_TIMER = 2.0f;
 
     constexpr int JUMP_STAMINA_CONSUMPTION = 10;
-    constexpr int DODGE_STAMINA_CONSUMPTION = 20;
+    constexpr int DODGE_STAMINA_CONSUMPTION = 15;
     constexpr int MELEE_STAMINA_CONSUMPTION = 10;
     constexpr int HEAVY1_STAMINA_CONSUMPTION = 35;
     constexpr int HEAVY2_STAMINA_CONSUMPTION = 50;
