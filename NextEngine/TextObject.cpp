@@ -67,11 +67,12 @@ void TextObject::update(float deltaTime)
 
 void TextObject::loadText(string text, SDL_Color textColor, int fontSize)
 {
+	
 	glBindTexture(GL_TEXTURE_2D, texture);
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-	TTF_Font* font = TTF_OpenFont("../Resource/Texture/Times New Romance.ttf", fontSize);
+	TTF_Font* font = TTF_OpenFont("../Resource/Texture/PocketPixelRegular-6gdY.ttf", fontSize);
 	if (font == nullptr) {
 		cout << "Error: Unable to open font: " << TTF_GetError() << endl;
 		return;

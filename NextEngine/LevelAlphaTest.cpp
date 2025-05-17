@@ -88,9 +88,8 @@ void LevelAlphaTest::levelInit() {
 void LevelAlphaTest::levelUpdate() {
     updateObjects(objectsList);
    
-    GameEngine::getInstance()->getRenderer()->updateCamera(glm::vec3());
+    GameEngine::getInstance()->getRenderer()->updateCamera();
      
-    GameEngine::getInstance()->getRenderer()->updateCamera(camPos);
     UIobject->updateUI(*player, camPos);
 }
 

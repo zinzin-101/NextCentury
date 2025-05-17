@@ -103,7 +103,7 @@ void LevelAct3::levelInit() {
 void LevelAct3::levelUpdate() {
     updateObjects(objectsList);
 
-    GameEngine::getInstance()->getRenderer()->updateCamera(glm::vec3());
+    GameEngine::getInstance()->getRenderer()->updateCamera();
 
 
     // Placeholder death logic
@@ -116,7 +116,6 @@ void LevelAct3::levelUpdate() {
         }
     }
 
-    GameEngine::getInstance()->getRenderer()->updateCamera(camPos);
     //UIobject->updateUI(*player, camPos);
 }
 

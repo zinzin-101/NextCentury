@@ -50,7 +50,7 @@ void LevelMapEditorTest::levelUpdate() {
 
     handleObjectCollision(objectsList);
     glm::vec3 playerPosition = player->getTransform().getPosition();
-    GameEngine::getInstance()->getRenderer()->updateCamera(playerPosition);
+    GameEngine::getInstance()->getRenderer()->updateCamera();
 
     // Update attack hitbox position
     glm::vec3 playerPos = player->getTransform().getPosition();
@@ -88,7 +88,7 @@ void LevelMapEditorTest::levelUpdate() {
         }
     }
 
-    GameEngine::getInstance()->getRenderer()->updateCamera(playerPosition);
+    GameEngine::getInstance()->getRenderer()->updateCamera();
 }
 
 void LevelMapEditorTest::levelDraw() {

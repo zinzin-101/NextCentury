@@ -174,7 +174,7 @@ void LevelPrototypeNMMN::levelInit() {
 void LevelPrototypeNMMN::levelUpdate() {
     updateObjects(objectsList);
     glm::vec3 followPos = viewMarker ? marker->getTransform().getPosition() : player->getTransform().getPosition();
-    GameEngine::getInstance()->getRenderer()->updateCamera(followPos);
+    GameEngine::getInstance()->getRenderer()->updateCamera();
 
     ray->getTransform().setPosition(marker->getTransform().getPosition());
     // Update health bar position and size

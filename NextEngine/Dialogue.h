@@ -13,7 +13,7 @@ private:
 	bool isActiveByPosition;
 	TextObject text;
 	
-	SimpleObject placeHolderBG;
+	TexturedObject Backdrop;
 	PlayerObject* player;
 
 public:
@@ -27,5 +27,4 @@ public:
 	void setSentences(queue<string> s);
 	void endDialogue();
 	void checkActiveRange();
-
 };

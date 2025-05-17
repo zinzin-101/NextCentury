@@ -87,7 +87,7 @@ public:
     void setToggleViewport(bool value);
 
     void updateViewport(); 
-    void updateCamera(const glm::vec3& playerPosition);
+    void updateCamera();
     void applyViewMatrix();
     void render(list<DrawableObject*>& objList, bool clear = true);
     glm::vec3 getCamPos();
