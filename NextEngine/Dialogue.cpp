@@ -11,12 +11,19 @@ Dialogue::Dialogue(int fontSize, PlayerObject* player, bool isActiveByPosition) 
 	isDialogueActive = false;
 	this->player = player;
 	this->isActiveByPosition = isActiveByPosition;
+	isBackdropActive = true;
 	this->setRenderOrder(2);
+}
+
+glm::vec3 Dialogue::getTextScale() {
+	return text.getTransform().getScale();
 }
 
 void Dialogue::render(glm::mat4 globalModelTransform) {
 	if (isDialogueActive) {
-		Backdrop.render(globalModelTransform);
+		if (isBackdropActive) {
+			Backdrop.render(globalModelTransform);
+		}
 		text.render(globalModelTransform);
 	}
 	//placeHolderBG.render(globalModelTransform);
@@ -70,4 +77,15 @@ void Dialogue::checkActiveRange() {
 	else {
 		isDialogueActive = false;
 	}
+}
+
+void Dialogue::setBackDropActive(bool b) {
+	isBackdropActive = b;
+}
+
+void Dialogue::setDialogueTextBold() {
+	text.setFontStyleBold();
+}
+void Dialogue::setDialogueTextNormal() {
+	text.setFontStyleNormal();
 }

@@ -70,6 +70,7 @@ void LevelAct1::levelInit() {
     it->getTransform().setScale(glm::vec3(6.0f, 4.0f, 0.0f));
     objectsList.emplace_back(it);
     interactableList.push_back(it);
+    it->insertTextInObjectList(objectsList);
 
 	//float height = 7.0f; 
 	//float width = height * 5.3333333f;
@@ -263,12 +264,11 @@ void LevelAct1::handleKey(InputManager& input) {
         }
 
         //InteractableObject* keep;
-        for (InteractableObject* keep : interactableList) {
-            if (keep->getIsClickable()) {
-                keep->setDescriptionActive(!keep->getDescriptionActive());
-            }
-            else {
-                keep->descriptionText->isDialogueActive = false;
+        if (!interactableList.empty()) {
+            for (InteractableObject* keep : interactableList) {
+                if (keep->getIsClickable()) {
+                    keep->setDescriptionActive(!keep->getDescriptionActive());
+                }
             }
         }
     }

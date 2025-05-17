@@ -248,13 +248,13 @@ void LevelAlphaNMMN::handleKey(InputManager& input) {
         }
 
         //InteractableObject* keep;
-        for (InteractableObject* keep : interactableList) {
-            if (keep->getDescriptionActive()) {
-                keep->descriptionText->isDialogueActive = !keep->descriptionText->isDialogueActive;
-            }
-            else {
-                keep->descriptionText->isDialogueActive = false;
-            }
-        }
+        //for (InteractableObject* keep : interactableList) {
+        //    if (keep->getDescriptionActive()) {
+        //        keep->descriptionText->isDialogueActive = !keep->descriptionText->isDialogueActive;
+        //    }
+        //    else {
+        //        keep->descriptionText->isDialogueActive = false;
+        //    }
+        //}
     }
 }
