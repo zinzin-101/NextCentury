@@ -1,6 +1,15 @@
+#include "pch.h"
 #include "LevelAct1.h"
+#include <iostream>
+#include <vector>
+#include <filesystem>
+#include <fstream>
+
+#define EFFECT_PATH   "../Resource/Audio/SoundEffect/"
+#define MUSIC_PATH    "../Resource/Audio/Music/"
 
 void LevelAct1::levelLoad() {
+    // load meshes
     SquareMeshVbo* square = new SquareMeshVbo();
     square->loadData();
     GameEngine::getInstance()->addMesh(SquareMeshVbo::MESH_NAME, square);
@@ -9,158 +18,132 @@ void LevelAct1::levelLoad() {
     border->loadData();
     GameEngine::getInstance()->addMesh(SquareBorderMesh::MESH_NAME, border);
 
-
+    // loading screen...
     addLoadingScreen(objectsList);
     levelDraw();
     removeLoadingScreen(objectsList);
 }
 
 void LevelAct1::levelInit() {
+    // Initialize audio engine with effect and music folders
+    m_audio.init(EFFECT_PATH, MUSIC_PATH);
+
+    // Load sound effects and music by file names
+    m_jumpSfx = m_audio.loadSoundEffect("../Resource/Audio/SoundEffect/Rolling.wav");
+    m_deathSfx = m_audio.loadSoundEffect("../Resource/Audio/SoundEffect/Rolling.wav");
+
+    // UI setup
     UIobject = new IngameUI();
     GameEngine::getInstance()->getRenderer()->setClearColor(0.1f, 0.1f, 0.1f);
 
+    // create parallax layers
     float pictureWidth = 1920.0f;
     float pictureHeight = 360.0f;
+    auto addLayer = [&](const std::string& file, float depth, float yOffset = 0.0f) {
+        ParallaxObject* layer = new ParallaxObject(0.0f, yOffset, depth, false, player, true, pictureWidth, pictureHeight);
+        layer->setTexture(file);
+        objectsList.emplace_back(layer);
+        };
 
-    ParallaxObject* sky = new ParallaxObject(0.0f, 0.0f, 100.0f, false, player, true, pictureWidth, pictureHeight);
-    sky->setTexture("../Resource/Texture/Act1/City_P01_Sky.png");
-    objectsList.emplace(objectsList.begin(), sky);
+    addLayer("../Resource/Texture/Act1/City_P01_Sky.png", 100.0f);
+    addLayer("../Resource/Texture/Act1/City_P02_City1.png", 50.0f);
+    addLayer("../Resource/Texture/Act1/City_P03_City2.png", 35.0f);
+    addLayer("../Resource/Texture/Act1/City_P04_City3.png", 30.0f, -0.5f);
+    addLayer("../Resource/Texture/Act1/City_P05_NewsBoardandBins.png", 20.0f, -0.5f);
+    addLayer("../Resource/Texture/Act1/City_P09_Lightpole.png", 15.0f, -0.5f);
+    addLayer("../Resource/Texture/Act1/City_P10_Car.png", 10.0f, -0.5f);
+    addLayer("../Resource/Texture/Act1/City_P13_Fog.png", 60.0f, 1.0f);
+    addLayer("../Resource/Texture/Act1/City_P11_Ground.png", 0.0f, -0.5f);
 
-    ParallaxObject* city1 = new ParallaxObject(0.0f, 0.0f, 50.0f, false, player, true, pictureWidth, pictureHeight);
-    city1->setTexture("../Resource/Texture/Act1/City_P02_City1.png");
-    objectsList.emplace_back(city1);
-
-    ParallaxObject* city2 = new ParallaxObject(0.0f, 0.0f, 35.0f, false, player, true, pictureWidth, pictureHeight);
-    city2->setTexture("../Resource/Texture/Act1/City_P03_City2.png");
-    objectsList.emplace_back(city2);
-
-    ParallaxObject* city3 = new ParallaxObject(0.0f, -0.5f, 30.0f, false, player, true, pictureWidth, pictureHeight);
-    city3->setTexture("../Resource/Texture/Act1/City_P04_City3.png");
-    objectsList.emplace_back(city3);
-
-    ParallaxObject* newsBoard = new ParallaxObject(0.0f, -0.5f, 20.0f, false, player, true, pictureWidth, pictureHeight);
-    newsBoard->setTexture("../Resource/Texture/Act1/City_P05_NewsBoardandBins.png");
-    objectsList.emplace_back(newsBoard);
-
-    ParallaxObject* lightPole = new ParallaxObject(0.0f, -0.5f, 15.0f, false, player, true, pictureWidth, pictureHeight);
-    lightPole->setTexture("../Resource/Texture/Act1/City_P09_Lightpole.png");
-    objectsList.emplace_back(lightPole);
-
-    ParallaxObject* car = new ParallaxObject(0.0f, -0.5f, 10.0f, false, player, true, pictureWidth, pictureHeight);
-    car->setTexture("../Resource/Texture/Act1/City_P10_Car.png");
-    objectsList.emplace_back(car);
-
-    ParallaxObject* fog = new ParallaxObject(0.0f, 1.0f, 60.0f, false, player, true, pictureWidth, pictureHeight);
-    fog->setTexture("../Resource/Texture/Act1/City_P13_Fog.png");
-    objectsList.emplace_back(fog);
-
-    ParallaxObject* ground = new ParallaxObject(0.0f, -0.5f, 0.0f, false, player, true, pictureWidth, pictureHeight);
-    ground->setTexture("../Resource/Texture/Act1/City_P11_Ground.png");
-    objectsList.emplace_back(ground);
-
-
-	//float height = 7.0f; 
-	//float width = height * 5.3333333f;
- //   for (auto a : objectsList) {
- //       a->getTransform().setScale(width, height);
- //   }
-
-
- //   lightPole->getTransform().setScale(47.999999f, 9.0f);
-
- //   sky->getTransform().setScale(500.f, 500.f);
-
+    // Import transforms
     Level::importTransformData(objectsList, "alpha1", false);
 
+    // Player setup
     player = new PlayerObject();
     player->getTransform().setScale(4.166f, 2.5f);
     player->getColliderComponent()->getTransform().translate(0.0f, -0.44f);
     player->getColliderComponent()->setDimension(0.25f, 0.65f);
     objectsList.emplace_back(player);
 
-    GameEngine::getInstance()->getRenderer()->getCamera()->setTarget(player);
+    // Camera
+    auto camera = GameEngine::getInstance()->getRenderer()->getCamera();
+    camera->setTarget(player);
     GameEngine::getInstance()->getRenderer()->setToggleViewport(false);
 
-    // initializing parallax object
-    for (DrawableObject* obj : objectsList) {
-        ParallaxObject* pObj = dynamic_cast<ParallaxObject*>(obj);
-        if (pObj != NULL) {
-            pObj->setPlayer(player);
-        }
+    // Parallax player binding
+    for (auto* obj : objectsList) {
+        if (auto* pObj = dynamic_cast<ParallaxObject*>(obj)) pObj->setPlayer(player);
     }
 
     startObjects(objectsList);
+    player->getDamageCollider()->setFollowOffset({ 1.0f, -0.2f, 0 });
 
-    player->getDamageCollider()->setFollowOffset(glm::vec3(1.0f, -0.2f, 0));
-
+    // Add foreground pole
     ParallaxObject* pole = new ParallaxObject(0.0f, 0.0f, 0.0f, false, player, true, pictureWidth, pictureHeight);
     pole->setTexture("../Resource/Texture/Act1/City_P12_FGPole.png");
     objectsList.emplace_back(pole);
 
-    //UIobject->initUI(objectsList);
-
-    GameEngine::getInstance()->getRenderer()->getCamera()->setDeadLimitBool(true);
-    GameEngine::getInstance()->getRenderer()->getCamera()->setDeadLimitMinMax(-5.0f, 60.0f);
-
-    GameEngine::getInstance()->getRenderer()->getCamera()->setOffset(glm::vec3(0.0f, -0.5f, 0.0f));
+    // Camera limits and freeze
+    camera->setDeadLimitBool(true);
+    camera->setDeadLimitMinMax(-5.0f, 60.0f);
+    camera->setOffset({ 0.0f, -0.5f, 0.0f });
     GameEngine::getInstance()->getRenderer()->setToggleViewport(true);
-
     GameEngine::getInstance()->freezeGameForSeconds(0.5f);
-
 }
 
 void LevelAct1::levelUpdate() {
     updateObjects(objectsList);
+    GameEngine::getInstance()->getRenderer()->updateCamera({});
 
-    GameEngine::getInstance()->getRenderer()->updateCamera(glm::vec3());
-
-
-    // Placeholder death logic
-    for (std::list<DrawableObject*>::iterator itr = objectsList.begin(); itr != objectsList.end(); ++itr) {
-        EnemyObject* enemy = dynamic_cast<EnemyObject*>(*itr);
-        if (enemy != NULL) {
+    // Death logic with sound
+    for (auto itr = objectsList.begin(); itr != objectsList.end(); ) {
+        if (auto* enemy = dynamic_cast<EnemyObject*>(*itr)) {
             if (enemy->getHealth() <= 0) {
+                m_deathSfx.play();                 
                 DrawableObject::destroyObject(enemy);
+                itr = objectsList.erase(itr);
+                continue;
             }
         }
+        ++itr;
     }
 
-    GameEngine::getInstance()->getRenderer()->updateCamera(camPos);
-    //UIobject->updateUI(*player, camPos);
+    GameEngine::getInstance()->getRenderer()->updateCamera({});
 }
 
 void LevelAct1::levelDraw() {
     GameEngine::getInstance()->render(objectsList);
-
 #ifdef DEBUG_MODE_ON
     drawImGui(objectsList);
 #endif
 }
 
 void LevelAct1::levelFree() {
-    for (DrawableObject* obj : objectsList) {
-        delete obj;
-    }
-    objectsList.clear();
+    // Stop music and destroy audio
+    m_audio.stopMusic();
+    m_audio.destroy();
 
+    for (auto* obj : objectsList) delete obj;
+    objectsList.clear();
     delete UIobject;
 }
 
 void LevelAct1::levelUnload() {
     GameEngine::getInstance()->clearMesh();
     GameEngine::getInstance()->getRenderer()->setClearColor(0.1f, 0.1f, 0.1f);
-    //cout << "Unload Level" << endl;
 }
 
 void LevelAct1::handleKey(InputManager& input) {
-    // For debugging
+    // debugging zoom
     if (input.getButton(SDLK_z)) GameEngine::getInstance()->getRenderer()->increaseZoomRatio(0.1f);
     if (input.getButton(SDLK_x)) GameEngine::getInstance()->getRenderer()->decreaseZoomRatio(0.1f);
 
     float dt = GameEngine::getInstance()->getTime()->getDeltaTime();
-
+    if (input.getButtonDown(SDLK_SPACE)) {
+		GameEngine::getInstance()->playSoundEffect("Rolling.wav");
+    }
     /// Process key ///
-    // add key that requires hold duration here
+   // add key that requires hold duration here
     processHeldKey(input, SDLK_k);
     processHeldMouse(input, SDL_BUTTON_LEFT);
 
