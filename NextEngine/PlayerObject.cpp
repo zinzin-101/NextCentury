@@ -28,7 +28,7 @@ PlayerObject::PlayerObject() : LivingEntity("Player", PlayerStat::MAX_HEALTH) {
     getAnimationComponent()->addState("Charge1", 8, 0, 4, false, PlayerStat::ATTACK_ANIMATION_TIME_PER_FRAME);
     getAnimationComponent()->addState("Charge2", 9, 0, 4, false, PlayerStat::ATTACK_ANIMATION_TIME_PER_FRAME);
 
-    getAnimationComponent()->addState("Parrying", 14, 0, 8, false, 0.1);
+    getAnimationComponent()->addState("Parrying", 14, 0, 8, false, PlayerStat::PARRY_ANIMATION_TIME_PER_FRAME);
 
     getAnimationComponent()->addState("GunCharge1", 11, 0, 6, true, PlayerStat::GUN_CHARGE_ANIMATION_TIME_PER_FRAME);
     getAnimationComponent()->addState("GunCharge2", 12, 0, 6, true, PlayerStat::GUN_CHARGE_ANIMATION_TIME_PER_FRAME);
