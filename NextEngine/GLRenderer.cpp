@@ -5,6 +5,7 @@
 #include "SDL_image.h"
 #include "TextObject.h"
 #include "Dialogue.h"
+#include "ProtagThoughts.h"
 
 using namespace std;
 GLRenderer::GLRenderer(int w, int h) : winWidth(w), winHeight(h), camera(new Camera()) {}
@@ -197,9 +198,10 @@ void GLRenderer::render(list<DrawableObject*>& objList, bool clear) {
             }
             TextObject* txt = dynamic_cast<TextObject*>(obj);
             Dialogue* di = dynamic_cast<Dialogue*>(obj);
+            ProtagThoughts* pr = dynamic_cast<ProtagThoughts*>(obj);
             //setOrthoProjection(-960, 960, -540, 540);
             //setOrthoProjection(-8, 8, -4.5, 4.5);
-            if (txt != nullptr || di != nullptr) {
+            if (txt != nullptr || di != nullptr || pr != nullptr) {
                 glUniformMatrix4fv(pMatrixId, 1, GL_FALSE, glm::value_ptr(this->projectionMatrix * txtToCam));
             }
             else {

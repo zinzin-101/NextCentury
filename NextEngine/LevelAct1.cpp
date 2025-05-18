@@ -115,6 +115,10 @@ void LevelAct1::levelInit() {
     pole->setTexture("../Resource/Texture/Act1/City_P12_FGPole.png");
     objectsList.emplace_back(pole);
 
+    ProtagThoughts* p1 = new ProtagThoughts("../Resource/Texture/StoryStuff/Act1Test.txt", player, 0.0f);
+    //objectsList.emplace_back(p1->getDialogueObject());
+    objectsList.emplace_back(p1);
+
     //UIobject->initUI(objectsList);
 
     GameEngine::getInstance()->getRenderer()->getCamera()->setDeadLimitBool(true);
@@ -131,7 +135,6 @@ void LevelAct1::levelUpdate() {
     updateObjects(objectsList);
 
     GameEngine::getInstance()->getRenderer()->updateCamera();
-
 
     // Placeholder death logic
     for (std::list<DrawableObject*>::iterator itr = objectsList.begin(); itr != objectsList.end(); ++itr) {

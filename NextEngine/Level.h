@@ -13,6 +13,7 @@
 #include "UI.h"
 #include "InteractableObject.h"
 #include "Dialogue.h"
+#include "ProtagThoughts.h"
 
 namespace LevelConstant {
     constexpr float DEFAULT_BUFFER_DURATION = 0.3f;
