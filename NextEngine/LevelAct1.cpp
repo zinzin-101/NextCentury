@@ -60,7 +60,7 @@ void LevelAct1::levelInit() {
 
     player = new PlayerObject();
 
-    InteractableObject* it = new InteractableObject("../Resource/Texture/StoryStuff/NeonBoardDescription.txt", player);
+    it = new InteractableObject("../Resource/Texture/StoryStuff/NeonBoardDescription.txt", player);
     it->setTexture("../Resource/Texture/StoryStuff/BoardNeon.png");
     it->getTransform().setPosition(glm::vec3(25.0f, -0.85f, 0.0f));
     it->initAnimation(2, 1);
@@ -115,9 +115,11 @@ void LevelAct1::levelInit() {
     pole->setTexture("../Resource/Texture/Act1/City_P12_FGPole.png");
     objectsList.emplace_back(pole);
 
-    ProtagThoughts* p1 = new ProtagThoughts("../Resource/Texture/StoryStuff/Act1Test.txt", player, 0.0f);
+    p1 = new ProtagThoughts("../Resource/Texture/StoryStuff/ProtagThoughtsAct1/one.txt", player);
     //objectsList.emplace_back(p1->getDialogueObject());
     objectsList.emplace_back(p1);
+    p2 = new ProtagThoughts("../Resource/Texture/StoryStuff/ProtagThoughtsAct1/two.txt", player);
+    objectsList.emplace_back(p2);
 
     //UIobject->initUI(objectsList);
 
@@ -135,6 +137,15 @@ void LevelAct1::levelUpdate() {
     updateObjects(objectsList);
 
     GameEngine::getInstance()->getRenderer()->updateCamera();
+
+    //Dialogue logics
+    if (player->getTransform().getPosition().x > -0.5f) {
+        p1->activateDialogue();
+    }
+
+    if (interactCount == 2) {
+        p2->activateDialogue();
+    }
 
     // Placeholder death logic
     for (std::list<DrawableObject*>::iterator itr = objectsList.begin(); itr != objectsList.end(); ++itr) {
@@ -256,6 +267,7 @@ void LevelAct1::handleKey(InputManager& input) {
 
     //Dialogue interact
     if (input.getButtonDown(SDLK_e)) {
+        
         if (!dialogueList.empty()) {
             Dialogue* currentDialogue = dialogueList.front();
             if (currentDialogue->isDialogueActive) {
@@ -267,11 +279,10 @@ void LevelAct1::handleKey(InputManager& input) {
         }
 
         //InteractableObject* keep;
-        if (!interactableList.empty()) {
-            for (InteractableObject* keep : interactableList) {
-                if (keep->getIsClickable()) {
-                    keep->setDescriptionActive(!keep->getDescriptionActive());
-                }
+        if (p1->getDialogueObject()->isEnd) {
+            if (it->getIsClickable()) {
+                interactCount++;
+                it->setDescriptionActive(!it->getDescriptionActive());
             }
         }
     }

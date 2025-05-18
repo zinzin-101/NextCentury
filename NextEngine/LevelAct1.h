@@ -11,7 +11,10 @@ private:
     IngameUI* UIobject;
     queue<Dialogue*> dialogueList;
     list<InteractableObject*> interactableList;
-
+    InteractableObject* it = nullptr;
+    ProtagThoughts* p1 = nullptr;
+    ProtagThoughts* p2 = nullptr;
+    int interactCount = 0;
 
 public:
     virtual void levelLoad();

@@ -2,12 +2,11 @@
 #include "GameEngine.h"
 #include <fstream>
 
-ProtagThoughts::ProtagThoughts(string fileName, PlayerObject* player, float x) {
+ProtagThoughts::ProtagThoughts(string fileName, PlayerObject* player) {
 	isActiveDialogue = false;
-	fontSize = 32;
+	fontSize = 40;
 	dialogueText = new Dialogue(fontSize, player, false);
 	//dialogueText->setBackDropActive(false);
-	xActivatePos = x;
 	this->player = player;
 
 	string myText;
@@ -29,20 +28,22 @@ ProtagThoughts::ProtagThoughts(string fileName, PlayerObject* player, float x) {
 Dialogue* ProtagThoughts::getDialogueObject() {
 	return dialogueText;
 }
-void ProtagThoughts::activateDialogue() {
+void ProtagThoughts::activateDialogue() { // can only be active once
 	isActiveDialogue = true;
-	dialogueText->isDialogueActive = true;
+	if (!lifeTimeEachSentence.empty()) {
+		dialogueText->isDialogueActive = true;
+	}
 }
 
 void ProtagThoughts::update(list<DrawableObject*>& objectsList) {
 	dialogueText->getTransform().setPosition(glm::vec3(GameEngine::getInstance()->getRenderer()->getCamera()->getPosition().x, -4.0f, 0.0f));
 	dialogueText->update(objectsList);
 	float dt = GameEngine::getInstance()->getTime()->getDeltaTime();
-	if (abs(player->getTransform().getPosition().x - xActivatePos) < 0.2f) {
-		if (!isActiveDialogue) {
-			activateDialogue();
-		}
-	}
+	//if (abs(player->getTransform().getPosition().x - xActivatePos) < 0.2f) {
+	//	if (!isActiveDialogue) {
+	//		activateDialogue();
+	//	}
+	//}
 	if (isActiveDialogue) {
 		if (!lifeTimeEachSentence.empty()) {
 			if (keepTime <= 0) {
@@ -56,6 +57,9 @@ void ProtagThoughts::update(list<DrawableObject*>& objectsList) {
 				keepTime -= dt;
 			}
 		}
+	}
+	if (lifeTimeEachSentence.empty()) {
+		dialogueText->isDialogueActive = false;
 	}
 }
 

@@ -13,6 +13,7 @@ Dialogue::Dialogue(int fontSize, PlayerObject* player, bool isActiveByPosition) 
 	this->isActiveByPosition = isActiveByPosition;
 	isBackdropActive = true;
 	this->setRenderOrder(2);
+	isEnd = false;
 }
 
 glm::vec3 Dialogue::getTextScale() {
@@ -68,6 +69,7 @@ void Dialogue::setSentences(queue<string> s) {
 void Dialogue::endDialogue() {
 	isActiveByPosition = false;
 	isDialogueActive = false;
+	isEnd = true;
 }
 
 void Dialogue::checkActiveRange() {

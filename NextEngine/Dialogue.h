@@ -20,6 +20,7 @@ private:
 public:
 	queue<string> sentences;
 	bool isDialogueActive;
+	bool isEnd;
 	Dialogue(int fontSize, PlayerObject *player, bool isActiveByPosition);
 	glm::vec3 getTextScale();
 	void update(list<DrawableObject*>& objectsList);
