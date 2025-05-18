@@ -17,6 +17,7 @@ namespace PlayerStat {
     constexpr float DURATION_TO_START_CHARGED_BULLET = 0.5f;
 
     constexpr float ATTACK_ANIMATION_TIME_PER_FRAME = 0.12f;
+    constexpr float PARRY_ANIMATION_TIME_PER_FRAME = 0.12f;
     constexpr float CHARGE_ANIMATION_TIME_PER_FRAME = 0.12f;
     constexpr float GUN_CHARGE_ANIMATION_TIME_PER_FRAME = 0.12f;
 
