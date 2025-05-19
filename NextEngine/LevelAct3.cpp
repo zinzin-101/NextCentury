@@ -32,18 +32,12 @@ void LevelAct3::levelInit() {
     backGround->getTransform().setScale(scaleX, scaleY);
     objectsList.emplace_back(backGround);
 
-    board = new InteractableObject("../Resource/Texture/StoryStuff/BoardAct3.txt", player);
-    board->setTexture("../Resource/Texture/Act3/BoardSheet.png");
+    board = new InteractableObject("../Resource/Texture/StoryStuff/BoardAct3.txt", player, "../Resource/Texture/Act3/BoardSheet.png", objectsList);
     board->getTransform().setPosition(glm::vec3(2.55f, -0.3f, 0.0f));
-    board->initAnimation(2, 1);
-    board->getAnimationComponent()->addState("idle", 0, 0, 1, true);
-    board->getAnimationComponent()->addState("clickAble", 1, 0, 1, true);
-    board->getAnimationComponent()->setState("idle");
     board->getTransform().setScale(glm::vec3(1.5f, 0.91f, 0.0f));
     objectsList.emplace_back(board);
-    board->insertTextInObjectList(objectsList);
-    objectsList.emplace_back(board->getBackdrop());
-    objectsList.emplace_back(board->getBackdropText());
+    board->getBackdropText()->getTransform().setScale(glm::vec3(7.0f, 3.0f, 0.0f));
+    board->setPosOffset(glm::vec3(0.25f, 0.0f, 0.0f));
 
     TexturedObject* midGround1 = new TexturedObject();
     midGround1->getTransform().setPosition(0.0f, 0.0f);
@@ -51,27 +45,15 @@ void LevelAct3::levelInit() {
     midGround1->getTransform().setScale(scaleX, scaleY);
     objectsList.emplace_back(midGround1);
 
-    door = new InteractableObject("../Resource/Texture/StoryStuff/NeonBoardDescription.txt", player);
-    door->setTexture("../Resource/Texture/Act3/DoorSheet.png");
+    door = new InteractableObject("../Resource/Texture/StoryStuff/NeonBoardDescription.txt", player, "../Resource/Texture/Act3/DoorSheet.png", objectsList);
     door->getTransform().setPosition(glm::vec3(-1.2f, -1.3f, 0.0f));
-    door->initAnimation(2, 1);
-    door->getAnimationComponent()->addState("idle", 0, 0, 1, true);
-    door->getAnimationComponent()->addState("clickAble", 1, 0, 1, true);
-    door->getAnimationComponent()->setState("idle");
     door->getTransform().setScale(glm::vec3(1.3f, 2.1f, 0.0f));
     objectsList.emplace_back(door);
-    door->insertTextInObjectList(objectsList);
 
-    shelf = new InteractableObject("../Resource/Texture/StoryStuff/NeonBoardDescription.txt", player);
-    shelf->setTexture("../Resource/Texture/Act3/ShelfSheet.png");
+    shelf = new InteractableObject("../Resource/Texture/StoryStuff/NeonBoardDescription.txt", player, "../Resource/Texture/Act3/ShelfSheet.png", objectsList);
     shelf->getTransform().setPosition(glm::vec3(0.8f, -1.1f, 0.0f));
-    shelf->initAnimation(2, 1);
-    shelf->getAnimationComponent()->addState("idle", 0, 0, 1, true);
-    shelf->getAnimationComponent()->addState("clickAble", 1, 0, 1, true);
-    shelf->getAnimationComponent()->setState("idle");
     shelf->getTransform().setScale(glm::vec3(1.25f, 2.57f, 0.0f));
     objectsList.emplace_back(shelf);
-    shelf->insertTextInObjectList(objectsList);
 
     TexturedObject* midGround2 = new TexturedObject();
     midGround2->getTransform().setPosition(0.0f, 0.0f);
@@ -91,27 +73,15 @@ void LevelAct3::levelInit() {
     docs->getTransform().setScale(scaleX, scaleY);
     objectsList.emplace_back(docs);
 
-    desk = new InteractableObject("../Resource/Texture/StoryStuff/NeonBoardDescription.txt", player);
-    desk->setTexture("../Resource/Texture/Act3/DeskSheet.png");
+    desk = new InteractableObject("../Resource/Texture/StoryStuff/NeonBoardDescription.txt", player, "../Resource/Texture/Act3/DeskSheet.png", objectsList);
     desk->getTransform().setPosition(glm::vec3(3.5f, -1.49f, 0.0f));
-    desk->initAnimation(2, 1);
-    desk->getAnimationComponent()->addState("idle", 0, 0, 1, true);
-    desk->getAnimationComponent()->addState("clickAble", 1, 0, 1, true);
-    desk->getAnimationComponent()->setState("idle");
     desk->getTransform().setScale(glm::vec3(2.5f, 1.77f, 0.0f));
     objectsList.emplace_back(desk);
-    desk->insertTextInObjectList(objectsList);
 
-    chest = new InteractableObject("../Resource/Texture/StoryStuff/NeonBoardDescription.txt", player);
-    chest->setTexture("../Resource/Texture/Act3/ChestSheet.png");
+    chest = new InteractableObject("../Resource/Texture/StoryStuff/NeonBoardDescription.txt", player, "../Resource/Texture/Act3/ChestSheet.png", objectsList);
     chest->getTransform().setPosition(glm::vec3(-3.75f, -2.25f, 0.0f));
-    chest->initAnimation(2, 1);
-    chest->getAnimationComponent()->addState("idle", 0, 0, 1, true);
-    chest->getAnimationComponent()->addState("clickAble", 1, 0, 1, true);
-    chest->getAnimationComponent()->setState("idle");
     chest->getTransform().setScale(glm::vec3(0.5f, 0.2f, 0.0f));
     objectsList.emplace_back(chest);
-    chest->insertTextInObjectList(objectsList);
 
     Level::importTransformData(objectsList, "act3", false);
 

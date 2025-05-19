@@ -1,21 +1,36 @@
 Information on the city's frontline soldiers
-36
+24
 b
   
-36
+24
 b
-General PHILDEL, the era's most renowned strategist, excels in commanding battles against berserkers. 
-24
+General PHILDEL
+18
+b
+The era's most renowned strategist, excels in commanding battles against berserkers.
+18
 n
-KAIN, the top assault unit member, is unmatched in combat and resisting berserkers.
-24
+KAIN
+18
+b
+The top assault unit member, is unmatched in combat and resisting berserkers.
+18
 n
-REINER, a skilled scout, gathers intel swiftly and excels in long-range combat.
-24
+REINER
+18
+b
+a skilled scout, gathers intel swiftly and excels in long-range combat.
+18
 n
-GALEN, a renowned tech specialist, was famous even before the great explosion.
-24
+GALEN
+18
+b
+a renowned tech specialist, was famous even before the great explosion.
+18
 n
-VOSS, a highly skilled medic, has saved countless soldiers injured in berserker battles.
-24
+VOSS
+18
+b
+a highly skilled medic, has saved countless soldiers injured in berserker battles.
+18
 n

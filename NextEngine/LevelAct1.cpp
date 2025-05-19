@@ -60,17 +60,10 @@ void LevelAct1::levelInit() {
 
     player = new PlayerObject();
 
-    it = new InteractableObject("../Resource/Texture/StoryStuff/NeonBoardDescription.txt", player);
-    it->setTexture("../Resource/Texture/StoryStuff/BoardNeon.png");
+    it = new InteractableObject("../Resource/Texture/StoryStuff/NeonBoardDescription.txt", player, "../Resource/Texture/StoryStuff/BoardNeon.png", objectsList);
     it->getTransform().setPosition(glm::vec3(25.0f, -0.85f, 0.0f));
-    it->initAnimation(2, 1);
-    it->getAnimationComponent()->addState("idle", 0, 0, 1, true);
-    it->getAnimationComponent()->addState("clickAble", 1, 0, 1, true);
-    it->getAnimationComponent()->setState("idle");
     it->getTransform().setScale(glm::vec3(6.0f, 4.0f, 0.0f));
     objectsList.emplace_back(it);
-    interactableList.push_back(it);
-    it->insertTextInObjectList(objectsList);
 
 	//float height = 7.0f; 
 	//float width = height * 5.3333333f;

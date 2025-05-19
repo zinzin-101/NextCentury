@@ -44,13 +44,13 @@ void GameStateController::loadLevel() {
 			currentLevel = new LevelAlphaNMMN();
 			break;
 		case GameState::GS_LEVEL3:
-			currentLevel = new LevelAct2();
+			currentLevel = new LevelAct1();
 			break;
 		case GameState::GS_ACT1:
-			currentLevel = new LevelAct3();
+			currentLevel = new LevelAct2();
 			break;
 		case GameState::GS_ACT2:
-			currentLevel = new LevelAct2();
+			currentLevel = new LevelAct3();
 			break;
 		case GameState::GS_ACT3:
 			currentLevel = new LevelAct3();

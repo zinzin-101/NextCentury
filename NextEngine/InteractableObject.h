@@ -14,8 +14,9 @@ class InteractableObject : public TexturedObject {
 	TexturedObject* BackdropText;
 	float offSetWidth;
 	float offSetHeight;
+	glm::vec3 posOffset;
 public:
-	InteractableObject(string describe, PlayerObject* player);
+	InteractableObject(string describe, PlayerObject* player, string texture, list<DrawableObject*>& objectsList);
 	void update(list<DrawableObject*>& objectsList);
 	void setDescriptionActive(bool b);
 	void insertTextInObjectList(list<DrawableObject*>& objectsList);
@@ -26,4 +27,5 @@ public:
 	void setOffsetHeith(float y);
 	TexturedObject* getBackdrop();
 	TexturedObject* getBackdropText();
+	void setPosOffset(glm::vec3 offset);
 };

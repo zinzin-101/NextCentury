@@ -2,8 +2,13 @@
 #include "GameEngine.h"
 #include <iostream>
 
-InteractableObject::InteractableObject(string fileName, PlayerObject* player) : TexturedObject() {
-	
+InteractableObject::InteractableObject(string fileName, PlayerObject* player, string texture, list<DrawableObject*>& objectsList) : TexturedObject() {
+	this->setTexture(texture);
+	this->initAnimation(2, 1);
+	this->getAnimationComponent()->addState("idle", 0, 0, 1, true);
+	this->getAnimationComponent()->addState("clickAble", 1, 0, 1, true);
+	this->getAnimationComponent()->setState("idle");
+
 	string myText;
 
 	ifstream meFile(fileName);
@@ -33,6 +38,7 @@ InteractableObject::InteractableObject(string fileName, PlayerObject* player) : 
 	isShowingTxt = false;
 	offSetWidth = 3.0f;
 	offSetHeight = 2.0f;
+	posOffset = glm::vec3(0.0f,0.0f,0.0f);
 	//descriptionText->getTransform().setPosition(glm::vec3(5.0f, -2.0f, 0.0f));
 	this->player = player;
 	//descriptionText->isDialogueActive = true;
@@ -41,12 +47,18 @@ InteractableObject::InteractableObject(string fileName, PlayerObject* player) : 
 	Backdrop->getTransform().setScale(16.0f,9.0f);
 	Backdrop->setActive(false);
 	Backdrop->setRenderOrder(1);
+	objectsList.emplace_back(Backdrop);
 
 	BackdropText = new TexturedObject();
 	BackdropText->setTexture("../Resource/Texture/StoryStuff/InteracableObject_DescriotionBox.png");
 	BackdropText->getTransform().setScale((offSetWidth * 2.1f), offSetHeight * 2.25f);
 	BackdropText->setActive(false);
 	BackdropText->setRenderOrder(1);
+	objectsList.emplace_back(BackdropText);
+
+	for (int i = 0; i < txtEachLine.size(); i++) {
+		objectsList.emplace_back(txtEachLine[i]);
+	}
 }
 
 void InteractableObject::update(list<DrawableObject*>& objectsList) {
@@ -54,7 +66,7 @@ void InteractableObject::update(list<DrawableObject*>& objectsList) {
 	//descriptionText->getTransform().setPosition(glm::vec3(this->getTransform().getPosition().x, this->getTransform().getPosition().y + this->getTransform().getScale().y / 2, 0.0f));
 
 	Backdrop->getTransform().setPosition(GameEngine::getInstance()->getRenderer()->getCamera()->getPosition());
-	BackdropText->getTransform().setPosition(GameEngine::getInstance()->getRenderer()->getCamera()->getPosition());
+	BackdropText->getTransform().setPosition(GameEngine::getInstance()->getRenderer()->getCamera()->getPosition() + posOffset);
 	//descriptionText->getTransform().setPosition(GameEngine::getInstance()->getRenderer()->getCamera()->getPosition());
 
 	float offsetY = 0;
@@ -124,4 +136,8 @@ TexturedObject* InteractableObject::getBackdrop() {
 
 TexturedObject* InteractableObject::getBackdropText() {
 	return BackdropText;
+}
+
+void InteractableObject::setPosOffset(glm::vec3 offset) {
+	posOffset = offset;
 }
