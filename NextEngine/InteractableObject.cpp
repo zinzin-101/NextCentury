@@ -36,24 +36,25 @@ InteractableObject::InteractableObject(string fileName, PlayerObject* player) : 
 	//descriptionText->getTransform().setPosition(glm::vec3(5.0f, -2.0f, 0.0f));
 	this->player = player;
 	//descriptionText->isDialogueActive = true;
-	Backdrop = TexturedObject();
-	Backdrop.setTexture("../Resource/Texture/StoryStuff/InteracableObject_DescriotionBox_Blackdrop.png");
-	Backdrop.getTransform().setScale(16.0f,9.0f);
-	Backdrop.setActive(false);
-	Backdrop.setRenderOrder(1);
+	Backdrop = new TexturedObject();
+	Backdrop->setTexture("../Resource/Texture/StoryStuff/InteracableObject_DescriotionBox_Blackdrop.png");
+	Backdrop->getTransform().setScale(16.0f,9.0f);
+	Backdrop->setActive(false);
+	Backdrop->setRenderOrder(1);
 
-	BackdropText = TexturedObject();
-	BackdropText.setTexture("../Resource/Texture/StoryStuff/InteracableObject_DescriotionBox.png");
-	BackdropText.getTransform().setScale((offSetWidth * 2.1f), offSetHeight * 2.25f);
-	BackdropText.setRenderOrder(1);
+	BackdropText = new TexturedObject();
+	BackdropText->setTexture("../Resource/Texture/StoryStuff/InteracableObject_DescriotionBox.png");
+	BackdropText->getTransform().setScale((offSetWidth * 2.1f), offSetHeight * 2.25f);
+	BackdropText->setActive(false);
+	BackdropText->setRenderOrder(1);
 }
 
 void InteractableObject::update(list<DrawableObject*>& objectsList) {
 	//This one is for the text to be above the object
 	//descriptionText->getTransform().setPosition(glm::vec3(this->getTransform().getPosition().x, this->getTransform().getPosition().y + this->getTransform().getScale().y / 2, 0.0f));
-	
-	Backdrop.getTransform().setPosition(GameEngine::getInstance()->getRenderer()->getCamera()->getPosition());
-	BackdropText.getTransform().setPosition(GameEngine::getInstance()->getRenderer()->getCamera()->getPosition());
+
+	Backdrop->getTransform().setPosition(GameEngine::getInstance()->getRenderer()->getCamera()->getPosition());
+	BackdropText->getTransform().setPosition(GameEngine::getInstance()->getRenderer()->getCamera()->getPosition());
 	//descriptionText->getTransform().setPosition(GameEngine::getInstance()->getRenderer()->getCamera()->getPosition());
 
 	float offsetY = 0;
@@ -88,13 +89,13 @@ void InteractableObject::insertTextInObjectList(list<DrawableObject*>& objectsLi
 
 void InteractableObject::render(glm::mat4 globalModelTransform) {
 	TexturedObject::render(globalModelTransform);
-	if (Backdrop.getIsActive()) {
-		Backdrop.render(globalModelTransform);
-		BackdropText.render(globalModelTransform);
-	}
-	for (int i = 0; i < txtEachLine.size(); i++) {
-		txtEachLine[i]->render(globalModelTransform);
-	}
+	//if (Backdrop->getIsActive()) {
+	//	Backdrop->render(globalModelTransform);
+	//	BackdropText->render(globalModelTransform);
+	//}
+	//for (int i = 0; i < txtEachLine.size(); i++) {
+	//	txtEachLine[i]->render(globalModelTransform);
+	//}
 }
 
 void InteractableObject::setDescriptionActive(bool b) {
@@ -102,7 +103,8 @@ void InteractableObject::setDescriptionActive(bool b) {
 	//	return;
 	//}
 	isShowingTxt = b;
-	Backdrop.setActive(b);
+	Backdrop->setActive(b);
+	BackdropText->setActive(b);
 	for (int i = 0; i < txtEachLine.size(); i++) {
 		txtEachLine[i]->isDialogueActive = b;
 	}
@@ -114,4 +116,12 @@ bool InteractableObject::getDescriptionActive() {
 
 bool InteractableObject::getIsClickable() {
 	return isClickable;
+}
+
+TexturedObject* InteractableObject::getBackdrop() {
+	return Backdrop;
+}
+
+TexturedObject* InteractableObject::getBackdropText() {
+	return BackdropText;
 }

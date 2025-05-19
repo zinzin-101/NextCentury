@@ -9,7 +9,12 @@ private:
     list<DrawableObject*> UIobjectsList;
     PlayerObject* player = nullptr;
     IngameUI* UIobject;
-    glm::vec3 camPos = glm::vec3(0.0f, 0.0f, 0.0f);
+    InteractableObject* door;
+    InteractableObject* board;
+    InteractableObject* shelf;
+    InteractableObject* desk;
+    InteractableObject* chest;
+    ProtagThoughts* p1;
 
 public:
     virtual void levelLoad();

@@ -10,8 +10,8 @@ class InteractableObject : public TexturedObject {
 	PlayerObject* player;
 	bool isClickable;
 	bool isShowingTxt;
-	TexturedObject Backdrop;
-	TexturedObject BackdropText;
+	TexturedObject* Backdrop;
+	TexturedObject* BackdropText;
 	float offSetWidth;
 	float offSetHeight;
 public:
@@ -24,4 +24,6 @@ public:
 	void render(glm::mat4 globalModelTransform);
 	void setOffsetWidth(float x);
 	void setOffsetHeith(float y);
+	TexturedObject* getBackdrop();
+	TexturedObject* getBackdropText();
 };

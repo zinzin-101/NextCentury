@@ -19,55 +19,107 @@ void LevelAct3::levelInit() {
     UIobject = new IngameUI();
     GameEngine::getInstance()->getRenderer()->setClearColor(0.1f, 0.1f, 0.1f);
 
+    player = new PlayerObject();
+
     float pictureWidth = 640.0f;
     float pictureHeight = 360.0f;
     float scaleX = (pictureWidth / pictureHeight) * 9.0f;
     float scaleY = 9.0f;
 
     TexturedObject* backGround = new TexturedObject();
-    backGround->getTransform().setPosition(0.0f, -0.5f);
+    backGround->getTransform().setPosition(0.0f, 0.0f);
     backGround->setTexture("../Resource/Texture/Act3/MCR_P01_RoomBase.png");
     backGround->getTransform().setScale(scaleX, scaleY);
     objectsList.emplace_back(backGround);
 
+    board = new InteractableObject("../Resource/Texture/StoryStuff/BoardAct3.txt", player);
+    board->setTexture("../Resource/Texture/Act3/BoardSheet.png");
+    board->getTransform().setPosition(glm::vec3(2.55f, -0.3f, 0.0f));
+    board->initAnimation(2, 1);
+    board->getAnimationComponent()->addState("idle", 0, 0, 1, true);
+    board->getAnimationComponent()->addState("clickAble", 1, 0, 1, true);
+    board->getAnimationComponent()->setState("idle");
+    board->getTransform().setScale(glm::vec3(1.5f, 0.91f, 0.0f));
+    objectsList.emplace_back(board);
+    board->insertTextInObjectList(objectsList);
+    objectsList.emplace_back(board->getBackdrop());
+    objectsList.emplace_back(board->getBackdropText());
+
     TexturedObject* midGround1 = new TexturedObject();
-    midGround1->getTransform().setPosition(0.0f, -0.5f);
+    midGround1->getTransform().setPosition(0.0f, 0.0f);
     midGround1->setTexture("../Resource/Texture/Act3/MCR_P02_Mid1.png");
     midGround1->getTransform().setScale(scaleX, scaleY);
     objectsList.emplace_back(midGround1);
 
+    door = new InteractableObject("../Resource/Texture/StoryStuff/NeonBoardDescription.txt", player);
+    door->setTexture("../Resource/Texture/Act3/DoorSheet.png");
+    door->getTransform().setPosition(glm::vec3(-1.2f, -1.3f, 0.0f));
+    door->initAnimation(2, 1);
+    door->getAnimationComponent()->addState("idle", 0, 0, 1, true);
+    door->getAnimationComponent()->addState("clickAble", 1, 0, 1, true);
+    door->getAnimationComponent()->setState("idle");
+    door->getTransform().setScale(glm::vec3(1.3f, 2.1f, 0.0f));
+    objectsList.emplace_back(door);
+    door->insertTextInObjectList(objectsList);
+
+    shelf = new InteractableObject("../Resource/Texture/StoryStuff/NeonBoardDescription.txt", player);
+    shelf->setTexture("../Resource/Texture/Act3/ShelfSheet.png");
+    shelf->getTransform().setPosition(glm::vec3(0.8f, -1.1f, 0.0f));
+    shelf->initAnimation(2, 1);
+    shelf->getAnimationComponent()->addState("idle", 0, 0, 1, true);
+    shelf->getAnimationComponent()->addState("clickAble", 1, 0, 1, true);
+    shelf->getAnimationComponent()->setState("idle");
+    shelf->getTransform().setScale(glm::vec3(1.25f, 2.57f, 0.0f));
+    objectsList.emplace_back(shelf);
+    shelf->insertTextInObjectList(objectsList);
+
     TexturedObject* midGround2 = new TexturedObject();
-    midGround2->getTransform().setPosition(0.0f, -0.5f);
+    midGround2->getTransform().setPosition(0.0f, 0.0f);
     midGround2->setTexture("../Resource/Texture/Act3/MCR_P04_Mid2.png");
     midGround2->getTransform().setScale(scaleX, scaleY);
     objectsList.emplace_back(midGround2);
 
     TexturedObject* windowLight = new TexturedObject();
-    windowLight->getTransform().setPosition(0.0f, -0.5f);
+    windowLight->getTransform().setPosition(0.0f, 0.0f);
     windowLight->setTexture("../Resource/Texture/Act3/MCR_P03_WindowLightray.png");
     windowLight->getTransform().setScale(scaleX, scaleY);
     objectsList.emplace_back(windowLight);
 
     TexturedObject* docs = new TexturedObject();
-    docs->getTransform().setPosition(0.0f, -0.5f);
+    docs->getTransform().setPosition(0.0f, 0.0f);
     docs->setTexture("../Resource/Texture/Act3/MCR_P05_Doc.png");
     docs->getTransform().setScale(scaleX, scaleY);
     objectsList.emplace_back(docs);
 
-    //float height = 8.0f;
-    //float width = height * 1.777777777777778;
-    //for (auto a : objectsList) {
-    //    a->getTransform().setScale(width, height);
-    //    a->getTransform().setPosition(0.0f, -0.75f);
-    //}
+    desk = new InteractableObject("../Resource/Texture/StoryStuff/NeonBoardDescription.txt", player);
+    desk->setTexture("../Resource/Texture/Act3/DeskSheet.png");
+    desk->getTransform().setPosition(glm::vec3(3.5f, -1.49f, 0.0f));
+    desk->initAnimation(2, 1);
+    desk->getAnimationComponent()->addState("idle", 0, 0, 1, true);
+    desk->getAnimationComponent()->addState("clickAble", 1, 0, 1, true);
+    desk->getAnimationComponent()->setState("idle");
+    desk->getTransform().setScale(glm::vec3(2.5f, 1.77f, 0.0f));
+    objectsList.emplace_back(desk);
+    desk->insertTextInObjectList(objectsList);
 
+    chest = new InteractableObject("../Resource/Texture/StoryStuff/NeonBoardDescription.txt", player);
+    chest->setTexture("../Resource/Texture/Act3/ChestSheet.png");
+    chest->getTransform().setPosition(glm::vec3(-3.75f, -2.25f, 0.0f));
+    chest->initAnimation(2, 1);
+    chest->getAnimationComponent()->addState("idle", 0, 0, 1, true);
+    chest->getAnimationComponent()->addState("clickAble", 1, 0, 1, true);
+    chest->getAnimationComponent()->setState("idle");
+    chest->getTransform().setScale(glm::vec3(0.5f, 0.2f, 0.0f));
+    objectsList.emplace_back(chest);
+    chest->insertTextInObjectList(objectsList);
 
-    Level::importTransformData(objectsList, "alpha1", false);
+    Level::importTransformData(objectsList, "act3", false);
 
-    player = new PlayerObject();
-    player->getTransform().setScale(4.166f, 2.5f);
-    player->getColliderComponent()->getTransform().translate(0.0f, -0.44f);
-    player->getColliderComponent()->setDimension(0.25f, 0.65f);
+    
+    //player->getTransform().setScale(4.166f, 2.5f);
+    //player->getColliderComponent()->getTransform().translate(0.0f, -0.44f);
+    //player->getColliderComponent()->setDimension(0.25f, 0.65f);
+    player->getTransform().setPosition(glm::vec3(-1.0f, -1.0f, 0.0f));
     objectsList.emplace_back(player);
 
     GameEngine::getInstance()->getRenderer()->getCamera()->setTarget(player);
@@ -86,7 +138,7 @@ void LevelAct3::levelInit() {
     player->getDamageCollider()->setFollowOffset(glm::vec3(1.0f, -0.2f, 0));
 
     TexturedObject* backGround2 = new TexturedObject();
-    backGround2->getTransform().setPosition(0.0f, -0.5f);
+    backGround2->getTransform().setPosition(0.0f, 0.0f);
     backGround2->setTexture("../Resource/Texture/Act3/MCR_P06_BlackFrame.png");
     backGround2->getTransform().setScale(scaleX, scaleY);
     objectsList.emplace_back(backGround2);
@@ -103,8 +155,7 @@ void LevelAct3::levelInit() {
 void LevelAct3::levelUpdate() {
     updateObjects(objectsList);
 
-    GameEngine::getInstance()->getRenderer()->updateCamera();
-
+    //GameEngine::getInstance()->getRenderer()->updateCamera();
 
     // Placeholder death logic
     for (std::list<DrawableObject*>::iterator itr = objectsList.begin(); itr != objectsList.end(); ++itr) {
@@ -222,6 +273,29 @@ void LevelAct3::handleKey(InputManager& input) {
         }
         else {
             player->dodge();
+        }
+    }
+
+    if (input.getButtonDown(SDLK_e)) {
+
+        //if (!dialogueList.empty()) {
+        //    Dialogue* currentDialogue = dialogueList.front();
+        //    if (currentDialogue->isDialogueActive) {
+        //        currentDialogue->nextSentence();
+        //        if (currentDialogue->sentences.empty()) {
+        //            dialogueList.pop();
+        //        }
+        //    }
+        //}
+
+        //if (p1->getDialogueObject()->isEnd) {
+        //    if (it->getIsClickable()) {
+        //        interactCount++;
+        //        it->setDescriptionActive(!it->getDescriptionActive());
+        //    }
+        //}
+        if (board->getIsClickable()) {
+            board->setDescriptionActive(!board->getDescriptionActive());
         }
     }
 }

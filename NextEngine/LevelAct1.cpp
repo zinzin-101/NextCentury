@@ -139,7 +139,7 @@ void LevelAct1::levelUpdate() {
     GameEngine::getInstance()->getRenderer()->updateCamera();
 
     //Dialogue logics
-    if (player->getTransform().getPosition().x > -0.5f) {
+    if (player->getTransform().getPosition().x > -5.0f) {
         p1->activateDialogue();
     }
 
