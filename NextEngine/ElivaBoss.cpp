@@ -18,7 +18,6 @@ ElivaBoss::ElivaBoss(): EnemyObject(DefaultEnemyStat::ELIVA_INFO) {
 	states[BossState::SerumInject] = State(BossState::SerumInject);
 	states[BossState::Fury] = State(BossState::Fury);
 
-
 	states[BossState::Cooldown].nextStateAndTransitionCheck[&states[BossState::Blink]] = (&StateTransition::cooldownToBlink);
 
 	states[BossState::Blink].nextStateAndTransitionCheck[&states[BossState::SerumInject]] = (&StateTransition::blinkToSerumInject);
@@ -65,11 +64,11 @@ ElivaBoss::~ElivaBoss() {
 }
 
 void ElivaBoss::processState() {
-
+	//+
 }
 
 void ElivaBoss::updateBehavior(list<DrawableObject*>& objectsList) {
-
+	//+
 }
 
 void ElivaBoss::postUpdateBehavior() {}

@@ -39,6 +39,7 @@ class ElivaBoss : public EnemyObject {
 		};
 
 		struct State {
+			State(): currentState(BossState::Cooldown){}
 			State(BossState currentState): currentState(currentState) {}
 			BossState currentState;
 			std::map<State*, transitionCheckFunction> nextStateAndTransitionCheck;
