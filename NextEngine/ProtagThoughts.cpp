@@ -2,13 +2,7 @@
 #include "GameEngine.h"
 #include <fstream>
 
-ProtagThoughts::ProtagThoughts(string fileName, PlayerObject* player) {
-	isActiveDialogue = false;
-	fontSize = 40;
-	dialogueText = new Dialogue(fontSize, player, false);
-	//dialogueText->setBackDropActive(false);
-	this->player = player;
-
+void ProtagThoughts::readFile(string fileName) {
 	string myText;
 	ifstream meFile(fileName);
 
@@ -22,7 +16,15 @@ ProtagThoughts::ProtagThoughts(string fileName, PlayerObject* player) {
 		getline(meFile, myText); // time
 		lifeTimeEachSentence.push(stof(myText));
 	}
+}
 
+ProtagThoughts::ProtagThoughts(string fileName, PlayerObject* player) {
+	isActiveDialogue = false;
+	fontSize = 40;
+	dialogueText = new Dialogue(fontSize, player, false);
+	//dialogueText->setBackDropActive(false);
+	this->player = player;
+	readFile(fileName);
 	keepTime = lifeTimeEachSentence.front();
 }
 Dialogue* ProtagThoughts::getDialogueObject() {
@@ -33,6 +35,12 @@ void ProtagThoughts::activateDialogue() { // can only be active once
 	if (!lifeTimeEachSentence.empty()) {
 		dialogueText->isDialogueActive = true;
 	}
+}
+
+void ProtagThoughts::reActivateDialogue(string txtFile) {
+	readFile(txtFile);
+	keepTime = lifeTimeEachSentence.front();
+	dialogueText->isEnd = false;
 }
 
 void ProtagThoughts::update(list<DrawableObject*>& objectsList) {

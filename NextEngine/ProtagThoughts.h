@@ -8,10 +8,12 @@ class ProtagThoughts : public DrawableObject { // THIS CLASS IS INTENDED TO BE U
 	int fontSize;
 	float keepTime = 0;
 	PlayerObject* player;
+	void readFile(string fileName);
 public:
 	ProtagThoughts(string fileName, PlayerObject* player);
 	Dialogue* getDialogueObject();
 	void update(list<DrawableObject*>& objectsList);
 	void render(glm::mat4 globalModelTransform);
 	void activateDialogue();
+	void reActivateDialogue(string txtFile);
 };

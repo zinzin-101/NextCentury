@@ -28,4 +28,5 @@ public:
 	TexturedObject* getBackdrop();
 	TexturedObject* getBackdropText();
 	void setPosOffset(glm::vec3 offset);
+	bool isClickedOnce;
 };

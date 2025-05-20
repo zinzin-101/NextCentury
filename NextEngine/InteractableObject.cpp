@@ -39,6 +39,7 @@ InteractableObject::InteractableObject(string fileName, PlayerObject* player, st
 	offSetWidth = 3.0f;
 	offSetHeight = 2.0f;
 	posOffset = glm::vec3(0.0f,0.0f,0.0f);
+	isClickedOnce = false;
 	//descriptionText->getTransform().setPosition(glm::vec3(5.0f, -2.0f, 0.0f));
 	this->player = player;
 	//descriptionText->isDialogueActive = true;
@@ -120,6 +121,7 @@ void InteractableObject::setDescriptionActive(bool b) {
 	for (int i = 0; i < txtEachLine.size(); i++) {
 		txtEachLine[i]->isDialogueActive = b;
 	}
+	isClickedOnce = true;
 }
 
 bool InteractableObject::getDescriptionActive() {

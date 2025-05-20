@@ -44,6 +44,7 @@
     <ClCompile Include="GameEngine.cpp" />
     <ClCompile Include="GameStateController.cpp" />
     <ClCompile Include="GLRenderer.cpp" />
+    <ClCompile Include="GotItemText.cpp" />
     <ClCompile Include="IngameUI.cpp" />
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="InteractableObject.cpp" />
@@ -124,6 +125,7 @@
     <ClInclude Include="GameStateController.h" />
     <ClInclude Include="GameStateList.h" />
     <ClInclude Include="GLRenderer.h" />
+    <ClInclude Include="GotItemText.h" />
     <ClInclude Include="LevelAct2.h" />
     <ClInclude Include="LevelAct3.h" />
     <ClInclude Include="LevelAct4.h" />

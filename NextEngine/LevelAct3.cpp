@@ -73,7 +73,7 @@ void LevelAct3::levelInit() {
     docs->getTransform().setScale(scaleX, scaleY);
     objectsList.emplace_back(docs);
 
-    desk = new InteractableObject("../Resource/Texture/StoryStuff/NeonBoardDescription.txt", player, "../Resource/Texture/Act3/DeskSheet.png", objectsList);
+    desk = new InteractableObject("../Resource/Texture/StoryStuff/DeskAct3.txt", player, "../Resource/Texture/Act3/DeskSheet.png", objectsList);
     desk->getTransform().setPosition(glm::vec3(3.5f, -1.49f, 0.0f));
     desk->getTransform().setScale(glm::vec3(2.5f, 1.77f, 0.0f));
     objectsList.emplace_back(desk);
@@ -83,9 +83,17 @@ void LevelAct3::levelInit() {
     chest->getTransform().setScale(glm::vec3(0.5f, 0.2f, 0.0f));
     objectsList.emplace_back(chest);
 
+    done = new ProtagThoughts("../Resource/Texture/StoryStuff/ProtagThoughtsAct3/done.txt", player);
+    objectsList.emplace_back(done);
+
+    repeatNotDone = new ProtagThoughts("../Resource/Texture/StoryStuff/ProtagThoughtsAct3/repeat.txt", player);
+    objectsList.emplace_back(repeatNotDone);
+
+    medicineOnTable = new GotItemText("- Medicine", player, objectsList);
+    //fakePassport = new GotItemText("- fakePassport", player, objectsList);
+
     Level::importTransformData(objectsList, "act3", false);
 
-    
     //player->getTransform().setScale(4.166f, 2.5f);
     //player->getColliderComponent()->getTransform().translate(0.0f, -0.44f);
     //player->getColliderComponent()->setDimension(0.25f, 0.65f);
@@ -124,7 +132,8 @@ void LevelAct3::levelInit() {
 
 void LevelAct3::levelUpdate() {
     updateObjects(objectsList);
-
+    medicineOnTable->update(objectsList);
+    //fakePassport->update(objectsList);
     //GameEngine::getInstance()->getRenderer()->updateCamera();
 
     // Placeholder death logic
@@ -264,8 +273,15 @@ void LevelAct3::handleKey(InputManager& input) {
         //        it->setDescriptionActive(!it->getDescriptionActive());
         //    }
         //}
-        if (board->getIsClickable()) {
+
+        if ((board->getIsClickable() && desk->getIsClickable()) || board->getIsClickable()) {
             board->setDescriptionActive(!board->getDescriptionActive());
+            if (board->isClickedOnce) {
+                medicineOnTable->activateAppear();
+            }
+        }
+        else if (desk->getIsClickable()) {
+            desk->setDescriptionActive(!desk->getDescriptionActive());
         }
     }
 }

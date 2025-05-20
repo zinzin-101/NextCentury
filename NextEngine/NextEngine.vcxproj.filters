@@ -87,6 +87,7 @@
     <ClCompile Include="SimpleParticle.cpp" />
     <ClCompile Include="TexturedParticle.cpp" />
     <ClCompile Include="ProtagThoughts.cpp" />
+    <ClCompile Include="GotItemText.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
@@ -192,6 +193,7 @@
     <ClInclude Include="SimpleParticle.h" />
     <ClInclude Include="TexturedParticle.h" />
     <ClInclude Include="ProtagThoughts.h" />
+    <ClInclude Include="GotItemText.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Resource\Shader\fragment.shd" />

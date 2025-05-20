@@ -14,7 +14,10 @@ private:
     InteractableObject* shelf;
     InteractableObject* desk;
     InteractableObject* chest;
-    ProtagThoughts* p1;
+    ProtagThoughts* done;
+    ProtagThoughts* repeatNotDone;
+    GotItemText* medicineOnTable;
+    GotItemText* fakePassport;
 
 public:
     virtual void levelLoad();
