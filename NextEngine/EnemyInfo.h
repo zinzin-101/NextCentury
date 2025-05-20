@@ -29,4 +29,5 @@ namespace DefaultEnemyStat {
 	const EnemyInfo BLIGHT_FLAME_INFO = EnemyInfo("BlightFlame", 80, MovementInfo(2, 2), 7.0f, 4.0f, 1.0f, 1);
 	const EnemyInfo WAILER_INFO = EnemyInfo("Wailer", 50, MovementInfo(2.4f, 2), 50.0f, 20.0f, 2.0f, 1);
 
+	const EnemyInfo ELIVA_INFO = EnemyInfo("ElivaBoss", 100, MovementInfo(), 0.0f, 0.0f, 0.0f, 0.0f);
 }

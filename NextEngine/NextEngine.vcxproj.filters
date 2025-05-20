@@ -77,6 +77,11 @@
     <ClCompile Include="IngameUI.cpp" />
     <ClCompile Include="LevelAlphaNMMN.cpp" />
     <ClCompile Include="SonicWave.cpp" />
+    <ClCompile Include="LevelAct1.cpp" />
+    <ClCompile Include="SimpleParticle.cpp" />
+    <ClCompile Include="TexturedParticle.cpp" />
+    <ClCompile Include="ElivaBoss.cpp" />
+    <ClCompile Include="ElivaBossState.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
@@ -172,6 +177,11 @@
     <ClInclude Include="IngameUI.h" />
     <ClInclude Include="LevelAlphaNMMN.h" />
     <ClInclude Include="SonicWave.h" />
+    <ClInclude Include="LevelAct1.h" />
+    <ClInclude Include="SimpleParticle.h" />
+    <ClInclude Include="TexturedParticle.h" />
+    <ClInclude Include="ElivaBoss.h" />
+    <ClInclude Include="ElivaBossState.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Resource\Shader\fragment.shd" />
