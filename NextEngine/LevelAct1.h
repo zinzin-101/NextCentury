@@ -2,6 +2,7 @@
 
 #include "Level.h"
 #include "ObjectHeader.h"
+#include "Audio.h"
 
 class LevelAct1 : public Level {
 private:
@@ -16,6 +17,10 @@ private:
     ProtagThoughts* p2 = nullptr;
     int interactCount = 0;
 
+    AudioEngine m_audio;                      
+    SoundEffect m_jumpSfx;                     
+    SoundEffect m_deathSfx;                   
+    Music       m_backgroundMusic;            
 public:
     virtual void levelLoad();
     virtual void levelInit();
