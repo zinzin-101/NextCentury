@@ -8,7 +8,7 @@ namespace BlightFlameStat {
 	constexpr int FLAME_DAMAGE = 1;
 	constexpr int MELEE_DAMAGE = 5;
 
-	constexpr float MELEE_ATTACK_DISTANCE = 2.0f;
+	constexpr float MELEE_ATTACK_DISTANCE = 3.0f;
 	constexpr float FLAME_ATTACK_DURATION = 10.0f;
 
 	constexpr float STUN_DURATION = 2.0f;

@@ -40,6 +40,8 @@
     <ClCompile Include="CollisionHandler.cpp" />
     <ClCompile Include="Dialogue.cpp" />
     <ClCompile Include="DrawableObject.cpp" />
+    <ClCompile Include="ElivaBoss.cpp" />
+    <ClCompile Include="ElivaBossState.cpp" />
     <ClCompile Include="EnemyObject.cpp" />
     <ClCompile Include="GameEngine.cpp" />
     <ClCompile Include="GameStateController.cpp" />
@@ -118,6 +120,8 @@
     <ClInclude Include="DebugMode.h" />
     <ClInclude Include="Dialogue.h" />
     <ClInclude Include="DrawableObject.h" />
+    <ClInclude Include="ElivaBoss.h" />
+    <ClInclude Include="ElivaBossState.h" />
     <ClInclude Include="EnemyInfo.h" />
     <ClInclude Include="EnemyObject.h" />
     <ClInclude Include="FlameDamage.h" />

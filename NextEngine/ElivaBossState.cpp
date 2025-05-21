@@ -1,0 +1,201 @@
+#include "ElivaBossState.h"
+#include "Random.h"
+
+namespace StateTransition {
+	bool blinkToSerumInject(ElivaBoss* boss) {
+		if (boss->getHealth() <= ElivaStat::HEALTH_TO_BEGIN_SERUM_INJECT && !boss->isShieldActivated()) {
+			return true;
+		}
+
+		return false;
+	}
+
+	bool blinkToRifleShot(ElivaBoss* boss) {
+		const Animation::State& currentAnim = boss->getAnimationComponent()->getCurrentAnimationStateRef();
+
+		if (currentAnim.isPlaying) {
+			return false;
+		}
+
+		float random = Random::Float();
+		if (random <= 0.5f) {
+			return true;
+		}
+
+		return false;
+	}
+
+	bool blinkToBayonetSlash(ElivaBoss* boss) {
+		const Animation::State& currentAnim = boss->getAnimationComponent()->getCurrentAnimationStateRef();
+
+		if (currentAnim.isPlaying) {
+			return false;
+		}
+
+		float random = Random::Float();
+		if (random <= 0.5f) {
+			return true;
+		}
+
+		return false;
+	}
+
+	bool rifleShotToBayonetSlash(ElivaBoss* boss) {
+		const Animation::State& currentAnim = boss->getAnimationComponent()->getCurrentAnimationStateRef();
+
+		if (currentAnim.isPlaying) {
+			return false;
+		}
+
+		float distance = boss->getDistanceFromPlayer();
+
+		if (distance <= ElivaStat::BAYONET_SLASH_RANGE) {
+			return true;
+		}
+
+		return false;
+	}
+
+	bool rifleShotToCooldown(ElivaBoss* boss) {
+		const Animation::State& currentAnim = boss->getAnimationComponent()->getCurrentAnimationStateRef();
+
+		if (currentAnim.isPlaying) {
+			return false;
+		}
+
+		return true;
+	}
+
+	bool bayonetSlashToCooldown(ElivaBoss* boss) {
+		const Animation::State& currentAnim = boss->getAnimationComponent()->getCurrentAnimationStateRef();
+
+		if (currentAnim.isPlaying) {
+			return false;
+		}
+
+		return true;
+	}
+	
+	bool cooldownToBlink(ElivaBoss* boss) {
+		if (boss->getCoolDownTimer() > 0.0f) {
+			return false;
+		}
+
+		return true;
+	}
+
+	bool serumInjectToRifleShot(ElivaBoss* boss) {
+		const Animation::State& currentAnim = boss->getAnimationComponent()->getCurrentAnimationStateRef();
+
+		if (currentAnim.isPlaying) {
+			return false;
+		}
+
+		float random = Random::Float();
+		if (random <= 0.5f) {
+			return true;
+		}
+
+		return false;
+	}
+
+	bool serumInjectToBayonetSlash(ElivaBoss* boss) {
+		const Animation::State& currentAnim = boss->getAnimationComponent()->getCurrentAnimationStateRef();
+
+		if (currentAnim.isPlaying) {
+			return false;
+		}
+
+		float random = Random::Float();
+		if (random <= 0.5f) {
+			return true;
+		}
+
+		return false;
+	}
+
+	bool serumInjectToPoisonCloud(ElivaBoss* boss) {
+		const Animation::State& currentAnim = boss->getAnimationComponent()->getCurrentAnimationStateRef();
+
+		if (currentAnim.isPlaying) {
+			return false;
+		}
+
+		float random = Random::Float();
+		if (random <= 0.5f) {
+			return true;
+		}
+
+		return false;
+	}
+
+	bool serumInjectToFury(ElivaBoss* boss) {
+		const Animation::State& currentAnim = boss->getAnimationComponent()->getCurrentAnimationStateRef();
+
+		if (currentAnim.isPlaying) {
+			return false;
+		}
+
+		if (boss->getHealth() <= ElivaStat::HEALTH_TO_BEGIN_FURY && !boss->hasFuryBeenActivated()) {
+			return true;
+		}
+
+		return false;
+	}
+
+	bool poisonCloudToBayonetSlash(ElivaBoss* boss) {
+		const Animation::State& currentAnim = boss->getAnimationComponent()->getCurrentAnimationStateRef();
+
+		if (currentAnim.isPlaying) {
+			return false;
+		}
+
+		float distance = boss->getDistanceFromPlayer();
+
+		if (distance <= ElivaStat::BAYONET_SLASH_RANGE) {
+			return true;
+		}
+
+		return false;
+	}
+
+	bool furyToFuryBlink(ElivaBoss* boss) {
+		const Animation::State& currentAnim = boss->getAnimationComponent()->getCurrentAnimationStateRef();
+
+		if (currentAnim.isPlaying) {
+			return false;
+		}
+
+		return true;
+	}
+
+	bool furyBlinkToRapidBurst(ElivaBoss* boss) {
+		const Animation::State& currentAnim = boss->getAnimationComponent()->getCurrentAnimationStateRef();
+
+		if (currentAnim.isPlaying) {
+			return false;
+		}
+
+		return true;
+	}
+
+	bool rapidBurstToCloseBlink(ElivaBoss* boss) {
+		const Animation::State& currentAnim = boss->getAnimationComponent()->getCurrentAnimationStateRef();
+
+		if (currentAnim.isPlaying) {
+			return false;
+		}
+
+		return true;
+	}
+
+	bool closeBlinkToBayonetSlash(ElivaBoss* boss) {
+		const Animation::State& currentAnim = boss->getAnimationComponent()->getCurrentAnimationStateRef();
+
+		if (currentAnim.isPlaying) {
+			return false;
+		}
+
+		return true;
+	}
+}

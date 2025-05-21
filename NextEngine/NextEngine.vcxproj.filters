@@ -88,6 +88,10 @@
     <ClCompile Include="TexturedParticle.cpp" />
     <ClCompile Include="ProtagThoughts.cpp" />
     <ClCompile Include="GotItemText.cpp" />
+    <ClCompile Include="SimpleParticle.cpp" />
+    <ClCompile Include="TexturedParticle.cpp" />
+    <ClCompile Include="ElivaBoss.cpp" />
+    <ClCompile Include="ElivaBossState.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
@@ -194,6 +198,11 @@
     <ClInclude Include="TexturedParticle.h" />
     <ClInclude Include="ProtagThoughts.h" />
     <ClInclude Include="GotItemText.h" />
+    <ClInclude Include="LevelAct1.h" />
+    <ClInclude Include="SimpleParticle.h" />
+    <ClInclude Include="TexturedParticle.h" />
+    <ClInclude Include="ElivaBoss.h" />
+    <ClInclude Include="ElivaBossState.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Resource\Shader\fragment.shd" />

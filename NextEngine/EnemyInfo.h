@@ -25,8 +25,9 @@ struct EnemyInfo {
 
 namespace DefaultEnemyStat {
 	const EnemyInfo NORMAL_INFO = EnemyInfo();
-	const EnemyInfo ZEALOT_INFO = EnemyInfo("Zealot", 40, MovementInfo(2.5f, 25), 30, 1.0f, 2.0f, 1.0f);
-	const EnemyInfo BLIGHT_FLAME_INFO = EnemyInfo("BlightFlame", 60, MovementInfo(2, 2), 7.0f, 4.0f, 1.0f, 1);
+	const EnemyInfo ZEALOT_INFO = EnemyInfo("Zealot", 60, MovementInfo(2.5f, 25), 30, 1.0f, 2.0f, 1.0f);
+	const EnemyInfo BLIGHT_FLAME_INFO = EnemyInfo("BlightFlame", 80, MovementInfo(2, 2), 7.0f, 4.0f, 1.0f, 1);
 	const EnemyInfo WAILER_INFO = EnemyInfo("Wailer", 50, MovementInfo(2.4f, 2), 50.0f, 20.0f, 2.0f, 1);
 
+	const EnemyInfo ELIVA_INFO = EnemyInfo("ElivaBoss", 100, MovementInfo(), 0.0f, 0.0f, 0.0f, 0.0f);
 }
