@@ -53,9 +53,9 @@ void LevelAct2::levelInit() {
     door->getTransform().setScale(glm::vec3(1.22f, 2.12f, 0.0f));
     objectsList.emplace_back(door);
 
-    ParallaxObject* barrier = new ParallaxObject(0.0f, -0.5f, 10.0f, false, player, true, pictureWidth, pictureHeight);
-    barrier->setTexture("../Resource/Texture/Act2/RSDT_P07_Barrier.png");
-    objectsList.emplace_back(barrier);
+    //ParallaxObject* barrier = new ParallaxObject(0.0f, -0.5f, 10.0f, false, player, true, pictureWidth, pictureHeight);
+    //barrier->setTexture("../Resource/Texture/Act2/RSDT_P07_Barrier.png");
+    //objectsList.emplace_back(barrier);
 
     ParallaxObject* foreGround = new ParallaxObject(0.0f, 0.0f, 0.0f, false, player, true, pictureWidth, pictureHeight);
     foreGround->setTexture("../Resource/Texture/Act2/RSDT_P08_Foreground01.png");

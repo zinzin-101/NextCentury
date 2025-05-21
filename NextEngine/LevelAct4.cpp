@@ -19,60 +19,82 @@ void LevelAct4::levelInit() {
     UIobject = new IngameUI();
     GameEngine::getInstance()->getRenderer()->setClearColor(0.1f, 0.1f, 0.1f);
 
+    player = new PlayerObject();
+
+    float pictureWidth = 1000.0f;
+    float pictureHeight = 360.0f;
+    float scaleX = (pictureWidth / pictureHeight) * 9.0f;
+    float scaleY = 9.0f;
+
 	TexturedObject* backGround1 = new TexturedObject();
     backGround1->setTexture("../Resource/Texture/Act2/RSDT_P01_Background01.png");
+    backGround1->getTransform().setPosition(0.0f, 0.0f);
+    backGround1->getTransform().setScale(scaleX, scaleY);
     objectsList.emplace(objectsList.begin(), backGround1);
 
     TexturedObject* backGround2 = new TexturedObject();
     backGround2->setTexture("../Resource/Texture/Act2/RSDT_P02_Background02.png");
+    backGround2->getTransform().setPosition(0.0f, 0.0f);
+    backGround2->getTransform().setScale(scaleX, scaleY);
     objectsList.emplace_back(backGround2);
 
     TexturedObject* midGround1 = new TexturedObject();
     midGround1->setTexture("../Resource/Texture/Act2/RSDT_P03_MidGround01.png");
+    midGround1->getTransform().setPosition(0.0f, -0.5f);
+    midGround1->getTransform().setScale(scaleX, scaleY);
     objectsList.emplace_back(midGround1);
 
     TexturedObject* midGround2 = new TexturedObject();
     midGround2->setTexture("../Resource/Texture/Act2/RSDT_P04_MidGround02.png");
+    midGround2->getTransform().setPosition(0.0f, -0.5f);
+    midGround2->getTransform().setScale(scaleX, scaleY);
     objectsList.emplace_back(midGround2);
 
     TexturedObject* midGround3 = new TexturedObject();
     midGround3->setTexture("../Resource/Texture/Act2/RSDT_P06_MidGround03.png");
+    midGround3->getTransform().setPosition(0.0f, -0.5f);
+    midGround3->getTransform().setScale(scaleX, scaleY);
     objectsList.emplace_back(midGround3);
 
-    TexturedObject* door = new TexturedObject();
-    door->setTexture("../Resource/Texture/Act2/RSDT_P05_Door.png");
-    objectsList.emplace_back(door);
+    //TexturedObject* door = new TexturedObject();
+    //door->setTexture("../Resource/Texture/Act2/RSDT_P05_Door.png");
+    //objectsList.emplace_back(door);
 
     TexturedObject* barrier = new TexturedObject();
     barrier->setTexture("../Resource/Texture/Act2/RSDT_P07_Barrier.png");
+    barrier->getTransform().setPosition(0.0f, -0.5f);
+    barrier->getTransform().setScale(scaleX, scaleY);
     objectsList.emplace_back(barrier);
 
     TexturedObject* foreGround = new TexturedObject();
     foreGround->setTexture("../Resource/Texture/Act2/RSDT_P08_Foreground01.png");
+    foreGround->getTransform().setPosition(0.0f, 0.0f);
+    foreGround->getTransform().setScale(scaleX, scaleY);
     objectsList.emplace_back(foreGround);
 
     TexturedObject* ground = new TexturedObject();
     ground->setTexture("../Resource/Texture/Act1/City_P11_Ground.png");
+    ground->getTransform().setPosition(0.0f, -0.5f);
+    ground->getTransform().setScale(scaleX, scaleY);
     objectsList.emplace_back(ground);
 
-    float height = 8.0f;
-    float width = height * 2.7778f;
-    for (auto a : objectsList) {
-        a->getTransform().setScale(width, height);
-        a->getTransform().setPosition(0.0f, -0.75f);
-    }
+    //float height = 8.0f;
+    //float width = height * 2.7778f;
+    //for (auto a : objectsList) {
+    //    a->getTransform().setScale(width, height);
+    //    a->getTransform().setPosition(0.0f, -0.75f);
+    //}
 
+    Level::importTransformData(objectsList, "act4", false);
 
-
-    Level::importTransformData(objectsList, "alpha1", false);
-
-    player = new PlayerObject();
-    player->getTransform().setScale(4.166f, 2.5f);
-    player->getColliderComponent()->getTransform().translate(0.0f, -0.44f);
-    player->getColliderComponent()->setDimension(0.25f, 0.65f);
+    //player->getTransform().setScale(4.166f, 2.5f);
+    //player->getColliderComponent()->getTransform().translate(0.0f, -0.44f);
+    //player->getColliderComponent()->setDimension(0.25f, 0.65f);
+    player->getTransform().setPosition(glm::vec3(9.3f, -1.5f, 0.0f));
     objectsList.emplace_back(player);
 
     GameEngine::getInstance()->getRenderer()->getCamera()->setTarget(player);
+    GameEngine::getInstance()->getRenderer()->getCamera()->setPosition(glm::vec3(4.5f, 0.0f, 0.0f));
     GameEngine::getInstance()->getRenderer()->setToggleViewport(false);
 
     // initializing parallax object
@@ -86,6 +108,7 @@ void LevelAct4::levelInit() {
     startObjects(objectsList);
 
     player->getDamageCollider()->setFollowOffset(glm::vec3(1.0f, -0.2f, 0));
+    player->move(glm::vec2(-1, 0));
 
     //UIobject->initUI(objectsList);
 
@@ -99,7 +122,7 @@ void LevelAct4::levelInit() {
 void LevelAct4::levelUpdate() {
     updateObjects(objectsList);
 
-    GameEngine::getInstance()->getRenderer()->updateCamera();
+    //GameEngine::getInstance()->getRenderer()->updateCamera();
 
 
     // Placeholder death logic
