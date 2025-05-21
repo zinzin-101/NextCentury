@@ -13,6 +13,7 @@ GLRenderer::GLRenderer(int w, int h) : winWidth(w), winHeight(h), camera(new Cam
 GLRenderer::GLRenderer(int w, int h, Camera* cam) : winWidth(w), winHeight(h), camera(cam) {
     // Initialize other members if needed
     projectionMatrix = glm::ortho(-1.f, 1.f, -1.f, 1.f);
+    setOrthoProjection(-8.0f, 8.0f, -4.5f, 4.5f);
     glViewport(0, 0, winWidth, winHeight);
 }
 bool GLRenderer::initGL(string vertexShaderFile, string fragmentShaderFile) {
@@ -471,6 +472,21 @@ void GLRenderer::toggleViewport() {
 
 void GLRenderer::setToggleViewport(bool value) {
     isViewportEnabled = value;
+}
+
+void GLRenderer::setGLViewport(int width, int height) {
+    float widthRatio = (float)width / (float)winWidth;
+    float heightRatio = (float)height / (float)winHeight;
+    float w = 16.0f * widthRatio;
+    float h = 9.0f * heightRatio;
+    float halfW = w / 2.0f;
+    float halfH = h / 2.0f;
+
+    setOrthoProjection(-halfW, halfW, -halfH, halfH);
+    glViewport(0, 0, width, height);
+
+    this->winWidth = width;
+    this->winHeight = height;
 }
 
 glm::vec3 GLRenderer::getCamPos() {
