@@ -301,7 +301,5 @@ void LevelAct3::handleKey(InputManager& input) {
         else if (desk->getIsClickable()) {
             desk->setDescriptionActive(!desk->getDescriptionActive());
         }
-
-
     }
 }

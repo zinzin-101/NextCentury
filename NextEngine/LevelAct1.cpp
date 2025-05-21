@@ -123,7 +123,6 @@ void LevelAct1::levelInit() {
     GameEngine::getInstance()->getRenderer()->setToggleViewport(true);
 
     GameEngine::getInstance()->freezeGameForSeconds(0.5f);
-
 }
 
 void LevelAct1::levelUpdate() {
