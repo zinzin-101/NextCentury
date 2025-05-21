@@ -35,6 +35,7 @@
     <ClCompile Include="BlightFlame.cpp" />
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="ChatBubble.cpp" />
     <ClCompile Include="Collider.cpp" />
     <ClCompile Include="ColliderObject.cpp" />
     <ClCompile Include="CollisionHandler.cpp" />
@@ -113,6 +114,7 @@
     <ClInclude Include="BlightFlame.h" />
     <ClInclude Include="Button.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="ChatBubble.h" />
     <ClInclude Include="Collider.h" />
     <ClInclude Include="ColliderObject.h" />
     <ClInclude Include="CollisionHandler.h" />
