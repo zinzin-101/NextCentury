@@ -121,7 +121,9 @@ void InteractableObject::setDescriptionActive(bool b) {
 	for (int i = 0; i < txtEachLine.size(); i++) {
 		txtEachLine[i]->isDialogueActive = b;
 	}
-	isClickedOnce = true;
+	if (b) {
+		isClickedOnce = true;
+	}
 }
 
 bool InteractableObject::getDescriptionActive() {

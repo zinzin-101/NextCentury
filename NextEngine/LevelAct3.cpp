@@ -89,8 +89,14 @@ void LevelAct3::levelInit() {
     repeatNotDone = new ProtagThoughts("../Resource/Texture/StoryStuff/ProtagThoughtsAct3/repeat.txt", player);
     objectsList.emplace_back(repeatNotDone);
 
-    medicineOnTable = new GotItemText("- Medicine", player, objectsList);
-    //fakePassport = new GotItemText("- fakePassport", player, objectsList);
+    medicineOnTable = new GotItemText("- Got Medicine", player, objectsList);
+    medicineOnTable->setAppearPos(4.35f, 0.0f);
+    fakePassport = new GotItemText("- Got Forged permit", player, objectsList);
+    fakePassport->setAppearPos(4.0f, 0.0f);
+    magicPistol = new GotItemText("- Magic Pistol", player, objectsList);
+    magicPistol->setAppearPos(4.0f, 0.0f);
+    duoBlade = new GotItemText("- Duo Blade", player, objectsList);
+    duoBlade->setAppearPos(4.0f, -1.0f);
 
     Level::importTransformData(objectsList, "act3", false);
 
@@ -121,6 +127,11 @@ void LevelAct3::levelInit() {
     backGround2->getTransform().setScale(scaleX, scaleY);
     objectsList.emplace_back(backGround2);
 
+    repeatNotDone = new ProtagThoughts("../Resource/Texture/StoryStuff/ProtagThoughtsAct3/repeat.txt", player);
+    objectsList.emplace_back(repeatNotDone);
+    done = new ProtagThoughts("../Resource/Texture/StoryStuff/ProtagThoughtsAct3/done.txt", player);
+    objectsList.emplace_back(done);
+
     //UIobject->initUI(objectsList);
 
     GameEngine::getInstance()->getRenderer()->getCamera()->setOffset(glm::vec3(0.0f, -0.5f, 0.0f));
@@ -133,7 +144,9 @@ void LevelAct3::levelInit() {
 void LevelAct3::levelUpdate() {
     updateObjects(objectsList);
     medicineOnTable->update(objectsList);
-    //fakePassport->update(objectsList);
+    fakePassport->update(objectsList);
+    magicPistol->update(objectsList);
+    duoBlade->update(objectsList);
     //GameEngine::getInstance()->getRenderer()->updateCamera();
 
     // Placeholder death logic
@@ -257,31 +270,38 @@ void LevelAct3::handleKey(InputManager& input) {
 
     if (input.getButtonDown(SDLK_e)) {
 
-        //if (!dialogueList.empty()) {
-        //    Dialogue* currentDialogue = dialogueList.front();
-        //    if (currentDialogue->isDialogueActive) {
-        //        currentDialogue->nextSentence();
-        //        if (currentDialogue->sentences.empty()) {
-        //            dialogueList.pop();
-        //        }
-        //    }
-        //}
+        //cout << board->isClickedOnce << " : " << desk->isClickedOnce << " : " << chest->isClickedOnce << " : " << shelf->isClickedOnce << endl;
 
-        //if (p1->getDialogueObject()->isEnd) {
-        //    if (it->getIsClickable()) {
-        //        interactCount++;
-        //        it->setDescriptionActive(!it->getDescriptionActive());
-        //    }
-        //}
+        if (door->getIsClickable()) {
+            if (((board->isClickedOnce && desk->isClickedOnce) && (chest->isClickedOnce && shelf->isClickedOnce))) {
+                done->reActivateDialogue("../Resource/Texture/StoryStuff/ProtagThoughtsAct3/done.txt");
+            }
+            else {
+                repeatNotDone->reActivateDialogue("../Resource/Texture/StoryStuff/ProtagThoughtsAct3/repeat.txt");
+            }
+        }
+
+        if (chest->getIsClickable()) {
+            magicPistol->activateAppear();
+            duoBlade->activateAppear();
+            chest->isClickedOnce = true;
+        }
+
+        if (shelf->getIsClickable()) {
+            fakePassport->activateAppear();
+            shelf->isClickedOnce = true;
+        }
 
         if ((board->getIsClickable() && desk->getIsClickable()) || board->getIsClickable()) {
             board->setDescriptionActive(!board->getDescriptionActive());
-            if (board->isClickedOnce) {
+            if (board->isClickedOnce && !board->getDescriptionActive()) {
                 medicineOnTable->activateAppear();
             }
         }
         else if (desk->getIsClickable()) {
             desk->setDescriptionActive(!desk->getDescriptionActive());
         }
+
+
     }
 }

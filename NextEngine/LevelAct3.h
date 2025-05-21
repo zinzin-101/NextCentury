@@ -18,6 +18,8 @@ private:
     ProtagThoughts* repeatNotDone;
     GotItemText* medicineOnTable;
     GotItemText* fakePassport;
+    GotItemText* magicPistol;
+    GotItemText* duoBlade;
 
 public:
     virtual void levelLoad();

@@ -41,6 +41,7 @@ void ProtagThoughts::reActivateDialogue(string txtFile) {
 	readFile(txtFile);
 	keepTime = lifeTimeEachSentence.front();
 	dialogueText->isEnd = false;
+	activateDialogue();
 }
 
 void ProtagThoughts::update(list<DrawableObject*>& objectsList) {
