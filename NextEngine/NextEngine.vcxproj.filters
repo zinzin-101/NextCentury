@@ -82,6 +82,7 @@
     <ClCompile Include="TexturedParticle.cpp" />
     <ClCompile Include="ElivaBoss.cpp" />
     <ClCompile Include="ElivaBossState.cpp" />
+    <ClCompile Include="PoisonCloud.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
@@ -182,6 +183,7 @@
     <ClInclude Include="TexturedParticle.h" />
     <ClInclude Include="ElivaBoss.h" />
     <ClInclude Include="ElivaBossState.h" />
+    <ClInclude Include="PoisonCloud.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Resource\Shader\fragment.shd" />

@@ -69,6 +69,7 @@
     <ClCompile Include="MeshVbo.cpp" />
     <ClCompile Include="ParallaxObject.cpp" />
     <ClCompile Include="Particle.cpp" />
+    <ClCompile Include="PoisonCloud.cpp" />
     <ClCompile Include="SimpleParticle.cpp" />
     <ClCompile Include="ParticleSystem.cpp" />
     <ClCompile Include="pch.cpp" />
@@ -148,6 +149,7 @@
     <ClInclude Include="ParallaxBackground.h" />
     <ClInclude Include="ParallaxObject.h" />
     <ClInclude Include="Particle.h" />
+    <ClInclude Include="PoisonCloud.h" />
     <ClInclude Include="SimpleParticle.h" />
     <ClInclude Include="ParticleProperties.h" />
     <ClInclude Include="ParticleSystem.h" />
