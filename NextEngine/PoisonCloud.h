@@ -20,4 +20,7 @@ public:
 	void setFollowOffset(glm::vec3 offset);
 
 	LivingEntity* getOwner() const;
+
+	virtual void render(glm::mat4 globalModelTransform);
+	virtual void drawCollider();
 };

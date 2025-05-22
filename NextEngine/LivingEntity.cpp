@@ -208,14 +208,14 @@ void LivingEntity::handlePoison() {
     static const float timeBetweenEmit = 0.1f;
 
     static float damageTimer = 0.0f;
-    static const float timeBetweenFireDamage = 0.4f;
+    static const float timeBetweenPoisonDamage = 0.4f;
 
     float dt = GameEngine::getInstance()->getTime()->getDeltaTime();
 
     emitTimer += dt;
     damageTimer += dt;
 
-    if (damageTimer > timeBetweenFireDamage) {
+    if (damageTimer > timeBetweenPoisonDamage) {
         damageTimer = 0.0f;
         LivingEntity::takeDamage(LivingEntityStat::BURNING_DAMAGE, true); // poison damage per damage cooldown
     }

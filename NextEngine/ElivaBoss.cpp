@@ -50,20 +50,20 @@ ElivaBoss::ElivaBoss(): EnemyObject(DefaultEnemyStat::ELIVA_INFO) {
 
 	currentState = &states[BossState::Cooldown];
 
-	statesHandler[BossState::Cooldown] = &(ElivaBoss::handleCooldown);
-	statesHandler[BossState::Blink] = &(ElivaBoss::handleBlink);
-	statesHandler[BossState::FuryBlink] = &(ElivaBoss::handleFuryBlink);
-	statesHandler[BossState::CloseBlink] = &(ElivaBoss::handleCloseBlink);
-	statesHandler[BossState::RifleShot] = &(ElivaBoss::handleRifleShot);
-	statesHandler[BossState::BayonetSlash] = &(ElivaBoss::handleBayonetSlash);
-	statesHandler[BossState::PoisonCloud] = &(ElivaBoss::handlePoisonCloud);
-	statesHandler[BossState::RapidBurst] = &(ElivaBoss::handleRapidBurst);
-	statesHandler[BossState::SerumInject] = &(ElivaBoss::handleSerumInject);
-	statesHandler[BossState::Fury] = &(ElivaBoss::handleFury);
+	statesHandler[BossState::Cooldown] = &ElivaBoss::handleCooldown;
+	statesHandler[BossState::Blink] = &ElivaBoss::handleBlink;
+	statesHandler[BossState::FuryBlink] = &ElivaBoss::handleFuryBlink;
+	statesHandler[BossState::CloseBlink] = &ElivaBoss::handleCloseBlink;
+	statesHandler[BossState::RifleShot] = &ElivaBoss::handleRifleShot;
+	statesHandler[BossState::BayonetSlash] = &ElivaBoss::handleBayonetSlash;
+	statesHandler[BossState::PoisonCloud] = &ElivaBoss::handlePoisonCloud;
+	statesHandler[BossState::RapidBurst] = &ElivaBoss::handleRapidBurst;
+	statesHandler[BossState::SerumInject] = &ElivaBoss::handleSerumInject;
+	statesHandler[BossState::Fury] = &ElivaBoss::handleFury;
 }
 
 void ElivaBoss::start(list<DrawableObject*>& objectsList) {
-	setTexture("../Resource/Texture/Purifier2.png");
+	setTexture("../Resource/Texture/boss_test.png");
 	//initAnimation(6, 2);
 	initAnimation(9, 22);
 	targetEntity = nullptr;
@@ -77,15 +77,18 @@ void ElivaBoss::start(list<DrawableObject*>& objectsList) {
 
 
 	rifleProjectile = new ProjectileObject<PlayerObject>(this, ElivaStat::RIFLE_SHOT_DAMAGE, this->getTransform().getPosition(), glm::vec2(), ElivaStat::RIFLE_SHOT_LIFESPAN);
+	rifleProjectile->setName("RifleProjectile");
 	rifleProjectile->setDestroyOnDespawn(false);
 	rifleProjectile->setActive(false);
+	rifleProjectile->setDrawCollider(true); // debug
 	objectsList.emplace_back(rifleProjectile);
 
 	bayonetCollider = new DamageCollider<PlayerObject>(this, ElivaStat::BAYONET_DAMAGE, -1);
 	bayonetCollider->setActive(false);
 	bayonetCollider->setFollowOwner(true);
-	bayonetCollider->setFollowOffset(glm::vec3(1.0f, 0.0f, 0));
+	bayonetCollider->setFollowOffset(glm::vec3(-1.0f, 0.0f, 0));
 	bayonetCollider->getColliderComponent()->setWidth(3.0f);
+	bayonetCollider->setDrawCollider(true); // debug
 	objectsList.emplace_back(bayonetCollider);
 
 	poisonCollider = new PoisonCloudCollider(this);
@@ -93,7 +96,10 @@ void ElivaBoss::start(list<DrawableObject*>& objectsList) {
 	poisonCollider->setFollowOwner(true);
 	poisonCollider->setFollowOffset(glm::vec3(0.0f, 0.0f, 0.0f));
 	poisonCollider->getColliderComponent()->setWidth(5.0f);
+	poisonCollider->setDrawCollider(true); // debug
 	objectsList.emplace_back(poisonCollider);
+
+	this->getTransform().setScale(4, 3);
 
 	targetEntity = EnemyObject::findPlayer(objectsList);
 }
@@ -118,29 +124,32 @@ void ElivaBoss::processState() {
 	if (state == BossState::Blink) { // Special case 1
 		if (currentState->nextStateAndTransitionCheck.at(&states[BossState::SerumInject])(this)) {
 			currentState = &states[BossState::SerumInject];
+			return;
 		}
 	}
-	else if (state == BossState::SerumInject) { // Special case 2
+
+	if (state == BossState::SerumInject) { // Special case 2
 		if (currentState->nextStateAndTransitionCheck.at(&states[BossState::Fury])(this)) {
 			currentState = &states[BossState::Fury];
+			return;
 		}
 	}
-	else {
-		std::vector<State*> possibleStates;
+	
+	std::vector<State*> possibleStates;
 
-		for (const std::pair<State*, TransitionCheckFunction>& stateCheckerPair : currentState->nextStateAndTransitionCheck) {
-			State* bossState = stateCheckerPair.first;
-			bool isPossible = stateCheckerPair.second(this);
-			if (isPossible) {
-				possibleStates.emplace_back(bossState);
-			}
+	for (const std::pair<State*, TransitionCheckFunction>& stateCheckerPair : currentState->nextStateAndTransitionCheck) {
+		State* bossState = stateCheckerPair.first;
+		bool isPossible = stateCheckerPair.second(this);
+		if (isPossible) {
+			possibleStates.emplace_back(bossState);
 		}
+	}
 
-		int numOfPossibleStates = possibleStates.size();
-		if (numOfPossibleStates != 0) {
-			unsigned int randInt = Random::Int() % numOfPossibleStates;
-			currentState = possibleStates[randInt];
-		}
+	int numOfPossibleStates = possibleStates.size();
+	if (numOfPossibleStates != 0) {
+		unsigned int randInt = Random::Int();
+		unsigned int index = randInt % numOfPossibleStates;
+		currentState = possibleStates[index];
 	}
 
 	(this->*statesHandler[currentState->currentState])();
@@ -148,6 +157,9 @@ void ElivaBoss::processState() {
 
 void ElivaBoss::updateBehavior(list<DrawableObject*>& objectsList) {
 	//+
+	processState();
+	//std::cout << "current state: " << (int)currentState->currentState << std::endl;
+	//std::cout << "Health: " << this->getHealth() << std::endl;
 }
 
 void ElivaBoss::handleCooldown() {
@@ -226,7 +238,7 @@ void ElivaBoss::handleRifleShot() {
 		glm::vec3 playerPos = targetEntity->getTransform().getPosition();
 		glm::vec3 elivaPos = this->getTransform().getPosition();
 		float offsetX = playerPos.x - elivaPos.x;
-		isFacingRight = offsetX > 0.0f;
+		isFacingRight = offsetX < 0.0f;
 		return;
 	}
 
@@ -236,7 +248,7 @@ void ElivaBoss::handleRifleShot() {
 		glm::vec3 playerPos = targetEntity->getTransform().getPosition();
 		glm::vec3 elivaPos = this->getTransform().getPosition();
 		float offsetX = playerPos.x - elivaPos.x;
-		float direction = offsetX >= 0.0f ? 1.0f : -1.0f;
+		float direction = isFacingRight ? -1.0f : 1.0f;
 		glm::vec2 bulletVelocity = glm::vec2(direction * ElivaStat::RIFLE_SHOT_SPEED, 0);
 		glm::vec3 spawnPos = elivaPos;
 		spawnPos.x + (direction * 0.5f); // horizontal offset, tweak later
@@ -254,7 +266,7 @@ void ElivaBoss::handleBayonetSlash() {
 		glm::vec3 playerPos = targetEntity->getTransform().getPosition();
 		glm::vec3 elivaPos = this->getTransform().getPosition();
 		float offsetX = playerPos.x - elivaPos.x;
-		isFacingRight = offsetX > 0.0f;
+		isFacingRight = offsetX < 0.0f;
 		return;
 	}
 

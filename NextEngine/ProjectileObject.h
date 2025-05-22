@@ -3,6 +3,7 @@
 #include "GameEngine.h"
 #include "LivingEntity.h"
 #include "ParticleSystem.h"
+#include "PlayerObject.h"
 #include "SimpleObject.h"
 #include "TexturedObject.h"
 

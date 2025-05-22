@@ -4,7 +4,7 @@
 #include "PoisonCloud.h"
 
 namespace ElivaStat {
-	constexpr float COOLDOWN_DURATION = 1.0f;
+	constexpr float COOLDOWN_DURATION = 2.0f;
 	constexpr float DAMAGE_REDUCTION_ARMOR_BUFF = 0.5f;
 
 	constexpr int MAX_HEALTH = 100;
