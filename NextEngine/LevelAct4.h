@@ -9,6 +9,7 @@ private:
     list<DrawableObject*> UIobjectsList;
     PlayerObject* player = nullptr;
     IngameUI* UIobject;
+    ChatBubble* chat1;
 
 public:
     virtual void levelLoad();

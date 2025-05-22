@@ -15,6 +15,7 @@
 #include "Dialogue.h"
 #include "ProtagThoughts.h"
 #include "GotItemText.h"
+#include "ChatBubble.h"
 
 namespace LevelConstant {
     constexpr float DEFAULT_BUFFER_DURATION = 0.3f;

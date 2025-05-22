@@ -93,6 +93,10 @@ void LevelAct4::levelInit() {
     player->getTransform().setPosition(glm::vec3(9.3f, -1.5f, 0.0f));
     objectsList.emplace_back(player);
 
+    vector<glm::vec3> l;
+    l.push_back(glm::vec3(0.5f, 0.0f, 0.0f));
+    chat1 = new ChatBubble("../Resource/Texture/StoryStuff/chat1Act4.txt", player, l, objectsList);
+
     GameEngine::getInstance()->getRenderer()->getCamera()->setTarget(player);
     GameEngine::getInstance()->getRenderer()->getCamera()->setPosition(glm::vec3(4.5f, 0.0f, 0.0f));
     GameEngine::getInstance()->getRenderer()->setToggleViewport(false);
@@ -121,9 +125,12 @@ void LevelAct4::levelInit() {
 
 void LevelAct4::levelUpdate() {
     updateObjects(objectsList);
-
+    chat1->update(objectsList);
     //GameEngine::getInstance()->getRenderer()->updateCamera();
-
+    if (!chat1->hasEnded()) {
+        //GameEngine::getInstance()->freezeGameForSeconds(5.0f);
+    }
+    // at the very start of the game freeze everything and chatEnemy is "YOU HAVE MAGIC" THEN fight...
 
     // Placeholder death logic
     for (std::list<DrawableObject*>::iterator itr = objectsList.begin(); itr != objectsList.end(); ++itr) {

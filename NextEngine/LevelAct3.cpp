@@ -177,6 +177,11 @@ void LevelAct3::levelFree() {
     objectsList.clear();
 
     delete UIobject;
+
+    delete medicineOnTable;
+    delete fakePassport;
+    delete magicPistol;
+    delete duoBlade;
 }
 
 void LevelAct3::levelUnload() {
