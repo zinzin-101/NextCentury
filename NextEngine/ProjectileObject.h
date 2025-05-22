@@ -14,6 +14,7 @@ class ProjectileObject : public SimpleObject { // change later to TexturedObject
 		LivingEntity* owner;
 
 		bool canDespawn;
+		bool canDestroyOnDespawn;
 
 		/// test ///
 		ParticleSystem* emitter;
@@ -21,6 +22,8 @@ class ProjectileObject : public SimpleObject { // change later to TexturedObject
 
 	public:
 		ProjectileObject(LivingEntity* owner, int damage, glm::vec3 position, glm::vec2 velocity, float lifespan);
+		void setDestroyOnDespawn(bool value);
+		void activate(glm::vec3 position, glm::vec2 velocity, float lifespan);
 		virtual void update(std::list<DrawableObject*>& objectsList);
 		virtual void onCollisionEnter(Collider* collider);
 
@@ -31,7 +34,7 @@ class ProjectileObject : public SimpleObject { // change later to TexturedObject
 
 template <class TargetEntity>
 ProjectileObject<TargetEntity>::ProjectileObject(LivingEntity* owner, int damage, glm::vec3 position, glm::vec2 velocity, float lifespan): 
-	owner(owner), damage(damage), lifespan(lifespan) {
+	owner(owner), damage(damage), lifespan(lifespan), canDestroyOnDespawn(false) {
 	this->getTransform().setPosition(position);
 	this->addPhysicsComponent();
 	this->getPhysicsComponent()->setEnableGravity(false);
@@ -61,7 +64,12 @@ void ProjectileObject<TargetEntity>::update(std::list<DrawableObject*>& objectsL
 		lifespan -= GameEngine::getInstance()->getTime()->getDeltaTime();
 
 		if (lifespan <= 0.0f) {
-			destroyObject(this);
+			if (canDestroyOnDespawn) {
+				destroyObject(this);
+			}
+			else {
+				this->setActive(false);
+			}
 		}
 	}
 
@@ -97,14 +105,41 @@ void ProjectileObject<TargetEntity>::onCollisionEnter(Collider* collider) {
 		}
 
 		entity->takeDamage(damage);
-		destroyObject(this);
+
+		if (canDestroyOnDespawn) {
+			destroyObject(this);
+		}
+		else {
+			this->setActive(false);
+		}
+
 		return;
 	}
 
 	ColliderObject* colObj = dynamic_cast<ColliderObject*>(obj);
 
 	if (colObj != NULL) {
-		destroyObject(this);
+		
+		if (canDestroyOnDespawn) {
+			destroyObject(this);
+		}
+		else {
+			this->setActive(false);
+		}
+
 		return;
 	}
+}
+
+template <class TargetEntity>
+void ProjectileObject<TargetEntity>::setDestroyOnDespawn(bool value) {
+	this->canDestroyOnDespawn = value;
+}
+
+template <class TargetEntity>
+void ProjectileObject<TargetEntity>::activate(glm::vec3 position, glm::vec2 velocity, float lifespan) {
+	this->getTransform().setPosition(position);
+	this->getPhysicsComponent()->setVelocity(velocity);
+	this->lifespan = lifespan;
+	this->setActive(true);
 }

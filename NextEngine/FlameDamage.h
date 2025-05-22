@@ -19,26 +19,26 @@ class FlameDamage : public ColliderObject, public TexturedObject {
 		bool flameStart;
 		bool isWaitingToDeactivate;
 
-public:
-	FlameDamage(LivingEntity* owner, int damage, float delayBetweenDamage);
-	virtual void update(std::list<DrawableObject*>& objectsList);
-	virtual void onCollisionStay(Collider* collider);
+	public:
+		FlameDamage(LivingEntity* owner, int damage, float delayBetweenDamage);
+		virtual void update(std::list<DrawableObject*>& objectsList);
+		virtual void onCollisionStay(Collider* collider);
 
-	void trigger(glm::vec3 pos, bool facingRight);
-	void trigger(glm::vec3 pos, glm::vec3 offset, bool facingRight);
+		void trigger(glm::vec3 pos, bool facingRight);
+		void trigger(glm::vec3 pos, glm::vec3 offset, bool facingRight);
 
-	void setDamage(int damage);
-	void setOwner(LivingEntity* owner);
-	void setFollowOwner(bool value);
-	void setFollowOffset(glm::vec3 offset);
-	virtual void setActive(bool value);
+		void setDamage(int damage);
+		void setOwner(LivingEntity* owner);
+		void setFollowOwner(bool value);
+		void setFollowOffset(glm::vec3 offset);
+		virtual void setActive(bool value);
 
-	LivingEntity* getOwner() const;
+		LivingEntity* getOwner() const;
 
-	virtual void render(glm::mat4 globalModelTransform);
-	virtual void drawCollider();
+		virtual void render(glm::mat4 globalModelTransform);
+		virtual void drawCollider();
 
-	void reset();
+		void reset();
 };
 
 template <class TargetEntityType>
