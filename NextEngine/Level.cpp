@@ -570,6 +570,13 @@ void Level::drawImGui(std::list<DrawableObject*>& objectList) {
         objectList.emplace_back(wailer);
         wailer->start(objectList);
     }
+    if (ImGui::Button("Spawn Eliva (Boss)")) {
+        ElivaBoss* eliva = new ElivaBoss();
+        eliva->getTransform().setPosition(posX, posY);
+        eliva->setDrawCollider(drawOutline);
+        objectList.emplace_back(eliva);
+        eliva->start(objectList);
+    }
     ImGui::SeparatorText("Player");
     if (ImGui::Button("Spawn Player")) {
         PlayerObject* player = EnemyObject::findPlayer(objectList);
