@@ -90,7 +90,7 @@ void LevelAct4::levelInit() {
     //player->getTransform().setScale(4.166f, 2.5f);
     //player->getColliderComponent()->getTransform().translate(0.0f, -0.44f);
     //player->getColliderComponent()->setDimension(0.25f, 0.65f);
-    player->getTransform().setPosition(glm::vec3(9.3f, -1.5f, 0.0f));
+    player->getTransform().setPosition(glm::vec3(8.9f, -1.6f, 0.0f));
     objectsList.emplace_back(player);
 
     vector<glm::vec3> l;
@@ -112,7 +112,9 @@ void LevelAct4::levelInit() {
     startObjects(objectsList);
 
     player->getDamageCollider()->setFollowOffset(glm::vec3(1.0f, -0.2f, 0));
-    player->move(glm::vec2(-1, 0));
+    player->setIsFacingRight(false);
+    //player->getTransform().scales(1.0f, 1.0f);
+    //player->move(glm::vec2(-1, 0));
 
     //UIobject->initUI(objectsList);
 
@@ -126,10 +128,14 @@ void LevelAct4::levelInit() {
 void LevelAct4::levelUpdate() {
     updateObjects(objectsList);
     chat1->update(objectsList);
-    //GameEngine::getInstance()->getRenderer()->updateCamera();
+
     if (!chat1->hasEnded()) {
-        //GameEngine::getInstance()->freezeGameForSeconds(5.0f);
+        GameEngine::getInstance()->getTime()->setTimeScale(0);
     }
+    else {
+        GameEngine::getInstance()->getTime()->setTimeScale(1);
+    }
+
     // at the very start of the game freeze everything and chatEnemy is "YOU HAVE MAGIC" THEN fight...
 
     // Placeholder death logic

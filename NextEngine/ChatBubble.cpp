@@ -104,7 +104,7 @@ void ChatBubble::update(list<DrawableObject*>& objectsList) {
 				cout << "b";
 			}
 			else {
-				timeAppearEachChat.front() -= GameEngine::getInstance()->getTime()->getDeltaTime();
+				timeAppearEachChat.front() -= GameEngine::getInstance()->getTime()->getDeltaTimeRealTime();
 			}
 		}
 		if (!chats.empty()) {

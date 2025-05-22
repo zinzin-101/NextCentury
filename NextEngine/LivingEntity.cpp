@@ -56,6 +56,10 @@ void LivingEntity::setCanTakeDamage(bool value) {
     canTakeDamage = value;
 }
 
+void LivingEntity::setIsFacingRight(bool value) {
+    isFacingRight = value;
+}
+
 int LivingEntity::getHealth() const {
     return health;
 }
