@@ -86,6 +86,8 @@
     <ClCompile Include="LevelAct6.cpp" />
     <ClCompile Include="SimpleParticle.cpp" />
     <ClCompile Include="TexturedParticle.cpp" />
+    <ClCompile Include="LevelMainMenu.cpp" />
+    <ClCompile Include="UIMainMenu.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
@@ -190,6 +192,8 @@
     <ClInclude Include="LevelAct6.h" />
     <ClInclude Include="SimpleParticle.h" />
     <ClInclude Include="TexturedParticle.h" />
+    <ClInclude Include="LevelMainMenu.h" />
+    <ClInclude Include="UIMainMenu.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Resource\Shader\fragment.shd" />
