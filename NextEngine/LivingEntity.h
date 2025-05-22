@@ -8,6 +8,7 @@ using namespace std;
 namespace LivingEntityStat {
     constexpr float DAMAGE_OVERLAY_DURATION = 0.2f;
     constexpr int BURNING_DAMAGE = 5;
+    constexpr int POISON_DAMAGE = 5;
 }
 
 class LivingEntity : public TexturedObject {
@@ -28,6 +29,7 @@ class LivingEntity : public TexturedObject {
         void handleLighting(list<DrawableObject*>& objectsList);
 
         void handleBurning();
+        void handlePoison();
 
         void handleHealth(list<DrawableObject*>& objectsList);
 
