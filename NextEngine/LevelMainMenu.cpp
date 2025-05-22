@@ -42,7 +42,6 @@ void LevelMainMenu::levelFree() {
 void LevelMainMenu::levelUnload() {
     GameEngine::getInstance()->clearMesh();
     GameEngine::getInstance()->getRenderer()->setClearColor(0.1f, 0.1f, 0.1f);
-    //cout << "Unload Level" << endl;
 }
 
 void LevelMainMenu::handleKey(InputManager& input) {

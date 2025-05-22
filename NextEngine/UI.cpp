@@ -1,9 +1,9 @@
 #include "UI.h"
 #include <iostream>
-#include <SDL.h>  // Include SDL for key input
+#include <SDL.h>  
 UI::UI() {
-    buttons.resize(4); // Set the correct size
-    selectedButtonIndex = 0; // Start with the first button selected
+    buttons.resize(4); 
+    selectedButtonIndex = 0; 
 }
 
 void UI::initUI(std::list<DrawableObject*>& objectsList) {
@@ -33,7 +33,6 @@ void UI::initUI(std::list<DrawableObject*>& objectsList) {
     confirm->getTransform().setPosition(glm::vec3(0.0f, -4.0f, 0.0f));
     objectsList.push_back(confirm);
 
-    // First button
     buttons[0] = new Button("PlayGameButton", "");           
     buttons[0]->setTexture("../Resource/Texture/UI/MainMenu/PlayGame.png");
     buttons[0]->getTransform().setScale(glm::vec3(1.5f, 0.5f, 0.0f));
@@ -43,7 +42,6 @@ void UI::initUI(std::list<DrawableObject*>& objectsList) {
         });
     objectsList.push_back(buttons[0]);
 
-    // Second button
     buttons[1] = new Button("SettingButton", "");
     buttons[1]->setTexture("../Resource/Texture/UI/MainMenu/Setting.png");
     buttons[1]->getTransform().setScale(glm::vec3(1.5f, 0.5f, 0.0f));
@@ -73,26 +71,21 @@ void UI::initUI(std::list<DrawableObject*>& objectsList) {
 
     buttons[0]->setFocused(true);
     updateArrowPosition();
-    //ingameUI.initUI(objectsList);
 }
 
 void UI::updateArrowPosition() {
-    // get the focused button's transform
     Transform& bt = buttons[selectedButtonIndex]->getTransform();
     glm::vec3 bpos = bt.getPosition();
     glm::vec3 bscale = bt.getScale();
 
-    // arrow scale and margin
     glm::vec3 ascale = arrow->getTransform().getScale();
     const float margin = 0.1f;
 
-    // compute arrow X so it's just to the left of button
     float arrowX = bpos.x
-        - (bscale.x * 0.5f)     // half button width
-        - (ascale.x * 0.5f)     // half arrow width
+        - (bscale.x * 0.5f)    
+        - (ascale.x * 0.5f)     
         - margin;
 
-    // match arrow Y and Z to button
     arrow->getTransform().setPosition({ arrowX, bpos.y, bpos.z });
 }
 void UI::updateUI(PlayerObject& playerObject, glm::vec3 camPos) {
@@ -110,7 +103,7 @@ void UI::handleInput(SDL_Keycode key) {
         updateArrowPosition();
         break;
 
-    case SDLK_s:  // move selection right
+    case SDLK_s:  
         buttons[selectedButtonIndex]->setState(Button::ButtonState::NORMAL);
         selectedButtonIndex = (selectedButtonIndex + 1) % buttons.size();
         buttons[selectedButtonIndex]->setState(Button::ButtonState::HOVERED);
