@@ -1,8 +1,13 @@
 #include "ElivaBossState.h"
-#include "Random.h"
 
 namespace StateTransition {
 	bool blinkToSerumInject(ElivaBoss* boss) {
+		const Animation::State& currentAnim = boss->getAnimationComponent()->getCurrentAnimationStateRef();
+
+		if (currentAnim.isPlaying) {
+			return false;
+		}
+
 		if (boss->getHealth() <= ElivaStat::HEALTH_TO_BEGIN_SERUM_INJECT && !boss->isShieldActivated()) {
 			return true;
 		}
@@ -17,12 +22,7 @@ namespace StateTransition {
 			return false;
 		}
 
-		float random = Random::Float();
-		if (random <= 0.5f) {
-			return true;
-		}
-
-		return false;
+		return true;
 	}
 
 	bool blinkToBayonetSlash(ElivaBoss* boss) {
@@ -32,12 +32,7 @@ namespace StateTransition {
 			return false;
 		}
 
-		float random = Random::Float();
-		if (random <= 0.5f) {
-			return true;
-		}
-
-		return false;
+		return true;
 	}
 
 	bool rifleShotToBayonetSlash(ElivaBoss* boss) {
@@ -91,12 +86,7 @@ namespace StateTransition {
 			return false;
 		}
 
-		float random = Random::Float();
-		if (random <= 0.5f) {
-			return true;
-		}
-
-		return false;
+		return true;
 	}
 
 	bool serumInjectToBayonetSlash(ElivaBoss* boss) {
@@ -106,12 +96,7 @@ namespace StateTransition {
 			return false;
 		}
 
-		float random = Random::Float();
-		if (random <= 0.5f) {
-			return true;
-		}
-
-		return false;
+		return true;
 	}
 
 	bool serumInjectToPoisonCloud(ElivaBoss* boss) {
@@ -121,12 +106,7 @@ namespace StateTransition {
 			return false;
 		}
 
-		float random = Random::Float();
-		if (random <= 0.5f) {
-			return true;
-		}
-
-		return false;
+		return true;
 	}
 
 	bool serumInjectToFury(ElivaBoss* boss) {

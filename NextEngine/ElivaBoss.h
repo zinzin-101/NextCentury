@@ -1,15 +1,24 @@
 #pragma once
 #include "EnemyObject.h"
+#include "ProjectileObject.h"
+#include "PoisonCloud.h"
 
 namespace ElivaStat {
-	constexpr float COOLDOWN_DURATION = 1.0f;
+	constexpr float COOLDOWN_DURATION = 2.0f;
 	constexpr float DAMAGE_REDUCTION_ARMOR_BUFF = 0.5f;
 
 	constexpr int MAX_HEALTH = 100;
 	constexpr int HEALTH_TO_BEGIN_SERUM_INJECT = MAX_HEALTH * 0.6f;
 	constexpr int HEALTH_TO_BEGIN_FURY = MAX_HEALTH * 0.25f;
 
+	constexpr int BAYONET_DAMAGE = 15;
+
+	constexpr int RIFLE_SHOT_DAMAGE = 18;
+	constexpr float RIFLE_SHOT_SPEED = 8.0f;
+	constexpr float RIFLE_SHOT_LIFESPAN = 10.0f;
+
 	constexpr float BAYONET_SLASH_RANGE = 5.0f;
+	constexpr float MAX_BLINK_DISTANCE_FROM_PLAYER = 6.0;
 
 	constexpr float IDLE_TIME_PER_FRAME = 0.1667;
 	constexpr float BLINKING_TIME_PER_FRAME = 0.1667;
@@ -17,11 +26,12 @@ namespace ElivaStat {
 	constexpr float BAYONET_SLASH_TIME_PER_FRAME = 0.1667;
 	constexpr float POISON_CLOUD_TIME_PER_FRAME = 0.1667;
 	constexpr float SERUM_INJECT_TIME_PER_FRAME = 0.1667;
+	constexpr float RAPID_BURST_TIME_PER_FRAME = 0.1667;
 }
 
 class ElivaBoss;
 
-typedef bool (*transitionCheckFunction)(ElivaBoss* boss);
+typedef bool (*TransitionCheckFunction)(ElivaBoss* boss);
 
 class ElivaBoss : public EnemyObject {
 	public:
@@ -42,7 +52,7 @@ class ElivaBoss : public EnemyObject {
 			State(): currentState(BossState::Cooldown){}
 			State(BossState currentState): currentState(currentState) {}
 			BossState currentState;
-			std::map<State*, transitionCheckFunction> nextStateAndTransitionCheck;
+			std::map<State*, TransitionCheckFunction> nextStateAndTransitionCheck;
 		};
 
 		virtual void start(list<DrawableObject*>& objectsList);
@@ -50,22 +60,40 @@ class ElivaBoss : public EnemyObject {
 		virtual void updateBehavior(list<DrawableObject*>& objectsList);
 		virtual void onCollisionStay(Collider* collider);
 
+		void breakShield();
+
 		float getCoolDownTimer() const;
 		float getDistanceFromPlayer() const;
 		bool isShieldActivated() const;
 		bool hasFuryBeenActivated() const;
 
-	private:
-		State states[10];
-		BossState currentState;
-
 		ElivaBoss();
 		~ElivaBoss();
 
-		void processState();
+	private:
+		State states[10];
+		State* currentState;
+
+		ProjectileObject<PlayerObject>* rifleProjectile;
+		DamageCollider<PlayerObject>* bayonetCollider;
+		PoisonCloudCollider* poisonCollider;
 
 		bool isFuryUsed;
 		float cooldownTimer;
 
 		bool hasShield;
+
+		void processState();
+		void (ElivaBoss::*statesHandler[10])();
+
+		void handleCooldown();
+		void handleBlink();
+		void handleFuryBlink();
+		void handleCloseBlink();
+		void handleRifleShot();
+		void handleBayonetSlash();
+		void handlePoisonCloud();
+		void handleRapidBurst();
+		void handleSerumInject();
+		void handleFury();
 };

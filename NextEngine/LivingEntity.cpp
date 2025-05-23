@@ -144,7 +144,7 @@ void LivingEntity::applyStatus(float dt) { // NOt required???
                 break;
 
             case POISON:
-                //takeDamage(1);
+                handlePoison();
                 break;
 
             case BURNING:
@@ -205,6 +205,40 @@ void LivingEntity::handleBurning() {
 
     forceIgnoreLighting = true;
     renderBrightness = 1.0f;
+}
+
+void LivingEntity::handlePoison() {
+    static float emitTimer = 0.0f;
+    static const float timeBetweenEmit = 0.1f;
+
+    static float damageTimer = 0.0f;
+    static const float timeBetweenPoisonDamage = 0.4f;
+
+    float dt = GameEngine::getInstance()->getTime()->getDeltaTime();
+
+    emitTimer += dt;
+    damageTimer += dt;
+
+    if (damageTimer > timeBetweenPoisonDamage) {
+        damageTimer = 0.0f;
+        LivingEntity::takeDamage(LivingEntityStat::BURNING_DAMAGE, true); // poison damage per damage cooldown
+    }
+
+    if (emitTimer > timeBetweenEmit) {
+        emitTimer = 0.0f;
+        int randEmitNum = Random::Int() % 3 + 3;
+        for (int i = 0; i < randEmitNum; i++) {
+            ParticleProperties particleProps = ParticleProperties(
+                this->getTransform().getPosition() + glm::vec3(0.4f * Random::Float() - 0.2f, 0.15f * Random::Float() - 0.2f, 0),
+                glm::vec2(1.0f * Random::Float() - 0.5f, 2.5f * Random::Float() + 0.25f),
+                glm::vec2(-0.25f, 0.25f),
+                glm::vec3(0.25f, 0.99f, 0.08f),
+                glm::vec3(0.25f, 0.99f, 0.08f),
+                0.2f, 0.1f, 0.02f, 1.0f
+            );
+            this->emitter->emit(particleProps);
+        }
+    }
 }
 
 void LivingEntity::takeDamage(int damage) {

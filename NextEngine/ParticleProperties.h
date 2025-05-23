@@ -3,6 +3,7 @@
 #include <string>
 
 struct ParticleProperties {
+	ParticleProperties() {}
 	ParticleProperties(glm::vec3 position, glm::vec2 velocity, glm::vec2 velocityVariation,
 		glm::vec3 color, float initSize, float endSize, float sizeVariation, float lifespan = 1.0f):
 		position(position), velocity(velocity), velocityVariation(velocityVariation), initColor(color), endColor(color),
