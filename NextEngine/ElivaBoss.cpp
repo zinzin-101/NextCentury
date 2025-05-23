@@ -119,6 +119,8 @@ ElivaBoss::~ElivaBoss() {
 }
 
 void ElivaBoss::processState() {
+	(this->*statesHandler[currentState->currentState])();
+
 	const BossState& state = currentState->currentState;
 
 	if (state == BossState::Blink) { // Special case 1
@@ -151,15 +153,13 @@ void ElivaBoss::processState() {
 		unsigned int index = randInt % numOfPossibleStates;
 		currentState = possibleStates[index];
 	}
-
-	(this->*statesHandler[currentState->currentState])();
 }
 
 void ElivaBoss::updateBehavior(list<DrawableObject*>& objectsList) {
 	//+
 	processState();
-	//std::cout << "current state: " << (int)currentState->currentState << std::endl;
-	//std::cout << "Health: " << this->getHealth() << std::endl;
+	std::cout << "current state: " << (int)currentState->currentState << std::endl;
+	std::cout << "Health: " << this->getHealth() << std::endl;
 }
 
 void ElivaBoss::handleCooldown() {
