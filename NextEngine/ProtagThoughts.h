@@ -16,4 +16,5 @@ public:
 	void render(glm::mat4 globalModelTransform);
 	void activateDialogue();
 	void reActivateDialogue(string txtFile);
+	void stopDialogue();
 };

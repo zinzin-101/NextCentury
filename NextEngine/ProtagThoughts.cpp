@@ -44,6 +44,11 @@ void ProtagThoughts::reActivateDialogue(string txtFile) {
 	activateDialogue();
 }
 
+void ProtagThoughts::stopDialogue() {
+	dialogueText->isDialogueActive = false;
+	dialogueText->isEnd = true;
+}
+
 void ProtagThoughts::update(list<DrawableObject*>& objectsList) {
 	dialogueText->getTransform().setPosition(glm::vec3(GameEngine::getInstance()->getRenderer()->getCamera()->getPosition().x, -4.0f, 0.0f));
 	dialogueText->update(objectsList);

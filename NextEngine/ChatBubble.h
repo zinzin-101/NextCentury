@@ -19,7 +19,7 @@ class ChatBubble {
 	bool isEnd;
 public:
 	ChatBubble(string file, PlayerObject* player, vector<glm::vec3> talkers, list<DrawableObject*>& objectsList);
-	void update(list<DrawableObject*>& objectsList);
+	void runChat(list<DrawableObject*>& objectsList);
 	void nextChat();
 	void setCurrentChatPos(glm::vec3 pos); // SET the bubble first then translate the other objects, THIS can be run at update all the time with pos being currentChatPos.
 	void activateChat();

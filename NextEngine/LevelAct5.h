@@ -9,7 +9,11 @@ private:
     list<DrawableObject*> UIobjectsList;
     PlayerObject* player = nullptr;
     IngameUI* UIobject;
-    glm::vec3 camPos = glm::vec3(0.0f, 0.0f, 0.0f);
+    TexturedObject* spS;
+    ChatBubble* immigrats1;
+    ProtagThoughts* eToPermit;
+    ChatBubble* immigrats2;
+    bool isStop;
 
 public:
     virtual void levelLoad();

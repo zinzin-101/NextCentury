@@ -1,0 +1,15 @@
+Cultist 1
+0
+0
+3.0
+Alright, you're cleared. Move along.
+NEXTCHAT
+Cultist 2
+1
+0
+5.0
+First time here? Don't stir up trouble.
+This is CULTIST BASE.
+Even if you're one of them, 
+look suspicious and YOU'RE DONE.
+NEXTCHAT

@@ -6,8 +6,9 @@
 ChatBubble::ChatBubble(string fileName, PlayerObject* player, vector<glm::vec3> talkers, list<DrawableObject*>& objectsList) {
 	bubble = new TexturedObject();
 	bubble->setTexture("../Resource/Texture/StoryStuff/ChatBubble.png");
-	bubble->getTransform().setScale(2.76f, 1.5f);
+	bubble->getTransform().setScale(2.76f, 1.7f); // 2.76, 1.5
 	objectsList.emplace_back(bubble);
+	bubble->setActive(false);
 
 	eachTalker = talkers;
 
@@ -41,7 +42,7 @@ ChatBubble::ChatBubble(string fileName, PlayerObject* player, vector<glm::vec3> 
 			Dialogue* tText = new Dialogue(24, player, false);
 			tText->setBackDropActive(false);
 			tText->addSentence(myText);
-			//tText->isDialogueActive = false;
+			tText->isDialogueActive = false;
 			objectsList.emplace_back(tText);
 
 			c.titleText = tText;
@@ -64,17 +65,18 @@ ChatBubble::ChatBubble(string fileName, PlayerObject* player, vector<glm::vec3> 
 			chats.push(c);
 			c.dialogueText.clear();
 			nextChat = true;
+			continue;
 		}
 
 		Dialogue* k = new Dialogue(16, player, false);
 		k->setBackDropActive(false);
 		k->addSentence(myText);
-		//k->isDialogueActive = false;
+		k->isDialogueActive = false;
 		objectsList.emplace_back(k);
 		c.dialogueText.emplace_back(k);
 	}
 }
-void ChatBubble::update(list<DrawableObject*>& objectsList) {
+void ChatBubble::runChat(list<DrawableObject*>& objectsList) {
 	
 	if (chats.empty()) {
 		bubble->setActive(false);
@@ -82,10 +84,12 @@ void ChatBubble::update(list<DrawableObject*>& objectsList) {
 		return;
 	}
 
+	bubble->setActive(true);
+
 	glm::vec3 currentTalkerPos = eachTalker.at(chats.front().talkerIndex);
 	setCurrentChatPos(glm::vec3(currentTalkerPos.x, currentTalkerPos.y, 0.0f));
 
-	float offsetY = 0.2f * 120.0f;
+	float offsetY = (bubble->getTransform().getPosition().y + 0.225f) * 120.0f;
 	for (int i = 0; i < chats.front().dialogueText.size(); i++) {
 		float offsetX = (bubble->getTransform().getPosition().x) + ((chats.front().dialogueText[i]->getTextScale().x / 2.0f) / 120.0f) - 1.2f;
 		chats.front().dialogueText[i]->getTransform().setPosition(glm::vec3(offsetX, (offsetY / 120.0f), 0.0f));
@@ -95,13 +99,11 @@ void ChatBubble::update(list<DrawableObject*>& objectsList) {
 	
 	chats.front().titleText->update(objectsList);
 
-	if (isChatting) {
+	//if (isChatting) { SOME HOW UPDATE RUNS JUST STARTED ITSELF
 		if (!timeAppearEachChat.empty()) {
 			if (timeAppearEachChat.front() < 0.0f) {
-				cout << "a";
 				nextChat();
 				timeAppearEachChat.pop();
-				cout << "b";
 			}
 			else {
 				timeAppearEachChat.front() -= GameEngine::getInstance()->getTime()->getDeltaTimeRealTime();
@@ -113,7 +115,7 @@ void ChatBubble::update(list<DrawableObject*>& objectsList) {
 			}
 			chats.front().titleText->isDialogueActive = true;
 		}
-	}
+	//}
 }
 
 void ChatBubble::nextChat() {
@@ -133,10 +135,12 @@ void ChatBubble::setCurrentChatPos(glm::vec3 pos) {
 		j = 1;
 	}
 	bubble->getTransform().setPosition(glm::vec3(pos.x + offsetX, pos.y * j, pos.z));
-	chats.front().titleText->getTransform().setPosition(glm::vec3(bubble->getTransform().getPosition().x, bubble->getTransform().getPosition().y + 0.5f, 0.0f));
+	chats.front().titleText->getTransform().setPosition(glm::vec3(bubble->getTransform().getPosition().x, bubble->getTransform().getPosition().y + 0.6f, 0.0f));
 }
 
 void ChatBubble::activateChat() {
+	//cout << "active?" << endl;
+	bubble->setActive(true);
 	isChatting = true;
 }
 

@@ -25,6 +25,10 @@ float Time::getDeltaTimeRealTime() {
 	return this->deltaTime;
 }
 
+float Time::getTimeScale() {
+	return this->timeScale;
+}
+
 void Time::setTimeScale(float timeScale) {
 	this->timeScale = timeScale;
 }

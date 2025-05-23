@@ -127,7 +127,7 @@ void LevelAct4::levelInit() {
 
 void LevelAct4::levelUpdate() {
     updateObjects(objectsList);
-    chat1->update(objectsList);
+    chat1->runChat(objectsList);
 
     if (!chat1->hasEnded()) {
         GameEngine::getInstance()->getTime()->setTimeScale(0);
@@ -164,7 +164,7 @@ void LevelAct4::levelFree() {
         delete obj;
     }
     objectsList.clear();
-
+    delete chat1;
     delete UIobject;
 }
 
@@ -194,10 +194,12 @@ void LevelAct4::handleKey(InputManager& input) {
     processKeyBuffer(input, SDLK_LSHIFT);
 
     // handle event here
-    if (input.getButton(SDLK_a) && !input.getButton(SDLK_d)) player->move(glm::vec2(-1, 0));
-    if (input.getButton(SDLK_d) && !input.getButton(SDLK_a)) player->move(glm::vec2(1, 0));
-    if (input.getButtonDown(SDLK_j)) player->parryAttack();
-    if (input.getMouseButtonDown(SDL_BUTTON_RIGHT)) player->parryAttack();
+    if (GameEngine::getInstance()->getTime()->getTimeScale() != 0) {
+        if (input.getButton(SDLK_a) && !input.getButton(SDLK_d)) player->move(glm::vec2(-1, 0));
+        if (input.getButton(SDLK_d) && !input.getButton(SDLK_a)) player->move(glm::vec2(1, 0));
+        if (input.getButtonDown(SDLK_j)) player->parryAttack();
+        if (input.getMouseButtonDown(SDL_BUTTON_RIGHT)) player->parryAttack();
+    }
 
     /// Use processed key here ///
     if (keyHeldDuration[SDLK_k] < PlayerStat::DURATION_TO_START_HEAVY_ATTACK) {

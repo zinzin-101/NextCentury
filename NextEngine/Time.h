@@ -12,6 +12,7 @@ class Time {
 		Time();
 		float getDeltaTime();
 		float getDeltaTimeRealTime();
+		float getTimeScale();
 		uint64_t getTicks();
 		void updateTick(uint64_t time);
 		void updateTickCounterOnly(uint64_t time);
