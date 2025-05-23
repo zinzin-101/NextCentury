@@ -18,6 +18,7 @@
 #include "LevelAct4.h"
 #include "LevelAct5.h"
 #include "LevelAct6.h"
+#include "LevelMainMenu.h"
 
 GameStateController::GameStateController() {
 	// set the initial game state

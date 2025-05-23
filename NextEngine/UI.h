@@ -15,6 +15,7 @@ public:
     void updateUI(PlayerObject& playerObject, glm::vec3 camPos);
     void handleInput(char key);
     void handleInput(SDL_Keycode key);
+    void updateArrowPosition();
     ~UI();
 
 private:
@@ -22,4 +23,5 @@ private:
     SimpleObject* healthBar;
     int selectedButtonIndex;
     IngameUI ingameUI; 
+    TexturedObject* arrow;
 };
