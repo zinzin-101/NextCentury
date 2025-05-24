@@ -29,6 +29,7 @@ ElivaBoss::ElivaBoss(): EnemyObject(DefaultEnemyStat::ELIVA_INFO) {
 	states[BossState::Stunned] = State(BossState::Stunned);
 	states[BossState::FuryBayonetSlash] = State(BossState::FuryBayonetSlash);
 	states[BossState::FuryCooldown] = State(BossState::FuryCooldown);
+	states[BossState::Dead] = State(BossState::Dead);
 
 	states[BossState::Cooldown].nextStateAndTransitionCheck[&states[BossState::Blink]] = (&StateTransition::cooldownToBlink);
 
@@ -49,6 +50,7 @@ ElivaBoss::ElivaBoss(): EnemyObject(DefaultEnemyStat::ELIVA_INFO) {
 	states[BossState::SerumInject].nextStateAndTransitionCheck[&states[BossState::Fury]] = (&StateTransition::serumInjectToFury);
 
 	states[BossState::PoisonCloud].nextStateAndTransitionCheck[&states[BossState::BayonetSlash]] = (&StateTransition::poisonCloudToBayonetSlash);
+	states[BossState::PoisonCloud].nextStateAndTransitionCheck[&states[BossState::Cooldown]] = (&StateTransition::bayonetSlashToCooldown);
 
 	states[BossState::Fury].nextStateAndTransitionCheck[&states[BossState::FuryBlink]] = (&StateTransition::furyToFuryBlink);
 	states[BossState::FuryBlink].nextStateAndTransitionCheck[&states[BossState::RapidBurst]] = (&StateTransition::furyBlinkToRapidBurst);
@@ -76,6 +78,7 @@ ElivaBoss::ElivaBoss(): EnemyObject(DefaultEnemyStat::ELIVA_INFO) {
 	statesHandler[BossState::Stunned] = &ElivaBoss::handleStunned;
 	statesHandler[BossState::FuryBayonetSlash] = &ElivaBoss::handleFuryBayonetSlash;
 	statesHandler[BossState::FuryCooldown] = &ElivaBoss::handleFuryCooldown;
+	statesHandler[BossState::Dead] = &ElivaBoss::handleDead;
 
 	currentPhase = Phase::First;
 }
@@ -95,6 +98,7 @@ void ElivaBoss::start(list<DrawableObject*>& objectsList) {
 	getAnimationComponent()->addState("PoisonCloud", 6, 0, 21, false, ElivaStat::POISON_CLOUD_TIME_PER_FRAME);
 	getAnimationComponent()->addState("SerumInject", 7, 0, 21, false, ElivaStat::SERUM_INJECT_TIME_PER_FRAME);
 	getAnimationComponent()->addState("RapidBurst", 3, 2, 5, false, ElivaStat::RAPID_BURST_TIME_PER_FRAME); // placeholder
+	getAnimationComponent()->addState("Dead", 10, 0, 9, false, ElivaStat::DEAD_TIME_PER_FRAME);
 
 
 	rifleProjectile = new ProjectileObject<PlayerObject>(this, ElivaStat::RIFLE_SHOT_DAMAGE, this->getTransform().getPosition(), glm::vec2(), ElivaStat::RIFLE_SHOT_LIFESPAN);
@@ -117,7 +121,7 @@ void ElivaBoss::start(list<DrawableObject*>& objectsList) {
 	poisonCollider->setActive(false);
 	poisonCollider->setFollowOwner(true);
 	poisonCollider->setFollowOffset(glm::vec3(0.0f, 0.0f, 0.0f));
-	poisonCollider->getColliderComponent()->setWidth(5.0f);
+	poisonCollider->getColliderComponent()->setWidth(2.0f);
 	poisonCollider->setDrawCollider(true); // debug
 	objectsList.emplace_back(poisonCollider);
 
@@ -188,6 +192,11 @@ void ElivaBoss::updateBehavior(list<DrawableObject*>& objectsList) {
 	}
 
 	processState();
+
+	if (!isInKnockback) {
+		this->getPhysicsComponent()->setVelocity(glm::vec2(0.0f, 0.0f));
+	}
+
 	std::cout << "current state: " << (int)currentState->currentState << std::endl;
 	std::cout << "Health: " << this->getHealth() << std::endl;
 }
@@ -393,9 +402,19 @@ void ElivaBoss::handleSerumInject() {
 	const Animation::State& animState = this->getAnimationComponent()->getCurrentAnimationStateRef();
 	int currentFrame = animState.currentFrame;
 
+	if (currentFrame == 0 + 1) {
+		setCanTakeDamage(false);
+		return;
+	}
+
 	if (currentFrame == 13 + 1) {
 		hasShield = true;
 		currentPhase = Phase::Second;
+		return;
+	}
+
+	if (currentFrame == 20 + 1) {
+		setCanTakeDamage(true);
 		return;
 	}
 }
@@ -460,11 +479,28 @@ void ElivaBoss::handleFuryCooldown(){
 	std::cout << "boss under fury cooldown" << std::endl;
 }
 
+void ElivaBoss::handleDead() {
+	this->getAnimationComponent()->setState("Dead");
+
+	const Animation::State& animState = this->getAnimationComponent()->getCurrentAnimationStateRef();
+	
+	if (!animState.isPlaying) {
+		this->setHealth(0);
+	}
+}
+
 void ElivaBoss::postUpdateBehavior() {}
 
 void ElivaBoss::onCollisionStay(Collider* collider) {}
 
 void ElivaBoss::takeDamage(int damage) {
+	if (this->getHealth() - damage <= 0) {
+		this->setHealth(1);
+		this->setCanTakeDamage(false);
+		currentState = &states[BossState::Dead];
+		return;
+	}
+
 	if (hasShield) {
 		LivingEntity::takeDamage(static_cast<int>(damage * 0.5f));
 		return;

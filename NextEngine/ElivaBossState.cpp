@@ -20,6 +20,10 @@ namespace StateTransition {
 			return false;
 		}
 
+		if (boss->getHealth() > ElivaStat::HEALTH_TO_BEGIN_FURY) {
+			return false;
+		}
+
 		const Animation::State& currentAnim = boss->getAnimationComponent()->getCurrentAnimationStateRef();
 
 		if (currentAnim.isPlaying) {

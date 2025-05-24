@@ -4,8 +4,8 @@
 #include "PoisonCloud.h"
 
 namespace ElivaStat {
-	constexpr float COOLDOWN_DURATION = 2.0f;
-	constexpr float FURY_COOLDOWN_DURATION = 1.0f;
+	constexpr float COOLDOWN_DURATION = 1.0f;
+	constexpr float FURY_COOLDOWN_DURATION = 0.5f;
 	constexpr float DAMAGE_REDUCTION_ARMOR_BUFF = 0.5f;
 
 	constexpr int MAX_HEALTH = 100;
@@ -32,6 +32,7 @@ namespace ElivaStat {
 	constexpr float POISON_CLOUD_TIME_PER_FRAME = 0.1667f;
 	constexpr float SERUM_INJECT_TIME_PER_FRAME = 0.1667f;
 	constexpr float RAPID_BURST_TIME_PER_FRAME = 0.1667f;
+	constexpr float DEAD_TIME_PER_FRAME = 0.1667f;
 
 	constexpr float FURY_BAYONET_SLASH_TIME_PER_FRAME = 0.0833f;
 	constexpr float FURY_BLINKING_TIME_PER_FRAME = 0.0833f;
@@ -56,7 +57,8 @@ class ElivaBoss : public EnemyObject {
 			Fury,
 			Stunned,
 			FuryBayonetSlash,
-			FuryCooldown
+			FuryCooldown,
+			Dead
 		};
 
 		struct State {
@@ -94,7 +96,7 @@ class ElivaBoss : public EnemyObject {
 		~ElivaBoss();
 
 	private:
-		State states[13];
+		State states[14];
 		State* currentState;
 		Phase currentPhase;
 
@@ -112,7 +114,7 @@ class ElivaBoss : public EnemyObject {
 		bool hasShield;
 
 		void processState();
-		void (ElivaBoss::*statesHandler[13])();
+		void (ElivaBoss::*statesHandler[14])();
 
 		void handleCooldown();
 		void handleBlink();
@@ -127,4 +129,5 @@ class ElivaBoss : public EnemyObject {
 		void handleStunned();
 		void handleFuryBayonetSlash();
 		void handleFuryCooldown();
+		void handleDead();
 };
