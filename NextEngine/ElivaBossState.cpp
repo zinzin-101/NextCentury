@@ -15,6 +15,20 @@ namespace StateTransition {
 		return false;
 	}
 
+	bool blinkToFury(ElivaBoss* boss) {
+		if (boss->hasFuryBeenActivated()) {
+			return false;
+		}
+
+		const Animation::State& currentAnim = boss->getAnimationComponent()->getCurrentAnimationStateRef();
+
+		if (currentAnim.isPlaying) {
+			return false;
+		}
+
+		return true;
+	}
+
 	bool blinkToRifleShot(ElivaBoss* boss) {
 		const Animation::State& currentAnim = boss->getAnimationComponent()->getCurrentAnimationStateRef();
 
@@ -39,6 +53,20 @@ namespace StateTransition {
 
 		float distance = boss->getDistanceFromPlayer();
 		if (distance > ElivaStat::BAYONET_SLASH_RANGE) {
+			return false;
+		}
+
+		return true;
+	}
+
+	bool blinkToPoisonCloud(ElivaBoss* boss) {
+		if (boss->getCurrentPhase() == ElivaBoss::Phase::First) {
+			return false;
+		}
+
+		const Animation::State& currentAnim = boss->getAnimationComponent()->getCurrentAnimationStateRef();
+
+		if (currentAnim.isPlaying) {
 			return false;
 		}
 

@@ -3,8 +3,10 @@
 
 namespace StateTransition {
 	bool blinkToSerumInject(ElivaBoss* boss);
+	bool blinkToFury(ElivaBoss* boss);
 	bool blinkToRifleShot(ElivaBoss* boss);
 	bool blinkToBayonetSlash(ElivaBoss* boss);
+	bool blinkToPoisonCloud(ElivaBoss* boss);
 
 	bool rifleShotToBayonetSlash(ElivaBoss* boss);
 	bool rifleShotToCooldown(ElivaBoss* boss);

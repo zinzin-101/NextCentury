@@ -122,7 +122,7 @@ void DamageCollider<TargetEntityType>::onCollisionEnter(Collider* collider) {
 
 			BlightFlame* bf = dynamic_cast<BlightFlame*>(obj);
 			if (bf != NULL) {
-				entity->takeDamage(damage);
+				bf->takeDamage(damage);
 
 				if (damageTag == "FinalNormalAttack") {
 					bf->setCurrentState(EnemyObject::FLINCH);
@@ -159,6 +159,17 @@ void DamageCollider<TargetEntityType>::onCollisionEnter(Collider* collider) {
 
 					return;
 				}
+			}
+
+			ElivaBoss* boss = dynamic_cast<ElivaBoss*>(obj);
+			if (boss != NULL) {
+				boss->takeDamage(damage);
+
+				if (damageTag == "HeavyAttack2") {
+					boss->signalStagger();
+				}
+
+				return;
 			}
 		}
 		
