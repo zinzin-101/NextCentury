@@ -44,6 +44,7 @@
     <ClCompile Include="ElivaBoss.cpp" />
     <ClCompile Include="ElivaBossState.cpp" />
     <ClCompile Include="EnemyObject.cpp" />
+    <ClCompile Include="FadeBlack.cpp" />
     <ClCompile Include="GameEngine.cpp" />
     <ClCompile Include="GameStateController.cpp" />
     <ClCompile Include="GLRenderer.cpp" />
@@ -129,6 +130,7 @@
     <ClInclude Include="ElivaBossState.h" />
     <ClInclude Include="EnemyInfo.h" />
     <ClInclude Include="EnemyObject.h" />
+    <ClInclude Include="FadeBlack.h" />
     <ClInclude Include="FlameDamage.h" />
     <ClInclude Include="GameEngine.h" />
     <ClInclude Include="GameStateController.h" />

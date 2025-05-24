@@ -95,6 +95,8 @@
     <ClCompile Include="LevelMainMenu.cpp" />
     <ClCompile Include="UIMainMenu.cpp" />
     <ClCompile Include="PoisonCloud.cpp" />
+    <ClCompile Include="ChatBubble.cpp" />
+    <ClCompile Include="FadeBlack.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
@@ -209,6 +211,8 @@
     <ClInclude Include="LevelMainMenu.h" />
     <ClInclude Include="UIMainMenu.h" />
     <ClInclude Include="PoisonCloud.h" />
+    <ClInclude Include="ChatBubble.h" />
+    <ClInclude Include="FadeBlack.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Resource\Shader\fragment.shd" />
