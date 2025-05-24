@@ -147,6 +147,10 @@ void ProjectileObject<TargetEntity>::activate(glm::vec3 position, glm::vec2 velo
 	this->getPhysicsComponent()->setVelocity(velocity);
 	this->lifespan = lifespan;
 	this->setActive(true);
+
+	if (emitter != nullptr) {
+		emitter->clearParticles();
+	}
 }
 
 template <class TargetEntity>
