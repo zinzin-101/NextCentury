@@ -100,6 +100,7 @@ void ElivaBoss::start(list<DrawableObject*>& objectsList) {
 	objectsList.emplace_back(poisonCollider);
 
 	this->getTransform().setScale(4, 3);
+	this->setDrawCollider(true);
 
 	targetEntity = EnemyObject::findPlayer(objectsList);
 }
