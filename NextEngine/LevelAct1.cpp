@@ -114,6 +114,10 @@ void LevelAct1::levelInit() {
     p2 = new ProtagThoughts("../Resource/Texture/StoryStuff/ProtagThoughtsAct1/two.txt", player);
     objectsList.emplace_back(p2);
 
+    fb = new FadeBlack(1.0f);
+    objectsList.emplace_back(fb);
+    fb->FadeToTransparent();
+
     //UIobject->initUI(objectsList);
 
     GameEngine::getInstance()->getRenderer()->getCamera()->setDeadLimitBool(true);
@@ -137,6 +141,17 @@ void LevelAct1::levelUpdate() {
 
     if (interactCount == 2) {
         p2->activateDialogue();
+    }
+
+    if (player->getTransform().getPosition().x > 39.0f && p2->getDialogueObject()->isEnd) {
+        if (!isFadingToBlack) {
+            fb->FadeToBlack();
+            isFadingToBlack = true;
+        }
+        fadetime -= GameEngine::getInstance()->getTime()->getDeltaTime();
+        if (fadetime < 0.0f) {
+            GameEngine::getInstance()->getStateController()->gameStateNext = (GameState)((GameEngine::getInstance()->getStateController()->gameStateCurr + 1) % 9);
+        }
     }
 
     // Placeholder death logic
