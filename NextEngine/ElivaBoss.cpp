@@ -113,7 +113,7 @@ void ElivaBoss::start(list<DrawableObject*>& objectsList) {
 	bayonetCollider->setActive(false);
 	bayonetCollider->setFollowOwner(true);
 	bayonetCollider->setFollowOffset(glm::vec3(-1.0f, 0.0f, 0));
-	bayonetCollider->getColliderComponent()->setWidth(3.0f);
+	bayonetCollider->getColliderComponent()->setWidth(2.0f);
 	bayonetCollider->setDrawCollider(true); // debug
 	objectsList.emplace_back(bayonetCollider);
 
@@ -121,7 +121,7 @@ void ElivaBoss::start(list<DrawableObject*>& objectsList) {
 	poisonCollider->setActive(false);
 	poisonCollider->setFollowOwner(true);
 	poisonCollider->setFollowOffset(glm::vec3(0.0f, 0.0f, 0.0f));
-	poisonCollider->getColliderComponent()->setWidth(2.0f);
+	poisonCollider->getColliderComponent()->setWidth(1.5f);
 	poisonCollider->setDrawCollider(true); // debug
 	objectsList.emplace_back(poisonCollider);
 
@@ -510,6 +510,20 @@ void ElivaBoss::takeDamage(int damage) {
 }
 
 void ElivaBoss::breakShield() {
+	if (hasShield) {
+		for (int i = 0; i < 5; i++) {
+			ParticleProperties particleProps = ParticleProperties(
+				this->getTransform().getPosition(),
+				glm::vec2(5.0f * Random::Float() - 2.5f, 1.0f * Random::Float() + 1.0f),
+				glm::vec2(-0.5f, 0.5f),
+				glm::vec3(0.0f, 1.0f, 0.0f),
+				0.15f, 0.1f, 0.05f
+			);
+			particleProps.isPhysics = true;
+			this->getEmitter()->emit(particleProps);
+		}
+	}
+
 	this->hasShield = false;
 }
 
@@ -524,13 +538,14 @@ void ElivaBoss::signalStagger() {
 		return;
 	}
 
+	breakShield();
+
 	if (currentState->currentState == BossState::PoisonCloud) {
 		return;
 	}
 
 	currentState = &states[BossState::Cooldown];
 	cooldownTimer = ElivaStat::STAGGERED_DURATION;
-	breakShield();
 	bayonetCollider->setActive(false);
 }
 
