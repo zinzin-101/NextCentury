@@ -78,6 +78,8 @@ class ElivaBoss : public EnemyObject {
 		DamageCollider<PlayerObject>* bayonetCollider;
 		PoisonCloudCollider* poisonCollider;
 
+		bool canBlink;
+
 		bool isFuryUsed;
 		float cooldownTimer;
 

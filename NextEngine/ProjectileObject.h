@@ -30,6 +30,7 @@ class ProjectileObject : public SimpleObject { // change later to TexturedObject
 
 		/// test ///
 		virtual void render(glm::mat4 globalModelTransform);
+		ParticleSystem* getParticleEmitter() const;
 		~ProjectileObject();
 };
 
@@ -77,7 +78,10 @@ void ProjectileObject<TargetEntity>::update(std::list<DrawableObject*>& objectsL
 	/// test ///
 	unsigned int ticks = GameEngine::getInstance()->getTime()->getTicks();
 	if (emitter != nullptr) {
+
 		if (ticks % 5 == 0) {
+			particleProps = ParticleProperties(this->transform.getPosition(), glm::normalize(this->physics->getVelocity()), glm::vec2(1.0f, 1.0f), glm::vec3(),
+				0.2f, 0.1f, 0.05f, 1.0f);
 			particleProps.position = this->getTransform().getPosition();
 			emitter->emit(particleProps);
 		}
@@ -143,4 +147,9 @@ void ProjectileObject<TargetEntity>::activate(glm::vec3 position, glm::vec2 velo
 	this->getPhysicsComponent()->setVelocity(velocity);
 	this->lifespan = lifespan;
 	this->setActive(true);
+}
+
+template <class TargetEntity>
+ParticleSystem* ProjectileObject<TargetEntity>::getParticleEmitter() const {
+	return emitter;
 }

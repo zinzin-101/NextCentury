@@ -9,6 +9,7 @@ ElivaBoss::ElivaBoss(): EnemyObject(DefaultEnemyStat::ELIVA_INFO) {
 	cooldownTimer = ElivaStat::COOLDOWN_DURATION;
 	hasShield = false;
 	isFuryUsed = false;
+	canBlink = false;
 
 	rifleProjectile = nullptr;
 	bayonetCollider = nullptr;
@@ -79,6 +80,7 @@ void ElivaBoss::start(list<DrawableObject*>& objectsList) {
 	rifleProjectile = new ProjectileObject<PlayerObject>(this, ElivaStat::RIFLE_SHOT_DAMAGE, this->getTransform().getPosition(), glm::vec2(), ElivaStat::RIFLE_SHOT_LIFESPAN);
 	rifleProjectile->setName("RifleProjectile");
 	rifleProjectile->setDestroyOnDespawn(false);
+	rifleProjectile->getParticleEmitter()->update(objectsList);
 	rifleProjectile->setActive(false);
 	rifleProjectile->setDrawCollider(true); // debug
 	objectsList.emplace_back(rifleProjectile);
@@ -100,6 +102,9 @@ void ElivaBoss::start(list<DrawableObject*>& objectsList) {
 	objectsList.emplace_back(poisonCollider);
 
 	this->getTransform().setScale(4, 3);
+	this->getColliderComponent()->setHeight(0.5f);
+	this->getColliderComponent()->getTransform().setScale(0.5f, 1.0f);
+	this->getColliderComponent()->getTransform().setPosition(0.0f, -0.7f);
 	this->setDrawCollider(true);
 
 	targetEntity = EnemyObject::findPlayer(objectsList);
@@ -158,6 +163,10 @@ void ElivaBoss::processState() {
 
 void ElivaBoss::updateBehavior(list<DrawableObject*>& objectsList) {
 	//+
+	if (emitter != nullptr) {
+		emitter->update(objectsList);
+	}
+
 	processState();
 	std::cout << "current state: " << (int)currentState->currentState << std::endl;
 	std::cout << "Health: " << this->getHealth() << std::endl;
@@ -173,7 +182,15 @@ void ElivaBoss::handleBlink() {
 	const Animation::State& animState = this->getAnimationComponent()->getCurrentAnimationStateRef();
 
 	int currentFrame = animState.currentFrame;
-	if (currentFrame == 6 + 1) {
+	if (currentFrame == 3 + 1) {
+		canBlink = true;
+		this->setCanTakeDamage(false);
+		return;
+	}
+
+	if (canBlink && currentFrame == 6 + 1) {
+		canBlink = false;
+
 		glm::vec3 playerPos = targetEntity->getTransform().getPosition();
 		glm::vec3 elivaPos = this->getTransform().getPosition();
 		float direction = Random::Float() < 0.5f ? -1.0f : 1.0f;
@@ -185,6 +202,12 @@ void ElivaBoss::handleBlink() {
 		float offsetFromPlayer = playerPos.x - elivaPos.x;
 		isFacingRight = offsetFromPlayer > 0.0f;
 
+		return;
+	}
+
+	if (currentFrame == 8 + 1) {
+		this->setCanTakeDamage(true);
+		canBlink = false;
 		return;
 	}
 }
@@ -194,7 +217,15 @@ void ElivaBoss::handleFuryBlink() {
 	const Animation::State& animState = this->getAnimationComponent()->getCurrentAnimationStateRef();
 
 	int currentFrame = animState.currentFrame;
-	if (currentFrame == 6 + 1) {
+	if (currentFrame == 3 + 1) {
+		canBlink = true;
+		this->setCanTakeDamage(false);
+		return;
+	}
+
+	if (canBlink && currentFrame == 6 + 1) {
+		canBlink = false;
+
 		glm::vec3 playerPos = targetEntity->getTransform().getPosition();
 		glm::vec3 elivaPos = this->getTransform().getPosition();
 		float direction = Random::Float() < 0.5f ? -1.0f : 1.0f;
@@ -208,6 +239,12 @@ void ElivaBoss::handleFuryBlink() {
 
 		return;
 	}
+
+	if (currentFrame == 8 + 1) {
+		this->setCanTakeDamage(true);
+		canBlink = false;
+		return;
+	}
 }
 
 void ElivaBoss::handleCloseBlink() {
@@ -215,7 +252,15 @@ void ElivaBoss::handleCloseBlink() {
 	const Animation::State& animState = this->getAnimationComponent()->getCurrentAnimationStateRef();
 
 	int currentFrame = animState.currentFrame;
-	if (currentFrame == 6 + 1) {
+	if (currentFrame == 3 + 1) {
+		canBlink = true;
+		this->setCanTakeDamage(false);
+		return;
+	}
+
+	if (canBlink && currentFrame == 6 + 1) {
+		canBlink = false;
+
 		glm::vec3 playerPos = targetEntity->getTransform().getPosition();
 		glm::vec3 elivaPos = this->getTransform().getPosition();
 		float direction = Random::Float() < 0.5f ? -1.0f : 1.0f;
@@ -227,6 +272,12 @@ void ElivaBoss::handleCloseBlink() {
 		float offsetFromPlayer = playerPos.x - elivaPos.x;
 		isFacingRight = offsetFromPlayer > 0.0f;
 
+		return;
+	}
+
+	if (currentFrame == 8 + 1) {
+		this->setCanTakeDamage(true);
+		canBlink = false;
 		return;
 	}
 }
