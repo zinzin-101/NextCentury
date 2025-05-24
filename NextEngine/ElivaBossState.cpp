@@ -22,6 +22,11 @@ namespace StateTransition {
 			return false;
 		}
 
+		float distance = boss->getDistanceFromPlayer();
+		if (distance <= ElivaStat::BAYONET_SLASH_RANGE) {
+			return false;
+		}
+
 		return true;
 	}
 
@@ -29,6 +34,11 @@ namespace StateTransition {
 		const Animation::State& currentAnim = boss->getAnimationComponent()->getCurrentAnimationStateRef();
 
 		if (currentAnim.isPlaying) {
+			return false;
+		}
+
+		float distance = boss->getDistanceFromPlayer();
+		if (distance > ElivaStat::BAYONET_SLASH_RANGE) {
 			return false;
 		}
 
@@ -173,6 +183,16 @@ namespace StateTransition {
 		const Animation::State& currentAnim = boss->getAnimationComponent()->getCurrentAnimationStateRef();
 
 		if (currentAnim.isPlaying) {
+			return false;
+		}
+
+		return true;
+	}
+
+	bool stunnedToCooldown(ElivaBoss* boss) {
+		float stunnedTimer = boss->getStunnedTimer();
+
+		if (stunnedTimer > 0.0f) {
 			return false;
 		}
 

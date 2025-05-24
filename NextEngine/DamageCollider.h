@@ -4,9 +4,10 @@
 #include "LivingEntity.h"
 #include "ParticleProperties.h"
 #include "PlayerObject.h"
-#include "Zealot.h"
 #include "BlightFlame.h"
 #include "Wailer.h"
+#include "Zealot.h"
+#include "ElivaBoss.h"
 #include "FlameDamage.h"
 #include "SquareBorderMesh.h"
 
@@ -185,7 +186,13 @@ void DamageCollider<TargetEntityType>::onTriggerEnter(Collider* collider) { // f
 				EnemyObject* enemyObj = dynamic_cast<EnemyObject*>(this->getOwner());
 
 				if (enemyObj != NULL) {
-					enemyObj->setCurrentState(EnemyObject::STUNNED);
+					ElivaBoss* boss = dynamic_cast<ElivaBoss*>(enemyObj);
+					if (boss != NULL) {
+						boss->signalStun();
+					}
+					else {
+						enemyObj->setCurrentState(EnemyObject::STUNNED);
+					}
 
 					float parryDirection = (player->getTransform().getPosition().x < enemyObj->getTransform().getPosition().x) ? 1.0f : -1.0f;
 					for (int i = 0; i < 5; i++) {

@@ -23,4 +23,6 @@ namespace StateTransition {
 	bool furyBlinkToRapidBurst(ElivaBoss* boss);
 	bool rapidBurstToCloseBlink(ElivaBoss* boss);
 	bool closeBlinkToBayonetSlash(ElivaBoss* boss);
+
+	bool stunnedToCooldown(ElivaBoss* boss);
 }

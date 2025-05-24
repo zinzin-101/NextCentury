@@ -17,13 +17,16 @@ namespace ElivaStat {
 	constexpr float RIFLE_SHOT_SPEED = 8.0f;
 	constexpr float RIFLE_SHOT_LIFESPAN = 10.0f;
 
-	constexpr float BAYONET_SLASH_RANGE = 5.0f;
+	constexpr float BAYONET_SLASH_RANGE = 2.0f;
 	constexpr float MAX_BLINK_DISTANCE_FROM_PLAYER = 6.0;
+
+	constexpr float STUNNED_DURATION = 1.5f;
 
 	constexpr float IDLE_TIME_PER_FRAME = 0.1667;
 	constexpr float BLINKING_TIME_PER_FRAME = 0.1667;
 	constexpr float RIFLE_SHOT_TIME_PER_FRAME = 0.1667;
 	constexpr float BAYONET_SLASH_TIME_PER_FRAME = 0.1667;
+	constexpr float PARRIED_TIME_PER_FRAME = 0.1667;
 	constexpr float POISON_CLOUD_TIME_PER_FRAME = 0.1667;
 	constexpr float SERUM_INJECT_TIME_PER_FRAME = 0.1667;
 	constexpr float RAPID_BURST_TIME_PER_FRAME = 0.1667;
@@ -45,7 +48,8 @@ class ElivaBoss : public EnemyObject {
 			PoisonCloud,
 			RapidBurst,
 			SerumInject,
-			Fury
+			Fury,
+			Stunned
 		};
 
 		struct State {
@@ -61,17 +65,19 @@ class ElivaBoss : public EnemyObject {
 		virtual void onCollisionStay(Collider* collider);
 
 		void breakShield();
+		void signalStun();
 
 		float getCoolDownTimer() const;
 		float getDistanceFromPlayer() const;
 		bool isShieldActivated() const;
 		bool hasFuryBeenActivated() const;
+		float getStunnedTimer() const;
 
 		ElivaBoss();
 		~ElivaBoss();
 
 	private:
-		State states[10];
+		State states[11];
 		State* currentState;
 
 		ProjectileObject<PlayerObject>* rifleProjectile;
@@ -83,10 +89,12 @@ class ElivaBoss : public EnemyObject {
 		bool isFuryUsed;
 		float cooldownTimer;
 
+		float stunnedTimer;
+
 		bool hasShield;
 
 		void processState();
-		void (ElivaBoss::*statesHandler[10])();
+		void (ElivaBoss::*statesHandler[11])();
 
 		void handleCooldown();
 		void handleBlink();
@@ -98,4 +106,5 @@ class ElivaBoss : public EnemyObject {
 		void handleRapidBurst();
 		void handleSerumInject();
 		void handleFury();
+		void handleStunned();
 };

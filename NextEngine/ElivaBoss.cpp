@@ -7,6 +7,7 @@
 
 ElivaBoss::ElivaBoss(): EnemyObject(DefaultEnemyStat::ELIVA_INFO) {
 	cooldownTimer = ElivaStat::COOLDOWN_DURATION;
+	stunnedTimer = 0.0f;
 	hasShield = false;
 	isFuryUsed = false;
 	canBlink = false;
@@ -25,6 +26,7 @@ ElivaBoss::ElivaBoss(): EnemyObject(DefaultEnemyStat::ELIVA_INFO) {
 	states[BossState::RapidBurst] = State(BossState::RapidBurst);
 	states[BossState::SerumInject] = State(BossState::SerumInject);
 	states[BossState::Fury] = State(BossState::Fury);
+	states[BossState::Stunned] = State(BossState::Stunned);
 
 	states[BossState::Cooldown].nextStateAndTransitionCheck[&states[BossState::Blink]] = (&StateTransition::cooldownToBlink);
 
@@ -49,6 +51,8 @@ ElivaBoss::ElivaBoss(): EnemyObject(DefaultEnemyStat::ELIVA_INFO) {
 	states[BossState::RapidBurst].nextStateAndTransitionCheck[&states[BossState::CloseBlink]] = (&StateTransition::rapidBurstToCloseBlink);
 	states[BossState::CloseBlink].nextStateAndTransitionCheck[&states[BossState::BayonetSlash]] = (&StateTransition::closeBlinkToBayonetSlash);
 
+	states[BossState::Stunned].nextStateAndTransitionCheck[&states[BossState::Cooldown]] = (&StateTransition::stunnedToCooldown);
+
 	currentState = &states[BossState::Cooldown];
 
 	statesHandler[BossState::Cooldown] = &ElivaBoss::handleCooldown;
@@ -61,6 +65,7 @@ ElivaBoss::ElivaBoss(): EnemyObject(DefaultEnemyStat::ELIVA_INFO) {
 	statesHandler[BossState::RapidBurst] = &ElivaBoss::handleRapidBurst;
 	statesHandler[BossState::SerumInject] = &ElivaBoss::handleSerumInject;
 	statesHandler[BossState::Fury] = &ElivaBoss::handleFury;
+	statesHandler[BossState::Stunned] = &ElivaBoss::handleStunned;
 }
 
 void ElivaBoss::start(list<DrawableObject*>& objectsList) {
@@ -72,6 +77,7 @@ void ElivaBoss::start(list<DrawableObject*>& objectsList) {
 	getAnimationComponent()->addState("Blinking", 1, 0, 9, false, ElivaStat::BLINKING_TIME_PER_FRAME);
 	getAnimationComponent()->addState("RifleShot", 4, 0, 10, false, ElivaStat::RIFLE_SHOT_TIME_PER_FRAME);
 	getAnimationComponent()->addState("BayonetSlash", 2, 0, 9, false, ElivaStat::BAYONET_SLASH_TIME_PER_FRAME);
+	getAnimationComponent()->addState("Parried", 3, 5, 2, true, ElivaStat::PARRIED_TIME_PER_FRAME);
 	getAnimationComponent()->addState("PoisonCloud", 6, 0, 22, false, ElivaStat::POISON_CLOUD_TIME_PER_FRAME);
 	getAnimationComponent()->addState("SerumInject", 7, 0, 21, false, ElivaStat::SERUM_INJECT_TIME_PER_FRAME);
 	getAnimationComponent()->addState("RapidBurst", 3, 2, 5, false, ElivaStat::RAPID_BURST_TIME_PER_FRAME); // placeholder
@@ -377,6 +383,19 @@ void ElivaBoss::handleFury() {
 	isFuryUsed = true;
 }
 
+void ElivaBoss::handleStunned() {
+	this->getAnimationComponent()->setState("Parried");
+
+	std::cout << "boss stunned" << std::endl;
+
+	if (stunnedTimer <= 0.0f) {
+		stunnedTimer = ElivaStat::STUNNED_DURATION;
+		return;
+	}
+
+	stunnedTimer -= GameEngine::getInstance()->getTime()->getDeltaTime();
+}
+
 void ElivaBoss::postUpdateBehavior() {}
 
 void ElivaBoss::onCollisionStay(Collider* collider) {}
@@ -384,6 +403,13 @@ void ElivaBoss::onCollisionStay(Collider* collider) {}
 void ElivaBoss::breakShield() {
 	this->hasShield = false;
 }
+
+void ElivaBoss::signalStun() {
+	currentState = &states[BossState::Stunned];
+	stunnedTimer = ElivaStat::STUNNED_DURATION;
+	bayonetCollider->setActive(false);
+}
+
 
 float ElivaBoss::getCoolDownTimer() const {
 	return cooldownTimer;
@@ -399,4 +425,8 @@ bool ElivaBoss::isShieldActivated() const {
 
 bool ElivaBoss::hasFuryBeenActivated() const{
 	return isFuryUsed;
+}
+
+float ElivaBoss::getStunnedTimer() const {
+	return stunnedTimer;
 }
