@@ -9,6 +9,7 @@
 #include "Zealot.h"
 #include "ElivaBoss.h"
 #include "FlameDamage.h"
+#include "ProjectileObject.h"
 #include "SquareBorderMesh.h"
 
 #include "random.h"
@@ -28,9 +29,12 @@ class DamageCollider : public ColliderObject {
 
 		std::string damageTag;
 
+		ParticleSystem* emitter;
+
 
 	public:
 		DamageCollider(LivingEntity* owner, int damage, float lifespan);
+		~DamageCollider();
 		virtual void update(std::list<DrawableObject*>& objectsList);
 		virtual void onCollisionEnter(Collider* collider);
 		virtual void onTriggerEnter(Collider* collider);
@@ -46,8 +50,11 @@ class DamageCollider : public ColliderObject {
 		void setCanDecreaseTime(bool value);
 		void setDamageTag(std::string tag);
 
+		void addEmitter(std::list<DrawableObject*>& objectsList);
+
 		LivingEntity* getOwner() const;
 		std::string getDamageTag() const;
+		ParticleSystem* getEmitter() const;
 
 		virtual void render(glm::mat4 globalModelTransform);
 		virtual void drawCollider();
@@ -63,11 +70,23 @@ DamageCollider<TargetEntityType>::DamageCollider(LivingEntity* owner, int damage
 	//this->setDrawCollider(true); // for debug
 	this->canDecreaseTimeRemaining = true;
 	damageTag = "";
+	emitter = nullptr;
+}
+
+template <class TargetEntityType>
+DamageCollider<TargetEntityType>::~DamageCollider() {
+	if (emitter != nullptr) {
+		//destroyObject(emitter); // Destroyed by the main loop, no need to call it here.
+	}
 }
 
 template <class TargetEntityType>
 void DamageCollider<TargetEntityType>::update(std::list<DrawableObject*>& objectsList) {
 	processCollider();
+
+	if (emitter != nullptr) {
+		emitter->update(objectsList);
+	}
 
 	if (followOwner) {
 		glm::vec3 pos = followOffset;
@@ -251,6 +270,33 @@ void DamageCollider<TargetEntityType>::onTriggerEnter(Collider* collider) { // f
 			}
 		}
 	}
+
+	PlayerObject* player = dynamic_cast<PlayerObject*>(this->getOwner());
+	if (player != NULL) {
+		ProjectileObject<PlayerObject>* projectile = dynamic_cast<ProjectileObject<PlayerObject>*>(collider->getObject());
+		if (projectile != NULL) {
+			GameEngine::getInstance()->pauseTimeForSeconds(0.1f); // hitstop
+			GameEngine::getInstance()->getRenderer()->getCamera()->startShake(0.2f);
+
+			float parryDirection = (player->getTransform().getPosition().x < projectile->getTransform().getPosition().x) ? -1.0f : 1.0f;
+			for (int i = 0; i < 5; i++) {
+				ParticleProperties particleProps = ParticleProperties(
+					projectile->getTransform().getPosition(),
+					20.0f * glm::vec2(parryDirection * Random::Float(), Random::Float()),
+					glm::vec2(-0.1f, 0.1f),
+					glm::vec3(0.0f, 0.0f, 0.0f),
+					0.2f, 0.1f, 0.05f, 1.0f
+				);
+				if (this->emitter != nullptr) {
+					this->getEmitter()->emit(particleProps);
+				}
+			}
+
+			player->signalSuccessfulParry();
+			projectile->disable();
+			return;
+		}
+	}
 }
 
 template <class TargetEntityType>
@@ -305,6 +351,14 @@ void DamageCollider<TargetEntityType>::setDamageTag(std::string tag) {
 	this->damageTag = tag;
 }
 
+template <class TargetEntityType>
+void DamageCollider<TargetEntityType>::addEmitter(std::list<DrawableObject*>& objectsList) {
+	if (emitter == nullptr) {
+		emitter = new ParticleSystem();
+		emitter->setName(owner->getName() + "DamageColliderEmitter");
+		objectsList.emplace_back(emitter);
+	}
+}
 
 template <class TargetEntityType>
 LivingEntity* DamageCollider<TargetEntityType>::getOwner() const {
@@ -317,9 +371,18 @@ std::string DamageCollider<TargetEntityType>::getDamageTag() const {
 }
 
 template <class TargetEntityType>
+ParticleSystem* DamageCollider<TargetEntityType>::getEmitter() const {
+	return emitter;
+}
+
+template <class TargetEntityType>
 void DamageCollider<TargetEntityType>::render(glm::mat4 globalModelTransform) {
 	if (collider == nullptr) {
 		return;
+	}
+
+	if (emitter != nullptr) {
+		emitter->render(globalModelTransform);
 	}
 
 	if (!canDrawCollider || !this->getIsActive()) {

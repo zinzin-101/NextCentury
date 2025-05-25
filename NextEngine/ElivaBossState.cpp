@@ -74,7 +74,7 @@ namespace StateTransition {
 			return false;
 		}
 
-		return true;
+		return boss->getCanUsePoisonCloud();
 	}
 
 	bool rifleShotToBayonetSlash(ElivaBoss* boss) {
@@ -148,7 +148,7 @@ namespace StateTransition {
 			return false;
 		}
 
-		return true;
+		return boss->getCanUsePoisonCloud();
 	}
 
 	bool serumInjectToFury(ElivaBoss* boss) {

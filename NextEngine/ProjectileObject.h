@@ -25,6 +25,7 @@ class ProjectileObject : public SimpleObject { // change later to TexturedObject
 		ProjectileObject(LivingEntity* owner, int damage, glm::vec3 position, glm::vec2 velocity, float lifespan);
 		void setDestroyOnDespawn(bool value);
 		void activate(glm::vec3 position, glm::vec2 velocity, float lifespan);
+		void disable();
 		virtual void update(std::list<DrawableObject*>& objectsList);
 		virtual void onCollisionEnter(Collider* collider);
 
@@ -150,6 +151,16 @@ void ProjectileObject<TargetEntity>::activate(glm::vec3 position, glm::vec2 velo
 
 	if (emitter != nullptr) {
 		emitter->clearParticles();
+	}
+}
+
+template <class TargetEntity>
+void ProjectileObject<TargetEntity>::disable() {
+	if (canDestroyOnDespawn) {
+		destroyObject(this);
+	}
+	else {
+		this->setActive(false);
 	}
 }
 

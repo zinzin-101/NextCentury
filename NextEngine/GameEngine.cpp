@@ -7,6 +7,7 @@ GameEngine::GameEngine() {
 
 	engineTimer = 0.0f;
 	isGamePaused = false;
+	prevTimeScale = 1.0f;
 }
 
 GameEngine * GameEngine::getInstance() {
@@ -53,7 +54,7 @@ void GameEngine::updateEngineComponent() {
 
 	if (engineTimer <= 0.0f && isGamePaused) {
 		isGamePaused = false;
-		time->setTimeScale(1.0f);
+		time->setTimeScale(prevTimeScale);
 	}
 }
 
@@ -120,6 +121,7 @@ void GameEngine::freezeGameForSeconds(float duration) {
 void GameEngine::pauseTimeForSeconds(float duration) {
 	engineTimer = duration;
 	isGamePaused = true;
+	prevTimeScale = time->getTimeScale();
 	time->setTimeScale(0.0f);
 }
 

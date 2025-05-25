@@ -25,6 +25,7 @@ class GameEngine {
 
 	float engineTimer;
 	bool isGamePaused;
+	float prevTimeScale;
 
 	GameEngine();
 public:
