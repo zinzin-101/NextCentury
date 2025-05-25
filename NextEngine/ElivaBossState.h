@@ -27,4 +27,5 @@ namespace StateTransition {
 	bool closeBlinkToBayonetSlash(ElivaBoss* boss);
 
 	bool stunnedToCooldown(ElivaBoss* boss);
+	bool stunnedToFuryCooldown(ElivaBoss* boss);
 }

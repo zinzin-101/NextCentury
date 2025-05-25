@@ -228,6 +228,16 @@ namespace StateTransition {
 			return false;
 		}
 
-		return true;
+		return boss->getCurrentPhase() != ElivaBoss::Phase::Third;
+	}
+
+	bool stunnedToFuryCooldown(ElivaBoss* boss) {
+		float stunnedTimer = boss->getStunnedTimer();
+
+		if (stunnedTimer > 0.0f) {
+			return false;
+		}
+
+		return boss->getCurrentPhase() == ElivaBoss::Phase::Third;
 	}
 }

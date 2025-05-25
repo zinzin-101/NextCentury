@@ -65,6 +65,7 @@ ElivaBoss::ElivaBoss(): EnemyObject(DefaultEnemyStat::ELIVA_INFO) {
 	states[BossState::CloseBlink].nextStateAndTransitionCheck[&states[BossState::FuryBayonetSlash]] = (&StateTransition::closeBlinkToBayonetSlash);
 
 	states[BossState::Stunned].nextStateAndTransitionCheck[&states[BossState::Cooldown]] = (&StateTransition::stunnedToCooldown);
+	states[BossState::Stunned].nextStateAndTransitionCheck[&states[BossState::FuryCooldown]] = (&StateTransition::stunnedToFuryCooldown);
 
 	states[BossState::FuryBayonetSlash].nextStateAndTransitionCheck[&states[BossState::FuryCooldown]] = (&StateTransition::bayonetSlashToCooldown);
 
@@ -208,6 +209,7 @@ void ElivaBoss::updateBehavior(list<DrawableObject*>& objectsList) {
 	}
 
 	std::cout << "current state: " << (int)currentState->currentState << std::endl;
+	std::cout << "current phase: " << (int)currentPhase << std::endl;
 	std::cout << "Health: " << this->getHealth() << std::endl;
 }
 
