@@ -16,10 +16,10 @@ namespace PlayerStat {
     constexpr float DURATION_TO_START_HEAVY_ATTACK = 0.3f;
     constexpr float DURATION_TO_START_CHARGED_BULLET = 0.5f;
 
-    constexpr float ATTACK_ANIMATION_TIME_PER_FRAME = 0.1f;
-    constexpr float PARRY_ANIMATION_TIME_PER_FRAME = 0.1f;
-    constexpr float CHARGE_ANIMATION_TIME_PER_FRAME = 0.1f;
-    constexpr float GUN_CHARGE_ANIMATION_TIME_PER_FRAME = 0.1f;
+    constexpr float ATTACK_ANIMATION_TIME_PER_FRAME = 0.08f;
+    constexpr float PARRY_ANIMATION_TIME_PER_FRAME = 0.08f;
+    constexpr float CHARGE_ANIMATION_TIME_PER_FRAME = 0.08f;
+    constexpr float GUN_CHARGE_ANIMATION_TIME_PER_FRAME = 0.08f;
 
     constexpr int COMBO_DAMAGE_1 = 10;
     constexpr int COMBO_DAMAGE_2 = 15;
