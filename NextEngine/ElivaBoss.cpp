@@ -242,7 +242,11 @@ void ElivaBoss::handleBlink() {
 		glm::vec3 playerPos = targetEntity->getTransform().getPosition();
 		glm::vec3 elivaPos = this->getTransform().getPosition();
 		float direction = Random::Float() < 0.5f ? -1.0f : 1.0f;
-		float offsetX = direction * (Random::Float() * ElivaStat::MAX_BLINK_DISTANCE_FROM_PLAYER);
+		float distance = Random::Float() * ElivaStat::MAX_BLINK_DISTANCE_FROM_PLAYER;
+		while (distance < ElivaStat::MIN_BLINK_DISTANCE_FOR_BAYONET_FROM_PLAYER) {
+			distance = Random::Float() * ElivaStat::MAX_BLINK_DISTANCE_FROM_PLAYER;
+		}
+		float offsetX = direction * distance;
 		glm::vec3 newPos = elivaPos;
 		newPos.x = playerPos.x + offsetX;
 		this->getTransform().setPosition(newPos);
@@ -277,7 +281,11 @@ void ElivaBoss::handleFuryBlink() {
 		glm::vec3 playerPos = targetEntity->getTransform().getPosition();
 		glm::vec3 elivaPos = this->getTransform().getPosition();
 		float direction = Random::Float() < 0.5f ? -1.0f : 1.0f;
-		float offsetX = direction * (Random::Float() * ElivaStat::MAX_BLINK_DISTANCE_FROM_PLAYER);
+		float distance = Random::Float() * ElivaStat::MAX_BLINK_DISTANCE_FROM_PLAYER;
+		while (distance < ElivaStat::MIN_BLINK_DISTANCE_FOR_RIFLE_SHOT_FROM_PLAYER) {
+			distance = Random::Float() * ElivaStat::MAX_BLINK_DISTANCE_FROM_PLAYER;
+		}
+		float offsetX = direction * distance;
 		glm::vec3 newPos = elivaPos;
 		newPos.x = playerPos.x + offsetX;
 		this->getTransform().setPosition(newPos);
@@ -312,7 +320,11 @@ void ElivaBoss::handleCloseBlink() {
 		glm::vec3 playerPos = targetEntity->getTransform().getPosition();
 		glm::vec3 elivaPos = this->getTransform().getPosition();
 		float direction = Random::Float() < 0.5f ? -1.0f : 1.0f;
-		float offsetX = direction * (Random::Float() * ElivaStat::BAYONET_SLASH_RANGE);
+		float distance = Random::Float() * ElivaStat::BAYONET_SLASH_RANGE;
+		while (distance < ElivaStat::MIN_BLINK_DISTANCE_FOR_BAYONET_FROM_PLAYER) {
+			distance = Random::Float() * ElivaStat::BAYONET_SLASH_RANGE;
+		}
+		float offsetX = direction * distance;
 		glm::vec3 newPos = elivaPos;
 		newPos.x = playerPos.x + offsetX;
 		this->getTransform().setPosition(newPos);

@@ -20,6 +20,8 @@ namespace ElivaStat {
 
 	constexpr float BAYONET_SLASH_RANGE = 2.0f;
 	constexpr float MAX_BLINK_DISTANCE_FROM_PLAYER = 6.0f;
+	constexpr float MIN_BLINK_DISTANCE_FOR_RIFLE_SHOT_FROM_PLAYER = 4.0f;
+	constexpr float MIN_BLINK_DISTANCE_FOR_BAYONET_FROM_PLAYER = 1.0f;
 
 	constexpr float STUNNED_DURATION = 1.5f;
 	constexpr float STAGGERED_DURATION = 0.5f;
