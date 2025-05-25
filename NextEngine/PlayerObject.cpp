@@ -573,7 +573,7 @@ void PlayerObject::endMeleeAttack() {
 }
 
 void PlayerObject::startHeavyAttack() {
-    if (isAttacking || isParrying || isDodging || isJumping || isHealing) {
+    if (isAttacking || isParrying || isDodging || isJumping || isHealing || isInRangeAttack) {
         return;
     }
 
