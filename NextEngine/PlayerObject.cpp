@@ -900,8 +900,12 @@ void PlayerObject::handleParryAttack() {
         return;
     }
 
-    if (currentFrame == parryFrame.allowNextComboFrame + 1 || (successfulParry && moveDirection.x != 0.0f)) {
+    if (currentFrame == parryFrame.allowNextComboFrame + 1) {
         endMeleeAttack();
+        return;
+    }
+
+    if (currentFrame == parryFrame.allowNextComboFrame + 2 || (successfulParry && moveDirection.x != 0.0f)) {
         this->setCanTakeDamage(true);
         attackCooldownRemaining = successfulParry ? 0.0f : PlayerStat::ATTACK_COOLDOWN;
 
