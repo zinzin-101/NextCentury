@@ -206,6 +206,7 @@ void PlayerObject::start(list<DrawableObject*>& objectsList) {
     attackHitbox->setFollowOwner(true);
     attackHitbox->setFollowOffset(glm::vec3(0.5f, 0.0f, 0));
     attackHitbox->getColliderComponent()->setWidth(1.5f);
+    attackHitbox->addEmitter(objectsList);
     objectsList.emplace_back(attackHitbox);
 
     this->getTransform().setScale(3.5f, 2.5f);
@@ -884,7 +885,6 @@ void PlayerObject::handleParryAttack() {
     int currentFrame = currentState.currentFrame;
 
     if (currentFrame == parryFrame.startAttackFrame) {
-        this->setCanTakeDamage(false);
         return;
     }
 
@@ -894,6 +894,9 @@ void PlayerObject::handleParryAttack() {
 
     if (currentFrame == parryFrame.startAttackFrame + 1) {
         startMeleeAttack();
+
+        this->setCanTakeDamage(false);
+
         return;
     }
 
@@ -951,6 +954,10 @@ DamageCollider<EnemyObject>* PlayerObject::getDamageCollider() const {
 
 void PlayerObject::signalSuccessfulParry() {
     successfulParry = true;
+    stamina += PlayerStat::STAMINA_GAIN_FROM_PARRY;
+    if (stamina > PlayerStat::MAX_STAMINA) {
+        stamina = PlayerStat::MAX_STAMINA;
+    }
 }
 
 void PlayerObject::takeDamage(int damage) {
