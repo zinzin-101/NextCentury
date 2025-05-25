@@ -8,14 +8,14 @@ namespace ElivaStat {
 	constexpr float FURY_COOLDOWN_DURATION = 0.5f;
 	constexpr float DAMAGE_REDUCTION_ARMOR_BUFF = 0.5f;
 
-	constexpr int MAX_HEALTH = 100;
+	constexpr int MAX_HEALTH = 200;
 	constexpr int HEALTH_TO_BEGIN_SERUM_INJECT = MAX_HEALTH * 0.6f;
 	constexpr int HEALTH_TO_BEGIN_FURY = MAX_HEALTH * 0.25f;
 
 	constexpr int BAYONET_DAMAGE = 15;
 
 	constexpr int RIFLE_SHOT_DAMAGE = 18;
-	constexpr float RIFLE_SHOT_SPEED = 8.0f;
+	constexpr float RIFLE_SHOT_SPEED = 10.0f;
 	constexpr float RIFLE_SHOT_LIFESPAN = 10.0f;
 
 	constexpr float BAYONET_SLASH_RANGE = 2.0f;
@@ -80,6 +80,7 @@ class ElivaBoss : public EnemyObject {
 		virtual void onCollisionStay(Collider* collider);
 
 		virtual void takeDamage(int damage);
+		virtual void onDeath(list<DrawableObject*>& objectsList);
 
 		void breakShield();
 		void signalStun();
@@ -91,6 +92,7 @@ class ElivaBoss : public EnemyObject {
 		bool isShieldActivated() const;
 		bool hasFuryBeenActivated() const;
 		float getStunnedTimer() const;
+		bool getCanUsePoisonCloud() const;
 
 		ElivaBoss();
 		~ElivaBoss();
@@ -100,7 +102,10 @@ class ElivaBoss : public EnemyObject {
 		State* currentState;
 		Phase currentPhase;
 
-		ProjectileObject<PlayerObject>* rifleProjectile;
+		ProjectileObject<PlayerObject>* rifleProjectiles[3];
+		unsigned int currentProjectileIndex;
+		bool hasRifleBeenFired;
+
 		DamageCollider<PlayerObject>* bayonetCollider;
 		PoisonCloudCollider* poisonCollider;
 
@@ -112,6 +117,10 @@ class ElivaBoss : public EnemyObject {
 		float stunnedTimer;
 
 		bool hasShield;
+
+		bool isDead;
+
+		bool canUsePoisonCloud;
 
 		void processState();
 		void (ElivaBoss::*statesHandler[14])();

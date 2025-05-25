@@ -6,13 +6,23 @@
 #include <vector>
 
 ElivaBoss::ElivaBoss(): EnemyObject(DefaultEnemyStat::ELIVA_INFO) {
+	this->setMaxHealth(ElivaStat::MAX_HEALTH);
+	this->setHealth(ElivaStat::MAX_HEALTH);
+
 	cooldownTimer = ElivaStat::COOLDOWN_DURATION;
 	stunnedTimer = 0.0f;
 	hasShield = false;
 	isFuryUsed = false;
 	canBlink = false;
+	isDead = false;
+	canUsePoisonCloud = true;
 
-	rifleProjectile = nullptr;
+	for (int i = 0; i < 3; i++) {
+		rifleProjectiles[i] = nullptr;
+	}
+	currentProjectileIndex = 0;
+	hasRifleBeenFired = false;
+
 	bayonetCollider = nullptr;
 	poisonCollider = nullptr;
 
@@ -44,10 +54,7 @@ ElivaBoss::ElivaBoss(): EnemyObject(DefaultEnemyStat::ELIVA_INFO) {
 
 	states[BossState::BayonetSlash].nextStateAndTransitionCheck[&states[BossState::Cooldown]] = (&StateTransition::bayonetSlashToCooldown);
 
-	states[BossState::SerumInject].nextStateAndTransitionCheck[&states[BossState::RifleShot]] = (&StateTransition::serumInjectToRifleShot);
-	states[BossState::SerumInject].nextStateAndTransitionCheck[&states[BossState::BayonetSlash]] = (&StateTransition::serumInjectToBayonetSlash);
 	states[BossState::SerumInject].nextStateAndTransitionCheck[&states[BossState::PoisonCloud]] = (&StateTransition::serumInjectToPoisonCloud);
-	states[BossState::SerumInject].nextStateAndTransitionCheck[&states[BossState::Fury]] = (&StateTransition::serumInjectToFury);
 
 	states[BossState::PoisonCloud].nextStateAndTransitionCheck[&states[BossState::BayonetSlash]] = (&StateTransition::poisonCloudToBayonetSlash);
 	states[BossState::PoisonCloud].nextStateAndTransitionCheck[&states[BossState::Cooldown]] = (&StateTransition::bayonetSlashToCooldown);
@@ -97,46 +104,49 @@ void ElivaBoss::start(list<DrawableObject*>& objectsList) {
 	getAnimationComponent()->addState("Parried", 8, 0, 2, true, ElivaStat::PARRIED_TIME_PER_FRAME);
 	getAnimationComponent()->addState("PoisonCloud", 6, 0, 21, false, ElivaStat::POISON_CLOUD_TIME_PER_FRAME);
 	getAnimationComponent()->addState("SerumInject", 7, 0, 21, false, ElivaStat::SERUM_INJECT_TIME_PER_FRAME);
-	getAnimationComponent()->addState("RapidBurst", 3, 2, 5, false, ElivaStat::RAPID_BURST_TIME_PER_FRAME); // placeholder
+	getAnimationComponent()->addState("RapidBurst", 5, 0, 13, false, ElivaStat::RAPID_BURST_TIME_PER_FRAME);
 	getAnimationComponent()->addState("Dead", 10, 0, 9, false, ElivaStat::DEAD_TIME_PER_FRAME);
 
-
-	rifleProjectile = new ProjectileObject<PlayerObject>(this, ElivaStat::RIFLE_SHOT_DAMAGE, this->getTransform().getPosition(), glm::vec2(), ElivaStat::RIFLE_SHOT_LIFESPAN);
-	rifleProjectile->setName("RifleProjectile");
-	rifleProjectile->setDestroyOnDespawn(false);
-	rifleProjectile->getParticleEmitter()->update(objectsList);
-	rifleProjectile->setActive(false);
-	rifleProjectile->setDrawCollider(true); // debug
-	objectsList.emplace_back(rifleProjectile);
+	for (int i = 0; i < 3; i++) {
+		rifleProjectiles[i] = new ProjectileObject<PlayerObject>(this, ElivaStat::RIFLE_SHOT_DAMAGE, this->getTransform().getPosition(), glm::vec2(), ElivaStat::RIFLE_SHOT_LIFESPAN);
+		rifleProjectiles[i]->setName(std::string("RifleProjectile") + std::to_string(i));
+		rifleProjectiles[i]->setDestroyOnDespawn(false);
+		rifleProjectiles[i]->getParticleEmitter()->update(objectsList);
+		rifleProjectiles[i]->setActive(false);
+		rifleProjectiles[i]->setDrawCollider(true); // debug
+		objectsList.emplace_back(rifleProjectiles[i]);
+	}
 
 	bayonetCollider = new DamageCollider<PlayerObject>(this, ElivaStat::BAYONET_DAMAGE, -1);
 	bayonetCollider->setActive(false);
 	bayonetCollider->setFollowOwner(true);
-	bayonetCollider->setFollowOffset(glm::vec3(-1.0f, 0.0f, 0));
-	bayonetCollider->getColliderComponent()->setWidth(2.0f);
+	bayonetCollider->setFollowOffset(glm::vec3(-1.0f, -1.0f, 0));
+	bayonetCollider->getColliderComponent()->setDimension(2.0f, 2.0f);
 	bayonetCollider->setDrawCollider(true); // debug
 	objectsList.emplace_back(bayonetCollider);
 
 	poisonCollider = new PoisonCloudCollider(this);
 	poisonCollider->setActive(false);
 	poisonCollider->setFollowOwner(true);
-	poisonCollider->setFollowOffset(glm::vec3(0.0f, 0.0f, 0.0f));
-	poisonCollider->getColliderComponent()->setWidth(1.5f);
+	poisonCollider->setFollowOffset(glm::vec3(0.0f, -1.0f, 0.0f));
+	poisonCollider->getColliderComponent()->setWidth(2.0f);
 	poisonCollider->setDrawCollider(true); // debug
 	objectsList.emplace_back(poisonCollider);
 
-	this->getTransform().setScale(4, 3);
+	this->getTransform().setScale(5.0f, 3.75f);
 	this->getColliderComponent()->setHeight(0.5f);
 	this->getColliderComponent()->getTransform().setScale(0.5f, 1.0f);
-	this->getColliderComponent()->getTransform().setPosition(0.0f, -0.7f);
+	this->getColliderComponent()->getTransform().setPosition(0.0f, -0.925f);
 	this->setDrawCollider(true);
 
 	targetEntity = EnemyObject::findPlayer(objectsList);
 }
 
 ElivaBoss::~ElivaBoss() {
-	if (rifleProjectile != nullptr) {
-		destroyObject(rifleProjectile);
+	for (int i = 0; i < 3; i++) {
+		if (rifleProjectiles[i] != nullptr) {
+			destroyObject(rifleProjectiles[i]);
+		}
 	}
 
 	if (bayonetCollider != nullptr) {
@@ -327,20 +337,26 @@ void ElivaBoss::handleRifleShot() {
 		glm::vec3 elivaPos = this->getTransform().getPosition();
 		float offsetX = playerPos.x - elivaPos.x;
 		isFacingRight = offsetX < 0.0f;
+		hasRifleBeenFired = false;
 		return;
 	}
 
 	int currentFrame = animState.currentFrame;
 
-	if (currentFrame == 6 + 1) {
+	if (currentFrame == 6 + 1 && !hasRifleBeenFired) {
+		hasRifleBeenFired = true;
+
 		glm::vec3 playerPos = targetEntity->getTransform().getPosition();
 		glm::vec3 elivaPos = this->getTransform().getPosition();
 		float offsetX = playerPos.x - elivaPos.x;
 		float direction = isFacingRight ? -1.0f : 1.0f;
 		glm::vec2 bulletVelocity = glm::vec2(direction * ElivaStat::RIFLE_SHOT_SPEED, 0);
 		glm::vec3 spawnPos = elivaPos;
-		spawnPos.x + (direction * 0.5f); // horizontal offset, tweak later
-		rifleProjectile->activate(spawnPos, bulletVelocity, ElivaStat::RIFLE_SHOT_LIFESPAN);
+		spawnPos.x += (direction * 0.5f); // horizontal offset, tweak later
+		spawnPos.y -= 0.5f; // vertical offset, tweak later
+		rifleProjectiles[++currentProjectileIndex % 3]->activate(spawnPos, bulletVelocity, ElivaStat::RIFLE_SHOT_LIFESPAN);
+
+		canUsePoisonCloud = true;
 
 		return;
 	}
@@ -370,6 +386,8 @@ void ElivaBoss::handleBayonetSlash() {
 	if (currentFrame == 5 + 1) {
 		bayonetCollider->setActive(false);
 
+		canUsePoisonCloud = true;
+
 		return;
 	}
 }
@@ -382,6 +400,7 @@ void ElivaBoss::handlePoisonCloud() {
 
 	if (currentFrame == 9 + 1) {
 		poisonCollider->setActive(true);
+		canUsePoisonCloud = false;
 		return;
 	}
 
@@ -392,8 +411,75 @@ void ElivaBoss::handlePoisonCloud() {
 }
 
 void ElivaBoss::handleRapidBurst() {
-	this->getAnimationComponent()->setState("RapidBurst");
-	std::cout << "in rapid burst" << std::endl;
+	const Animation::State& animState = this->getAnimationComponent()->getCurrentAnimationStateRef();
+
+	if (animState.name != "RapidBurst") {
+		this->getAnimationComponent()->setState("RapidBurst");
+		glm::vec3 playerPos = targetEntity->getTransform().getPosition();
+		glm::vec3 elivaPos = this->getTransform().getPosition();
+		float offsetX = playerPos.x - elivaPos.x;
+		isFacingRight = offsetX < 0.0f;
+		hasRifleBeenFired = false;
+		return;
+	}
+
+	int currentFrame = animState.currentFrame;
+
+	if (currentFrame == 4 + 1 && !hasRifleBeenFired) {
+		hasRifleBeenFired = true;
+
+		glm::vec3 playerPos = targetEntity->getTransform().getPosition();
+		glm::vec3 elivaPos = this->getTransform().getPosition();
+		float offsetX = playerPos.x - elivaPos.x;
+		float direction = isFacingRight ? -1.0f : 1.0f;
+		glm::vec2 bulletVelocity = glm::vec2(direction * ElivaStat::RIFLE_SHOT_SPEED, 0);
+		glm::vec3 spawnPos = elivaPos;
+		spawnPos.x += (direction * 0.5f); // horizontal offset, tweak later
+		spawnPos.y -= 0.5f; // vertical offset, tweak later
+		rifleProjectiles[++currentProjectileIndex % 3]->activate(spawnPos, bulletVelocity, ElivaStat::RIFLE_SHOT_LIFESPAN);
+
+		return;
+	}
+
+	if (currentFrame == 5 + 1) {
+		hasRifleBeenFired = false;
+	}
+
+	if (currentFrame == 7 + 1 && !hasRifleBeenFired) {
+		hasRifleBeenFired = true;
+
+		glm::vec3 playerPos = targetEntity->getTransform().getPosition();
+		glm::vec3 elivaPos = this->getTransform().getPosition();
+		float offsetX = playerPos.x - elivaPos.x;
+		float direction = isFacingRight ? -1.0f : 1.0f;
+		glm::vec2 bulletVelocity = glm::vec2(direction * ElivaStat::RIFLE_SHOT_SPEED, 0);
+		glm::vec3 spawnPos = elivaPos;
+		spawnPos.x += (direction * 0.5f); // horizontal offset, tweak later
+		spawnPos.y -= 0.5f; // vertical offset, tweak later
+		rifleProjectiles[++currentProjectileIndex % 3]->activate(spawnPos, bulletVelocity, ElivaStat::RIFLE_SHOT_LIFESPAN);
+
+		return;
+	}
+
+	if (currentFrame == 8 + 1) {
+		hasRifleBeenFired = false;
+	}
+
+	if (currentFrame == 10 + 1 && !hasRifleBeenFired) {
+		hasRifleBeenFired = true;
+
+		glm::vec3 playerPos = targetEntity->getTransform().getPosition();
+		glm::vec3 elivaPos = this->getTransform().getPosition();
+		float offsetX = playerPos.x - elivaPos.x;
+		float direction = isFacingRight ? -1.0f : 1.0f;
+		glm::vec2 bulletVelocity = glm::vec2(direction * ElivaStat::RIFLE_SHOT_SPEED, 0);
+		glm::vec3 spawnPos = elivaPos;
+		spawnPos.x += (direction * 0.5f); // horizontal offset, tweak later
+		spawnPos.y -= 0.5f; // vertical offset, tweak later
+		rifleProjectiles[++currentProjectileIndex % 3]->activate(spawnPos, bulletVelocity, ElivaStat::RIFLE_SHOT_LIFESPAN);
+
+		return;
+	}
 }
 
 void ElivaBoss::handleSerumInject() {
@@ -482,10 +568,13 @@ void ElivaBoss::handleFuryCooldown(){
 void ElivaBoss::handleDead() {
 	this->getAnimationComponent()->setState("Dead");
 
+	GameEngine::getInstance()->getTime()->setTimeScale(0.5f);
+
 	const Animation::State& animState = this->getAnimationComponent()->getCurrentAnimationStateRef();
 	
 	if (!animState.isPlaying) {
 		this->setHealth(0);
+		GameEngine::getInstance()->getTime()->setTimeScale(1.0f);
 	}
 }
 
@@ -494,10 +583,52 @@ void ElivaBoss::postUpdateBehavior() {}
 void ElivaBoss::onCollisionStay(Collider* collider) {}
 
 void ElivaBoss::takeDamage(int damage) {
-	if (this->getHealth() - damage <= 0) {
+	if (this->getHealth() - damage <= 0 && !isDead) {
+		isDead = true;
+
 		this->setHealth(1);
 		this->setCanTakeDamage(false);
 		currentState = &states[BossState::Dead];
+
+		GameEngine::getInstance()->pauseTimeForSeconds(0.125f);
+		//GameEngine::getInstance()->freezeGameForSeconds(0.125f);
+
+		float direction = (targetEntity->getTransform().getPosition().x < this->getTransform().getPosition().x) ? 1.0f : -1.0f;
+
+		for (int i = 0; i < 8; i++) {
+			float angle = (static_cast<float>(i) / 8.0f) * 2.0f * glm::pi<float>();
+			glm::vec2 vel1(
+				direction * (15.0f * Random::Float() + 35.0f),
+				glm::sin(angle) * 50.0f
+			);
+
+			glm::vec2 vel2(
+				direction * (15.0f * Random::Float() + 25.0f),
+				glm::sin(angle) * 40.0f
+			);
+
+			ParticleProperties p1 = ParticleProperties(
+				this->getTransform().getPosition(),
+				vel1,
+				glm::vec2(-2.5f, 2.5f),
+				glm::vec3(0.863f, 0.078f, 0.235f),
+				glm::vec3(0.733f, 0.039f, 0.118f),
+				0.3f, 0.2f, 0.15f, true, 1.0f, true
+			);
+
+			ParticleProperties p2 = ParticleProperties(
+				this->getTransform().getPosition(),
+				vel2,
+				glm::vec2(-2.5f, 2.5f),
+				glm::vec3(0.863f, 0.078f, 0.235f),
+				glm::vec3(0.733f, 0.039f, 0.118f),
+				0.3f, 0.2f, 0.15f, true, 1.0f, true
+			);
+
+			this->emitter->emit(p1);
+			this->emitter->emit(p2);
+		}
+
 		return;
 	}
 
@@ -509,12 +640,14 @@ void ElivaBoss::takeDamage(int damage) {
 	LivingEntity::takeDamage(static_cast<int>(damage));
 }
 
+void ElivaBoss::onDeath(list<DrawableObject*>& objectsList) {}
+
 void ElivaBoss::breakShield() {
 	if (hasShield) {
-		for (int i = 0; i < 5; i++) {
+		for (int i = 0; i < 10; i++) {
 			ParticleProperties particleProps = ParticleProperties(
 				this->getTransform().getPosition(),
-				glm::vec2(5.0f * Random::Float() - 2.5f, 1.0f * Random::Float() + 1.0f),
+				glm::vec2(10.0f * Random::Float() - 5.0f, 5.0f * Random::Float() + 20.0f),
 				glm::vec2(-0.5f, 0.5f),
 				glm::vec3(0.0f, 1.0f, 0.0f),
 				0.15f, 0.1f, 0.05f
@@ -571,4 +704,8 @@ bool ElivaBoss::hasFuryBeenActivated() const{
 
 float ElivaBoss::getStunnedTimer() const {
 	return stunnedTimer;
+}
+
+bool ElivaBoss::getCanUsePoisonCloud() const {
+	return canUsePoisonCloud;
 }
