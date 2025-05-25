@@ -134,6 +134,10 @@ void LevelAct3::levelInit() {
 
     //UIobject->initUI(objectsList);
 
+    fb = new FadeBlack(1.0f);
+    objectsList.emplace_back(fb);
+    fb->FadeToTransparent();
+
     GameEngine::getInstance()->getRenderer()->getCamera()->setOffset(glm::vec3(0.0f, -0.5f, 0.0f));
     GameEngine::getInstance()->getRenderer()->setToggleViewport(true);
 
@@ -148,6 +152,20 @@ void LevelAct3::levelUpdate() {
     magicPistol->update(objectsList);
     duoBlade->update(objectsList);
     //GameEngine::getInstance()->getRenderer()->updateCamera();
+
+    if(done->getDialogueObject()->isEnd){
+        if (!end) {
+            fb->FadeToBlack();
+            end = true;
+        }
+    }
+
+    if (end) {
+        fadetime -= GameEngine::getInstance()->getTime()->getDeltaTime();
+        if (fadetime < 0.0f) {
+            GameEngine::getInstance()->getStateController()->gameStateNext = (GameState)((GameEngine::getInstance()->getStateController()->gameStateCurr + 1) % 9);
+        }
+    }
 
     // Placeholder death logic
     for (std::list<DrawableObject*>::iterator itr = objectsList.begin(); itr != objectsList.end(); ++itr) {

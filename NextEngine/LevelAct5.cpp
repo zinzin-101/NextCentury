@@ -137,6 +137,10 @@ void LevelAct5::levelInit() {
 
     //UIobject->initUI(objectsList);
 
+    fb = new FadeBlack(1.0f);
+    objectsList.emplace_back(fb);
+    fb->FadeToTransparent();
+
     GameEngine::getInstance()->getRenderer()->getCamera()->setDeadLimitBool(true);
     GameEngine::getInstance()->getRenderer()->getCamera()->setDeadLimitMinMax(-5.0f, 40.75f);
 
@@ -170,6 +174,17 @@ void LevelAct5::levelUpdate() {
             else {
                 immigrats2->runChat(objectsList);
             }
+        }
+    }
+
+    if (player->getTransform().getPosition().x > 17.5f) {
+        if (!end) {
+            fb->FadeToBlack();
+            end = true;
+        }
+        timefade -= GameEngine::getInstance()->getTime()->getDeltaTime();
+        if (timefade < 0.0f) {
+            NextLevel();
         }
     }
 

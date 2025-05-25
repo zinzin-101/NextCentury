@@ -7,7 +7,7 @@ FadeBlack::FadeBlack(float time) {
 	this->setRenderOpacity(targetOpacity);
 	this->setColor(0.0f, 0.0f, 0.0f);
 	this->setRenderOrder(3);
-	this->getTransform().setScale(16.0f, 9.0f);
+	this->getTransform().setScale(18.0f, 11.0f);
 }
 
 void FadeBlack::FadeToBlack() {
@@ -25,7 +25,7 @@ void FadeBlack::FadeToTransparent() {
 void FadeBlack::update(list<DrawableObject*>& objectsList) {
 	this->getTransform().setPosition(GameEngine::getInstance()->getRenderer()->getCamera()->getPosition());
 
-	float deltaTime = GameEngine::getInstance()->getTime()->getDeltaTime();
+	float deltaTime = GameEngine::getInstance()->getTime()->getDeltaTimeRealTime();
 	if (fadingIn) {
 		elapsedTime += deltaTime;
 		float t = std::min(elapsedTime / timeToFade, 1.0f);

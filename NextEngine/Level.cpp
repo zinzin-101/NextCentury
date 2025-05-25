@@ -905,3 +905,7 @@ void Level::removeLoadingScreen(std::list<DrawableObject*>& objectsList) {
 void Level::LoadContent() {
 
 }
+
+void Level::NextLevel() {
+    GameEngine::getInstance()->getStateController()->gameStateNext = (GameState)((GameEngine::getInstance()->getStateController()->gameStateCurr + 1) % 9);
+}

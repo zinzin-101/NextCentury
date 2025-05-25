@@ -49,6 +49,7 @@ public:
     virtual void levelDraw();
     virtual void levelFree();
     virtual void levelUnload();
+    void NextLevel();
 
     virtual void handleKey(char key);
     virtual void handleKey(InputManager& input);

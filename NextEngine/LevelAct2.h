@@ -12,6 +12,9 @@ private:
     ParallaxObject* doorKeepTrack;
     ProtagThoughts* start;
     InteractableObject* door;
+    FadeBlack* fb;
+    float timefade = 1.0f;
+    bool end = false;
 
 public:
     virtual void levelLoad();

@@ -20,6 +20,9 @@ private:
     GotItemText* fakePassport;
     GotItemText* magicPistol;
     GotItemText* duoBlade;
+    FadeBlack* fb;
+    float fadetime = 1.0f;
+    bool end = false;
 
 public:
     virtual void levelLoad();

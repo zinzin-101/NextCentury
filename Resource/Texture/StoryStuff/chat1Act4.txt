@@ -1,6 +1,6 @@
 Cultist
 0
 0
-4.0
+4.2
 YOU! You have magic!!
 NEXTCHAT

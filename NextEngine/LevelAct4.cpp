@@ -118,6 +118,10 @@ void LevelAct4::levelInit() {
 
     //UIobject->initUI(objectsList);
 
+    fb = new FadeBlack(1.0f);
+    objectsList.emplace_back(fb);
+    fb->FadeToTransparent();
+
     GameEngine::getInstance()->getRenderer()->getCamera()->setOffset(glm::vec3(0.0f, -0.5f, 0.0f));
     GameEngine::getInstance()->getRenderer()->setToggleViewport(true);
 
@@ -135,7 +139,17 @@ void LevelAct4::levelUpdate() {
     else {
         GameEngine::getInstance()->getTime()->setTimeScale(1);
     }
-
+    if (player->getTransform().getPosition().x > 11.5f && enemyDeadCount == 1) {
+        if (!end) {
+            fb->FadeToBlack();
+            end = true;
+        }
+        timefade -= GameEngine::getInstance()->getTime()->getDeltaTime();
+        if (timefade < 0.0f) {
+            cout << "heh" << endl;
+            NextLevel();
+        }
+    }
     // at the very start of the game freeze everything and chatEnemy is "YOU HAVE MAGIC" THEN fight...
 
     // Placeholder death logic
@@ -143,6 +157,7 @@ void LevelAct4::levelUpdate() {
         EnemyObject* enemy = dynamic_cast<EnemyObject*>(*itr);
         if (enemy != NULL) {
             if (enemy->getHealth() <= 0) {
+                enemyDeadCount++;
                 DrawableObject::destroyObject(enemy);
             }
         }

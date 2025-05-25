@@ -14,6 +14,9 @@ private:
     ProtagThoughts* eToPermit;
     ChatBubble* immigrats2;
     bool isStop;
+    FadeBlack* fb;
+    bool end = false;
+    float timefade = 1.0f;
 
 public:
     virtual void levelLoad();

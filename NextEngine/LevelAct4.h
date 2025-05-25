@@ -10,6 +10,10 @@ private:
     PlayerObject* player = nullptr;
     IngameUI* UIobject;
     ChatBubble* chat1;
+    FadeBlack* fb;
+    bool end = false;
+    float timefade = 1.0f;
+    int enemyDeadCount = 0;
 
 public:
     virtual void levelLoad();

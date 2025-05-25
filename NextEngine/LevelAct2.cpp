@@ -93,6 +93,10 @@ void LevelAct2::levelInit() {
     start = new ProtagThoughts("../Resource/Texture/StoryStuff/ProtagThoughtsAct2/start.txt", player);
     objectsList.emplace_back(start);
 
+    fb = new FadeBlack(1.0f);
+    objectsList.emplace_back(fb);
+    fb->FadeToTransparent();
+
     GameEngine::getInstance()->getRenderer()->getCamera()->setDeadLimitBool(true);
     GameEngine::getInstance()->getRenderer()->getCamera()->setDeadLimitMinMax(-5.0f, 37.5f);
 
@@ -110,6 +114,13 @@ void LevelAct2::levelUpdate() {
     door->getTransform().setPosition(glm::vec3(34.01f + doorKeepTrack->getTransform().getPosition().x, -1.82f, 0.0f));
     if (player->getTransform().getPosition().x > -3.0f) {
         start->activateDialogue();
+    }
+
+    if (end) {
+        timefade -= GameEngine::getInstance()->getTime()->getDeltaTime();
+        if (timefade < 0.0f) {
+            GameEngine::getInstance()->getStateController()->gameStateNext = (GameState)((GameEngine::getInstance()->getStateController()->gameStateCurr + 1) % 9);
+        }
     }
 
     // Placeholder death logic
@@ -235,6 +246,8 @@ void LevelAct2::handleKey(InputManager& input) {
         if (door->getIsClickable()) {
             //sfx
             //transition
+            fb->FadeToBlack();
+            end = true;
         }
     }
 }
