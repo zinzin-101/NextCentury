@@ -38,5 +38,5 @@ void FadeBlack::update(list<DrawableObject*>& objectsList) {
 		this->setRenderOpacity(1.0f - t);
 		if (t >= 1.0f) fadingOut = false;
 	}
-	cout << this->getRenderOpacity() << endl;
+	//cout << this->getRenderOpacity() << endl;
 }

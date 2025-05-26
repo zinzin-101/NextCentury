@@ -146,7 +146,6 @@ void LevelAct4::levelUpdate() {
         }
         timefade -= GameEngine::getInstance()->getTime()->getDeltaTime();
         if (timefade < 0.0f) {
-            cout << "heh" << endl;
             NextLevel();
         }
     }

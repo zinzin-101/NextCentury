@@ -51,7 +51,9 @@ ChatBubble::ChatBubble(string fileName, PlayerObject* player, vector<glm::vec3> 
 			c.talkerIndex = stoi(myText);
 
 			getline(meFile, myText);
+
 			c.isFlip = stoi(myText); // 0 or 1
+			//cout << myText << " : " << c.isFlip;
 
 			getline(meFile, myText);
 			timeAppearEachChat.push(stof(myText));
@@ -134,7 +136,10 @@ void ChatBubble::setCurrentChatPos(glm::vec3 pos) {
 	else {
 		j = 1;
 	}
-	bubble->getTransform().setPosition(glm::vec3(pos.x + offsetX, pos.y * j, pos.z));
+	if (bubble->getTransform().getScale().x > 0.0f) {
+		bubble->getTransform().setScale(glm::vec3(bubble->getTransform().getScale().x * j, bubble->getTransform().getScale().y, 0.0f));
+	}
+	bubble->getTransform().setPosition(glm::vec3(pos.x + offsetX, pos.y, pos.z));
 	chats.front().titleText->getTransform().setPosition(glm::vec3(bubble->getTransform().getPosition().x, bubble->getTransform().getPosition().y + 0.6f, 0.0f));
 }
 
