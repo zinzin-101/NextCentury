@@ -362,6 +362,7 @@ void PlayerObject::lateUpdateBehavior() {
     }
 
     cumulativeDamagePerFrame = 0;
+    successfulParry = false;
 }
 
 void PlayerObject::normalAttack() {
