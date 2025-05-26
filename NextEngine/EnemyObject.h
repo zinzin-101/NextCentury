@@ -50,6 +50,7 @@ class EnemyObject : public LivingEntity {
 
         bool isAttacking;
         int attackFrameStart;
+        int attackFrameActivate;
         int attackFrameEnd;
 
         float stunnedTime;

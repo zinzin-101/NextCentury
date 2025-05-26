@@ -18,6 +18,7 @@ class Zealot : public EnemyObject {
 		AttackVariation currentAttack = Variation1;
 
 		void startAttack();
+		void attack();
 		void endAttack();
 
 	public:

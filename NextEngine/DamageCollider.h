@@ -19,6 +19,7 @@ class DamageCollider : public ColliderObject {
 	private:
 		float lifespan;
 		int damage;
+		bool canDamage;
 		LivingEntity* owner;
 
 		float timeRemaining;
@@ -37,7 +38,9 @@ class DamageCollider : public ColliderObject {
 		~DamageCollider();
 		virtual void update(std::list<DrawableObject*>& objectsList);
 		virtual void onCollisionEnter(Collider* collider);
+		virtual void onCollisionStay(Collider* collider);
 		virtual void onTriggerEnter(Collider* collider);
+		virtual void onTriggerStay(Collider* collider);
 
 		void trigger(glm::vec3 pos);
 		void trigger(glm::vec3 pos, glm::vec3 offset);
@@ -49,6 +52,7 @@ class DamageCollider : public ColliderObject {
 		void setFollowOffset(glm::vec3 offset);
 		void setCanDecreaseTime(bool value);
 		void setDamageTag(std::string tag);
+		void setCanDamage(bool value);
 
 		void addEmitter(std::list<DrawableObject*>& objectsList);
 
@@ -71,6 +75,7 @@ DamageCollider<TargetEntityType>::DamageCollider(LivingEntity* owner, int damage
 	this->canDecreaseTimeRemaining = true;
 	damageTag = "";
 	emitter = nullptr;
+	canDamage = true;
 }
 
 template <class TargetEntityType>
@@ -112,6 +117,10 @@ void DamageCollider<TargetEntityType>::update(std::list<DrawableObject*>& object
 
 template <class TargetEntityType>
 void DamageCollider<TargetEntityType>::onCollisionEnter(Collider* collider) {
+	if (!canDamage) {
+		return;
+	}
+
 	DrawableObject* obj = collider->getObject();
 	//EnemyObject* entity = dynamic_cast<EnemyObject*>(obj);
 	TargetEntityType* entity = dynamic_cast<TargetEntityType*>(obj);
@@ -203,14 +212,38 @@ void DamageCollider<TargetEntityType>::onCollisionEnter(Collider* collider) {
 }
 
 template <class TargetEntityType>
+void DamageCollider<TargetEntityType>::onCollisionStay(Collider* collider) {
+	if (canDamage) {
+		DrawableObject* obj = collider->getObject();
+		TargetEntityType* entity = dynamic_cast<TargetEntityType*>(obj);
+		
+		if (entity == NULL) {
+			return;
+		}
+		
+		entity->takeDamage(damage);
+
+		PlayerObject* player = dynamic_cast<PlayerObject*>(obj);
+		if (player != NULL && !player->getIsParrying() && player->getCanTakeDamage()) {
+			canDamage = false;
+			player->flinch(PlayerStat::FLINCH_TIME);
+			return;
+		}
+	}
+}
+
+template <class TargetEntityType>
 void DamageCollider<TargetEntityType>::onTriggerEnter(Collider* collider) { // for handling parrying from player
+	if (!canDamage) {
+		return;
+	}
 	DrawableObject* obj = collider->getObject();
 	DamageCollider<EnemyObject>* playerDamageCollider = dynamic_cast<DamageCollider<EnemyObject>*>(obj);
 
 	if (playerDamageCollider != NULL) {
 		PlayerObject* player = dynamic_cast<PlayerObject*>(playerDamageCollider->getOwner());
 		if (player != NULL) {
-			if (player->getIsParrying()) {
+			if (player->getIsParrying() && !this->canDamage) {
 				//std::cout << owner->getName() << " got parried" << std::endl;
 				GameEngine::getInstance()->getRenderer()->getCamera()->startShake(0.3f);
 				EnemyObject* enemyObj = dynamic_cast<EnemyObject*>(this->getOwner());
@@ -222,6 +255,7 @@ void DamageCollider<TargetEntityType>::onTriggerEnter(Collider* collider) { // f
 					}
 					else {
 						enemyObj->setCurrentState(EnemyObject::STUNNED);
+						this->canDamage = false;
 					}
 
 					float parryDirection = (player->getTransform().getPosition().x < enemyObj->getTransform().getPosition().x) ? 1.0f : -1.0f;
@@ -300,6 +334,53 @@ void DamageCollider<TargetEntityType>::onTriggerEnter(Collider* collider) { // f
 }
 
 template <class TargetEntityType>
+void DamageCollider<TargetEntityType>::onTriggerStay(Collider* collider) {
+	DrawableObject* obj = collider->getObject();
+	DamageCollider<EnemyObject>* playerDamageCollider = dynamic_cast<DamageCollider<EnemyObject>*>(obj);
+
+	if (playerDamageCollider != NULL) {
+		PlayerObject* player = dynamic_cast<PlayerObject*>(playerDamageCollider->getOwner());
+		if (player != NULL) {
+			if (player->getIsParrying() && !this->canDamage) {
+				//std::cout << owner->getName() << " got parried" << std::endl;
+				GameEngine::getInstance()->getRenderer()->getCamera()->startShake(0.3f);
+				EnemyObject* enemyObj = dynamic_cast<EnemyObject*>(this->getOwner());
+
+				if (enemyObj != NULL) {
+					ElivaBoss* boss = dynamic_cast<ElivaBoss*>(enemyObj);
+					if (boss != NULL) {
+						boss->signalStun();
+					}
+					else {
+						enemyObj->setCurrentState(EnemyObject::STUNNED);
+						this->canDamage = false;
+						this->setActive(false);
+					}
+
+					float parryDirection = (player->getTransform().getPosition().x < enemyObj->getTransform().getPosition().x) ? 1.0f : -1.0f;
+					for (int i = 0; i < 5; i++) {
+						ParticleProperties particleProps = ParticleProperties(
+							enemyObj->getTransform().getPosition(),
+							glm::vec2(parryDirection * (30.0f * Random::Float() + 20.f), 10.0f * Random::Float() + 20.0f),
+							glm::vec2(-0.1f, 0.1f),
+							glm::vec3(0.976f, 0.914f, 0.035f),
+							0.15f, 0.1f, 0.05f
+						);
+						enemyObj->getEmitter()->emit(particleProps);
+					}
+
+					GameEngine::getInstance()->pauseTimeForSeconds(0.1f); // hitstop
+
+					player->signalSuccessfulParry();
+
+					return;
+				}
+			}
+		}
+	}
+}
+
+template <class TargetEntityType>
 void DamageCollider<TargetEntityType>::trigger(glm::vec3 pos) {
 	timeRemaining = lifespan;
 	this->transform.setPosition(pos + followOffset);
@@ -349,6 +430,11 @@ void DamageCollider<TargetEntityType>::setCanDecreaseTime(bool value) {
 template <class TargetEntityType>
 void DamageCollider<TargetEntityType>::setDamageTag(std::string tag) {
 	this->damageTag = tag;
+}
+
+template <class TargetEntityType>
+void DamageCollider<TargetEntityType>::setCanDamage(bool value) {
+	this->canDamage = value;
 }
 
 template <class TargetEntityType>

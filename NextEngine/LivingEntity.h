@@ -97,6 +97,7 @@ class LivingEntity : public TexturedObject {
         virtual void postUpdateBehavior();
         virtual void update(list<DrawableObject*>& objectsList);
         virtual void updateBehavior(list<DrawableObject*>& objectsList) = 0;
+        virtual void lateUpdateBehavior();
 
         /// Particle System ///
         ParticleSystem* getEmitter() { return emitter; };

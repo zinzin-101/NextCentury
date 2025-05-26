@@ -194,6 +194,8 @@ class PlayerObject : public LivingEntity {
         void resetHealing();
         void handleHealing();
 
+        int cumulativeDamagePerFrame;
+
     public:
         PlayerObject();
         ~PlayerObject();
@@ -211,6 +213,7 @@ class PlayerObject : public LivingEntity {
 
         virtual void start(list<DrawableObject*>& objectsList);
         virtual void updateBehavior(list<DrawableObject*>& objectsList);
+        virtual void lateUpdateBehavior();
         void updateStat();
 
         void move(glm::vec2 direction);
