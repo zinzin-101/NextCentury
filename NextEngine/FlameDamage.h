@@ -31,6 +31,7 @@ class FlameDamage : public ColliderObject, public TexturedObject {
 		void setOwner(LivingEntity* owner);
 		void setFollowOwner(bool value);
 		void setFollowOffset(glm::vec3 offset);
+		void setFacingDirection(bool isFacingRight);
 		virtual void setActive(bool value);
 
 		LivingEntity* getOwner() const;
@@ -68,7 +69,8 @@ FlameDamage<TargetEntityType>::FlameDamage(LivingEntity* owner, int damage, floa
 	this->getAnimationComponent()->addState("Blast", 3, 8, 3, true);
 	this->getAnimationComponent()->addState("End", 4, 0, 9, false);
 
-	this->getTransform().setScale(2.0f, 1.0f);
+	this->getTransform().setScale(5.0f, 2.5f);
+	this->getColliderComponent()->setDimension(0.4f, 0.7f);
 
 	reset();
 }
@@ -181,6 +183,13 @@ void FlameDamage<TargetEntityType>::setFollowOwner(bool value){
 template <class TargetEntityType>
 void FlameDamage<TargetEntityType>::setFollowOffset(glm::vec3 offset) {
 	this->followOffset = offset;
+}
+
+template <class TargetEntityType>
+void FlameDamage<TargetEntityType>::setFacingDirection(bool isFacingRight) {
+	glm::vec3 currentScale = this->transform.getScale();
+	currentScale.x = abs(currentScale.x) * (isFacingRight ? 1.0f : -1.0f);
+	this->transform.setScale(currentScale);
 }
 
 template <class TargetEntityType>

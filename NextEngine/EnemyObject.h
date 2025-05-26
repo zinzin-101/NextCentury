@@ -64,6 +64,7 @@ class EnemyObject : public LivingEntity {
         float getDistanceFromTarget() const;
         virtual void moveTowardsTarget();
         virtual void startAttack();
+        virtual void attack();
         virtual void endAttack();
 
         virtual void onDeath(std::list<DrawableObject*>& objectsList);

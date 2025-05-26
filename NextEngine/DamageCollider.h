@@ -213,6 +213,12 @@ void DamageCollider<TargetEntityType>::onCollisionEnter(Collider* collider) {
 
 template <class TargetEntityType>
 void DamageCollider<TargetEntityType>::onCollisionStay(Collider* collider) {
+	PlayerObject* playerAsOwner = dynamic_cast<PlayerObject*>(this->owner);
+
+	if (playerAsOwner != NULL) {
+		return;
+	}
+
 	if (canDamage) {
 		DrawableObject* obj = collider->getObject();
 		TargetEntityType* entity = dynamic_cast<TargetEntityType*>(obj);
@@ -335,6 +341,12 @@ void DamageCollider<TargetEntityType>::onTriggerEnter(Collider* collider) { // f
 
 template <class TargetEntityType>
 void DamageCollider<TargetEntityType>::onTriggerStay(Collider* collider) {
+	PlayerObject* playerAsOwner = dynamic_cast<PlayerObject*>(this->owner);
+
+	if (playerAsOwner != NULL) {
+		return;
+	}
+
 	DrawableObject* obj = collider->getObject();
 	DamageCollider<EnemyObject>* playerDamageCollider = dynamic_cast<DamageCollider<EnemyObject>*>(obj);
 

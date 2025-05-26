@@ -163,9 +163,13 @@ float EnemyObject::getDistanceFromTarget() const {
 void EnemyObject::startAttack() {
 	attackHitbox->trigger(transform.getPosition());
 	attackHitbox->setCanDecreaseTime(false);
-
+	attackHitbox->setCanDamage(false);
 	//attackCooldownTimer = attackCooldown;
 	//std::cout << "Enemy attacked!" << std::endl;
+}
+
+void EnemyObject::attack() {
+	attackHitbox->setCanDamage(true);
 }
 
 void EnemyObject::endAttack() {

@@ -17,9 +17,9 @@ class Zealot : public EnemyObject {
 		};
 		AttackVariation currentAttack = Variation1;
 
-		void startAttack();
-		void attack();
-		void endAttack();
+		virtual void startAttack();
+		virtual void attack();
+		virtual void endAttack();
 
 	public:
 		Zealot(const EnemyInfo& enemyinfo);
