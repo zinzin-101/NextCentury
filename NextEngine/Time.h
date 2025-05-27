@@ -10,9 +10,9 @@ class Time {
 
 	public:
 		Time();
-		float getDeltaTime();
-		float getDeltaTimeRealTime();
-		float getTimeScale();
+		float getDeltaTime() const;
+		float getDeltaTimeRealTime() const;
+		float getTimeScale() const;
 		uint64_t getTicks();
 		void updateTick(uint64_t time);
 		void updateTickCounterOnly(uint64_t time);

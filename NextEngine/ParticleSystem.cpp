@@ -124,3 +124,33 @@ void ParticleSystem::render(glm::mat4 globalModelTransform) {
 void ParticleSystem::setDestroyOnInactive(bool value) {
 	this->canDestroyOnInactive = value;
 }
+
+void ParticleSystem::recenterParticles() {
+	for (SimpleParticle& p : simpleParticlePool) {
+		if (p.getIsActive()) {
+			glm::vec3 newPos = p.getTransform().getPosition() - this->getTransform().getPosition();
+			p.getTransform().setPosition(newPos);
+		}
+	}
+
+	for (TexturedParticle& p : texturedParticlePool) {
+		if (p.getIsActive()) {
+			glm::vec3 newPos = p.getTransform().getPosition() - this->getTransform().getPosition();
+			p.getTransform().setPosition(newPos);
+		}
+	}
+}
+
+void ParticleSystem::clearParticles() {
+	for (SimpleParticle& p : simpleParticlePool) {
+		if (p.getIsActive()) {
+			p.setActive(false);
+		}
+	}
+
+	for (TexturedParticle& p : texturedParticlePool) {
+		if (p.getIsActive()) {
+			p.setActive(false);
+		}
+	}
+}

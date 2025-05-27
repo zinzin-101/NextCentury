@@ -17,16 +17,16 @@ void Time::updateTickCounterOnly(uint64_t time) {
 	tickCounter = time;
 }
 
-float Time::getDeltaTime() {
+float Time::getDeltaTime() const {
 	return this->deltaTime * this->timeScale;
 }
 
-float Time::getDeltaTimeRealTime() {
+float Time::getDeltaTimeRealTime() const {
 	return this->deltaTime;
 }
 
-float Time::getTimeScale() {
-	return this->timeScale;
+float Time::getTimeScale() const {
+	return timeScale;
 }
 
 void Time::setTimeScale(float timeScale) {

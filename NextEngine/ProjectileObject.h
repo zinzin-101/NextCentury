@@ -25,11 +25,13 @@ class ProjectileObject : public SimpleObject { // change later to TexturedObject
 		ProjectileObject(LivingEntity* owner, int damage, glm::vec3 position, glm::vec2 velocity, float lifespan);
 		void setDestroyOnDespawn(bool value);
 		void activate(glm::vec3 position, glm::vec2 velocity, float lifespan);
+		void disable();
 		virtual void update(std::list<DrawableObject*>& objectsList);
 		virtual void onCollisionEnter(Collider* collider);
 
 		/// test ///
 		virtual void render(glm::mat4 globalModelTransform);
+		ParticleSystem* getParticleEmitter() const;
 		~ProjectileObject();
 };
 
@@ -77,7 +79,10 @@ void ProjectileObject<TargetEntity>::update(std::list<DrawableObject*>& objectsL
 	/// test ///
 	unsigned int ticks = GameEngine::getInstance()->getTime()->getTicks();
 	if (emitter != nullptr) {
+
 		if (ticks % 5 == 0) {
+			particleProps = ParticleProperties(this->transform.getPosition(), glm::normalize(this->physics->getVelocity()), glm::vec2(1.0f, 1.0f), glm::vec3(),
+				0.2f, 0.1f, 0.05f, 1.0f);
 			particleProps.position = this->getTransform().getPosition();
 			emitter->emit(particleProps);
 		}
@@ -143,4 +148,23 @@ void ProjectileObject<TargetEntity>::activate(glm::vec3 position, glm::vec2 velo
 	this->getPhysicsComponent()->setVelocity(velocity);
 	this->lifespan = lifespan;
 	this->setActive(true);
+
+	if (emitter != nullptr) {
+		emitter->clearParticles();
+	}
+}
+
+template <class TargetEntity>
+void ProjectileObject<TargetEntity>::disable() {
+	if (canDestroyOnDespawn) {
+		destroyObject(this);
+	}
+	else {
+		this->setActive(false);
+	}
+}
+
+template <class TargetEntity>
+ParticleSystem* ProjectileObject<TargetEntity>::getParticleEmitter() const {
+	return emitter;
 }

@@ -103,6 +103,8 @@ PlayerObject::PlayerObject() : LivingEntity("Player", PlayerStat::MAX_HEALTH) {
     resetHealing();
     healFrame = 4;
 
+    cumulativeDamagePerFrame = 0;
+
     emitter = new ParticleSystem();
 }
 
@@ -180,7 +182,7 @@ void PlayerObject::dodge(float xDirection) {
 }
 
 void PlayerObject::useHealthPotion() {
-    if (isHealing || isAttacking || isParrying || isDodging || isJumping) {
+    if (isHealing || isAttacking || isParrying || isDodging || isJumping || isInAttackState || isInHeavyAttack || isInRangeAttack) {
         return;
     }
 
@@ -204,8 +206,9 @@ void PlayerObject::start(list<DrawableObject*>& objectsList) {
     //attackHitbox = new DamageCollider<EnemyObject>(this, damage, 2.5f);
     attackHitbox->setActive(false);
     attackHitbox->setFollowOwner(true);
-    attackHitbox->setFollowOffset(glm::vec3(0.5f, 0.0f, 0));
-    attackHitbox->getColliderComponent()->setWidth(1.5f);
+    attackHitbox->setFollowOffset(glm::vec3(0.1f, 0.0f, 0));
+    attackHitbox->getColliderComponent()->setWidth(1.8f);
+    attackHitbox->addEmitter(objectsList);
     objectsList.emplace_back(attackHitbox);
 
     this->getTransform().setScale(3.5f, 2.5f);
@@ -348,6 +351,18 @@ void PlayerObject::updateBehavior(list<DrawableObject*>& objectsList) {
 
     moveDirection.x = 0.0f; // Reset move direction for next frame
 
+}
+
+void PlayerObject::lateUpdateBehavior() {
+    if (cumulativeDamagePerFrame != 0) {
+        if (!successfulParry) {
+            this->LivingEntity::takeDamage(cumulativeDamagePerFrame);
+            iFrameTimeRemaining = PlayerStat::INVINCIBLE_DURATION_AFTER_TAKING_DAMAGE;
+        }
+    }
+
+    cumulativeDamagePerFrame = 0;
+    successfulParry = false;
 }
 
 void PlayerObject::normalAttack() {
@@ -572,7 +587,7 @@ void PlayerObject::endMeleeAttack() {
 }
 
 void PlayerObject::startHeavyAttack() {
-    if (isAttacking || isParrying || isDodging || isJumping || isHealing) {
+    if (isAttacking || isParrying || isDodging || isJumping || isHealing || isInRangeAttack) {
         return;
     }
 
@@ -742,6 +757,8 @@ void PlayerObject::handleHealing() {
     Animation::State animState = this->getAnimationComponent()->getCurrentAnimationState();
     if (animState.currentFrame == healFrame && !healed) {
         this->heal(PlayerStat::HEAL_AMOUNT);
+        resetAttack();
+        endMeleeAttack();
         healed = true;
         return;
     }
@@ -884,7 +901,6 @@ void PlayerObject::handleParryAttack() {
     int currentFrame = currentState.currentFrame;
 
     if (currentFrame == parryFrame.startAttackFrame) {
-        this->setCanTakeDamage(false);
         return;
     }
 
@@ -894,11 +910,18 @@ void PlayerObject::handleParryAttack() {
 
     if (currentFrame == parryFrame.startAttackFrame + 1) {
         startMeleeAttack();
+
+        this->setCanTakeDamage(false);
+
         return;
     }
 
-    if (currentFrame == parryFrame.allowNextComboFrame + 1 || (successfulParry && moveDirection.x != 0.0f)) {
+    if (currentFrame == parryFrame.allowNextComboFrame + 1) {
         endMeleeAttack();
+        return;
+    }
+
+    if (currentFrame == parryFrame.allowNextComboFrame + 2 || (successfulParry && moveDirection.x != 0.0f)) {
         this->setCanTakeDamage(true);
         attackCooldownRemaining = successfulParry ? 0.0f : PlayerStat::ATTACK_COOLDOWN;
 
@@ -951,6 +974,10 @@ DamageCollider<EnemyObject>* PlayerObject::getDamageCollider() const {
 
 void PlayerObject::signalSuccessfulParry() {
     successfulParry = true;
+    stamina += PlayerStat::STAMINA_GAIN_FROM_PARRY;
+    if (stamina > PlayerStat::MAX_STAMINA) {
+        stamina = PlayerStat::MAX_STAMINA;
+    }
 }
 
 void PlayerObject::takeDamage(int damage) {
@@ -958,8 +985,7 @@ void PlayerObject::takeDamage(int damage) {
         return;
     }
     //cout << "took damage" << endl;
-    this->LivingEntity::takeDamage(damage);
-    iFrameTimeRemaining = PlayerStat::INVINCIBLE_DURATION_AFTER_TAKING_DAMAGE;
+    cumulativeDamagePerFrame += damage;
 }
 
 void PlayerObject::resetStaminaRechargeDelay() {

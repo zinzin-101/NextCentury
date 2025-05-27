@@ -348,6 +348,8 @@ bool LivingEntity::getIsFacingRight() const {
 
 void LivingEntity::postUpdateBehavior() {};
 
+void LivingEntity::lateUpdateBehavior() {}
+
 void LivingEntity::update(list<DrawableObject*>& objectsList) {
     applyStatus(GameEngine::getInstance()->getTime()->getDeltaTime());
 
@@ -360,6 +362,8 @@ void LivingEntity::update(list<DrawableObject*>& objectsList) {
     handleKnockback();
 
     DrawableObject::update(objectsList);
+
+    lateUpdateBehavior();
 
     if (isAffectedByLighting && !forceIgnoreLighting) {
         handleLighting(objectsList);

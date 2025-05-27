@@ -30,4 +30,6 @@ class ParticleSystem : virtual public DrawableObject {
 		virtual void render(glm::mat4 globalModelTransform);
 
 		void setDestroyOnInactive(bool value);
+		void recenterParticles();
+		void clearParticles();
 };

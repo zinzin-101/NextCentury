@@ -9,16 +9,39 @@ namespace StateTransition {
 		}
 
 		if (boss->getHealth() <= ElivaStat::HEALTH_TO_BEGIN_SERUM_INJECT && !boss->isShieldActivated()) {
-			return true;
+			return !boss->hasSerumBeenInjected();
 		}
 
 		return false;
+	}
+
+	bool blinkToFury(ElivaBoss* boss) {
+		if (boss->hasFuryBeenActivated()) {
+			return false;
+		}
+
+		if (boss->getHealth() > ElivaStat::HEALTH_TO_BEGIN_FURY) {
+			return false;
+		}
+
+		const Animation::State& currentAnim = boss->getAnimationComponent()->getCurrentAnimationStateRef();
+
+		if (currentAnim.isPlaying) {
+			return false;
+		}
+
+		return true;
 	}
 
 	bool blinkToRifleShot(ElivaBoss* boss) {
 		const Animation::State& currentAnim = boss->getAnimationComponent()->getCurrentAnimationStateRef();
 
 		if (currentAnim.isPlaying) {
+			return false;
+		}
+
+		float distance = boss->getDistanceFromPlayer();
+		if (distance <= ElivaStat::BAYONET_SLASH_RANGE) {
 			return false;
 		}
 
@@ -32,7 +55,26 @@ namespace StateTransition {
 			return false;
 		}
 
+		float distance = boss->getDistanceFromPlayer();
+		if (distance > ElivaStat::BAYONET_SLASH_RANGE) {
+			return false;
+		}
+
 		return true;
+	}
+
+	bool blinkToPoisonCloud(ElivaBoss* boss) {
+		if (boss->getCurrentPhase() == ElivaBoss::Phase::First) {
+			return false;
+		}
+
+		const Animation::State& currentAnim = boss->getAnimationComponent()->getCurrentAnimationStateRef();
+
+		if (currentAnim.isPlaying) {
+			return false;
+		}
+
+		return boss->getCanUsePoisonCloud();
 	}
 
 	bool rifleShotToBayonetSlash(ElivaBoss* boss) {
@@ -106,7 +148,7 @@ namespace StateTransition {
 			return false;
 		}
 
-		return true;
+		return boss->getCanUsePoisonCloud();
 	}
 
 	bool serumInjectToFury(ElivaBoss* boss) {
@@ -177,5 +219,25 @@ namespace StateTransition {
 		}
 
 		return true;
+	}
+
+	bool stunnedToCooldown(ElivaBoss* boss) {
+		float stunnedTimer = boss->getStunnedTimer();
+
+		if (stunnedTimer > 0.0f) {
+			return false;
+		}
+
+		return boss->getCurrentPhase() != ElivaBoss::Phase::Third;
+	}
+
+	bool stunnedToFuryCooldown(ElivaBoss* boss) {
+		float stunnedTimer = boss->getStunnedTimer();
+
+		if (stunnedTimer > 0.0f) {
+			return false;
+		}
+
+		return boss->getCurrentPhase() == ElivaBoss::Phase::Third;
 	}
 }

@@ -33,6 +33,7 @@ class GameEngine {
     AudioEngine audioEngine;
 
     GameEngine();
+	float prevTimeScale;
 
 public:
     static GameEngine* getInstance();
