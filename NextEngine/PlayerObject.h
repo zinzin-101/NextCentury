@@ -16,9 +16,9 @@ namespace PlayerStat {
     constexpr float DURATION_TO_START_HEAVY_ATTACK = 0.3f;
     constexpr float DURATION_TO_START_CHARGED_BULLET = 0.5f;
 
-    constexpr float ATTACK_ANIMATION_TIME_PER_FRAME = 0.08f;
-    constexpr float PARRY_ANIMATION_TIME_PER_FRAME = 0.08f;
-    constexpr float CHARGE_ANIMATION_TIME_PER_FRAME = 0.08f;
+    constexpr float ATTACK_ANIMATION_TIME_PER_FRAME = 0.06f;
+    constexpr float PARRY_ANIMATION_TIME_PER_FRAME = 0.04f;
+    constexpr float CHARGE_ANIMATION_TIME_PER_FRAME = 0.05f;
     constexpr float GUN_CHARGE_ANIMATION_TIME_PER_FRAME = 0.08f;
 
     constexpr int COMBO_DAMAGE_1 = 10;
@@ -194,8 +194,6 @@ class PlayerObject : public LivingEntity {
         void resetHealing();
         void handleHealing();
 
-        int cumulativeDamagePerFrame;
-
     public:
         PlayerObject();
         ~PlayerObject();
@@ -213,7 +211,6 @@ class PlayerObject : public LivingEntity {
 
         virtual void start(list<DrawableObject*>& objectsList);
         virtual void updateBehavior(list<DrawableObject*>& objectsList);
-        virtual void lateUpdateBehavior();
         void updateStat();
 
         void move(glm::vec2 direction);

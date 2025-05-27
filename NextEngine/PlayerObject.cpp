@@ -103,8 +103,6 @@ PlayerObject::PlayerObject() : LivingEntity("Player", PlayerStat::MAX_HEALTH) {
     resetHealing();
     healFrame = 4;
 
-    cumulativeDamagePerFrame = 0;
-
     emitter = new ParticleSystem();
 }
 
@@ -351,18 +349,6 @@ void PlayerObject::updateBehavior(list<DrawableObject*>& objectsList) {
 
     moveDirection.x = 0.0f; // Reset move direction for next frame
 
-}
-
-void PlayerObject::lateUpdateBehavior() {
-    if (cumulativeDamagePerFrame != 0) {
-        if (!successfulParry) {
-            this->LivingEntity::takeDamage(cumulativeDamagePerFrame);
-            iFrameTimeRemaining = PlayerStat::INVINCIBLE_DURATION_AFTER_TAKING_DAMAGE;
-        }
-    }
-
-    cumulativeDamagePerFrame = 0;
-    successfulParry = false;
 }
 
 void PlayerObject::normalAttack() {
@@ -916,12 +902,9 @@ void PlayerObject::handleParryAttack() {
         return;
     }
 
-    if (currentFrame == parryFrame.allowNextComboFrame + 1) {
+    if (currentFrame == parryFrame.allowNextComboFrame + 1 || (successfulParry)) {
         endMeleeAttack();
-        return;
-    }
-
-    if (currentFrame == parryFrame.allowNextComboFrame + 2 || (successfulParry && moveDirection.x != 0.0f)) {
+        
         this->setCanTakeDamage(true);
         attackCooldownRemaining = successfulParry ? 0.0f : PlayerStat::ATTACK_COOLDOWN;
 
@@ -984,8 +967,9 @@ void PlayerObject::takeDamage(int damage) {
     if (!this->getCanTakeDamage()) {
         return;
     }
-    //cout << "took damage" << endl;
-    cumulativeDamagePerFrame += damage;
+
+    this->LivingEntity::takeDamage(damage);
+    iFrameTimeRemaining = PlayerStat::INVINCIBLE_DURATION_AFTER_TAKING_DAMAGE;
 }
 
 void PlayerObject::resetStaminaRechargeDelay() {
