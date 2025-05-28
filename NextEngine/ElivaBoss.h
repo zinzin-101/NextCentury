@@ -26,15 +26,15 @@ namespace ElivaStat {
 	constexpr float STUNNED_DURATION = 1.5f;
 	constexpr float STAGGERED_DURATION = 0.5f;
 
-	constexpr float IDLE_TIME_PER_FRAME = 0.1667f;
-	constexpr float BLINKING_TIME_PER_FRAME = 0.1667f;
-	constexpr float RIFLE_SHOT_TIME_PER_FRAME = 0.1667f;
-	constexpr float BAYONET_SLASH_TIME_PER_FRAME = 0.1667f;
-	constexpr float PARRIED_TIME_PER_FRAME = 0.1667f;
-	constexpr float POISON_CLOUD_TIME_PER_FRAME = 0.1667f;
-	constexpr float SERUM_INJECT_TIME_PER_FRAME = 0.1667f;
-	constexpr float RAPID_BURST_TIME_PER_FRAME = 0.1667f;
-	constexpr float DEAD_TIME_PER_FRAME = 0.1667f;
+	constexpr float IDLE_TIME_PER_FRAME = 0.12f;
+	constexpr float BLINKING_TIME_PER_FRAME = 0.12f;
+	constexpr float RIFLE_SHOT_TIME_PER_FRAME = 0.12f;
+	constexpr float BAYONET_SLASH_TIME_PER_FRAME = 0.12f;
+	constexpr float PARRIED_TIME_PER_FRAME = 0.12f;
+	constexpr float POISON_CLOUD_TIME_PER_FRAME = 0.12f;
+	constexpr float SERUM_INJECT_TIME_PER_FRAME = 0.12f;
+	constexpr float RAPID_BURST_TIME_PER_FRAME = 0.12f;
+	constexpr float DEAD_TIME_PER_FRAME = 0.12f;
 
 	constexpr float FURY_BAYONET_SLASH_TIME_PER_FRAME = 0.0833f;
 	constexpr float FURY_BLINKING_TIME_PER_FRAME = 0.0833f;

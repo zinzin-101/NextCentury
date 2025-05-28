@@ -59,7 +59,7 @@ namespace PlayerStat {
     constexpr int MAX_STAMINA = 100;
     constexpr int MAX_BULLET = 3;
 
-    constexpr float STAMINA_RECHARGE_DELAY = 1.25f;
+    constexpr float STAMINA_RECHARGE_DELAY = 0.8f;
     constexpr float STAMINA_RECHARGE_TIMER = 0.1f;
     constexpr int STAMINA_RECHARGE_AMOUNT = 5.0f;
     constexpr int STAMINA_GAIN_FROM_PARRY = MAX_STAMINA / 2;
