@@ -23,10 +23,8 @@ Button::Button(const std::string& name, const std::string& texturePath)
     , isPressed(false)
     , isFocused(false)
 {
-    // 1) Load the sprite‐sheet
     setTexture(texturePath);
 
-    // 2) Init the 1‐row × 3‐col Animation
     initAnimation(1, 3);
     Animation* anim = getAnimationComponent();
     anim->addState("idle", 0, 0, 1, false);
@@ -34,7 +32,6 @@ Button::Button(const std::string& name, const std::string& texturePath)
     anim->addState("pressed", 0, 2, 1, false);
     anim->setState("idle");
 
-    // 3) Collider & text
     auto scale = getTransform().getScale();
     collider = new Collider(this, scale.x, scale.y);
     collider->setEnableCollision(true);
