@@ -14,6 +14,8 @@ private:
     bool end = false;
     float timefade = 1.0f;
     int enemyDeadCount = 0;
+    bool isStop = false;
+    EnemyObject* enem;
 
 public:
     virtual void levelLoad();

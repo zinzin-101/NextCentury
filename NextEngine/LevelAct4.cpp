@@ -107,7 +107,13 @@ void LevelAct4::levelInit() {
         if (pObj != NULL) {
             pObj->setPlayer(player);
         }
+        EnemyObject* eObj = dynamic_cast<EnemyObject*>(obj);
+        if (eObj != NULL) {
+            enem = eObj;
+        }
     }
+    enem->setAggroRange(0.0f);
+    enem->setIsFacingRight(true);
 
     startObjects(objectsList);
 
@@ -134,10 +140,13 @@ void LevelAct4::levelUpdate() {
     chat1->runChat(objectsList);
 
     if (!chat1->hasEnded()) {
-        GameEngine::getInstance()->getTime()->setTimeScale(0);
+        isStop = true;
+        //GameEngine::getInstance()->getTime()->setTimeScale(0);
     }
     else {
-        GameEngine::getInstance()->getTime()->setTimeScale(1);
+        isStop = false;
+        enem->setAggroRange(10.0f);
+        //GameEngine::getInstance()->getTime()->setTimeScale(1);
     }
     if (player->getTransform().getPosition().x > 11.5f && enemyDeadCount == 1) {
         if (!end) {
@@ -207,69 +216,71 @@ void LevelAct4::handleKey(InputManager& input) {
     processKeyBuffer(input, SDLK_SPACE);
     processKeyBuffer(input, SDLK_LSHIFT);
 
-    // handle event here
-    if (GameEngine::getInstance()->getTime()->getTimeScale() != 0) {
-        if (input.getButton(SDLK_a) && !input.getButton(SDLK_d)) player->move(glm::vec2(-1, 0));
-        if (input.getButton(SDLK_d) && !input.getButton(SDLK_a)) player->move(glm::vec2(1, 0));
-        if (input.getButtonDown(SDLK_j)) player->parryAttack();
-        if (input.getMouseButtonDown(SDL_BUTTON_RIGHT)) player->parryAttack();
-    }
+    if (!isStop) {
+        // handle event here
+        if (GameEngine::getInstance()->getTime()->getTimeScale() != 0) {
+            if (input.getButton(SDLK_a) && !input.getButton(SDLK_d)) player->move(glm::vec2(-1, 0));
+            if (input.getButton(SDLK_d) && !input.getButton(SDLK_a)) player->move(glm::vec2(1, 0));
+            if (input.getButtonDown(SDLK_j)) player->parryAttack();
+            if (input.getMouseButtonDown(SDL_BUTTON_RIGHT)) player->parryAttack();
+        }
 
-    /// Use processed key here ///
-    if (keyHeldDuration[SDLK_k] < PlayerStat::DURATION_TO_START_HEAVY_ATTACK) {
-        if (input.getButtonUp(SDLK_k)) {
-            player->normalAttack();
-        }
-    }
-    else {
-        if (input.getButtonUp(SDLK_k)) {
-            player->heavyAttack();
-        }
-        else if (input.getButton(SDLK_k)) {
-            player->startHeavyAttack();
-        }
-    }
-
-    if (mouseHeldDuration[SDL_BUTTON_LEFT] < PlayerStat::DURATION_TO_START_HEAVY_ATTACK) {
-        if (input.getMouseButtonUp(SDL_BUTTON_LEFT)) {
-            player->normalAttack();
-        }
-    }
-    else {
-        if (input.getMouseButtonUp(SDL_BUTTON_LEFT)) {
-            player->heavyAttack();
-        }
-        else if (input.getMouseButton(SDL_BUTTON_LEFT)) {
-            player->startHeavyAttack();
-        }
-    }
-
-    if (input.getButtonUp(SDLK_u)) {
-        player->rangeAttack(objectsList);
-    }
-    else if (input.getButton(SDLK_u)) {
-        player->startRangeAttack(dt);
-    }
-
-    if (input.getMouseButtonUp(SDL_BUTTON_MIDDLE)) {
-        player->rangeAttack(objectsList);
-    }
-    else if (input.getMouseButton(SDL_BUTTON_MIDDLE)) {
-        player->startRangeAttack(dt);
-    }
-
-    if ((isKeyInBuffer(SDLK_LSHIFT) || (isKeyInBuffer(SDLK_SPACE))) && player->getCanMove()) {
-        clearKeyBuffer(SDLK_SPACE);
-        clearKeyBuffer(SDLK_LSHIFT);
-
-        if (input.getButton(SDLK_a)) {
-            player->dodge(-1.0f);
-        }
-        else if (input.getButton(SDLK_d)) {
-            player->dodge(1.0f);
+        /// Use processed key here ///
+        if (keyHeldDuration[SDLK_k] < PlayerStat::DURATION_TO_START_HEAVY_ATTACK) {
+            if (input.getButtonUp(SDLK_k)) {
+                player->normalAttack();
+            }
         }
         else {
-            player->dodge();
+            if (input.getButtonUp(SDLK_k)) {
+                player->heavyAttack();
+            }
+            else if (input.getButton(SDLK_k)) {
+                player->startHeavyAttack();
+            }
+        }
+
+        if (mouseHeldDuration[SDL_BUTTON_LEFT] < PlayerStat::DURATION_TO_START_HEAVY_ATTACK) {
+            if (input.getMouseButtonUp(SDL_BUTTON_LEFT)) {
+                player->normalAttack();
+            }
+        }
+        else {
+            if (input.getMouseButtonUp(SDL_BUTTON_LEFT)) {
+                player->heavyAttack();
+            }
+            else if (input.getMouseButton(SDL_BUTTON_LEFT)) {
+                player->startHeavyAttack();
+            }
+        }
+
+        if (input.getButtonUp(SDLK_u)) {
+            player->rangeAttack(objectsList);
+        }
+        else if (input.getButton(SDLK_u)) {
+            player->startRangeAttack(dt);
+        }
+
+        if (input.getMouseButtonUp(SDL_BUTTON_MIDDLE)) {
+            player->rangeAttack(objectsList);
+        }
+        else if (input.getMouseButton(SDL_BUTTON_MIDDLE)) {
+            player->startRangeAttack(dt);
+        }
+
+        if ((isKeyInBuffer(SDLK_LSHIFT) || (isKeyInBuffer(SDLK_SPACE))) && player->getCanMove()) {
+            clearKeyBuffer(SDLK_SPACE);
+            clearKeyBuffer(SDLK_LSHIFT);
+
+            if (input.getButton(SDLK_a)) {
+                player->dodge(-1.0f);
+            }
+            else if (input.getButton(SDLK_d)) {
+                player->dodge(1.0f);
+            }
+            else {
+                player->dodge();
+            }
         }
     }
 }

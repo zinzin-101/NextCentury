@@ -13,6 +13,7 @@ private:
     ChatBubble* chat1;
     ChatBubble* chat2;
     ProtagThoughts* thought1;
+    SimpleObject* camTarget;
     bool isStop = false;
 
 public:

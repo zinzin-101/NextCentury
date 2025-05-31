@@ -100,7 +100,7 @@ void LevelAct5::levelInit() {
     objectsList.emplace_back(player);
 
     vector<glm::vec3> l;
-    l.push_back(glm::vec3(6.5f, 0.0f, 0.0f));
+    l.push_back(glm::vec3(6.5f, 0.5f, 0.0f));
     l.push_back(glm::vec3(7.5f, 2.0f, 0.0f));
     immigrats1 = new ChatBubble("../Resource/Texture/StoryStuff/chat1Act5.txt", player, l, objectsList);
 

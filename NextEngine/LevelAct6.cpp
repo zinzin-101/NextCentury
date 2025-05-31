@@ -108,6 +108,11 @@ void LevelAct6::levelInit() {
         if (pObj != NULL) {
             pObj->setPlayer(player);
         }
+
+        EnemyObject* eObj = dynamic_cast<EnemyObject*>(obj);
+        if (eObj != NULL) {
+            cout << eObj->getName() << eObj->getAggroRange() << endl;
+        }
     }
 
     startObjects(objectsList);
@@ -116,12 +121,16 @@ void LevelAct6::levelInit() {
 
     //UIobject->initUI(objectsList);
 
+    camTarget = new SimpleObject();
+    camTarget->getTransform().setPosition(glm::vec3(34.0f, 0.0f, 0.0f));
+    objectsList.emplace_back(camTarget);
+
     fb = new FadeBlack(1.0f);
     objectsList.emplace_back(fb);
     //fb->FadeToTransparent();
 
     GameEngine::getInstance()->getRenderer()->getCamera()->setDeadLimitBool(true);
-    GameEngine::getInstance()->getRenderer()->getCamera()->setDeadLimitMinMax(-5.0f, 40.75f);
+    GameEngine::getInstance()->getRenderer()->getCamera()->setDeadLimitMinMax(-5.0f, 80.75f);
 
     GameEngine::getInstance()->getRenderer()->getCamera()->setOffset(glm::vec3(0.0f, -0.5f, 0.0f));
     GameEngine::getInstance()->getRenderer()->setToggleViewport(true);
@@ -132,11 +141,12 @@ void LevelAct6::levelInit() {
 
 void LevelAct6::levelUpdate() {
     updateObjects(objectsList);
-
     GameEngine::getInstance()->getRenderer()->updateCamera();
+    
 
-    if (player->getTransform().getPosition().x > 24.0f) {
-
+    if (player->getTransform().getPosition().x > 24.8f && player->getTransform().getPosition().x < 34.0f) {
+        GameEngine::getInstance()->getRenderer()->getCamera()->setTarget(camTarget);
+        //GameEngine::getInstance()->getRenderer()->getCamera()->setPosition(glm::vec3(32.0f, 0.0f, 0.0f));
         //chat1->runChat(objectsList);
         //if (!chat1->hasEnded()) {
         //    isStop = true;
@@ -145,6 +155,9 @@ void LevelAct6::levelUpdate() {
         //    thought1->activateDialogue();
         //    isStop = false;
         //}
+    }
+    else {
+        GameEngine::getInstance()->getRenderer()->getCamera()->setTarget(player);
     }
 
     //if (player->getTransform().getPosition().x > 26.5f) {
