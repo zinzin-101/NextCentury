@@ -11,6 +11,7 @@ private:
     SimpleObject* healthBarFill = nullptr;
     TexturedObject* staminaBar = nullptr;
     SimpleObject* staminaBarFill = nullptr;
+	TexturedObject* gunCooldown = nullptr;
 	glm::vec3 camPos;
 
 public:

@@ -98,9 +98,7 @@ void LevelAct4::levelInit() {
 
 void LevelAct4::levelUpdate() {
     updateObjects(objectsList);
-
     GameEngine::getInstance()->getRenderer()->updateCamera();
-
 
     // Placeholder death logic
     for (std::list<DrawableObject*>::iterator itr = objectsList.begin(); itr != objectsList.end(); ++itr) {
