@@ -30,9 +30,6 @@ class GameEngine {
     SDL_Window* gameWindow;
     SDL_GLContext* glContext;
 
-    float engineTimer;
-    bool isGamePaused;
-
     AudioEngine audioEngine;
 
     GameEngine();
