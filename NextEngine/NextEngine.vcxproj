@@ -40,6 +40,8 @@
     <ClCompile Include="CollisionHandler.cpp" />
     <ClCompile Include="Dialogue.cpp" />
     <ClCompile Include="DrawableObject.cpp" />
+    <ClCompile Include="ElivaBoss.cpp" />
+    <ClCompile Include="ElivaBossState.cpp" />
     <ClCompile Include="EnemyObject.cpp" />
     <ClCompile Include="GameEngine.cpp" />
     <ClCompile Include="GameStateController.cpp" />
@@ -74,6 +76,7 @@
     <ClCompile Include="MeshVbo.cpp" />
     <ClCompile Include="ParallaxObject.cpp" />
     <ClCompile Include="Particle.cpp" />
+    <ClCompile Include="PoisonCloud.cpp" />
     <ClCompile Include="SimpleParticle.cpp" />
     <ClCompile Include="ParticleSystem.cpp" />
     <ClCompile Include="pch.cpp" />
@@ -118,6 +121,8 @@
     <ClInclude Include="DebugMode.h" />
     <ClInclude Include="Dialogue.h" />
     <ClInclude Include="DrawableObject.h" />
+    <ClInclude Include="ElivaBoss.h" />
+    <ClInclude Include="ElivaBossState.h" />
     <ClInclude Include="EnemyInfo.h" />
     <ClInclude Include="EnemyObject.h" />
     <ClInclude Include="FlameDamage.h" />
@@ -159,6 +164,7 @@
     <ClInclude Include="ParallaxBackground.h" />
     <ClInclude Include="ParallaxObject.h" />
     <ClInclude Include="Particle.h" />
+    <ClInclude Include="PoisonCloud.h" />
     <ClInclude Include="SimpleParticle.h" />
     <ClInclude Include="ParticleProperties.h" />
     <ClInclude Include="ParticleSystem.h" />

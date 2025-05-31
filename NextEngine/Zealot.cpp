@@ -12,7 +12,8 @@ Zealot::Zealot(const EnemyInfo& enemyinfo) : EnemyObject(enemyinfo) {
 	getColliderComponent()->getTransform().setPosition(0.0f, -0.15f);
 
 	attackFrameStart = 2;
-	attackFrameEnd = 3;
+	attackFrameActivate = 3;
+	attackFrameEnd = 4;
 }
 
 Zealot::~Zealot() {
@@ -35,9 +36,11 @@ void Zealot::start(list<DrawableObject*>& objectsList) {
 	getAnimationComponent()->setState("Idle");
 	attackHitbox = new DamageCollider<PlayerObject>(this, damage, -1);
 	attackHitbox->setActive(false);
+	attackHitbox->setCanDamage(false);
 	attackHitbox->setFollowOwner(true);
 	attackHitbox->setFollowOffset(glm::vec3(0.5f, 0.25f, 0));
 	//attackHitbox->getColliderComponent()->getTransform().translate(0.0f, -0.5f);
+	//attackHitbox->setDrawCollider(true); // debug
 	attackHitbox->getColliderComponent()->setWidth(1.0f);
 	objectsList.emplace_back(attackHitbox);
 
@@ -144,6 +147,11 @@ void Zealot::updateBehavior(list<DrawableObject*>& objectsList) {
 			break;
 		}
 
+		if (currentAnimFrame == attackFrameActivate + 1) {
+			attack();
+			break;
+		}
+
 		if (currentAnimFrame == attackFrameEnd + 1) {
 			endAttack();
 			//cout << attackCooldownTimer << endl;
@@ -187,6 +195,11 @@ void Zealot::updateBehavior(list<DrawableObject*>& objectsList) {
 void Zealot::startAttack() {
 	attackHitbox->trigger(transform.getPosition());
 	attackHitbox->setCanDecreaseTime(false);
+	attackHitbox->setCanDamage(false);
+}
+
+void Zealot::attack() {
+	attackHitbox->setCanDamage(true);
 }
 
 void Zealot::endAttack() {

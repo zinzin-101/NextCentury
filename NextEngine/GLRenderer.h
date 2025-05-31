@@ -86,6 +86,8 @@ public:
 
     void setToggleViewport(bool value);
 
+    void setGLViewport(int width, int height);
+
     void updateViewport(); 
     void updateCamera();
     void applyViewMatrix();

@@ -6,6 +6,7 @@ BlightFlame::BlightFlame(const EnemyInfo& enemyinfo) : EnemyObject(enemyinfo) {
 	flameHitbox = nullptr;
 	stunnedTime = BlightFlameStat::STUN_DURATION;
 	getTransform().setScale(6.0f, 2.0f);
+	this->getColliderComponent()->getTransform().setScale(0.4f, 1.0f);
 }
 void BlightFlame::start(list<DrawableObject*>& objectsList) {
 	//setTexture("../Resource/Texture/incineratorSizeFlip.png");
@@ -29,13 +30,15 @@ void BlightFlame::start(list<DrawableObject*>& objectsList) {
 	attackHitbox->setFollowOwner(true);
 	attackHitbox->setFollowOffset(glm::vec3(0.6f, 0.0f ,0.0f));
 	attackHitbox->setDrawCollider(true); // debug
-	attackFrameStart = 3;
-	attackFrameEnd = 4;
+	attackHitbox->setCanDamage(false);
+	attackFrameStart = 1;
+	attackFrameActivate = 2;
+	attackFrameEnd = 3;
 	objectsList.emplace_back(attackHitbox);
 	flameHitbox = new FlameDamage<PlayerObject>(this, BlightFlameStat::FLAME_DAMAGE, 0.2f);
 	flameHitbox->DrawableObject::setActive(false);
 	flameHitbox->setFollowOwner(true);
-	flameHitbox->setFollowOffset(glm::vec3(1.0f, 0, 0));
+	flameHitbox->setFollowOffset(glm::vec3(1.5f, 0, 0));
 	//flameHitbox->getColliderComponent()->setWidth(1.0f);
 	objectsList.emplace_back(flameHitbox);
 
@@ -135,6 +138,8 @@ void BlightFlame::updateBehavior(list<DrawableObject*>& objectsList) {
 	glm::vec2 vel = getPhysicsComponent()->getVelocity();
 	vel.x = 0.0f;
 	getPhysicsComponent()->setVelocity(vel);
+
+	flameHitbox->setFacingDirection(this->isFacingRight);
 
 	switch (currentState) {
 	case IDLE:
@@ -246,12 +251,17 @@ void BlightFlame::handleMeleeAttack() {
 		getAnimationComponent()->setState("Melee");
 	}
 	if (currAnim.name == "Melee") {
-		if (currAnim.currentFrame == attackFrameStart) {
+		if (currAnim.currentFrame == attackFrameStart + 1) {
 			EnemyObject::startAttack();
 			return;
 		}
 
-		if (currAnim.currentFrame == attackFrameEnd) {
+		if (currAnim.currentFrame == attackFrameActivate + 1) {
+			EnemyObject::attack();
+			return;
+		}
+
+		if (currAnim.currentFrame == attackFrameEnd + 1) {
 			EnemyObject::endAttack();
 			return;
 		}

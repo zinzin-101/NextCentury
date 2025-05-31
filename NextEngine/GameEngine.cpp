@@ -7,6 +7,7 @@ GameEngine::GameEngine() {
 
 	engineTimer = 0.0f;
 	isGamePaused = false;
+	prevTimeScale = 1.0f;
 }
 
 GameEngine * GameEngine::getInstance() {
@@ -48,13 +49,13 @@ void GameEngine::init(int width, int height) {
 }
 
 void GameEngine::updateEngineComponent() {
-	if (engineTimer > 0.0f && isGamePaused) {
+	if (engineTimer > 0.0f) {
 		engineTimer -= time->getDeltaTimeRealTime();
 	}
 
 	if (engineTimer <= 0.0f && isGamePaused) {
 		isGamePaused = false;
-		time->setTimeScale(1.0f);
+		time->setTimeScale(prevTimeScale);
 	}
 }
 
@@ -120,6 +121,7 @@ void GameEngine::freezeGameForSeconds(float duration) {
 
 void GameEngine::pauseTimeForSeconds(float duration) {
 	engineTimer = duration;
+	prevTimeScale = 1.0f;
 	isGamePaused = true;
 	time->setTimeScale(0.0f);
 }

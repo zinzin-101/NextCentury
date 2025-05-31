@@ -1,4 +1,5 @@
 #include "InputManager.h"
+#include "GameEngine.h"
 #include "DebugMode.h"
 
 InputManager::InputManager() : mouseX(0), mouseY(0), controller(nullptr) {
@@ -94,6 +95,10 @@ void InputManager::updateInput() {
             }
             
             
+        }
+
+        if (event.type == SDL_QUIT) {
+            GameEngine::getInstance()->getStateController()->gameStateNext = GameState::GS_QUIT;
         }
     }
 

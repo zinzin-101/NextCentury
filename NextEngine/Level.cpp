@@ -196,7 +196,7 @@ void Level::drawImGui(std::list<DrawableObject*>& objectList) {
     GameEngine::getInstance()->getRenderer()->setToggleViewport(!enableFreeViewPort);
 
     if (!GameEngine::getInstance()->getIsGamePaused()) {
-        pauseGame ? GameEngine::getInstance()->getTime()->setTimeScale(0.0f) : GameEngine::getInstance()->getTime()->setTimeScale(1.0f);
+        //pauseGame ? GameEngine::getInstance()->getTime()->setTimeScale(0.0f) : GameEngine::getInstance()->getTime()->setTimeScale(1.0f);
     }
 
     if (ImGui::Button("Reset Scene")) {
@@ -569,6 +569,13 @@ void Level::drawImGui(std::list<DrawableObject*>& objectList) {
         wailer->setDrawCollider(drawOutline);
         objectList.emplace_back(wailer);
         wailer->start(objectList);
+    }
+    if (ImGui::Button("Spawn Eliva (Boss)")) {
+        ElivaBoss* eliva = new ElivaBoss();
+        eliva->getTransform().setPosition(posX, posY);
+        eliva->setDrawCollider(drawOutline);
+        objectList.emplace_back(eliva);
+        eliva->start(objectList);
     }
     ImGui::SeparatorText("Player");
     if (ImGui::Button("Spawn Player")) {
