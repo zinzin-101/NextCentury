@@ -126,8 +126,7 @@ void LevelAlphaNMMN::levelUpdate() {
     
     GameEngine::getInstance()->getRenderer()->updateCamera();
      
-    
-    UIobject->updateUI(*player, camPos);
+   
 }
 
 void LevelAlphaNMMN::levelDraw() {

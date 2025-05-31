@@ -44,4 +44,5 @@ public:
     void startShake(float duration);
 
     void updateCamera();
+    
 };
