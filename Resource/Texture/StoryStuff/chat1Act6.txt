@@ -1,3 +1,28 @@
+Cultist 1
+1
+0
+4.5
+...Lately, there have been more and 
+more berserk, and each one is really
+hard to deal with. But do we really
+have to train this hard?
+NEXTCHAT
+Cultist 2
+2
+0
+4.5
+Yeah, and we even have to take some 
+weird medicine just to endure the 
+training.
+NEXTCHAT
+Cultist 3
+3
+0
+4.5
+You two, stop complaining! 
+Miss ELIVA is doing this so we won't
+end up dead because of those-
+NEXTCHAT
 Speaker
 0
 1

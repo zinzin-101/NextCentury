@@ -94,7 +94,11 @@ void LevelAct6::levelInit() {
 
     vector<glm::vec3> l;
     l.push_back(glm::vec3(27.5f, 0.6f, 0.0f));
+    l.push_back(glm::vec3(33.5f, 0.6f, 0.0f));
+    l.push_back(glm::vec3(34.5f, 0.6f, 0.0f));
+    l.push_back(glm::vec3(36.0f, 0.7f, 0.0f));
     chat1 = new ChatBubble("../Resource/Texture/StoryStuff/chat1Act6.txt", player, l, objectsList);
+    chat2 = new ChatBubble("../Resource/Texture/StoryStuff/chat2Act6.txt", player, l, objectsList);
 
     thought1 = new ProtagThoughts("../Resource/Texture/StoryStuff/protagAct6.txt", player);
     objectsList.emplace_back(thought1);
@@ -103,6 +107,7 @@ void LevelAct6::levelInit() {
     GameEngine::getInstance()->getRenderer()->setToggleViewport(false);
 
     // initializing parallax object
+    int count = 1;
     for (DrawableObject* obj : objectsList) {
         ParallaxObject* pObj = dynamic_cast<ParallaxObject*>(obj);
         if (pObj != NULL) {
@@ -111,7 +116,18 @@ void LevelAct6::levelInit() {
 
         EnemyObject* eObj = dynamic_cast<EnemyObject*>(obj);
         if (eObj != NULL) {
-            cout << eObj->getName() << eObj->getAggroRange() << endl;
+            eObj->setAggroRange(0.0f);
+            if (count == 1) {
+                eObj->setIsFacingRight(true);
+                enemSet1.emplace_back(eObj);
+            }
+            else if (count > 3) {
+                enemSet2.emplace_back(eObj);
+            }
+            else {
+                enemSet1.emplace_back(eObj);
+            }
+            count++;
         }
     }
 
@@ -123,7 +139,13 @@ void LevelAct6::levelInit() {
 
     camTarget = new SimpleObject();
     camTarget->getTransform().setPosition(glm::vec3(34.0f, 0.0f, 0.0f));
+    camTarget->getTransform().setScale(0.0f, 0.0f);
     objectsList.emplace_back(camTarget);
+
+    set1Block = new ColliderObject();
+    set1Block->getTransform().setPosition(glm::vec3(40.8f, 0.0f, 0.0f));
+    set1Block->getTransform().setScale(1.0f, 10.0f);
+    objectsList.emplace_back(set1Block);
 
     fb = new FadeBlack(1.0f);
     objectsList.emplace_back(fb);
@@ -144,20 +166,43 @@ void LevelAct6::levelUpdate() {
     GameEngine::getInstance()->getRenderer()->updateCamera();
     
 
-    if (player->getTransform().getPosition().x > 24.8f && player->getTransform().getPosition().x < 34.0f) {
+    if (player->getTransform().getPosition().x > 24.8f && !set1FightDone) {
         GameEngine::getInstance()->getRenderer()->getCamera()->setTarget(camTarget);
         //GameEngine::getInstance()->getRenderer()->getCamera()->setPosition(glm::vec3(32.0f, 0.0f, 0.0f));
-        //chat1->runChat(objectsList);
-        //if (!chat1->hasEnded()) {
-        //    isStop = true;
-        //}
-        //else {
-        //    thought1->activateDialogue();
-        //    isStop = false;
-        //}
+        chat1->runChat(objectsList);
+        if (!chat1->hasEnded()) {
+            isStop = true;
+        }
+        else {
+            chat2->runChat(objectsList);
+            if (!chat2->hasEnded()) {
+                turnTime -= GameEngine::getInstance()->getTime()->getDeltaTime();
+                if (turnTime < 0.0f) {
+                    enemSet1.front()->setIsFacingRight(false);
+                }
+                isStop = true;
+            }
+            else {
+                thought1->activateDialogue();
+                for (EnemyObject* eObj : enemSet1) {
+                    eObj->setAggroRange(15.0f); // veri high range cuz it don't matter no more :(
+                }
+                isStop = false;
+            }
+        }
+        
     }
     else {
         GameEngine::getInstance()->getRenderer()->getCamera()->setTarget(player);
+    }
+
+    if (killCount == 3) {
+        set1Block->setActive(false);
+        //set1Block->getColliderComponent()->setEnableCollision(false);
+        set1FightDone = true;
+        for (EnemyObject* eObj : enemSet2) {
+            eObj->setAggroRange(10.0f); // veri high range cuz it don't matter no more :(
+        }
     }
 
     //if (player->getTransform().getPosition().x > 26.5f) {
@@ -176,6 +221,7 @@ void LevelAct6::levelUpdate() {
         if (enemy != NULL) {
             if (enemy->getHealth() <= 0) {
                 DrawableObject::destroyObject(enemy);
+                killCount++;
             }
         }
     }

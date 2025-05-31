@@ -129,16 +129,18 @@ void ChatBubble::nextChat() {
 }
 
 void ChatBubble::setCurrentChatPos(glm::vec3 pos) {
-	int j;
+	int j = -1;
 	if (chats.front().isFlip) {
-		j = -1;
+		if (bubble->getTransform().getScale().x > 0.0f) {
+			bubble->getTransform().setScale(glm::vec3(bubble->getTransform().getScale().x * j, bubble->getTransform().getScale().y, 0.0f));
+		}
 	}
 	else {
-		j = 1;
+		if (bubble->getTransform().getScale().x < 0.0f) {
+			bubble->getTransform().setScale(glm::vec3(bubble->getTransform().getScale().x * j, bubble->getTransform().getScale().y, 0.0f));
+		}
 	}
-	if (bubble->getTransform().getScale().x > 0.0f) {
-		bubble->getTransform().setScale(glm::vec3(bubble->getTransform().getScale().x * j, bubble->getTransform().getScale().y, 0.0f));
-	}
+
 	bubble->getTransform().setPosition(glm::vec3(pos.x + offsetX, pos.y, pos.z));
 	chats.front().titleText->getTransform().setPosition(glm::vec3(bubble->getTransform().getPosition().x, bubble->getTransform().getPosition().y + 0.6f, 0.0f));
 }

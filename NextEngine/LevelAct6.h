@@ -15,6 +15,12 @@ private:
     ProtagThoughts* thought1;
     SimpleObject* camTarget;
     bool isStop = false;
+    bool set1FightDone = false;
+    float turnTime = 0.8f;
+    ColliderObject* set1Block;
+    list<EnemyObject*> enemSet1;
+    list<EnemyObject*> enemSet2;
+    int killCount = 0;
 
 public:
     virtual void levelLoad();
