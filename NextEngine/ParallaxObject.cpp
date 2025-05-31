@@ -28,19 +28,20 @@ ParallaxObject::ParallaxObject(float z, bool vertical, PlayerObject* player, boo
 	}
 }
 // I use this one
-ParallaxObject::ParallaxObject(float x,float y,float z, bool vertical, PlayerObject* player, bool loopable) : TexturedObject() {
+ParallaxObject::ParallaxObject(float x,float y,float z, bool vertical, PlayerObject* player, bool loopable, float pictureWidth, float pictureHeight) : TexturedObject() {
 	cout << "parallax created" << endl;
-	this->getTransform().setScale(glm::vec3(16.0f, 10.9f, 0.0f)); // MUST CHANGE TO "SET SCALE TO RESOLUTION" not this magic number
+	this->getTransform().setScale(glm::vec3((pictureWidth / pictureHeight) * 9.0f, 9.0f, 0.0f)); // MUST CHANGE TO "SET SCALE TO RESOLUTION" not this magic number
 	this->z = z;
 	this->vertical = vertical;
 	startPos = glm::vec3(x, y, z);
 	this->setName("parallax");
 	this->player = player;
 	this->loopable = loopable;
+	width = (pictureWidth / pictureHeight) * 9.0f;
 	
 	if (loopable) {
-		loopObjectR = new ParallaxObject(x + (16.0f)/* THIS OFF SET SHOULD BE Picture size FIX CAM */, y, z, this->vertical, this->player, false); // must be false or else.... infinite loop naa
-		loopObjectL = new ParallaxObject(x - (16.0f)/* THIS OFF SET SHOULD BE Picture size FIX CAM */, y, z, this->vertical, this->player, false);
+		loopObjectR = new ParallaxObject(x + ((pictureWidth / pictureHeight) * 9.0f)/* THIS OFF SET SHOULD BE Picture size FIX CAM */, y, z, this->vertical, this->player, false, pictureWidth, pictureHeight); // must be false or else.... infinite loop naa
+		loopObjectL = new ParallaxObject(x - ((pictureWidth / pictureHeight) * 9.0f)/* THIS OFF SET SHOULD BE Picture size FIX CAM */, y, z, this->vertical, this->player, false, pictureWidth, pictureHeight);
 		//loopObject->getTransform().setPosition(glm::vec3(this->getTransform().getPosition().x + 10.3f, this->getTransform().getPosition().y, 0));
 		//loopObject->getTransform().setScale(glm::vec3(10.0f, 10.0f, 0.0f));
 		cout << "loop created" << endl;
@@ -63,6 +64,7 @@ void ParallaxObject::setPlane(float nearPlane, float farPlane) { // the magic nu
 
 void ParallaxObject::start(list<DrawableObject*>& objectsList) {
 	// Might use to set player pointer but it will be O(n^2), so right now the player is set through level init
+	// mf really cared about BigO 
 }
 
 // Parallax doesn't work with start Pos
@@ -97,12 +99,12 @@ void ParallaxObject::update(list<DrawableObject*>& objectsList) {
 	
 	//cout << newPos.x << " " << newPos.y << " " << newPos.z << endl;
 
-	if (abs(camPos.x - this->getTransform().getPosition().x) > 32.0f) {
+	if (abs(camPos.x - this->getTransform().getPosition().x) > width * 1.5f) {
 		if (camPos.x < this->getTransform().getPosition().x) {
-			offsetLoop -= 48.0f;
+			offsetLoop -= width * 3;
 		}
 		else {
-			offsetLoop += 48.0f;
+			offsetLoop += width * 3;
 		}
 	}
 

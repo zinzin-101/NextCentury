@@ -13,6 +13,12 @@
 #include "LevelPrototype.h"
 #include "LevelPrototypeNMMN.h"
 #include "LevelAct1.h"
+#include "LevelAct2.h"
+#include "LevelAct3.h"
+#include "LevelAct4.h"
+#include "LevelAct5.h"
+#include "LevelAct6.h"
+#include "LevelMainMenu.h"
 
 GameStateController::GameStateController() {
 	// set the initial game state
@@ -33,15 +39,33 @@ void GameStateController::loadLevel() {
 	cout << gameStateCurr << endl;
 	switch (gameStateCurr) {
 		case GameState::GS_LEVEL1:
-			currentLevel = new LevelAlphaTest();
+			currentLevel = new LevelMainMenu();
 			break;
 		case GameState::GS_LEVEL2:
-			currentLevel = new LevelPrototype();
+			currentLevel = new LevelAlphaNMMN();
 			break;
 		case GameState::GS_LEVEL3:
-			cout << "Act1 load" << endl;
-			currentLevel = new LevelAct1();
+			currentLevel = new LevelAct2();
 			break;
+		case GameState::GS_ACT1:
+			currentLevel = new LevelAct3();
+			break;
+		case GameState::GS_ACT2:
+			currentLevel = new LevelAct2();
+			break;
+		case GameState::GS_ACT3:
+			currentLevel = new LevelAct3();
+			break;
+		case GameState::GS_ACT4:
+			currentLevel = new LevelAct4();
+			break;
+		case GameState::GS_ACT5:
+			currentLevel = new LevelAct5();
+			break;
+		case GameState::GS_ACT6:
+			currentLevel = new LevelAct6();
+			break;
+
 		default:
 			cout << "gGameStateCurr : invalid state!!" << endl;
 			exit(1);

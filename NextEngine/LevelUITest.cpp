@@ -36,13 +36,13 @@ void LevelUITest::levelInit() {
 
     // Center the camera.
     glm::vec3 centerCamPos = glm::vec3(0.0f, 0.0f, 0.0f);
-    GameEngine::getInstance()->getRenderer()->updateCamera(centerCamPos);
+    GameEngine::getInstance()->getRenderer()->updateCamera();
 }
 
 void LevelUITest::levelUpdate() {
     // Ensure the camera remains centered.
     glm::vec3 camPos = glm::vec3(0.0f, 0.0f, 0.0f);
-    GameEngine::getInstance()->getRenderer()->updateCamera(camPos);
+    GameEngine::getInstance()->getRenderer()->updateCamera();
 }
 
 void LevelUITest::levelDraw() {

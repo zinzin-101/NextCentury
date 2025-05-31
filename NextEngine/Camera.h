@@ -13,6 +13,9 @@ private:
     glm::vec3 up;
     float deadZoneX;
     float deadZoneY;
+    bool isUsingDeadLimit;
+    float deadLimitPosMin;
+    float deadLimitPosMax;
     glm::vec3 offset;
     //bool targetIsSet;
 
@@ -22,6 +25,8 @@ private:
 public:
     Camera();
     Camera(float fov, float aspect, float near, float far) {}
+    void setDeadLimitBool(bool isDeadLimit);
+    void setDeadLimitMinMax(float min, float max);
     void setPosition(const glm::vec3& pos);
     void setTarget(DrawableObject* target);
     void followTarget();
@@ -39,4 +44,5 @@ public:
     void startShake(float duration);
 
     void updateCamera();
+    
 };

@@ -30,44 +30,44 @@ void LevelPrototype::levelInit() {
         cout << pair.first << " , " << pair.second.name << endl;    
     }
 
-    ParallaxObject* background = new ParallaxObject(0.0f, 7.3f, 550.0f, false, player, true);
-    background->setTexture("../Resource/Texture/OutskirtParallax/OSKT_P09_Sky.png");
-    objectsList.emplace(objectsList.begin(), background);
+    //ParallaxObject* background = new ParallaxObject(0.0f, 7.3f, 550.0f, false, player, true);
+    //background->setTexture("../Resource/Texture/OutskirtParallax/OSKT_P09_Sky.png");
+    //objectsList.emplace(objectsList.begin(), background);
 
-    ParallaxObject* spaceShip = new ParallaxObject(0.0f, 7.3f, 450.0f, false, player, true);
-    spaceShip->setTexture("../Resource/Texture/OutskirtParallax/OSKT_P08_Spaceship.png");
-    objectsList.push_back(spaceShip);
+    //ParallaxObject* spaceShip = new ParallaxObject(0.0f, 7.3f, 450.0f, false, player, true);
+    //spaceShip->setTexture("../Resource/Texture/OutskirtParallax/OSKT_P08_Spaceship.png");
+    //objectsList.push_back(spaceShip);
 
-    ParallaxObject* Mountain1 = new ParallaxObject(0.0f, 7.3f, 350.0f, false, player, true);
-    Mountain1->setTexture("../Resource/Texture/OutskirtParallax/OSKT_P06_Mountain01.png");
-    objectsList.push_back(Mountain1);
+    //ParallaxObject* Mountain1 = new ParallaxObject(0.0f, 7.3f, 350.0f, false, player, true);
+    //Mountain1->setTexture("../Resource/Texture/OutskirtParallax/OSKT_P06_Mountain01.png");
+    //objectsList.push_back(Mountain1);
 
-    ParallaxObject* Mountain2 = new ParallaxObject(0.0f, 7.3f, 200.0f, false, player, true);
-    Mountain2->setTexture("../Resource/Texture/OutskirtParallax/OSKT_P07_Mountain02.png");
-    objectsList.push_back(Mountain2);
+    //ParallaxObject* Mountain2 = new ParallaxObject(0.0f, 7.3f, 200.0f, false, player, true);
+    //Mountain2->setTexture("../Resource/Texture/OutskirtParallax/OSKT_P07_Mountain02.png");
+    //objectsList.push_back(Mountain2);
 
-    ParallaxObject* MidGround1 = new ParallaxObject(0.0f, 7.3f, 150.0f, false, player, true);
-    MidGround1->setTexture("../Resource/Texture/OutskirtParallax/OSKT_P05_MidGround01.png");
-    objectsList.push_back(MidGround1);
+    //ParallaxObject* MidGround1 = new ParallaxObject(0.0f, 7.3f, 150.0f, false, player, true);
+    //MidGround1->setTexture("../Resource/Texture/OutskirtParallax/OSKT_P05_MidGround01.png");
+    //objectsList.push_back(MidGround1);
 
-    ParallaxObject* MidGround2 = new ParallaxObject(0.0f, 7.3f, 80.0f, false, player, true);
-    MidGround2->setTexture("../Resource/Texture/OutskirtParallax/OSKT_P04_MidGround02.png");
-    objectsList.push_back(MidGround2);
+    //ParallaxObject* MidGround2 = new ParallaxObject(0.0f, 7.3f, 80.0f, false, player, true);
+    //MidGround2->setTexture("../Resource/Texture/OutskirtParallax/OSKT_P04_MidGround02.png");
+    //objectsList.push_back(MidGround2);
 
-    ParallaxObject* MidGround3 = new ParallaxObject(0.0f, 7.3f, 50.0f, false, player, true);
-    MidGround3->setTexture("../Resource/Texture/OutskirtParallax/Mid3.png");
-    objectsList.push_back(MidGround3);
+    //ParallaxObject* MidGround3 = new ParallaxObject(0.0f, 7.3f, 50.0f, false, player, true);
+    //MidGround3->setTexture("../Resource/Texture/OutskirtParallax/Mid3.png");
+    //objectsList.push_back(MidGround3);
 
-    ParallaxObject* Ground = new ParallaxObject(0.0f, 7.3f, 0.0f, false, player, true);
-    Ground->setTexture("../Resource/Texture/OutskirtParallax/OSKT_P02_Ground.png");
-    objectsList.push_back(Ground);
+    //ParallaxObject* Ground = new ParallaxObject(0.0f, 7.3f, 0.0f, false, player, true);
+    //Ground->setTexture("../Resource/Texture/OutskirtParallax/OSKT_P02_Ground.png");
+    //objectsList.push_back(Ground);
 
     mapLoader.readData("prototypemap.txt");
     mapLoader.appendDataToScene(objectsList, player);
 
-    ParallaxObject* Fog = new ParallaxObject(0.0f, 7.3f, 100.0f, false, player, true);
-    Fog->setTexture("../Resource/Texture/OutskirtParallax/OSKT_P01_Fog.png");
-    objectsList.push_back(Fog);
+    //ParallaxObject* Fog = new ParallaxObject(0.0f, 7.3f, 100.0f, false, player, true);
+    //Fog->setTexture("../Resource/Texture/OutskirtParallax/OSKT_P01_Fog.png");
+    //objectsList.push_back(Fog);
 
     marker = new SimpleObject();
     marker->setName("marker");
@@ -153,7 +153,7 @@ void LevelPrototype::levelInit() {
 void LevelPrototype::levelUpdate() {
     updateObjects(objectsList);
     glm::vec3 followPos = viewMarker ? marker->getTransform().getPosition() : player->getTransform().getPosition();
-    GameEngine::getInstance()->getRenderer()->updateCamera(followPos);
+    GameEngine::getInstance()->getRenderer()->updateCamera();
     if (ray != nullptr) ray->getTransform().setPosition(marker->getTransform().getPosition());
     // Update health bar position and size
     float healthPercentage = static_cast<float>(player->getHealth()) / 100;

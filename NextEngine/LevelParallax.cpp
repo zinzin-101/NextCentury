@@ -45,7 +45,7 @@ void LevelParallax::levelUpdate() {
 
 
     glm::vec3 playerPosition = player->getTransform().getPosition();
-    GameEngine::getInstance()->getRenderer()->updateCamera(playerPosition);
+    GameEngine::getInstance()->getRenderer()->updateCamera();
 }
 
 void LevelParallax::levelDraw() {

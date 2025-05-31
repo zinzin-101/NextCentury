@@ -45,6 +45,7 @@ void GameEngine::init(int width, int height) {
 
 	time = new Time();
 	inputHandler = new InputManager();  
+	audioEngine.init("../Resource/Audio/SoundEffect/", "../Resource/Audio/Music/");
 }
 
 void GameEngine::updateEngineComponent() {
@@ -127,4 +128,22 @@ void GameEngine::pauseTimeForSeconds(float duration) {
 
 bool GameEngine::getIsGamePaused() const {
 	return isGamePaused;
+}
+
+void GameEngine::initAudio(const std::string& effectFolder, const std::string& musicFolder) {
+	audioEngine.init(effectFolder, musicFolder);
+	std::cout << "AudioEngine initialized with Effects:" << effectFolder
+		<< " Music:" << musicFolder << std::endl;
+}
+
+void GameEngine::playSoundEffect(const std::string& fileName, int loop) {
+	audioEngine.playSoundEffectByName(fileName, loop);
+}
+
+void GameEngine::playMusic(const std::string& fileName, int loop) {
+	audioEngine.playMusicByName(fileName, loop);
+}
+
+void GameEngine::stopMusic() {
+	audioEngine.stopMusic();
 }
