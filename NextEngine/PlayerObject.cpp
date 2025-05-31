@@ -989,3 +989,19 @@ void PlayerObject::resetHealing() {
 int PlayerObject::getStamina() const {
     return stamina;
 }
+
+int PlayerObject::getCurrentNumOfBullet() const {
+    return currentNumOfBullets;
+}
+
+float PlayerObject::getRangeAttackCooldownRemaining() const {
+    return rangeAttackCooldownRemaining;
+}
+
+int PlayerObject::getCurrentNumOfPotion() const {
+    return currentNumOfPotion;
+}
+
+float PlayerObject::getPotionRechargeTimer() const {
+    return potionRechargeTimer;
+}
