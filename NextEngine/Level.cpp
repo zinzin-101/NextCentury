@@ -196,7 +196,7 @@ void Level::drawImGui(std::list<DrawableObject*>& objectList) {
     GameEngine::getInstance()->getRenderer()->setToggleViewport(!enableFreeViewPort);
 
     if (!GameEngine::getInstance()->getIsGamePaused()) {
-        //pauseGame ? GameEngine::getInstance()->getTime()->setTimeScale(0.0f) : GameEngine::getInstance()->getTime()->setTimeScale(1.0f);
+        pauseGame ? GameEngine::getInstance()->getTime()->setTimeScale(0.0f) : GameEngine::getInstance()->getTime()->setTimeScale(1.0f);
     }
 
     if (ImGui::Button("Reset Scene")) {
@@ -904,4 +904,8 @@ void Level::removeLoadingScreen(std::list<DrawableObject*>& objectsList) {
 
 void Level::LoadContent() {
 
+}
+
+void Level::NextLevel() {
+    GameEngine::getInstance()->getStateController()->gameStateNext = (GameState)((GameEngine::getInstance()->getStateController()->gameStateCurr + 1) % 9);
 }

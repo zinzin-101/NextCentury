@@ -1,0 +1,12 @@
+Cultist 1
+1
+0
+3.0
+*turns around*....!!!
+NEXTCHAT
+Cultist 3
+3
+0
+2.0
+HEY YOU!
+NEXTCHAT

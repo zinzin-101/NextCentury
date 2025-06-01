@@ -19,6 +19,8 @@ void LevelAct2::levelInit() {
     UIobject = new IngameUI();
     GameEngine::getInstance()->getRenderer()->setClearColor(0.1f, 0.1f, 0.1f);
 
+    player = new PlayerObject();
+
     float pictureWidth = 1000.0f;
     float pictureHeight = 360.0f;
 
@@ -37,6 +39,7 @@ void LevelAct2::levelInit() {
     ParallaxObject* midGround2 = new ParallaxObject(0.0f, -0.5f, 25.0f, false, player, true, pictureWidth, pictureHeight);
     midGround2->setTexture("../Resource/Texture/Act2/RSDT_P04_MidGround02.png");
     objectsList.emplace_back(midGround2);
+    doorKeepTrack = midGround2;
 
     ParallaxObject* midGround3 = new ParallaxObject(0.0f, -0.5f, 12.5f, false, player, true, pictureWidth, pictureHeight);
     midGround3->setTexture("../Resource/Texture/Act2/RSDT_P06_MidGround03.png");
@@ -46,9 +49,13 @@ void LevelAct2::levelInit() {
     //door->setTexture("../Resource/Texture/Act2/RSDT_P05_Door.png");
     //objectsList.emplace_back(door);
 
-    ParallaxObject* barrier = new ParallaxObject(0.0f, -0.5f, 10.0f, false, player, true, pictureWidth, pictureHeight);
-    barrier->setTexture("../Resource/Texture/Act2/RSDT_P07_Barrier.png");
-    objectsList.emplace_back(barrier);
+    door = new InteractableObject("../Resource/Texture/StoryStuff/NeonBoardDescription.txt", player, "../Resource/Texture/Act2/DoorAct2.png", objectsList); // don't need text
+    door->getTransform().setScale(glm::vec3(1.22f, 2.12f, 0.0f));
+    objectsList.emplace_back(door);
+
+    //ParallaxObject* barrier = new ParallaxObject(0.0f, -0.5f, 10.0f, false, player, true, pictureWidth, pictureHeight);
+    //barrier->setTexture("../Resource/Texture/Act2/RSDT_P07_Barrier.png");
+    //objectsList.emplace_back(barrier);
 
     ParallaxObject* foreGround = new ParallaxObject(0.0f, 0.0f, 0.0f, false, player, true, pictureWidth, pictureHeight);
     foreGround->setTexture("../Resource/Texture/Act2/RSDT_P08_Foreground01.png");
@@ -58,20 +65,11 @@ void LevelAct2::levelInit() {
     ground->setTexture("../Resource/Texture/Act1/City_P11_Ground.png");
     objectsList.emplace_back(ground);
 
-    //float height = 7.0f;
-    //float width = height * 2.7778f;
-    //for (auto a : objectsList) {
-    //    a->getTransform().setScale(width, height);
-    //}
+    Level::importTransformData(objectsList, "act2", false);
 
-
-
-    Level::importTransformData(objectsList, "alpha1", false);
-
-    player = new PlayerObject();
-    player->getTransform().setScale(4.166f, 2.5f);
-    player->getColliderComponent()->getTransform().translate(0.0f, -0.44f);
-    player->getColliderComponent()->setDimension(0.25f, 0.65f);
+    //player->getTransform().setScale(4.166f, 2.5f);
+    //player->getColliderComponent()->getTransform().translate(0.0f, -0.44f);
+    //player->getColliderComponent()->setDimension(0.25f, 0.65f);
     objectsList.emplace_back(player);
 
     GameEngine::getInstance()->getRenderer()->getCamera()->setTarget(player);
@@ -88,14 +86,24 @@ void LevelAct2::levelInit() {
     startObjects(objectsList);
 
     player->getDamageCollider()->setFollowOffset(glm::vec3(1.0f, -0.2f, 0));
+    player->getTransform().setPosition(glm::vec3(-6.0f, -1.6f, 0.0f));
 
     //UIobject->initUI(objectsList);
+
+    start = new ProtagThoughts("../Resource/Texture/StoryStuff/ProtagThoughtsAct2/start.txt", player);
+    objectsList.emplace_back(start);
+
+    fb = new FadeBlack(1.0f);
+    objectsList.emplace_back(fb);
+    fb->FadeToTransparent();
+
+    GameEngine::getInstance()->getRenderer()->getCamera()->setDeadLimitBool(true);
+    GameEngine::getInstance()->getRenderer()->getCamera()->setDeadLimitMinMax(-5.0f, 37.5f);
 
     GameEngine::getInstance()->getRenderer()->getCamera()->setOffset(glm::vec3(0.0f, -0.5f, 0.0f));
     GameEngine::getInstance()->getRenderer()->setToggleViewport(true);
 
     GameEngine::getInstance()->freezeGameForSeconds(0.5f);
-
 }
 
 void LevelAct2::levelUpdate() {
@@ -103,6 +111,17 @@ void LevelAct2::levelUpdate() {
 
     GameEngine::getInstance()->getRenderer()->updateCamera();
 
+    door->getTransform().setPosition(glm::vec3(34.01f + doorKeepTrack->getTransform().getPosition().x, -1.82f, 0.0f));
+    if (player->getTransform().getPosition().x > -3.0f) {
+        start->activateDialogue();
+    }
+
+    if (end) {
+        timefade -= GameEngine::getInstance()->getTime()->getDeltaTime();
+        if (timefade < 0.0f) {
+            GameEngine::getInstance()->getStateController()->gameStateNext = (GameState)((GameEngine::getInstance()->getStateController()->gameStateCurr + 1) % 9);
+        }
+    }
 
     // Placeholder death logic
     for (std::list<DrawableObject*>::iterator itr = objectsList.begin(); itr != objectsList.end(); ++itr) {
@@ -220,6 +239,15 @@ void LevelAct2::handleKey(InputManager& input) {
         }
         else {
             player->dodge();
+        }
+    }
+
+    if (input.getButtonDown(SDLK_e)) {
+        if (door->getIsClickable()) {
+            //sfx
+            //transition
+            fb->FadeToBlack();
+            end = true;
         }
     }
 }
