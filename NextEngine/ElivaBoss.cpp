@@ -356,6 +356,7 @@ void ElivaBoss::handleRifleShot() {
 		float offsetX = playerPos.x - elivaPos.x;
 		isFacingRight = offsetX < 0.0f;
 		hasRifleBeenFired = false;
+		canUsePoisonCloud = true;
 		return;
 	}
 
@@ -373,9 +374,6 @@ void ElivaBoss::handleRifleShot() {
 		spawnPos.x += (direction * 0.5f); // horizontal offset, tweak later
 		spawnPos.y -= 0.5f; // vertical offset, tweak later
 		rifleProjectiles[++currentProjectileIndex % 3]->activate(spawnPos, bulletVelocity, ElivaStat::RIFLE_SHOT_LIFESPAN);
-
-		canUsePoisonCloud = true;
-
 		return;
 	}
 }
@@ -389,6 +387,9 @@ void ElivaBoss::handleBayonetSlash() {
 		glm::vec3 elivaPos = this->getTransform().getPosition();
 		float offsetX = playerPos.x - elivaPos.x;
 		isFacingRight = offsetX < 0.0f;
+
+		canUsePoisonCloud = true;
+
 		return;
 	}
 
@@ -410,9 +411,6 @@ void ElivaBoss::handleBayonetSlash() {
 
 	if (currentFrame == 7 + 1) {
 		bayonetCollider->setActive(false);
-
-		canUsePoisonCloud = true;
-
 		return;
 	}
 }
@@ -515,6 +513,7 @@ void ElivaBoss::handleSerumInject() {
 
 	if (currentFrame == 0 + 1) {
 		setCanTakeDamage(false);
+		canUsePoisonCloud = true;
 		return;
 	}
 
@@ -528,7 +527,6 @@ void ElivaBoss::handleSerumInject() {
 	if (currentFrame == 20 + 1) {
 		setCanTakeDamage(true);
 		hasInjectedSerum = true;
-		canUsePoisonCloud = true;
 		return;
 	}
 }
