@@ -5,12 +5,12 @@
 BlightFlame::BlightFlame(const EnemyInfo& enemyinfo) : EnemyObject(enemyinfo) {
 	flameHitbox = nullptr;
 	stunnedTime = BlightFlameStat::STUN_DURATION;
-	getTransform().setScale(6.0f, 2.0f);
+	getTransform().setScale(3.5f, 2.0f);
 	this->getColliderComponent()->getTransform().setScale(0.4f, 1.0f);
 }
 void BlightFlame::start(list<DrawableObject*>& objectsList) {
 	//setTexture("../Resource/Texture/incineratorSizeFlip.png");
-	setTexture("../Resource/Texture/BlightFlameFixedFF.png");
+	setTexture("../Resource/Texture/incineratorFixed.png");
 	//initAnimation(6, 2);
 	initAnimation(8, 11);
 	targetEntity = nullptr;
@@ -22,7 +22,7 @@ void BlightFlame::start(list<DrawableObject*>& objectsList) {
 	getAnimationComponent()->addState("WindUp", 0, 0, 6, false);
 	getAnimationComponent()->addState("Attack", 2, 0, 9, true);
 	getAnimationComponent()->addState("WindDown", 0, 0, 6, false);
-	getAnimationComponent()->addState("Melee", 4, 0, 7, false, BlightFlameStat::MELEE_TIME_PER_FRAME);
+	getAnimationComponent()->addState("Melee", 4, 0, 8, false, BlightFlameStat::MELEE_TIME_PER_FRAME);
 	getAnimationComponent()->addState("Stunned", 5, 0, 2, true);
 	getAnimationComponent()->setState("Idle");
 	attackHitbox = new DamageCollider<PlayerObject>(this, BlightFlameStat::MELEE_DAMAGE, -1);
@@ -31,9 +31,9 @@ void BlightFlame::start(list<DrawableObject*>& objectsList) {
 	attackHitbox->setFollowOffset(glm::vec3(0.6f, 0.0f ,0.0f));
 	attackHitbox->setDrawCollider(true); // debug
 	attackHitbox->setCanDamage(false);
-	attackFrameStart = 2;
-	attackFrameActivate = 4;
-	attackFrameEnd = 5;
+	attackFrameStart = 3;
+	attackFrameActivate = 5;
+	attackFrameEnd = 6;
 	objectsList.emplace_back(attackHitbox);
 	flameHitbox = new FlameDamage<PlayerObject>(this, BlightFlameStat::FLAME_DAMAGE, 0.2f);
 	flameHitbox->DrawableObject::setActive(false);

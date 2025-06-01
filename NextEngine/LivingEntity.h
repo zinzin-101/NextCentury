@@ -73,7 +73,7 @@ class LivingEntity : public TexturedObject {
         int getHealth() const;
         int getMaxHealth() const;
         bool getCanTakeDamage() const;
-        bool getIsDead() const;
+        virtual bool getIsDead() const;
         bool getIsAlive() const;
         bool getIsStun() const;
         bool getIsFacingRight() const;

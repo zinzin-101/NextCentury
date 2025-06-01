@@ -11,7 +11,7 @@ namespace BlightFlameStat {
 	constexpr float MELEE_ATTACK_DISTANCE = 1.1f;
 	constexpr float FLAME_ATTACK_DURATION = 10.0f;
 
-	constexpr float MELEE_TIME_PER_FRAME = 0.1667f;
+	constexpr float MELEE_TIME_PER_FRAME = 0.12f;
 
 	constexpr float STUN_DURATION = 2.0f;
 }
