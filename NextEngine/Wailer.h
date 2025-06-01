@@ -14,6 +14,9 @@ namespace WailerStat {
 
 	constexpr float DISTANCE_TO_SPAWN_ZEALOT = 17.0f;
 	constexpr int MAX_ZEALOT_PER_WAILER = 1;
+
+	constexpr float SONIC_WAVE_TIME_PER_FRAME = 0.1667f;
+	constexpr float SUMMONING_TIME_PER_FRAME = 0.1667f;
 }
 
 class Wailer : public EnemyObject {

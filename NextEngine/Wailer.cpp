@@ -27,15 +27,15 @@ Wailer::~Wailer() {
 }
 
 void Wailer::start(list<DrawableObject*>& objectsList) {
-	setTexture("../Resource/Texture/wailerPlacholder.png");
-	initAnimation(8, 6);
+	setTexture("../Resource/Texture/MadPreacher.png");
+	initAnimation(7, 41);
 	getAnimationComponent()->addState("Idle", 0, 0, 6, true);
 	getAnimationComponent()->addState("Moving", 1, 0, 6, true);
-	getAnimationComponent()->addState("WindUp", 2, 0, 3, false, 0.67f);
-	getAnimationComponent()->addState("SonicAttack", 3, 0, 4, false, 0.2f);
-	getAnimationComponent()->addState("WindDown", 4, 0, 3, false, 0.4f);
-	getAnimationComponent()->addState("Summoning", 5, 0, 4, false, 0.67f);
-	getAnimationComponent()->addState("Stunned", 6, 0, 3, true);
+	getAnimationComponent()->addState("WindUp", 3, 0, 8, false, WailerStat::SONIC_WAVE_TIME_PER_FRAME);
+	getAnimationComponent()->addState("SonicAttack", 3, 8, 5, false, WailerStat::SONIC_WAVE_TIME_PER_FRAME);
+	getAnimationComponent()->addState("WindDown", 3, 13, 28, false, WailerStat::SONIC_WAVE_TIME_PER_FRAME);
+	getAnimationComponent()->addState("Summoning", 2, 0, 23, false, WailerStat::SUMMONING_TIME_PER_FRAME);
+	getAnimationComponent()->addState("Stunned", 4, 0, 2, true);
 
 	sonicAttack = new SonicWave();
 	sonicAttack->setName("WailerSonicWave");

@@ -5,6 +5,7 @@
 
 namespace SonicWaveStat {
 	constexpr int SONIC_WAVE_DAMAGE = 10;
+	constexpr float ANIMATION_TIME_PER_FRAME = 0.1667f;
 }
 
 class SonicWave : public TexturedObject {
