@@ -98,6 +98,7 @@
     <ClCompile Include="ChatBubble.cpp" />
     <ClCompile Include="FadeBlack.cpp" />
     <ClCompile Include="LevelAct7.cpp" />
+    <ClCompile Include="LevelAct8.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
@@ -215,6 +216,7 @@
     <ClInclude Include="ChatBubble.h" />
     <ClInclude Include="FadeBlack.h" />
     <ClInclude Include="LevelAct7.h" />
+    <ClInclude Include="LevelAct8.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Resource\Shader\fragment.shd" />

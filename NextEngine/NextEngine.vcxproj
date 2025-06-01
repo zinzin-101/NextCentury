@@ -60,6 +60,7 @@
     <ClCompile Include="LevelAct5.cpp" />
     <ClCompile Include="LevelAct6.cpp" />
     <ClCompile Include="LevelAct7.cpp" />
+    <ClCompile Include="LevelAct8.cpp" />
     <ClCompile Include="LevelAlphaNMMN.cpp" />
     <ClCompile Include="LevelAlphaTest.cpp" />
     <ClCompile Include="LevelAnimTest.cpp" />
@@ -144,6 +145,7 @@
     <ClInclude Include="LevelAct5.h" />
     <ClInclude Include="LevelAct6.h" />
     <ClInclude Include="LevelAct7.h" />
+    <ClInclude Include="LevelAct8.h" />
     <ClInclude Include="LevelLoading.h" />
     <ClInclude Include="HitScanDamage.h" />
     <ClInclude Include="IngameUI.h" />
