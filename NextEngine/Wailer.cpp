@@ -11,7 +11,7 @@ Wailer::Wailer(const EnemyInfo& enemyinfo) : EnemyObject(enemyinfo) {
 	isInSonicAttack = false;
 	zealotCounter = 0;
 
-	getTransform().setScale(1.3f, 1.8f);
+	getTransform().setScale(0.95625f, 1.7f);
 	getColliderComponent()->setDimension(0.5f, 0.85f);
 	getColliderComponent()->getTransform().setPosition(0.0f, -0.15f);
 }

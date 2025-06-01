@@ -209,7 +209,7 @@ void PlayerObject::start(list<DrawableObject*>& objectsList) {
     attackHitbox->addEmitter(objectsList);
     objectsList.emplace_back(attackHitbox);
 
-    this->getTransform().setScale(3.5f, 2.5f);
+    this->getTransform().setScale(3.1868f, 2.5f);
     this->getColliderComponent()->getTransform().translate(0.0f, -0.44f);
     this->getColliderComponent()->setDimension(0.25f, 0.65f);
 
