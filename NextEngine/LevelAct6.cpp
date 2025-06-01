@@ -58,6 +58,8 @@ void LevelAct6::levelInit() {
     ParallaxObject* midGround1 = new ParallaxObject(32.0f, 0.0f, 0.0f, false, player, false, pictureWidth, pictureHeight);
     midGround1->setTexture("../Resource/Texture/Act6/Scene6_Enemybase/ENMB_P06_MidGround01.png");
     objectsList.emplace_back(midGround1);
+    doorKeepTrack = midGround1;
+    //cout << midGround1->getTransform().getScale().x << " : " << midGround1->getTransform().getScale().y << endl;
 
     ParallaxObject* speaker = new ParallaxObject(32.0f, 0.0f, 0.0f, false, player, false, pictureWidth, pictureHeight);
     speaker->setTexture("../Resource/Texture/Act6/Scene6_Enemybase/ENMB_P04_Speaker.png");
@@ -89,6 +91,13 @@ void LevelAct6::levelInit() {
     //player->getTransform().setScale(4.166f, 2.5f);
     //player->getColliderComponent()->getTransform().translate(0.0f, -0.44f);
     //player->getColliderComponent()->setDimension(0.25f, 0.65f);
+
+    door = new InteractableObject("../Resource/Texture/StoryStuff/NeonBoardDescription.txt", player, "../Resource/Texture/Act6/Scene6_Enemybase/ENMB_P05_Door3.png", objectsList);
+    door->getTransform().setScale(0.98f, 1.78f);
+    door->getTransform().setPosition(57.01f, -1.35f);
+    door->setActive(false);
+    objectsList.emplace_back(door);
+
     player->getTransform().setPosition(glm::vec3(-6.0f, -1.6f, 0.0f));
     objectsList.emplace_back(player);
 
@@ -149,7 +158,7 @@ void LevelAct6::levelInit() {
 
     fb = new FadeBlack(1.0f);
     objectsList.emplace_back(fb);
-    //fb->FadeToTransparent();
+    fb->FadeToTransparent();
 
     GameEngine::getInstance()->getRenderer()->getCamera()->setDeadLimitBool(true);
     GameEngine::getInstance()->getRenderer()->getCamera()->setDeadLimitMinMax(-5.0f, 80.75f);
@@ -201,9 +210,12 @@ void LevelAct6::levelUpdate() {
         //set1Block->getColliderComponent()->setEnableCollision(false);
         set1FightDone = true;
         for (EnemyObject* eObj : enemSet2) {
-            eObj->setAggroRange(10.0f); // veri high range cuz it don't matter no more :(
+            eObj->setAggroRange(10.0f); // nvm it kinda mattered :)
         }
     }
+    //if (killCount >= 6) {
+    //    door->setActive(true);
+    //}
 
     //if (player->getTransform().getPosition().x > 26.5f) {
     //    chat2->runChat(objectsList);
@@ -216,6 +228,7 @@ void LevelAct6::levelUpdate() {
     //}
 
     // Placeholder death logic
+    bool k = false;
     for (std::list<DrawableObject*>::iterator itr = objectsList.begin(); itr != objectsList.end(); ++itr) {
         EnemyObject* enemy = dynamic_cast<EnemyObject*>(*itr);
         if (enemy != NULL) {
@@ -223,9 +236,24 @@ void LevelAct6::levelUpdate() {
                 DrawableObject::destroyObject(enemy);
                 killCount++;
             }
+            k = true;
+        }
+        else {
+            
         }
     }
+    if (!k) {
+        //cout << "WHAT" << endl;
+        door->setActive(true);
+    }
 
+    if (end) {
+        timefade -= GameEngine::getInstance()->getTime()->getDeltaTime();
+        if (timefade < 0.0f) {
+            GameEngine::getInstance()->getStateController()->gameStateNext = (GameState)((GameEngine::getInstance()->getStateController()->gameStateCurr + 1) % 9);
+        }
+    }
+    //cout << set2FightDone << endl;
     //UIobject->updateUI(*player, camPos);
 }
 
@@ -336,6 +364,15 @@ void LevelAct6::handleKey(InputManager& input) {
             }
             else {
                 player->dodge();
+            }
+        }
+
+        if (input.getButtonDown(SDLK_e)) {
+            if (door->getIsClickable()) {
+                //sfx
+                //transition
+                fb->FadeToBlack();
+                end = true;
             }
         }
     }
