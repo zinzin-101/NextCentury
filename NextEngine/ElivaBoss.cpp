@@ -93,9 +93,11 @@ ElivaBoss::ElivaBoss(): EnemyObject(DefaultEnemyStat::ELIVA_INFO) {
 }
 
 void ElivaBoss::start(list<DrawableObject*>& objectsList) {
-	setTexture("../Resource/Texture/Boss.png");
+	normalSprite = setTexture("../Resource/Texture/Boss.png");
+	shieldedSprite = setTexture("../Resource/Texture/Boss_Shield.png");
 	//initAnimation(6, 2);
-	initAnimation(11, 21);
+	initAnimation(12, 21);
+	getAnimationComponent()->setTexture(normalSprite);
 	targetEntity = nullptr;
 	getAnimationComponent()->addState("Idle", 0, 0, 6, true, ElivaStat::IDLE_TIME_PER_FRAME);
 	getAnimationComponent()->addState("Blinking", 1, 0, 9, false, ElivaStat::BLINKING_TIME_PER_FRAME);
@@ -103,11 +105,11 @@ void ElivaBoss::start(list<DrawableObject*>& objectsList) {
 	getAnimationComponent()->addState("RifleShot", 4, 0, 10, false, ElivaStat::RIFLE_SHOT_TIME_PER_FRAME);
 	getAnimationComponent()->addState("BayonetSlash", 2, 0, 9, false, ElivaStat::BAYONET_SLASH_TIME_PER_FRAME);
 	getAnimationComponent()->addState("FuryBayonetSlash", 2, 0, 9, false, ElivaStat::FURY_BAYONET_SLASH_TIME_PER_FRAME);
-	getAnimationComponent()->addState("Parried", 8, 0, 2, true, ElivaStat::PARRIED_TIME_PER_FRAME);
-	getAnimationComponent()->addState("PoisonCloud", 6, 0, 21, false, ElivaStat::POISON_CLOUD_TIME_PER_FRAME);
-	getAnimationComponent()->addState("SerumInject", 7, 0, 21, false, ElivaStat::SERUM_INJECT_TIME_PER_FRAME);
+	getAnimationComponent()->addState("Parried", 9, 0, 2, true, ElivaStat::PARRIED_TIME_PER_FRAME);
+	getAnimationComponent()->addState("PoisonCloud", 7, 0, 21, false, ElivaStat::POISON_CLOUD_TIME_PER_FRAME);
+	getAnimationComponent()->addState("SerumInject", 8, 0, 21, false, ElivaStat::SERUM_INJECT_TIME_PER_FRAME);
 	getAnimationComponent()->addState("RapidBurst", 5, 0, 13, false, ElivaStat::RAPID_BURST_TIME_PER_FRAME);
-	getAnimationComponent()->addState("Dead", 10, 0, 9, false, ElivaStat::DEAD_TIME_PER_FRAME);
+	getAnimationComponent()->addState("Dead", 11, 0, 9, false, ElivaStat::DEAD_TIME_PER_FRAME);
 
 	for (int i = 0; i < 3; i++) {
 		rifleProjectiles[i] = new ProjectileObject<PlayerObject>(this, ElivaStat::RIFLE_SHOT_DAMAGE, this->getTransform().getPosition(), glm::vec2(), ElivaStat::RIFLE_SHOT_LIFESPAN);
@@ -392,7 +394,7 @@ void ElivaBoss::handleBayonetSlash() {
 
 	int currentFrame = animState.currentFrame;
 
-	if (currentFrame == 3 + 1) {
+	if (currentFrame == 4 + 1) {
 		bayonetCollider->trigger(this->getTransform().getPosition());
 		bayonetCollider->setCanDamage(false);
 		bayonetCollider->setCanDecreaseTime(false);
@@ -400,13 +402,13 @@ void ElivaBoss::handleBayonetSlash() {
 		return;
 	}
 
-	if (currentFrame == 4 + 1) {
+	if (currentFrame == 6 + 1) {
 		bayonetCollider->setCanDamage(true);
 
 		return;
 	}
 
-	if (currentFrame == 5 + 1) {
+	if (currentFrame == 7 + 1) {
 		bayonetCollider->setActive(false);
 
 		canUsePoisonCloud = true;
@@ -448,7 +450,7 @@ void ElivaBoss::handleRapidBurst() {
 
 	int currentFrame = animState.currentFrame;
 
-	if (currentFrame == 4 + 1 && !hasRifleBeenFired) {
+	if (currentFrame == 6 + 1 && !hasRifleBeenFired) {
 		hasRifleBeenFired = true;
 
 		glm::vec3 playerPos = targetEntity->getTransform().getPosition();
@@ -464,11 +466,11 @@ void ElivaBoss::handleRapidBurst() {
 		return;
 	}
 
-	if (currentFrame == 5 + 1) {
+	if (currentFrame == 7 + 1) {
 		hasRifleBeenFired = false;
 	}
 
-	if (currentFrame == 7 + 1 && !hasRifleBeenFired) {
+	if (currentFrame == 11 + 1 && !hasRifleBeenFired) {
 		hasRifleBeenFired = true;
 
 		glm::vec3 playerPos = targetEntity->getTransform().getPosition();
@@ -484,11 +486,11 @@ void ElivaBoss::handleRapidBurst() {
 		return;
 	}
 
-	if (currentFrame == 8 + 1) {
+	if (currentFrame == 12 + 1) {
 		hasRifleBeenFired = false;
 	}
 
-	if (currentFrame == 10 + 1 && !hasRifleBeenFired) {
+	if (currentFrame == 16 + 1 && !hasRifleBeenFired) {
 		hasRifleBeenFired = true;
 
 		glm::vec3 playerPos = targetEntity->getTransform().getPosition();
@@ -518,6 +520,7 @@ void ElivaBoss::handleSerumInject() {
 
 	if (currentFrame == 13 + 1) {
 		hasShield = true;
+		this->getAnimationComponent()->setTexture(shieldedSprite);
 		currentPhase = Phase::Second;
 		return;
 	}
@@ -563,7 +566,7 @@ void ElivaBoss::handleFuryBayonetSlash() {
 
 	int currentFrame = animState.currentFrame;
 
-	if (currentFrame == 3 + 1) {
+	if (currentFrame == 4 + 1) {
 		bayonetCollider->trigger(this->getTransform().getPosition());
 		bayonetCollider->setCanDamage(false);
 		bayonetCollider->setCanDecreaseTime(false);
@@ -571,13 +574,13 @@ void ElivaBoss::handleFuryBayonetSlash() {
 		return;
 	}
 
-	if (currentFrame == 4 + 1) {
+	if (currentFrame == 6 + 1) {
 		bayonetCollider->setCanDamage(true);
 
 		return;
 	}
 
-	if (currentFrame == 5 + 1) {
+	if (currentFrame == 7 + 1) {
 		bayonetCollider->setActive(false);
 
 		return;
@@ -689,6 +692,8 @@ void ElivaBoss::breakShield() {
 			this->getEmitter()->emit(particleProps);
 		}
 	}
+
+	this->getAnimationComponent()->setTexture(normalSprite);
 
 	this->hasShield = false;
 }

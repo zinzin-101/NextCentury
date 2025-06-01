@@ -101,6 +101,9 @@ class ElivaBoss : public EnemyObject {
 		~ElivaBoss();
 
 	private:
+		unsigned int normalSprite;
+		unsigned int shieldedSprite;
+
 		State states[14];
 		State* currentState;
 		Phase currentPhase;
