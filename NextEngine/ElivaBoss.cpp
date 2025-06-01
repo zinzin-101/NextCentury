@@ -528,6 +528,7 @@ void ElivaBoss::handleSerumInject() {
 	if (currentFrame == 20 + 1) {
 		setCanTakeDamage(true);
 		hasInjectedSerum = true;
+		canUsePoisonCloud = true;
 		return;
 	}
 }
