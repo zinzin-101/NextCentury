@@ -13,6 +13,7 @@
 #include "IngameUI.h"
 #include "InteractableObject.h"
 #include "Dialogue.h"
+#include "GameStateList.h"
 
 namespace LevelConstant {
     constexpr float DEFAULT_BUFFER_DURATION = 0.3f;
@@ -69,6 +70,10 @@ public:
     #endif
     static void exportTransformData(std::list<DrawableObject*>& objectsList, std::string fileName);
     static void importTransformData(std::list<DrawableObject*>& objectsList, std::string fileName, bool drawOutline);
+
+    static void saveCurrentGameState();
+    static GameState getLastGameStateData();
+    static void resetGameStateSave();
 
 	virtual void addLoadingScreen(std::list<DrawableObject*>& objectsList);
 	virtual void removeLoadingScreen(std::list<DrawableObject*>& objectsList);

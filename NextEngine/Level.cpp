@@ -601,6 +601,22 @@ void Level::drawImGui(std::list<DrawableObject*>& objectList) {
     }
     ImGui::End();
 
+    ImGui::Begin("Load/Save Test");
+    if (ImGui::Button("Save current scene index")) {
+        Level::saveCurrentGameState();
+    }
+
+    static GameState currentData = GameState::GS_NONE;
+    if (ImGui::Button("Load scene index from save")) {
+        currentData = Level::getLastGameStateData();
+    }
+    ImGui::Text("Loaded data: %d", (int)currentData);
+
+    if (ImGui::Button("Reset scene index save")) {
+        Level::resetGameStateSave();
+    }
+    ImGui::End();
+
     ImGui::Render();
 
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
@@ -608,7 +624,7 @@ void Level::drawImGui(std::list<DrawableObject*>& objectList) {
 #endif
 
 void Level::exportTransformData(std::list<DrawableObject*>& objectsList, std::string fileName) {
-    std::ofstream output("../Resource/output/" + fileName + ".txt");
+    std::ofstream output("../Resource/scenes/" + fileName + ".dat");
 
     if (!output) {
         std::cout << "Failed to write file" << std::endl;
@@ -673,7 +689,7 @@ void Level::exportTransformData(std::list<DrawableObject*>& objectsList, std::st
 }
 
 void Level::importTransformData(std::list<DrawableObject*>& objectsList, std::string fileName, bool drawOutline) {
-    std::ifstream file("../Resource/output/" + fileName + ".txt");
+    std::ifstream file("../Resource/scenes/" + fileName + ".dat");
     if (!file) {
         std::cout << "Failed to read file" << std::endl;
         return;
@@ -904,4 +920,49 @@ void Level::removeLoadingScreen(std::list<DrawableObject*>& objectsList) {
 
 void Level::LoadContent() {
 
+}
+
+void Level::saveCurrentGameState() {
+    GameState currentGameState = GameEngine::getInstance()->getStateController()->gameStateCurr;
+
+    std::ofstream output("../Resource/data/GlobalSave.dat");
+
+    if (!output) {
+        std::cout << "Failed to write save" << std::endl;
+        return;
+    }
+
+    output << static_cast<int>(currentGameState);
+
+    output.close();
+}
+
+GameState Level::getLastGameStateData() {
+    std::ifstream input("../Resource/data/GlobalSave.dat");
+
+    if (!input) {
+        return GameState::GS_NONE;
+    }
+
+    std::string line;
+    std::getline(input, line);
+
+    GameState gameState = static_cast<GameState>(std::stoi(line));
+
+    input.close();
+
+    return gameState;
+}
+
+void Level::resetGameStateSave() {
+    std::ofstream output("../Resource/data/GlobalSave.dat");
+
+    if (!output) {
+        std::cout << "Failed to write save" << std::endl;
+        return;
+    }
+
+    output << static_cast<int>(GameState::GS_ACT1);
+
+    output.close();
 }
