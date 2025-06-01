@@ -5,6 +5,8 @@
 #include "PlayerObject.h"
 #include "UI.h"
 
+
+
 class IngameUI {
 private:
     TexturedObject* healthBar = nullptr;
@@ -12,6 +14,11 @@ private:
     TexturedObject* staminaBar = nullptr;
     SimpleObject* staminaBarFill = nullptr;
 	TexturedObject* gunCooldown = nullptr;
+    int MAX_BULLETS = 4;
+    std::vector<TexturedObject*> gunIcons;
+
+    
+    glm::vec3 baseGunScale;
 	glm::vec3 camPos;
 
 public:
