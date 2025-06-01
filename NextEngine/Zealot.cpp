@@ -11,9 +11,9 @@ Zealot::Zealot(const EnemyInfo& enemyinfo) : EnemyObject(enemyinfo) {
 	getColliderComponent()->setDimension(0.5f, 0.85f);
 	getColliderComponent()->getTransform().setPosition(0.0f, -0.15f);
 
-	attackFrameStart = 2;
-	attackFrameActivate = 3;
-	attackFrameEnd = 4;
+	attackFrameStart = 3;
+	attackFrameActivate = 5;
+	attackFrameEnd = 6;
 }
 
 Zealot::~Zealot() {
@@ -30,8 +30,8 @@ void Zealot::start(list<DrawableObject*>& objectsList) {
 	targetEntity = nullptr;
 	getAnimationComponent()->addState("Idle", 0, 0, 6, true);
 	getAnimationComponent()->addState("Moving", 1, 0, 8, true);
-	getAnimationComponent()->addState("Attack1", 2, 0, 5, false);
-	getAnimationComponent()->addState("Attack2", 2, 0, 5, false);
+	getAnimationComponent()->addState("Attack1", 2, 0, 7, false);
+	getAnimationComponent()->addState("Attack2", 2, 0, 7, false);
 	getAnimationComponent()->addState("Stunned", 4, 0, 2, true);
 	getAnimationComponent()->setState("Idle");
 	attackHitbox = new DamageCollider<PlayerObject>(this, damage, -1);
