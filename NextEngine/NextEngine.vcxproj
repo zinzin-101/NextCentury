@@ -36,6 +36,7 @@
     <ClCompile Include="BlightFlame.cpp" />
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="ChatBubble.cpp" />
     <ClCompile Include="Collider.cpp" />
     <ClCompile Include="ColliderObject.cpp" />
     <ClCompile Include="CollisionHandler.cpp" />
@@ -45,9 +46,11 @@
     <ClCompile Include="ElivaBoss.cpp" />
     <ClCompile Include="ElivaBossState.cpp" />
     <ClCompile Include="EnemyObject.cpp" />
+    <ClCompile Include="FadeBlack.cpp" />
     <ClCompile Include="GameEngine.cpp" />
     <ClCompile Include="GameStateController.cpp" />
     <ClCompile Include="GLRenderer.cpp" />
+    <ClCompile Include="GotItemText.cpp" />
     <ClCompile Include="IngameUI.cpp" />
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="InteractableObject.cpp" />
@@ -78,6 +81,7 @@
     <ClCompile Include="MeshVbo.cpp" />
     <ClCompile Include="ParallaxObject.cpp" />
     <ClCompile Include="Particle.cpp" />
+    <ClCompile Include="ProtagThoughts.cpp" />
     <ClCompile Include="PoisonCloud.cpp" />
     <ClCompile Include="SimpleParticle.cpp" />
     <ClCompile Include="ParticleSystem.cpp" />
@@ -116,6 +120,7 @@
     <ClInclude Include="BlightFlame.h" />
     <ClInclude Include="Button.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="ChatBubble.h" />
     <ClInclude Include="Collider.h" />
     <ClInclude Include="ColliderObject.h" />
     <ClInclude Include="CollisionHandler.h" />
@@ -128,11 +133,13 @@
     <ClInclude Include="ElivaBossState.h" />
     <ClInclude Include="EnemyInfo.h" />
     <ClInclude Include="EnemyObject.h" />
+    <ClInclude Include="FadeBlack.h" />
     <ClInclude Include="FlameDamage.h" />
     <ClInclude Include="GameEngine.h" />
     <ClInclude Include="GameStateController.h" />
     <ClInclude Include="GameStateList.h" />
     <ClInclude Include="GLRenderer.h" />
+    <ClInclude Include="GotItemText.h" />
     <ClInclude Include="LevelAct2.h" />
     <ClInclude Include="LevelAct3.h" />
     <ClInclude Include="LevelAct4.h" />
@@ -167,6 +174,7 @@
     <ClInclude Include="ParallaxBackground.h" />
     <ClInclude Include="ParallaxObject.h" />
     <ClInclude Include="Particle.h" />
+    <ClInclude Include="ProtagThoughts.h" />
     <ClInclude Include="PoisonCloud.h" />
     <ClInclude Include="SimpleParticle.h" />
     <ClInclude Include="ParticleProperties.h" />

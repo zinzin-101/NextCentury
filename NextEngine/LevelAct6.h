@@ -9,7 +9,24 @@ private:
     list<DrawableObject*> UIobjectsList;
     PlayerObject* player = nullptr;
     IngameUI* UIobject;
-    glm::vec3 camPos = glm::vec3(0.0f, 0.0f, 0.0f);
+    FadeBlack* fb;
+    ChatBubble* chat1;
+    ChatBubble* chat2;
+    ProtagThoughts* thought1;
+    SimpleObject* camTarget;
+    InteractableObject* door;
+    ParallaxObject* doorKeepTrack;
+    bool isStop = false;
+    bool set1FightDone = false;
+    bool set2FightDone = false;
+    float turnTime = 0.8f;
+    ColliderObject* set1Block;
+    list<EnemyObject*> enemSet1;
+    list<EnemyObject*> enemSet2;
+    int killCount = 0;
+
+    bool end;
+    float timefade = 1.0f;
 
 public:
     virtual void levelLoad();

@@ -19,55 +19,91 @@ void LevelAct3::levelInit() {
     UIobject = new IngameUI();
     GameEngine::getInstance()->getRenderer()->setClearColor(0.1f, 0.1f, 0.1f);
 
+    player = new PlayerObject();
+
     float pictureWidth = 640.0f;
     float pictureHeight = 360.0f;
     float scaleX = (pictureWidth / pictureHeight) * 9.0f;
     float scaleY = 9.0f;
 
     TexturedObject* backGround = new TexturedObject();
-    backGround->getTransform().setPosition(0.0f, -0.5f);
+    backGround->getTransform().setPosition(0.0f, 0.0f);
     backGround->setTexture("../Resource/Texture/Act3/MCR_P01_RoomBase.png");
     backGround->getTransform().setScale(scaleX, scaleY);
     objectsList.emplace_back(backGround);
 
+    board = new InteractableObject("../Resource/Texture/StoryStuff/BoardAct3.txt", player, "../Resource/Texture/Act3/BoardSheet.png", objectsList);
+    board->getTransform().setPosition(glm::vec3(2.55f, -0.3f, 0.0f));
+    board->getTransform().setScale(glm::vec3(1.5f, 0.91f, 0.0f));
+    objectsList.emplace_back(board);
+    board->getBackdropText()->getTransform().setScale(glm::vec3(7.0f, 3.0f, 0.0f));
+    board->setPosOffset(glm::vec3(0.25f, 0.0f, 0.0f));
+
     TexturedObject* midGround1 = new TexturedObject();
-    midGround1->getTransform().setPosition(0.0f, -0.5f);
+    midGround1->getTransform().setPosition(0.0f, 0.0f);
     midGround1->setTexture("../Resource/Texture/Act3/MCR_P02_Mid1.png");
     midGround1->getTransform().setScale(scaleX, scaleY);
     objectsList.emplace_back(midGround1);
 
+    door = new InteractableObject("../Resource/Texture/StoryStuff/NeonBoardDescription.txt", player, "../Resource/Texture/Act3/DoorSheet.png", objectsList);
+    door->getTransform().setPosition(glm::vec3(-1.2f, -1.3f, 0.0f));
+    door->getTransform().setScale(glm::vec3(1.3f, 2.1f, 0.0f));
+    objectsList.emplace_back(door);
+
+    shelf = new InteractableObject("../Resource/Texture/StoryStuff/NeonBoardDescription.txt", player, "../Resource/Texture/Act3/ShelfSheet.png", objectsList);
+    shelf->getTransform().setPosition(glm::vec3(0.8f, -1.1f, 0.0f));
+    shelf->getTransform().setScale(glm::vec3(1.25f, 2.57f, 0.0f));
+    objectsList.emplace_back(shelf);
+
     TexturedObject* midGround2 = new TexturedObject();
-    midGround2->getTransform().setPosition(0.0f, -0.5f);
+    midGround2->getTransform().setPosition(0.0f, 0.0f);
     midGround2->setTexture("../Resource/Texture/Act3/MCR_P04_Mid2.png");
     midGround2->getTransform().setScale(scaleX, scaleY);
     objectsList.emplace_back(midGround2);
 
     TexturedObject* windowLight = new TexturedObject();
-    windowLight->getTransform().setPosition(0.0f, -0.5f);
+    windowLight->getTransform().setPosition(0.0f, 0.0f);
     windowLight->setTexture("../Resource/Texture/Act3/MCR_P03_WindowLightray.png");
     windowLight->getTransform().setScale(scaleX, scaleY);
     objectsList.emplace_back(windowLight);
 
     TexturedObject* docs = new TexturedObject();
-    docs->getTransform().setPosition(0.0f, -0.5f);
+    docs->getTransform().setPosition(0.0f, 0.0f);
     docs->setTexture("../Resource/Texture/Act3/MCR_P05_Doc.png");
     docs->getTransform().setScale(scaleX, scaleY);
     objectsList.emplace_back(docs);
 
-    //float height = 8.0f;
-    //float width = height * 1.777777777777778;
-    //for (auto a : objectsList) {
-    //    a->getTransform().setScale(width, height);
-    //    a->getTransform().setPosition(0.0f, -0.75f);
-    //}
+    desk = new InteractableObject("../Resource/Texture/StoryStuff/DeskAct3.txt", player, "../Resource/Texture/Act3/DeskSheet.png", objectsList);
+    desk->getTransform().setPosition(glm::vec3(3.5f, -1.49f, 0.0f));
+    desk->getTransform().setScale(glm::vec3(2.5f, 1.77f, 0.0f));
+    objectsList.emplace_back(desk);
 
+    chest = new InteractableObject("../Resource/Texture/StoryStuff/NeonBoardDescription.txt", player, "../Resource/Texture/Act3/ChestSheet.png", objectsList);
+    chest->getTransform().setPosition(glm::vec3(-3.75f, -2.25f, 0.0f));
+    chest->getTransform().setScale(glm::vec3(0.5f, 0.2f, 0.0f));
+    objectsList.emplace_back(chest);
 
-    Level::importTransformData(objectsList, "alpha1", false);
+    done = new ProtagThoughts("../Resource/Texture/StoryStuff/ProtagThoughtsAct3/done.txt", player);
+    objectsList.emplace_back(done);
 
-    player = new PlayerObject();
-    player->getTransform().setScale(4.166f, 2.5f);
-    player->getColliderComponent()->getTransform().translate(0.0f, -0.44f);
-    player->getColliderComponent()->setDimension(0.25f, 0.65f);
+    repeatNotDone = new ProtagThoughts("../Resource/Texture/StoryStuff/ProtagThoughtsAct3/repeat.txt", player);
+    objectsList.emplace_back(repeatNotDone);
+
+    medicineOnTable = new GotItemText("- Got Medicine", player, objectsList);
+    medicineOnTable->setAppearPos(4.35f, 0.0f);
+    fakePassport = new GotItemText("- Got Forged permit", player, objectsList);
+    fakePassport->setAppearPos(4.0f, 0.0f);
+    magicPistol = new GotItemText("- Magic Pistol", player, objectsList);
+    magicPistol->setAppearPos(4.0f, 0.0f);
+    duoBlade = new GotItemText("- Duo Blade", player, objectsList);
+    duoBlade->setAppearPos(4.0f, -1.0f);
+
+    Level::importTransformData(objectsList, "act3", false);
+
+    //player->getTransform().setScale(4.166f, 2.5f);
+    //player->getColliderComponent()->getTransform().translate(0.0f, -0.44f);
+    //player->getColliderComponent()->setDimension(0.25f, 0.65f);
+    player->getTransform().setPosition(glm::vec3(-1.0f, -1.0f, 0.0f));
     objectsList.emplace_back(player);
 
     GameEngine::getInstance()->getRenderer()->getCamera()->setTarget(player);
@@ -86,12 +122,21 @@ void LevelAct3::levelInit() {
     player->getDamageCollider()->setFollowOffset(glm::vec3(1.0f, -0.2f, 0));
 
     TexturedObject* backGround2 = new TexturedObject();
-    backGround2->getTransform().setPosition(0.0f, -0.5f);
+    backGround2->getTransform().setPosition(0.0f, 0.0f);
     backGround2->setTexture("../Resource/Texture/Act3/MCR_P06_BlackFrame.png");
     backGround2->getTransform().setScale(scaleX, scaleY);
     objectsList.emplace_back(backGround2);
 
+    repeatNotDone = new ProtagThoughts("../Resource/Texture/StoryStuff/ProtagThoughtsAct3/repeat.txt", player);
+    objectsList.emplace_back(repeatNotDone);
+    done = new ProtagThoughts("../Resource/Texture/StoryStuff/ProtagThoughtsAct3/done.txt", player);
+    objectsList.emplace_back(done);
+
     //UIobject->initUI(objectsList);
+
+    fb = new FadeBlack(1.0f);
+    objectsList.emplace_back(fb);
+    fb->FadeToTransparent();
 
     GameEngine::getInstance()->getRenderer()->getCamera()->setOffset(glm::vec3(0.0f, -0.5f, 0.0f));
     GameEngine::getInstance()->getRenderer()->setToggleViewport(true);
@@ -102,9 +147,25 @@ void LevelAct3::levelInit() {
 
 void LevelAct3::levelUpdate() {
     updateObjects(objectsList);
+    medicineOnTable->update(objectsList);
+    fakePassport->update(objectsList);
+    magicPistol->update(objectsList);
+    duoBlade->update(objectsList);
+    //GameEngine::getInstance()->getRenderer()->updateCamera();
 
-    GameEngine::getInstance()->getRenderer()->updateCamera();
+    if(done->getDialogueObject()->isEnd){
+        if (!end) {
+            fb->FadeToBlack();
+            end = true;
+        }
+    }
 
+    if (end) {
+        fadetime -= GameEngine::getInstance()->getTime()->getDeltaTime();
+        if (fadetime < 0.0f) {
+            GameEngine::getInstance()->getStateController()->gameStateNext = (GameState)((GameEngine::getInstance()->getStateController()->gameStateCurr + 1) % 9);
+        }
+    }
 
     // Placeholder death logic
     for (std::list<DrawableObject*>::iterator itr = objectsList.begin(); itr != objectsList.end(); ++itr) {
@@ -134,6 +195,11 @@ void LevelAct3::levelFree() {
     objectsList.clear();
 
     delete UIobject;
+
+    delete medicineOnTable;
+    delete fakePassport;
+    delete magicPistol;
+    delete duoBlade;
 }
 
 void LevelAct3::levelUnload() {
@@ -222,6 +288,41 @@ void LevelAct3::handleKey(InputManager& input) {
         }
         else {
             player->dodge();
+        }
+    }
+
+    if (input.getButtonDown(SDLK_e)) {
+
+        //cout << board->isClickedOnce << " : " << desk->isClickedOnce << " : " << chest->isClickedOnce << " : " << shelf->isClickedOnce << endl;
+
+        if (door->getIsClickable()) {
+            if (((board->isClickedOnce && desk->isClickedOnce) && (chest->isClickedOnce && shelf->isClickedOnce))) {
+                done->reActivateDialogue("../Resource/Texture/StoryStuff/ProtagThoughtsAct3/done.txt");
+            }
+            else {
+                repeatNotDone->reActivateDialogue("../Resource/Texture/StoryStuff/ProtagThoughtsAct3/repeat.txt");
+            }
+        }
+
+        if (chest->getIsClickable()) {
+            magicPistol->activateAppear();
+            duoBlade->activateAppear();
+            chest->isClickedOnce = true;
+        }
+
+        if (shelf->getIsClickable()) {
+            fakePassport->activateAppear();
+            shelf->isClickedOnce = true;
+        }
+
+        if ((board->getIsClickable() && desk->getIsClickable()) || board->getIsClickable()) {
+            board->setDescriptionActive(!board->getDescriptionActive());
+            if (board->isClickedOnce && !board->getDescriptionActive()) {
+                medicineOnTable->activateAppear();
+            }
+        }
+        else if (desk->getIsClickable()) {
+            desk->setDescriptionActive(!desk->getDescriptionActive());
         }
     }
 }

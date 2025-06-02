@@ -14,6 +14,10 @@
 #include "InteractableObject.h"
 #include "Dialogue.h"
 #include "GameStateList.h"
+#include "ProtagThoughts.h"
+#include "GotItemText.h"
+#include "ChatBubble.h"
+#include "FadeBlack.h"
 
 namespace LevelConstant {
     constexpr float DEFAULT_BUFFER_DURATION = 0.3f;
@@ -46,6 +50,7 @@ public:
     virtual void levelDraw();
     virtual void levelFree();
     virtual void levelUnload();
+    void NextLevel();
 
     virtual void handleKey(char key);
     virtual void handleKey(InputManager& input);

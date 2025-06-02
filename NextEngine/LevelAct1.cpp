@@ -60,16 +60,10 @@ void LevelAct1::levelInit() {
 
     player = new PlayerObject();
 
-    InteractableObject* it = new InteractableObject("../Resource/Texture/StoryStuff/NeonBoardDescription.txt", player);
-    it->setTexture("../Resource/Texture/StoryStuff/BoardNeon.png");
+    it = new InteractableObject("../Resource/Texture/StoryStuff/NeonBoardDescription.txt", player, "../Resource/Texture/StoryStuff/BoardNeon.png", objectsList);
     it->getTransform().setPosition(glm::vec3(25.0f, -0.85f, 0.0f));
-    it->initAnimation(2, 1);
-    it->getAnimationComponent()->addState("idle", 0, 0, 1, true);
-    it->getAnimationComponent()->addState("clickAble", 1, 0, 1, true);
-    it->getAnimationComponent()->setState("idle");
     it->getTransform().setScale(glm::vec3(6.0f, 4.0f, 0.0f));
     objectsList.emplace_back(it);
-    interactableList.push_back(it);
 
 	//float height = 7.0f; 
 	//float width = height * 5.3333333f;
@@ -114,6 +108,16 @@ void LevelAct1::levelInit() {
     pole->setTexture("../Resource/Texture/Act1/City_P12_FGPole.png");
     objectsList.emplace_back(pole);
 
+    p1 = new ProtagThoughts("../Resource/Texture/StoryStuff/ProtagThoughtsAct1/one.txt", player);
+    //objectsList.emplace_back(p1->getDialogueObject());
+    objectsList.emplace_back(p1);
+    p2 = new ProtagThoughts("../Resource/Texture/StoryStuff/ProtagThoughtsAct1/two.txt", player);
+    objectsList.emplace_back(p2);
+
+    fb = new FadeBlack(1.0f);
+    objectsList.emplace_back(fb);
+    fb->FadeToTransparent();
+
     //UIobject->initUI(objectsList);
 
     GameEngine::getInstance()->getRenderer()->getCamera()->setDeadLimitBool(true);
@@ -123,7 +127,6 @@ void LevelAct1::levelInit() {
     GameEngine::getInstance()->getRenderer()->setToggleViewport(true);
 
     GameEngine::getInstance()->freezeGameForSeconds(0.5f);
-
 }
 
 void LevelAct1::levelUpdate() {
@@ -131,6 +134,25 @@ void LevelAct1::levelUpdate() {
 
     GameEngine::getInstance()->getRenderer()->updateCamera();
 
+    //Dialogue logics
+    if (player->getTransform().getPosition().x > -5.0f) {
+        p1->activateDialogue();
+    }
+
+    if (interactCount == 2) {
+        p2->activateDialogue();
+    }
+
+    if (player->getTransform().getPosition().x > 39.0f && p2->getDialogueObject()->isEnd) {
+        if (!isFadingToBlack) {
+            fb->FadeToBlack();
+            isFadingToBlack = true;
+        }
+        fadetime -= GameEngine::getInstance()->getTime()->getDeltaTime();
+        if (fadetime < 0.0f) {
+            GameEngine::getInstance()->getStateController()->gameStateNext = (GameState)((GameEngine::getInstance()->getStateController()->gameStateCurr + 1) % 9);
+        }
+    }
 
     // Placeholder death logic
     for (std::list<DrawableObject*>::iterator itr = objectsList.begin(); itr != objectsList.end(); ++itr) {
@@ -252,6 +274,7 @@ void LevelAct1::handleKey(InputManager& input) {
 
     //Dialogue interact
     if (input.getButtonDown(SDLK_e)) {
+        
         if (!dialogueList.empty()) {
             Dialogue* currentDialogue = dialogueList.front();
             if (currentDialogue->isDialogueActive) {
@@ -263,12 +286,10 @@ void LevelAct1::handleKey(InputManager& input) {
         }
 
         //InteractableObject* keep;
-        for (InteractableObject* keep : interactableList) {
-            if (keep->getIsClickable()) {
-                keep->setDescriptionActive(!keep->getDescriptionActive());
-            }
-            else {
-                keep->descriptionText->isDialogueActive = false;
+        if (p1->getDialogueObject()->isEnd) {
+            if (it->getIsClickable()) {
+                interactCount++;
+                it->setDescriptionActive(!it->getDescriptionActive());
             }
         }
     }

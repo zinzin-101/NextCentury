@@ -7,7 +7,7 @@
 
 EnemyObject::EnemyObject(const EnemyInfo& enemyInfo) : LivingEntity(enemyInfo.name, enemyInfo.health) {
 	this->movementInfo = enemyInfo.movementInfo;
-	this->aggroRange = enemyInfo.health;
+	this->aggroRange = enemyInfo.aggroRange;
 	this->attackRange = enemyInfo.attackRange;
 	this->attackCooldown = enemyInfo.attackCooldown;
 	this->damage = enemyInfo.damage;

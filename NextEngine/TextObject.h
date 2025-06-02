@@ -11,6 +11,7 @@ class TextObject : virtual public DrawableObject
 private:
 	unsigned int texture;
 	string text;
+	int fontStyle;
 
 public:
 	TextObject();
@@ -21,4 +22,6 @@ public:
 	static void InitSDL();
 	static void cleanSDL();
 	string getText();
+	void setFontStyleNormal();
+	void setFontStyleBold();
 };

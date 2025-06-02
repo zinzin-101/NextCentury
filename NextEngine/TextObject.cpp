@@ -10,6 +10,7 @@ TextObject::TextObject()
 	glBindTexture(GL_TEXTURE_2D, texture);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	fontStyle = TTF_STYLE_NORMAL;
 }
 
 
@@ -77,6 +78,8 @@ void TextObject::loadText(string text, SDL_Color textColor, int fontSize)
 		cout << "Error: Unable to open font: " << TTF_GetError() << endl;
 		return;
 	}
+
+	TTF_SetFontStyle(font, fontStyle);
 
 	// Split text by \n
 	vector<string> lines;
@@ -146,4 +149,11 @@ void TextObject::cleanSDL() {
 
 string TextObject::getText() {
 	return this->text;
+}
+
+void TextObject::setFontStyleNormal() {
+	fontStyle = TTF_STYLE_NORMAL;
+}
+void TextObject::setFontStyleBold() {
+	fontStyle = TTF_STYLE_BOLD;
 }

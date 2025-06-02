@@ -12,7 +12,13 @@ private:
     IngameUI* UIobject;
     queue<Dialogue*> dialogueList;
     list<InteractableObject*> interactableList;
-
+    InteractableObject* it = nullptr;
+    ProtagThoughts* p1 = nullptr;
+    ProtagThoughts* p2 = nullptr;
+    int interactCount = 0;
+    FadeBlack* fb;
+    bool isFadingToBlack = false;
+    float fadetime = 1.0f;
 
     AudioEngine m_audio;                      
     SoundEffect m_jumpSfx;                     

@@ -9,7 +9,12 @@ private:
     list<DrawableObject*> UIobjectsList;
     PlayerObject* player = nullptr;
     IngameUI* UIobject;
-    glm::vec3 camPos = glm::vec3(0.0f, 0.0f, 0.0f);
+    ParallaxObject* doorKeepTrack;
+    ProtagThoughts* start;
+    InteractableObject* door;
+    FadeBlack* fb;
+    float timefade = 1.0f;
+    bool end = false;
 
 public:
     virtual void levelLoad();

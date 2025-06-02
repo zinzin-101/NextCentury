@@ -10,7 +10,13 @@ private:
     list<DrawableObject*> UIobjectsList;
     PlayerObject* player = nullptr;
     IngameUI* UIobject;
-    glm::vec3 camPos = glm::vec3(0.0f, 0.0f, 0.0f);
+    ChatBubble* chat1;
+    FadeBlack* fb;
+    bool end = false;
+    float timefade = 1.0f;
+    int enemyDeadCount = 0;
+    bool isStop = false;
+    EnemyObject* enem;
 
 public:
     virtual void levelLoad();

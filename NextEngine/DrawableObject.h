@@ -72,6 +72,7 @@ class DrawableObject {
 
 		void setRenderBrightness(float brightness);
 		virtual void setRenderOpacity(float opacity);
+		float getRenderOpacity();
 		void setRenderOrder(int renderOrder);
 		int getRenderOrder() const;
 
