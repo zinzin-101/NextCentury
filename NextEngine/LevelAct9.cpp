@@ -1,6 +1,6 @@
-#include "LevelAct2.h"
+#include "LevelAct9.h"
 
-void LevelAct2::levelLoad() {
+void LevelAct9::levelLoad() {
     SquareMeshVbo* square = new SquareMeshVbo();
     square->loadData();
     GameEngine::getInstance()->addMesh(SquareMeshVbo::MESH_NAME, square);
@@ -15,57 +15,63 @@ void LevelAct2::levelLoad() {
     removeLoadingScreen(objectsList);
 }
 
-void LevelAct2::levelInit() {
+void LevelAct9::levelInit() {
     UIobject = new IngameUI();
     GameEngine::getInstance()->getRenderer()->setClearColor(0.1f, 0.1f, 0.1f);
 
-    player = new PlayerObject();
-
-    float pictureWidth = 1000.0f;
+    float pictureWidth = 1920.0f;
     float pictureHeight = 360.0f;
 
-    ParallaxObject* backGround1 = new ParallaxObject(0.0f, 0.0f, 100.0f, false, player, true, pictureWidth, pictureHeight);
-    backGround1->setTexture("../Resource/Texture/Act2/RSDT_P01_Background01.png");
-    objectsList.emplace(objectsList.begin(), backGround1);
+    ParallaxObject* sky = new ParallaxObject(16.0f, 0.0f, 100.0f, false, player, true, pictureWidth, pictureHeight);
+    sky->setTexture("../Resource/Texture/Act1/City_P01_Sky.png");
+    objectsList.emplace(objectsList.begin(), sky);
 
-    ParallaxObject* backGround2 = new ParallaxObject(0.0f, 0.0f, 75.0f, false, player, true, pictureWidth, pictureHeight);
-    backGround2->setTexture("../Resource/Texture/Act2/RSDT_P02_Background02.png");
-    objectsList.emplace_back(backGround2);
+    ParallaxObject* city1 = new ParallaxObject(16.0f, 0.0f, 50.0f, false, player, true, pictureWidth, pictureHeight);
+    city1->setTexture("../Resource/Texture/Act1/City_P02_City1.png");
+    objectsList.emplace_back(city1);
 
-    ParallaxObject* midGround1 = new ParallaxObject(0.0f, -0.5f, 50.0f, false, player, true, pictureWidth, pictureHeight);
-    midGround1->setTexture("../Resource/Texture/Act2/RSDT_P03_MidGround01.png");
-    objectsList.emplace_back(midGround1);
+    ParallaxObject* city2 = new ParallaxObject(16.0f, 0.0f, 35.0f, false, player, true, pictureWidth, pictureHeight);
+    city2->setTexture("../Resource/Texture/Act1/City_P03_City2.png");
+    objectsList.emplace_back(city2);
 
-    ParallaxObject* midGround2 = new ParallaxObject(0.0f, -0.5f, 25.0f, false, player, true, pictureWidth, pictureHeight);
-    midGround2->setTexture("../Resource/Texture/Act2/RSDT_P04_MidGround02.png");
-    objectsList.emplace_back(midGround2);
-    doorKeepTrack = midGround2;
+    ParallaxObject* city3 = new ParallaxObject(16.0f, -0.5f, 30.0f, false, player, true, pictureWidth, pictureHeight);
+    city3->setTexture("../Resource/Texture/Act1/City_P04_City3.png");
+    objectsList.emplace_back(city3);
 
-    ParallaxObject* midGround3 = new ParallaxObject(0.0f, -0.5f, 12.5f, false, player, true, pictureWidth, pictureHeight);
-    midGround3->setTexture("../Resource/Texture/Act2/RSDT_P06_MidGround03.png");
-    objectsList.emplace_back(midGround3);
+    ParallaxObject* newsBoard = new ParallaxObject(16.0f, -0.5f, 20.0f, false, player, true, pictureWidth, pictureHeight);
+    newsBoard->setTexture("../Resource/Texture/Act1/City_P05_NewsBoardandBins.png");
+    objectsList.emplace_back(newsBoard);
 
-    //ParallaxObject* door = new ParallaxObject(0.0f, -0.5f, 15.0f, false, player, true, pictureWidth, pictureHeight);    I THINK DOOR IS AN INTERACTABLE
-    //door->setTexture("../Resource/Texture/Act2/RSDT_P05_Door.png");
-    //objectsList.emplace_back(door);
+    ParallaxObject* lightPole = new ParallaxObject(16.0f, -0.5f, 15.0f, false, player, true, pictureWidth, pictureHeight);
+    lightPole->setTexture("../Resource/Texture/Act1/City_P09_Lightpole.png");
+    objectsList.emplace_back(lightPole);
 
-    door = new InteractableObject("../Resource/Texture/StoryStuff/NeonBoardDescription.txt", player, "../Resource/Texture/Act2/DoorAct2.png", objectsList); // don't need text
-    door->getTransform().setScale(glm::vec3(1.22f, 2.12f, 0.0f));
-    objectsList.emplace_back(door);
+    ParallaxObject* car = new ParallaxObject(16.0f, -0.5f, 10.0f, false, player, true, pictureWidth, pictureHeight);
+    car->setTexture("../Resource/Texture/Act1/City_P10_Car.png");
+    objectsList.emplace_back(car);
 
-    //ParallaxObject* barrier = new ParallaxObject(0.0f, -0.5f, 10.0f, false, player, true, pictureWidth, pictureHeight);
-    //barrier->setTexture("../Resource/Texture/Act2/RSDT_P07_Barrier.png");
-    //objectsList.emplace_back(barrier);
+    ParallaxObject* fog = new ParallaxObject(16.0f, 1.0f, 60.0f, false, player, true, pictureWidth, pictureHeight);
+    fog->setTexture("../Resource/Texture/Act1/City_P13_Fog.png");
+    objectsList.emplace_back(fog);
 
-    ParallaxObject* foreGround = new ParallaxObject(0.0f, 0.0f, 0.0f, false, player, true, pictureWidth, pictureHeight);
-    foreGround->setTexture("../Resource/Texture/Act2/RSDT_P08_Foreground01.png");
-    objectsList.emplace_back(foreGround);
-
-    ParallaxObject* ground = new ParallaxObject(0.0f, -0.5f, 0.0f, false, player, true, pictureWidth, pictureHeight);
+    ParallaxObject* ground = new ParallaxObject(16.0f, -0.5f, 0.0f, false, player, true, pictureWidth, pictureHeight);
     ground->setTexture("../Resource/Texture/Act1/City_P11_Ground.png");
     objectsList.emplace_back(ground);
 
-    Level::importTransformData(objectsList, "act2", false);
+    player = new PlayerObject();
+
+    //float height = 7.0f; 
+    //float width = height * 5.3333333f;
+ //   for (auto a : objectsList) {
+ //       a->getTransform().setScale(width, height);
+ //   }
+
+
+ //   lightPole->getTransform().setScale(47.999999f, 9.0f);
+
+ //   sky->getTransform().setScale(500.f, 500.f);
+
+    Level::importTransformData(objectsList, "act1", false);
 
     //player->getTransform().setScale(4.166f, 2.5f);
     //player->getColliderComponent()->getTransform().translate(0.0f, -0.44f);
@@ -81,6 +87,11 @@ void LevelAct2::levelInit() {
         if (pObj != NULL) {
             pObj->setPlayer(player);
         }
+
+        LivingEntity* lObj = dynamic_cast<LivingEntity*>(obj);
+        if (lObj != NULL) {
+            lObj->setAffectedByLighting(true);
+        }
     }
 
     startObjects(objectsList);
@@ -88,19 +99,18 @@ void LevelAct2::levelInit() {
     player->getDamageCollider()->setFollowOffset(glm::vec3(1.0f, -0.2f, 0));
     player->getTransform().setPosition(glm::vec3(-6.0f, -1.6f, 0.0f));
 
-    //UIobject->initUI(objectsList);
-
-    start = new ProtagThoughts("../Resource/Texture/StoryStuff/ProtagThoughtsAct2/start.txt", player);
-    objectsList.emplace_back(start);
+    ParallaxObject* pole = new ParallaxObject(16.0f, 0.0f, 0.1f, false, player, true, pictureWidth, pictureHeight);
+    pole->setTexture("../Resource/Texture/Act1/City_P12_FGPole.png");
+    objectsList.emplace_back(pole);
 
     fb = new FadeBlack(1.0f);
     objectsList.emplace_back(fb);
     fb->FadeToTransparent();
 
-    GameEngine::getInstance()->getRenderer()->getCamera()->setPosition(glm::vec3(0.0f, 0.0f, 0.0f));
+    //UIobject->initUI(objectsList);
 
     GameEngine::getInstance()->getRenderer()->getCamera()->setDeadLimitBool(true);
-    GameEngine::getInstance()->getRenderer()->getCamera()->setDeadLimitMinMax(-5.0f, 37.5f);
+    GameEngine::getInstance()->getRenderer()->getCamera()->setDeadLimitMinMax(-5.0f, 40.75f);
 
     GameEngine::getInstance()->getRenderer()->getCamera()->setOffset(glm::vec3(0.0f, -0.5f, 0.0f));
     GameEngine::getInstance()->getRenderer()->setToggleViewport(true);
@@ -108,37 +118,24 @@ void LevelAct2::levelInit() {
     GameEngine::getInstance()->freezeGameForSeconds(0.5f);
 }
 
-void LevelAct2::levelUpdate() {
+void LevelAct9::levelUpdate() {
     updateObjects(objectsList);
 
     GameEngine::getInstance()->getRenderer()->updateCamera();
 
-    door->getTransform().setPosition(glm::vec3(34.01f + doorKeepTrack->getTransform().getPosition().x, -1.82f, 0.0f));
-    if (player->getTransform().getPosition().x > -3.0f) {
-        start->activateDialogue();
-    }
+    //Dialogue logics
 
     if (end) {
         timefade -= GameEngine::getInstance()->getTime()->getDeltaTime();
         if (timefade < 0.0f) {
-            NextLevel();
-        }
-    }
-
-    // Placeholder death logic
-    for (std::list<DrawableObject*>::iterator itr = objectsList.begin(); itr != objectsList.end(); ++itr) {
-        EnemyObject* enemy = dynamic_cast<EnemyObject*>(*itr);
-        if (enemy != NULL) {
-            if (enemy->getHealth() <= 0) {
-                DrawableObject::destroyObject(enemy);
-            }
+            GameEngine::getInstance()->getStateController()->gameStateNext = (GameState)((GameEngine::getInstance()->getStateController()->gameStateCurr + 1) % 9);
         }
     }
 
     //UIobject->updateUI(*player, camPos);
 }
 
-void LevelAct2::levelDraw() {
+void LevelAct9::levelDraw() {
     GameEngine::getInstance()->render(objectsList);
 
 #ifdef DEBUG_MODE_ON
@@ -146,7 +143,7 @@ void LevelAct2::levelDraw() {
 #endif
 }
 
-void LevelAct2::levelFree() {
+void LevelAct9::levelFree() {
     for (DrawableObject* obj : objectsList) {
         delete obj;
     }
@@ -155,13 +152,13 @@ void LevelAct2::levelFree() {
     delete UIobject;
 }
 
-void LevelAct2::levelUnload() {
+void LevelAct9::levelUnload() {
     GameEngine::getInstance()->clearMesh();
     GameEngine::getInstance()->getRenderer()->setClearColor(0.1f, 0.1f, 0.1f);
     //cout << "Unload Level" << endl;
 }
 
-void LevelAct2::handleKey(InputManager& input) {
+void LevelAct9::handleKey(InputManager& input) {
     // For debugging
     if (input.getButton(SDLK_z)) GameEngine::getInstance()->getRenderer()->increaseZoomRatio(0.1f);
     if (input.getButton(SDLK_x)) GameEngine::getInstance()->getRenderer()->decreaseZoomRatio(0.1f);
@@ -244,12 +241,8 @@ void LevelAct2::handleKey(InputManager& input) {
         }
     }
 
+    //Dialogue interact
     if (input.getButtonDown(SDLK_e)) {
-        if (door->getIsClickable()) {
-            //sfx
-            //transition
-            fb->FadeToBlack();
-            end = true;
-        }
+        
     }
 }

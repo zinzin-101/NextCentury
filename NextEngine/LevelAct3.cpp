@@ -138,6 +138,7 @@ void LevelAct3::levelInit() {
     objectsList.emplace_back(fb);
     fb->FadeToTransparent();
 
+    GameEngine::getInstance()->getRenderer()->getCamera()->setPosition(glm::vec3(0.0f, 0.0f, 0.0f));
     GameEngine::getInstance()->getRenderer()->getCamera()->setOffset(glm::vec3(0.0f, -0.5f, 0.0f));
     GameEngine::getInstance()->getRenderer()->setToggleViewport(true);
 

@@ -7,7 +7,7 @@ Zealot::Zealot(const EnemyInfo& enemyinfo) : EnemyObject(enemyinfo) {
 
 	wailerSummonner = nullptr;
 
-	getTransform().setScale(1.3f, 1.8f);
+	getTransform().setScale(1.828f, 2.05f);
 	getColliderComponent()->setDimension(0.5f, 0.85f);
 	getColliderComponent()->getTransform().setPosition(0.0f, -0.15f);
 

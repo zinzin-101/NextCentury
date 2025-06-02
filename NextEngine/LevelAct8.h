@@ -1,31 +1,23 @@
 #pragma once
-
 #include "Level.h"
 #include "ObjectHeader.h"
 
-class LevelAct6 : public Level {
+class LevelAct8 : public Level {
 private:
     list<DrawableObject*> objectsList;
     list<DrawableObject*> UIobjectsList;
     PlayerObject* player = nullptr;
     IngameUI* UIobject;
     FadeBlack* fb;
-    ChatBubble* chat1;
-    ChatBubble* chat2;
-    ProtagThoughts* thought1;
-    SimpleObject* camTarget;
+    ColliderObject* combatBlock;
+    InteractableObject* shelf;
+    ProtagThoughts* p1;
+    ProtagThoughts* repeat;
     InteractableObject* door;
-    ParallaxObject* doorKeepTrack;
-    bool isStop = false;
-    bool set1FightDone = false;
-    bool set2FightDone = false;
-    float turnTime = 0.8f;
-    ColliderObject* set1Block;
-    list<EnemyObject*> enemSet1;
-    list<EnemyObject*> enemSet2;
 
-    bool end;
+    bool end = false;
     float timefade = 1.0f;
+    bool isStop = false;
 
 public:
     virtual void levelLoad();

@@ -160,6 +160,8 @@ void LevelAct6::levelInit() {
     objectsList.emplace_back(fb);
     fb->FadeToTransparent();
 
+    GameEngine::getInstance()->getRenderer()->getCamera()->setPosition(glm::vec3(0.0f, 0.0f, 0.0f));
+
     GameEngine::getInstance()->getRenderer()->getCamera()->setDeadLimitBool(true);
     GameEngine::getInstance()->getRenderer()->getCamera()->setDeadLimitMinMax(-5.0f, 80.75f);
 
@@ -213,29 +215,11 @@ void LevelAct6::levelUpdate() {
             eObj->setAggroRange(10.0f); // nvm it kinda mattered :)
         }
     }
-    //if (killCount >= 6) {
-    //    door->setActive(true);
-    //}
 
-    //if (player->getTransform().getPosition().x > 26.5f) {
-    //    chat2->runChat(objectsList);
-    //    if (!chat2->hasEnded()) {
-    //        isStop = true;
-    //    }
-    //    else {
-    //        isStop = false;
-    //    }
-    //}
-
-    // Placeholder death logic
     bool k = false;
     for (std::list<DrawableObject*>::iterator itr = objectsList.begin(); itr != objectsList.end(); ++itr) {
         EnemyObject* enemy = dynamic_cast<EnemyObject*>(*itr);
         if (enemy != NULL) {
-            if (enemy->getHealth() <= 0) {
-                DrawableObject::destroyObject(enemy);
-                killCount++;
-            }
             k = true;
         }
         else {
