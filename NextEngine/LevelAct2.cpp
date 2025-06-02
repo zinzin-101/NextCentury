@@ -97,6 +97,8 @@ void LevelAct2::levelInit() {
     objectsList.emplace_back(fb);
     fb->FadeToTransparent();
 
+    GameEngine::getInstance()->getRenderer()->getCamera()->setPosition(glm::vec3(0.0f, 0.0f, 0.0f));
+
     GameEngine::getInstance()->getRenderer()->getCamera()->setDeadLimitBool(true);
     GameEngine::getInstance()->getRenderer()->getCamera()->setDeadLimitMinMax(-5.0f, 37.5f);
 
@@ -119,7 +121,7 @@ void LevelAct2::levelUpdate() {
     if (end) {
         timefade -= GameEngine::getInstance()->getTime()->getDeltaTime();
         if (timefade < 0.0f) {
-            GameEngine::getInstance()->getStateController()->gameStateNext = (GameState)((GameEngine::getInstance()->getStateController()->gameStateCurr + 1) % 9);
+            NextLevel();
         }
     }
 

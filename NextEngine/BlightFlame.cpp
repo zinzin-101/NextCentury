@@ -5,7 +5,7 @@
 BlightFlame::BlightFlame(const EnemyInfo& enemyinfo) : EnemyObject(enemyinfo) {
 	flameHitbox = nullptr;
 	stunnedTime = BlightFlameStat::STUN_DURATION;
-	getTransform().setScale(5.4f, 1.8f);
+	getTransform().setScale(3.304f, 1.8f);
 	this->getColliderComponent()->getTransform().setScale(0.4f, 1.0f);
 }
 void BlightFlame::start(list<DrawableObject*>& objectsList) {

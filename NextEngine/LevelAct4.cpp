@@ -148,7 +148,7 @@ void LevelAct4::levelUpdate() {
         enem->setAggroRange(10.0f);
         //GameEngine::getInstance()->getTime()->setTimeScale(1);
     }
-    if (player->getTransform().getPosition().x > 11.5f && enemyDeadCount == 1) {
+    if (player->getTransform().getPosition().x > 11.5f && killCount == 1) {
         if (!end) {
             fb->FadeToBlack();
             end = true;
@@ -159,17 +159,6 @@ void LevelAct4::levelUpdate() {
         }
     }
     // at the very start of the game freeze everything and chatEnemy is "YOU HAVE MAGIC" THEN fight...
-
-    // Placeholder death logic
-    for (std::list<DrawableObject*>::iterator itr = objectsList.begin(); itr != objectsList.end(); ++itr) {
-        EnemyObject* enemy = dynamic_cast<EnemyObject*>(*itr);
-        if (enemy != NULL) {
-            if (enemy->getHealth() <= 0) {
-                enemyDeadCount++;
-                DrawableObject::destroyObject(enemy);
-            }
-        }
-    }
 
     //UIobject->updateUI(*player, camPos);
 }

@@ -84,7 +84,7 @@ void LevelAct7::levelInit() {
     map = new GotItemText("- Got Map", player, objectsList);
     map->setAppearPos(4.0f, 0.0f);
 
-    player->getTransform().setPosition(glm::vec3(-8.0f, 0.0f, 0.0f));
+    player->getTransform().setPosition(glm::vec3(-8.0f, -1.0f, 0.0f));
     objectsList.emplace_back(player);
 
     GameEngine::getInstance()->getRenderer()->getCamera()->setTarget(player);

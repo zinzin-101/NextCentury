@@ -141,6 +141,8 @@ void LevelAct5::levelInit() {
     objectsList.emplace_back(fb);
     fb->FadeToTransparent();
 
+    GameEngine::getInstance()->getRenderer()->getCamera()->setPosition(glm::vec3(0.0f, 0.0f, 0.0f));
+
     GameEngine::getInstance()->getRenderer()->getCamera()->setDeadLimitBool(true);
     GameEngine::getInstance()->getRenderer()->getCamera()->setDeadLimitMinMax(-5.0f, 40.75f);
 
