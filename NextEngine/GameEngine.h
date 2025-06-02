@@ -27,21 +27,11 @@ class GameEngine {
 	float engineTimer;
 	bool isGamePaused;
 	float prevTimeScale;
-    GLRenderer* renderer;
-    GameStateController* stateController;
-    Time* time;
-    InputManager* inputHandler;
-
-    SDL_Window* gameWindow;
-    SDL_GLContext* glContext;
 
     AudioEngine audioEngine;
 
     GameEngine();
 
-	AudioEngine audioEngine;
-
-	GameEngine();
 public:
 	static GameEngine* getInstance();
 	GLRenderer * getRenderer();
