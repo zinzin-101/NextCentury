@@ -9,6 +9,11 @@ private:
     PlayerObject* player = nullptr;
     IngameUI* UIobject;
     FadeBlack* fb;
+    ColliderObject* combatBlock;
+    InteractableObject* shelf;
+    ProtagThoughts* p1;
+    ProtagThoughts* repeat;
+    InteractableObject* door;
 
     bool end = false;
     float timefade = 1.0f;

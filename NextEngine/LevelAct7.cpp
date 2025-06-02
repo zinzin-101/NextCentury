@@ -102,9 +102,7 @@ void LevelAct7::levelInit() {
     startObjects(objectsList);
 
     player->getDamageCollider()->setFollowOffset(glm::vec3(1.0f, -0.2f, 0));
-    player->setIsFacingRight(false);
-    //player->getTransform().scales(1.0f, 1.0f);
-    //player->move(glm::vec2(-1, 0));
+    player->setIsFacingRight(true);
 
     //UIobject->initUI(objectsList);
 

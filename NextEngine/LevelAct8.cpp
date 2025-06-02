@@ -27,68 +27,44 @@ void LevelAct8::levelInit() {
     float scaleY = 9.0f;
 
     TexturedObject* backGround1 = new TexturedObject();
-    backGround1->setTexture("../Resource/Texture/Act7/BR_P01_RoomBase.png");
+    backGround1->setTexture("../Resource/Texture/Act8/BRC_P01_RoomBase.png");
     backGround1->getTransform().setPosition(0.0f, 0.0f);
     backGround1->getTransform().setScale(scaleX, scaleY);
     objectsList.emplace(objectsList.begin(), backGround1);
 
     TexturedObject* backGround2 = new TexturedObject();
-    backGround2->setTexture("../Resource/Texture/Act7/BR_P02_Mid1.png");
+    backGround2->setTexture("../Resource/Texture/Act8/BRC_P02_Mid1.png");
     backGround2->getTransform().setPosition(0.0f, 0.0f);
     backGround2->getTransform().setScale(scaleX, scaleY);
     objectsList.emplace_back(backGround2);
 
-    board = new InteractableObject("../Resource/Texture/StoryStuff/BoardAct7.txt", player, "../Resource/Texture/Act7/boardAct7.png", objectsList);
-    board->getTransform().setScale(3.0f, 2.132f);
-    board->getTransform().setPosition(1.0f, -0.54f);
-    objectsList.emplace_back(board);
-
-    computer = new InteractableObject("../Resource/Texture/StoryStuff/ComputerAct7.txt", player, "../Resource/Texture/Act7/computerAct7.png", objectsList);
-    computer->getTransform().setScale(2.0f, 0.94f);
-    computer->getTransform().setPosition(3.08f, -1.15f);
-    objectsList.emplace_back(computer);
-
     TexturedObject* midGround1 = new TexturedObject();
-    midGround1->setTexture("../Resource/Texture/Act7/BR_P03_Mid2.png");
+    midGround1->setTexture("../Resource/Texture/Act8/BRC_P03_BlackFrame.png");
     midGround1->getTransform().setPosition(0.0f, -0.0f);
     midGround1->getTransform().setScale(scaleX, scaleY);
     objectsList.emplace_back(midGround1);
 
-    TexturedObject* midGround2 = new TexturedObject();
-    midGround2->setTexture("../Resource/Texture/Act7/BR_P04_ComputerLight.png");
-    midGround2->getTransform().setPosition(0.0f, -0.0f);
-    midGround2->getTransform().setScale(scaleX, scaleY);
-    objectsList.emplace_back(midGround2);
-
-    TexturedObject* midGround3 = new TexturedObject();
-    midGround3->setTexture("../Resource/Texture/Act7/BR_P05_BlackFrame.png");
-    midGround3->getTransform().setPosition(0.0f, -0.0f);
-    midGround3->getTransform().setScale(scaleX, scaleY);
-    objectsList.emplace_back(midGround3);
-
-    Level::importTransformData(objectsList, "act7", false);
+    Level::importTransformData(objectsList, "act8", false);
 
     door = new InteractableObject("../Resource/Texture/StoryStuff/NeonBoardDescription.txt", player, "../Resource/Texture/Act7/doorAct7.png", objectsList);
     door->getTransform().setScale(1.28f, 2.12f);
     door->getTransform().setPosition(7.8f, -1.31f);
     objectsList.emplace_back(door);
 
-    shelf = new InteractableObject("../Resource/Texture/StoryStuff/ShelfAct7.txt", player, "../Resource/Texture/Act7/shelfAct7.png", objectsList);
-    shelf->getTransform().setScale(1.224f, 2.5f);
-    shelf->getTransform().setPosition(-3.7f, -1.125f);
+    shelf = new InteractableObject("../Resource/Texture/StoryStuff/ShelfAct8.txt", player, "../Resource/Texture/Act8/shelfAct8.png", objectsList);
+    shelf->getTransform().setScale(3.225f, 2.5f);
+    shelf->getTransform().setPosition(2.95f, -1.125f);
     objectsList.emplace_back(shelf);
+    shelf->setActive(false);
 
-    repeat = new ProtagThoughts("../Resource/Texture/StoryStuff/ProtagThoughtsAct3/repeat.txt", player);
-    objectsList.emplace_back(repeat);
-
-    map = new GotItemText("- Got Map", player, objectsList);
-    map->setAppearPos(4.0f, 0.0f);
+    p1 = new ProtagThoughts("../Resource/Texture/StoryStuff/protagAct8.txt", player);
+    objectsList.emplace_back(p1);
 
     player->getTransform().setPosition(glm::vec3(-8.0f, 0.0f, 0.0f));
     objectsList.emplace_back(player);
 
     GameEngine::getInstance()->getRenderer()->getCamera()->setTarget(player);
-    GameEngine::getInstance()->getRenderer()->getCamera()->setPosition(glm::vec3(-4.0f, 0.0f, 0.0f));
+    GameEngine::getInstance()->getRenderer()->getCamera()->setPosition(glm::vec3(-1.2f, 0.0f, 0.0f));
     GameEngine::getInstance()->getRenderer()->setToggleViewport(false);
 
     // initializing parallax object
@@ -102,15 +78,21 @@ void LevelAct8::levelInit() {
     startObjects(objectsList);
 
     player->getDamageCollider()->setFollowOffset(glm::vec3(1.0f, -0.2f, 0));
-    player->setIsFacingRight(false);
-    //player->getTransform().scales(1.0f, 1.0f);
-    //player->move(glm::vec2(-1, 0));
+    player->setIsFacingRight(true);
 
     //UIobject->initUI(objectsList);
 
     fb = new FadeBlack(1.0f);
     objectsList.emplace_back(fb);
     fb->FadeToTransparent();
+
+    combatBlock = new ColliderObject();
+    combatBlock->getTransform().setPosition(7.4f, 0.0f);
+    combatBlock->getTransform().setScale(1.0f, 10.0f);
+    objectsList.emplace_back(combatBlock);
+
+    repeat = new ProtagThoughts("../Resource/Texture/StoryStuff/ProtagThoughtsAct3/repeat.txt", player);
+    objectsList.emplace_back(repeat);
 
     GameEngine::getInstance()->getRenderer()->getCamera()->setDeadLimitBool(true);
     GameEngine::getInstance()->getRenderer()->getCamera()->setDeadLimitMinMax(-9.0f, 9.0f);
@@ -124,8 +106,7 @@ void LevelAct8::levelInit() {
 
 void LevelAct8::levelUpdate() {
     updateObjects(objectsList);
-    GameEngine::getInstance()->getRenderer()->updateCamera();
-    map->update(objectsList);
+    //GameEngine::getInstance()->getRenderer()->updateCamera();
     // at the very start of the game freeze everything and chatEnemy is "YOU HAVE MAGIC" THEN fight...
 
     if (end) {
@@ -136,6 +117,21 @@ void LevelAct8::levelUpdate() {
     }
 
     // Placeholder death logic
+    bool k = false;
+    for (std::list<DrawableObject*>::iterator itr = objectsList.begin(); itr != objectsList.end(); ++itr) {
+        EnemyObject* enemy = dynamic_cast<EnemyObject*>(*itr);
+        if (enemy != NULL) {
+            if (enemy->getHealth() <= 0) {
+                DrawableObject::destroyObject(enemy);
+            }
+            k = true;
+        }
+    }
+    if (!k) {
+        combatBlock->setActive(false);
+        shelf->setActive(true);
+        GameEngine::getInstance()->getRenderer()->updateCamera();
+    }
 
     //UIobject->updateUI(*player, camPos);
 }
@@ -154,7 +150,6 @@ void LevelAct8::levelFree() {
     }
     objectsList.clear();
     delete UIobject;
-    delete map;
 }
 
 void LevelAct8::levelUnload() {
@@ -251,26 +246,18 @@ void LevelAct8::handleKey(InputManager& input) {
 
 
         if (input.getButtonDown(SDLK_e)) {
-            if (shelf->isClickedOnce && computer->isClickedOnce && board->isClickedOnce && door->getIsClickable()) {
+            if (shelf->isClickedOnce && door->getIsClickable()) {
                 fb->FadeToBlack();
                 end = true;
             }
-            else if (door->getIsClickable()) {
+            else {
                 repeat->reActivateDialogue("../Resource/Texture/StoryStuff/ProtagThoughtsAct3/repeat.txt");
             }
-            if (shelf->getIsClickable()) {
-                shelf->setDescriptionActive(!shelf->getDescriptionActive());
-            }
-            if (board->getIsClickable() && computer->getIsClickable()) {
 
-            }
-            else if (board->getIsClickable()) {
-                board->setDescriptionActive(!board->getDescriptionActive());
-            }
-            else if (computer->getIsClickable()) {
-                computer->setDescriptionActive(!computer->getDescriptionActive());
-                if (computer->isClickedOnce && !computer->getDescriptionActive()) {
-                    map->activateAppear();
+            if (shelf->getIsClickable() && shelf->getIsActive()) {
+                shelf->setDescriptionActive(!shelf->getDescriptionActive());
+                if (shelf->isClickedOnce && !shelf->getDescriptionActive()) {
+                    p1->activateDialogue();
                 }
             }
         }
