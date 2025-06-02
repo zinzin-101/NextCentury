@@ -52,6 +52,8 @@ public:
     virtual void levelUnload();
     void NextLevel();
 
+    virtual void signalFromEngine();
+
     virtual void handleKey(char key);
     virtual void handleKey(InputManager& input);
     void processHeldKey(InputManager& input, SDL_Keycode key);

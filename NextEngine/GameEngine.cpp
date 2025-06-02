@@ -1,4 +1,5 @@
 #include "GameEngine.h"
+#include "Level.h"
 
 GameEngine* GameEngine::instance = nullptr;
 
@@ -146,4 +147,8 @@ void GameEngine::playMusic(const std::string& fileName, int loop) {
 
 void GameEngine::stopMusic() {
 	audioEngine.stopMusic();
+}
+
+void GameEngine::signalToCurrentLevel() {
+	stateController->getCurrentLevel()->signalFromEngine();
 }

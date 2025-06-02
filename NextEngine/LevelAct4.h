@@ -16,6 +16,8 @@ private:
     float timefade = 1.0f;
     bool isStop = false;
     EnemyObject* enem;
+    
+    int killCount = 0;
 
 public:
     virtual void levelLoad();
@@ -26,4 +28,6 @@ public:
     virtual void levelUnload();
 
     virtual void handleKey(InputManager& input);
+
+    virtual void signalFromEngine();
 };

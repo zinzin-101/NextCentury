@@ -42,7 +42,7 @@ void GameStateController::loadLevel() {
 	cout << gameStateCurr << endl;
 	switch (gameStateCurr) {
 		case GameState::GS_LEVEL1:
-			currentLevel = new LevelAct9();
+			currentLevel = new LevelAct6();
 			break;
 		case GameState::GS_LEVEL2:
 			currentLevel = new LevelAct2();
@@ -111,4 +111,8 @@ void GameStateController::handleMouseLevel(int type, int x, int y) {
 
 void GameStateController::handleAnalogLevel(int type, float amount) {
 	currentLevel->handleAnalogStick(type, amount);
+}
+
+Level* GameStateController::getCurrentLevel() const {
+	return currentLevel;
 }
