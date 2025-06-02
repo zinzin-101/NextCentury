@@ -790,6 +790,9 @@ void PlayerObject::handleNormalAttack() {
 
     if (currentFrame == comboFrame[currentCombo].startAttackFrame + 1) {
         startMeleeAttack();
+
+        GameEngine::getInstance()->playSoundEffect("MC_Sound_Attack_Light_1.wav");
+
         return;
     }
 
