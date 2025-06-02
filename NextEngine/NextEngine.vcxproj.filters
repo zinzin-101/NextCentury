@@ -87,6 +87,15 @@
     <ClCompile Include="FadeBlack.cpp" />
     <ClCompile Include="LevelAct7.cpp" />
     <ClCompile Include="LevelAct8.cpp" />
+    <ClCompile Include="InteractableObject.cpp" />
+    <ClCompile Include="LevelAct2.cpp" />
+    <ClCompile Include="LevelAct3.cpp" />
+    <ClCompile Include="LevelAct4.cpp" />
+    <ClCompile Include="LevelAct5.cpp" />
+    <ClCompile Include="LevelAct6.cpp" />
+    <ClCompile Include="LevelMainMenu.cpp" />
+    <ClCompile Include="UIMainMenu.cpp" />
+    <ClCompile Include="DialogueList.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
@@ -192,10 +201,20 @@
     <ClInclude Include="FadeBlack.h" />
     <ClInclude Include="LevelAct7.h" />
     <ClInclude Include="LevelAct8.h" />
+    <ClInclude Include="LevelAct2.h" />
+    <ClInclude Include="LevelAct3.h" />
+    <ClInclude Include="LevelAct4.h" />
+    <ClInclude Include="LevelAct5.h" />
+    <ClInclude Include="LevelAct6.h" />
+    <ClInclude Include="LevelLoading.h" />
+    <ClInclude Include="LevelMainMenu.h" />
+    <ClInclude Include="UIMainMenu.h" />
+    <ClInclude Include="DialogueList.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Resource\Shader\fragment.shd" />
     <None Include="..\Resource\Shader\vertext.shd" />
+    <None Include="imgui.ini" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Imgui">

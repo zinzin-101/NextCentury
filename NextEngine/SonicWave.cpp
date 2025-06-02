@@ -13,10 +13,10 @@ SonicWave::SonicWave() {
 	this->setRenderOrder(1);
 
 	/// set texture and init animation ///
-	setTexture("../Resource/Texture/BOOM.png");
-	initAnimation(1, 9);
-	getAnimationComponent()->addState("Marking", 0, 0, 4, false, 0.4f);
-	getAnimationComponent()->addState("Attack", 0, 4, 5, false, 0.4f);
+	setTexture("../Resource/Texture/MadPreacher.png");
+	initAnimation(7, 41);
+	getAnimationComponent()->addState("Marking", 6, 0, 4, false, SonicWaveStat::ANIMATION_TIME_PER_FRAME);
+	getAnimationComponent()->addState("Attack", 6, 8, 16, false, SonicWaveStat::ANIMATION_TIME_PER_FRAME);
 
 	damageStartFrame = 4;
 

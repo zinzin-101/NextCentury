@@ -21,6 +21,7 @@
   <ItemGroup>
     <None Include="..\Resource\Shader\fragment.shd" />
     <None Include="..\Resource\Shader\vertext.shd" />
+    <None Include="imgui.ini" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Resource\imgui\backends\imgui_impl_opengl3.cpp" />
@@ -40,6 +41,7 @@
     <ClCompile Include="ColliderObject.cpp" />
     <ClCompile Include="CollisionHandler.cpp" />
     <ClCompile Include="Dialogue.cpp" />
+    <ClCompile Include="DialogueList.cpp" />
     <ClCompile Include="DrawableObject.cpp" />
     <ClCompile Include="ElivaBoss.cpp" />
     <ClCompile Include="ElivaBossState.cpp" />
@@ -127,6 +129,7 @@
     <ClInclude Include="DamageCollider.h" />
     <ClInclude Include="DebugMode.h" />
     <ClInclude Include="Dialogue.h" />
+    <ClInclude Include="DialogueList.h" />
     <ClInclude Include="DrawableObject.h" />
     <ClInclude Include="ElivaBoss.h" />
     <ClInclude Include="ElivaBossState.h" />

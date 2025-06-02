@@ -95,6 +95,8 @@ class Animation {
 		void setRandomFrame();
 		void setPaused(bool value);
 
+		void setTexture(unsigned int& texture);
+
 		int getCurrentFrame() const;
 		bool getIsPlaying() const;
 		State getCurrentAnimationState() const;
