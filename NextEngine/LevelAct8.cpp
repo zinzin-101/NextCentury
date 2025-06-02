@@ -250,7 +250,7 @@ void LevelAct8::handleKey(InputManager& input) {
                 fb->FadeToBlack();
                 end = true;
             }
-            else {
+            else if(door->getIsClickable()) {
                 repeat->reActivateDialogue("../Resource/Texture/StoryStuff/ProtagThoughtsAct3/repeat.txt");
             }
 
