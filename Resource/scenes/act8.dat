@@ -1,0 +1,7 @@
+ColliderObject,ColliderObject,0,-27.35,0,1,1,200,50,0,0,0,1,1
+ColliderObject,ColliderObject,-9.6,-1.5,0,1,5,1,2,0,0,0,1,1
+LightSource,LightSource,-2.8,1,0,1,1,1,10
+ColliderObject,ColliderObject,9.65,0,0,1,10,1,1,0,0,0,1,1
+Zealot,Zealot,3.8,-1.33,0,-1.58,2.05,0.5,0.85,0,-0.15,0,1,1
+BlightFlame,BlightFlame,4,-1.33,0,-5.4,1.8,0.4,1,0,0,0,0.4,1
+BlightFlame,BlightFlame,4.5,-1.33,0,-5.4,1.8,0.4,1,0,0,0,0.4,1
