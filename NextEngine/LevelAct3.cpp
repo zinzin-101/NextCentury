@@ -164,17 +164,7 @@ void LevelAct3::levelUpdate() {
     if (end) {
         fadetime -= GameEngine::getInstance()->getTime()->getDeltaTime();
         if (fadetime < 0.0f) {
-            GameEngine::getInstance()->getStateController()->gameStateNext = (GameState)((GameEngine::getInstance()->getStateController()->gameStateCurr + 1) % 9);
-        }
-    }
-
-    // Placeholder death logic
-    for (std::list<DrawableObject*>::iterator itr = objectsList.begin(); itr != objectsList.end(); ++itr) {
-        EnemyObject* enemy = dynamic_cast<EnemyObject*>(*itr);
-        if (enemy != NULL) {
-            if (enemy->getHealth() <= 0) {
-                DrawableObject::destroyObject(enemy);
-            }
+            NextLevel();
         }
     }
 

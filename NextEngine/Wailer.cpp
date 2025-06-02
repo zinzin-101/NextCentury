@@ -12,7 +12,7 @@ Wailer::Wailer(const EnemyInfo& enemyinfo) : EnemyObject(enemyinfo) {
 	zealotCounter = 0;
 
 	getTransform().setScale(2.04f, 2.6f);
-	getColliderComponent()->setDimension(0.5f, 0.85f);
+	getColliderComponent()->setDimension(0.5f, 0.9f);
 	getColliderComponent()->getTransform().setPosition(0.0f, -0.15f);
 }
 

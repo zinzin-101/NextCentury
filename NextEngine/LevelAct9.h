@@ -11,6 +11,7 @@ private:
     PlayerObject* player = nullptr;
     IngameUI* UIobject;
 
+    InteractableObject* door;
     FadeBlack* fb;
     bool isFadingToBlack = false;
     float timefade = 1.0f;
