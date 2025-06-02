@@ -42,6 +42,8 @@ protected:
     static void appendEnemyData(std::ofstream& output, EnemyObject* enemy);
     static void readEnemyData(std::ifstream& file, std::string type, std::list<DrawableObject*>& objectsList, bool setDrawCollider);
 
+    int killCount = 0;
+
 public:
     //SimpleObject* healthBar = nullptr;
     virtual void levelLoad();

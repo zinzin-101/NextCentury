@@ -96,6 +96,9 @@
     <ClCompile Include="LevelMainMenu.cpp" />
     <ClCompile Include="UIMainMenu.cpp" />
     <ClCompile Include="DialogueList.cpp" />
+    <ClCompile Include="GotItemText.cpp" />
+    <ClCompile Include="ProtagThoughts.cpp" />
+    <ClCompile Include="LevelAct9.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
@@ -210,6 +213,9 @@
     <ClInclude Include="LevelMainMenu.h" />
     <ClInclude Include="UIMainMenu.h" />
     <ClInclude Include="DialogueList.h" />
+    <ClInclude Include="GotItemText.h" />
+    <ClInclude Include="ProtagThoughts.h" />
+    <ClInclude Include="LevelAct9.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Resource\Shader\fragment.shd" />

@@ -2,31 +2,24 @@
 
 #include "Level.h"
 #include "ObjectHeader.h"
+#include "Audio.h"
 
-class LevelAct6 : public Level {
+class LevelAct9 : public Level {
 private:
     list<DrawableObject*> objectsList;
     list<DrawableObject*> UIobjectsList;
     PlayerObject* player = nullptr;
     IngameUI* UIobject;
+
     FadeBlack* fb;
-    ChatBubble* chat1;
-    ChatBubble* chat2;
-    ProtagThoughts* thought1;
-    SimpleObject* camTarget;
-    InteractableObject* door;
-    ParallaxObject* doorKeepTrack;
-    bool isStop = false;
-    bool set1FightDone = false;
-    bool set2FightDone = false;
-    float turnTime = 0.8f;
-    ColliderObject* set1Block;
-    list<EnemyObject*> enemSet1;
-    list<EnemyObject*> enemSet2;
-
-    bool end;
+    bool isFadingToBlack = false;
     float timefade = 1.0f;
+    bool end = false;
 
+    AudioEngine m_audio;
+    SoundEffect m_jumpSfx;
+    SoundEffect m_deathSfx;
+    Music       m_backgroundMusic;
 public:
     virtual void levelLoad();
     virtual void levelInit();

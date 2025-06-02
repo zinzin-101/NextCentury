@@ -154,6 +154,10 @@ void Level::updateObjects(list<DrawableObject*>& objectsList) {
     for (std::list<DrawableObject*>::iterator itr = objectsList.begin(); itr != objectsList.end(); ++itr) {
         DrawableObject* obj = *itr;
         if (obj->getMarkedForDelete()) {
+            EnemyObject* e = dynamic_cast<EnemyObject*>(obj);
+            if (e) {
+                killCount++;
+            }
             delete obj;
             itr = objectsList.erase(itr);
             if (itr != objectsList.begin()) --itr;
