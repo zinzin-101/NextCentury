@@ -2,6 +2,7 @@
 
 #include "Level.h"
 #include "ObjectHeader.h"
+#include "IngameUI.h"
 
 class LevelAct4 : public Level {
 private:

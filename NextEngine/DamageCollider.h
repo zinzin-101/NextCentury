@@ -164,6 +164,8 @@ void DamageCollider<TargetEntityType>::onCollisionEnter(Collider* collider) {
 					bf->setCurrentState(EnemyObject::FLINCH);
 					return;
 				}
+
+				return;
 			}
 
 			Wailer* wailer = dynamic_cast<Wailer*>(obj);
@@ -187,6 +189,8 @@ void DamageCollider<TargetEntityType>::onCollisionEnter(Collider* collider) {
 
 					return;
 				}
+
+				return;
 			}
 
 			ElivaBoss* boss = dynamic_cast<ElivaBoss*>(obj);

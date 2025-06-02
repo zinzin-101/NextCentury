@@ -10,7 +10,7 @@
 #include "EnemyObject.h"
 #include "Audio.h"
 #include "ParallaxObject.h"
-#include "UI.h"
+#include "IngameUI.h"
 #include "InteractableObject.h"
 #include "Dialogue.h"
 #include "ProtagThoughts.h"
@@ -28,7 +28,7 @@ private:
     list<DrawableObject*> objectsList;
     list<DrawableObject*> UIobjectsList;
     PlayerObject* player;
-    UI* UIobject;
+    IngameUI* UIobject;
 	SimpleObject blackLoadingScreen;
 
 protected:

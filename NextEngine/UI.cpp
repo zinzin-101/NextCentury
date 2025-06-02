@@ -25,8 +25,6 @@ void UI::initUI(std::list<DrawableObject*>& objectsList) {
     arrow->getTransform().setPosition(glm::vec3(0.0f, 0.0f, 0.0f));
     objectsList.push_back(arrow);
 
-    
-
     TexturedObject* confirm = new TexturedObject("confirm");
     confirm->setTexture("../Resource/Texture/UI/MainMenu/AConfirm_BBack.png");
     confirm->getTransform().setScale(glm::vec3(2.295652173913043, 0.3f, 0.0f));

@@ -99,6 +99,10 @@ public:
     void drawCameraOutline();
     
     bool getIsViewportEnabled() const;
+
+	int getWindowWidth() const { return winWidth; }
+	int getWindowHeight() const { return winHeight; }
+
 };
 
 #endif

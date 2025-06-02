@@ -1,12 +1,10 @@
 #pragma once
 #include <vector>
-#include <list>
 #include "Button.h"
 #include "GameEngine.h"
 #include "InputManager.h"
 #include "SimpleObject.h"
 #include "PlayerObject.h"
-#include "IngameUI.h" 
 
 class UI {
 public:
@@ -22,6 +20,5 @@ private:
     std::vector<Button*> buttons;
     SimpleObject* healthBar;
     int selectedButtonIndex;
-    IngameUI ingameUI; 
     TexturedObject* arrow;
 };

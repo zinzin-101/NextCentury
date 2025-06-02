@@ -18,7 +18,7 @@ namespace PlayerStat {
 
     constexpr float ATTACK_ANIMATION_TIME_PER_FRAME = 0.06f;
     constexpr float PARRY_ANIMATION_TIME_PER_FRAME = 0.04f;
-    constexpr float CHARGE_ANIMATION_TIME_PER_FRAME = 0.05f;
+    constexpr float CHARGE_ANIMATION_TIME_PER_FRAME = 0.08f;
     constexpr float GUN_CHARGE_ANIMATION_TIME_PER_FRAME = 0.08f;
 
     constexpr int COMBO_DAMAGE_1 = 10;
@@ -27,8 +27,8 @@ namespace PlayerStat {
     
     constexpr float CHARGE_DAMAGE_MULTIPLIER_1 = 1.0f;
     constexpr float CHARGE_DAMAGE_MULTIPLIER_2 = 2.0f;
-    constexpr float HEAVY_ATTACK_COOLDOWN_1 = 0.5f;
-    constexpr float HEAVY_ATTACK_COOLDOWN_2 = 0.8f;
+    constexpr float HEAVY_ATTACK_COOLDOWN_1 = 0.3f;
+    constexpr float HEAVY_ATTACK_COOLDOWN_2 = 0.5f;
     
     constexpr int RANGE_DAMAGE = 8;
     constexpr int NUM_OF_BULLET_PER_SHOT_1 = 1;
@@ -230,5 +230,9 @@ class PlayerObject : public LivingEntity {
         virtual void takeDamage(int damage);
         void flinch(float duration);
 
-        int getStamina() const;   
+        int getStamina() const;
+        int getCurrentNumOfBullet() const;
+        float getRangeAttackCooldownRemaining() const;
+        int getCurrentNumOfPotion() const;
+        float getPotionRechargeTimer() const;
 };
