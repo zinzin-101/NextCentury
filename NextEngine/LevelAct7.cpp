@@ -129,7 +129,7 @@ void LevelAct7::levelUpdate() {
     if (end) {
         timefade -= GameEngine::getInstance()->getTime()->getDeltaTime();
         if (timefade < 0.0f) {
-            GameEngine::getInstance()->getStateController()->gameStateNext = (GameState)((GameEngine::getInstance()->getStateController()->gameStateCurr + 1) % 9);
+            NextLevel();
         }
     }
 

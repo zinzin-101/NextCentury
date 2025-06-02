@@ -125,16 +125,6 @@ void LevelAct2::levelUpdate() {
         }
     }
 
-    // Placeholder death logic
-    for (std::list<DrawableObject*>::iterator itr = objectsList.begin(); itr != objectsList.end(); ++itr) {
-        EnemyObject* enemy = dynamic_cast<EnemyObject*>(*itr);
-        if (enemy != NULL) {
-            if (enemy->getHealth() <= 0) {
-                DrawableObject::destroyObject(enemy);
-            }
-        }
-    }
-
     //UIobject->updateUI(*player, camPos);
 }
 

@@ -190,16 +190,6 @@ void LevelAct5::levelUpdate() {
         }
     }
 
-    // Placeholder death logic
-    for (std::list<DrawableObject*>::iterator itr = objectsList.begin(); itr != objectsList.end(); ++itr) {
-        EnemyObject* enemy = dynamic_cast<EnemyObject*>(*itr);
-        if (enemy != NULL) {
-            if (enemy->getHealth() <= 0) {
-                DrawableObject::destroyObject(enemy);
-            }
-        }
-    }
-
     spS->getTransform().setPosition(spS->getTransform().getPosition() + glm::vec3(0.1f, 0.0f, 0.0f));
     //UIobject->updateUI(*player, camPos);
 }

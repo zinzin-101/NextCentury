@@ -19,59 +19,63 @@ void LevelAct9::levelInit() {
     UIobject = new IngameUI();
     GameEngine::getInstance()->getRenderer()->setClearColor(0.1f, 0.1f, 0.1f);
 
-    float pictureWidth = 1920.0f;
-    float pictureHeight = 360.0f;
-
-    ParallaxObject* sky = new ParallaxObject(16.0f, 0.0f, 100.0f, false, player, true, pictureWidth, pictureHeight);
-    sky->setTexture("../Resource/Texture/Act1/City_P01_Sky.png");
-    objectsList.emplace(objectsList.begin(), sky);
-
-    ParallaxObject* city1 = new ParallaxObject(16.0f, 0.0f, 50.0f, false, player, true, pictureWidth, pictureHeight);
-    city1->setTexture("../Resource/Texture/Act1/City_P02_City1.png");
-    objectsList.emplace_back(city1);
-
-    ParallaxObject* city2 = new ParallaxObject(16.0f, 0.0f, 35.0f, false, player, true, pictureWidth, pictureHeight);
-    city2->setTexture("../Resource/Texture/Act1/City_P03_City2.png");
-    objectsList.emplace_back(city2);
-
-    ParallaxObject* city3 = new ParallaxObject(16.0f, -0.5f, 30.0f, false, player, true, pictureWidth, pictureHeight);
-    city3->setTexture("../Resource/Texture/Act1/City_P04_City3.png");
-    objectsList.emplace_back(city3);
-
-    ParallaxObject* newsBoard = new ParallaxObject(16.0f, -0.5f, 20.0f, false, player, true, pictureWidth, pictureHeight);
-    newsBoard->setTexture("../Resource/Texture/Act1/City_P05_NewsBoardandBins.png");
-    objectsList.emplace_back(newsBoard);
-
-    ParallaxObject* lightPole = new ParallaxObject(16.0f, -0.5f, 15.0f, false, player, true, pictureWidth, pictureHeight);
-    lightPole->setTexture("../Resource/Texture/Act1/City_P09_Lightpole.png");
-    objectsList.emplace_back(lightPole);
-
-    ParallaxObject* car = new ParallaxObject(16.0f, -0.5f, 10.0f, false, player, true, pictureWidth, pictureHeight);
-    car->setTexture("../Resource/Texture/Act1/City_P10_Car.png");
-    objectsList.emplace_back(car);
-
-    ParallaxObject* fog = new ParallaxObject(16.0f, 1.0f, 60.0f, false, player, true, pictureWidth, pictureHeight);
-    fog->setTexture("../Resource/Texture/Act1/City_P13_Fog.png");
-    objectsList.emplace_back(fog);
-
-    ParallaxObject* ground = new ParallaxObject(16.0f, -0.5f, 0.0f, false, player, true, pictureWidth, pictureHeight);
-    ground->setTexture("../Resource/Texture/Act1/City_P11_Ground.png");
-    objectsList.emplace_back(ground);
-
     player = new PlayerObject();
 
-    //float height = 7.0f; 
-    //float width = height * 5.3333333f;
- //   for (auto a : objectsList) {
- //       a->getTransform().setScale(width, height);
- //   }
+    float pictureWidth = 960.0f;
+    float pictureWidthB = 2880.0f;
+    float pictureHeight = 360.0f;
+    
+    ParallaxObject* sky = new ParallaxObject(32.0f, 0.0f, 550.0f, false, player, true, pictureWidthB, pictureHeight);
+    sky->setTexture("../Resource/Texture/Act6/Scene6_Enemybase/ENMB_P15_Sky.png");
+    objectsList.emplace(objectsList.begin(), sky);
 
+    ParallaxObject* mountain2 = new ParallaxObject(32.0f, 0.0f, 250.0f, false, player, true, pictureWidthB, pictureHeight);
+    mountain2->setTexture("../Resource/Texture/Act6/Scene6_Enemybase/ENMB_P13_Mountain02.png");
+    objectsList.emplace_back(mountain2);
 
+    ParallaxObject* mountain1 = new ParallaxObject(32.0f, 0.0f, 200.0f, false, player, true, pictureWidthB, pictureHeight);
+    mountain1->setTexture("../Resource/Texture/Act6/Scene6_Enemybase/ENMB_P12_Mountain01.png");
+    objectsList.emplace_back(mountain1);
+
+    ParallaxObject* midGround6 = new ParallaxObject(32.0f, 0.0f, 100.0f, false, player, true, pictureWidthB, pictureHeight);
+    midGround6->setTexture("../Resource/Texture/Act6/Scene6_Enemybase/ENMB_P11_MidGround06.png");
+    objectsList.emplace_back(midGround6);
+
+    ParallaxObject* mid1 = new ParallaxObject(0.0f, 0.0f, 10.0f, false, player, true, pictureWidth, pictureHeight);
+    mid1->setTexture("../Resource/Texture/Act9/ENMB02_P04_MidGround01.png");
+    objectsList.emplace_back(mid1);
+
+    ParallaxObject* fence = new ParallaxObject(0.0f, 0.0f, 0.0f, false, player, true, pictureWidth, pictureHeight);
+    fence->setTexture("../Resource/Texture/Act9/ENMB02_P05_Fence.png");
+    objectsList.emplace_back(fence);
+
+    ParallaxObject* car = new ParallaxObject(0.0f, 0.0f, 0.0f, false, player, true, pictureWidth, pictureHeight);
+    car->setTexture("../Resource/Texture/Act9/ENMB02_P01_Car.png");
+    objectsList.emplace_back(car);
+
+    ParallaxObject* sign = new ParallaxObject(32.0f, 0.0f, 0.0f, false, player, false, pictureWidthB, pictureHeight);
+    sign->setTexture("../Resource/Texture/Act6/Scene6_Enemybase/ENMB_P03_ProtestSigns.png");
+    objectsList.emplace_back(sign);
+
+    ParallaxObject* house = new ParallaxObject((pictureWidth / pictureHeight) * 9.0f, 0.0f, 0.0f, false, player, false, pictureWidth, pictureHeight);
+    house->setTexture("../Resource/Texture/Act9/ENMB02_P03_House.png");
+    objectsList.emplace_back(house);
+
+    ParallaxObject* ground = new ParallaxObject(0.0f, 0.0f, 0.0f, false, player, true, pictureWidth, pictureHeight);
+    ground->setTexture("../Resource/Texture/Act6/IMGT_P01_Ground.png");
+    objectsList.emplace_back(ground);
+    
  //   lightPole->getTransform().setScale(47.999999f, 9.0f);
 
  //   sky->getTransform().setScale(500.f, 500.f);
 
-    Level::importTransformData(objectsList, "act1", false);
+    Level::importTransformData(objectsList, "act9", false);
+
+    door = new InteractableObject("../Resource/Texture/StoryStuff/NeonBoardDescription.txt", player, "../Resource/Texture/Act9/doorAct9.png", objectsList);
+    door->getTransform().setScale(0.83f, 1.66f);
+    door->getTransform().setPosition(30.46f, -1.38f);
+    door->setActive(false);
+    objectsList.emplace_back(door);
 
     //player->getTransform().setScale(4.166f, 2.5f);
     //player->getColliderComponent()->getTransform().translate(0.0f, -0.44f);
@@ -88,20 +92,16 @@ void LevelAct9::levelInit() {
             pObj->setPlayer(player);
         }
 
-        LivingEntity* lObj = dynamic_cast<LivingEntity*>(obj);
-        if (lObj != NULL) {
-            lObj->setAffectedByLighting(true);
-        }
+        //LivingEntity* lObj = dynamic_cast<LivingEntity*>(obj);
+        //if (lObj != NULL) {
+        //    lObj->setAffectedByLighting(true);
+        //}
     }
 
     startObjects(objectsList);
 
     player->getDamageCollider()->setFollowOffset(glm::vec3(1.0f, -0.2f, 0));
-    player->getTransform().setPosition(glm::vec3(-6.0f, -1.6f, 0.0f));
-
-    ParallaxObject* pole = new ParallaxObject(16.0f, 0.0f, 0.1f, false, player, true, pictureWidth, pictureHeight);
-    pole->setTexture("../Resource/Texture/Act1/City_P12_FGPole.png");
-    objectsList.emplace_back(pole);
+    player->getTransform().setPosition(glm::vec3(-2.0f, -1.6f, 0.0f));
 
     fb = new FadeBlack(1.0f);
     objectsList.emplace_back(fb);
@@ -109,8 +109,10 @@ void LevelAct9::levelInit() {
 
     //UIobject->initUI(objectsList);
 
+    GameEngine::getInstance()->getRenderer()->getCamera()->setPosition(glm::vec3(3.8f, 0.0f, 0.0f));
+
     GameEngine::getInstance()->getRenderer()->getCamera()->setDeadLimitBool(true);
-    GameEngine::getInstance()->getRenderer()->getCamera()->setDeadLimitMinMax(-5.0f, 40.75f);
+    GameEngine::getInstance()->getRenderer()->getCamera()->setDeadLimitMinMax(-1.0f, 33.25f);
 
     GameEngine::getInstance()->getRenderer()->getCamera()->setOffset(glm::vec3(0.0f, -0.5f, 0.0f));
     GameEngine::getInstance()->getRenderer()->setToggleViewport(true);
@@ -128,10 +130,13 @@ void LevelAct9::levelUpdate() {
     if (end) {
         timefade -= GameEngine::getInstance()->getTime()->getDeltaTime();
         if (timefade < 0.0f) {
-            GameEngine::getInstance()->getStateController()->gameStateNext = (GameState)((GameEngine::getInstance()->getStateController()->gameStateCurr + 1) % 9);
+            NextLevel();
         }
     }
 
+    if (killCount >= 5) {
+        door->setActive(true);
+    }
     //UIobject->updateUI(*player, camPos);
 }
 
@@ -243,6 +248,8 @@ void LevelAct9::handleKey(InputManager& input) {
 
     //Dialogue interact
     if (input.getButtonDown(SDLK_e)) {
-        
+        if (door->getIsClickable() && door->getIsActive()) {
+            end = true;
+        }
     }
 }
