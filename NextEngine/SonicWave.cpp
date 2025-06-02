@@ -21,7 +21,7 @@ SonicWave::SonicWave() {
 	damageStartFrame = 4;
 
 	getTransform().scales(2.0f);
-	setGroundOffset(-0.5f);
+	setGroundOffset(-0.25f);
 
 	reset();
 }

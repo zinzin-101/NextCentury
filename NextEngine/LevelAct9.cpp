@@ -134,7 +134,17 @@ void LevelAct9::levelUpdate() {
         }
     }
 
-    if (killCount >= 5) {
+    bool k = false;
+    for (std::list<DrawableObject*>::iterator itr = objectsList.begin(); itr != objectsList.end(); ++itr) {
+        EnemyObject* enemy = dynamic_cast<EnemyObject*>(*itr);
+        if (enemy != NULL) {
+            k = true;
+        }
+        else {
+
+        }
+    }
+    if (!k) {
         door->setActive(true);
     }
     //UIobject->updateUI(*player, camPos);
@@ -250,6 +260,7 @@ void LevelAct9::handleKey(InputManager& input) {
     if (input.getButtonDown(SDLK_e)) {
         if (door->getIsClickable() && door->getIsActive()) {
             end = true;
+            fb->FadeToBlack();
         }
     }
 }

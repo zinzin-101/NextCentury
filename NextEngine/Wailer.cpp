@@ -228,7 +228,7 @@ void Wailer::handleSonicBlastState() {
 	if (animState.name != "WindUp" && !isInSonicAttack) {
 		this->getAnimationComponent()->setState("WindUp");
 		isInSonicAttack = true;
-		sonicAttack->mark(targetEntity->getTransform().getPosition() + glm::vec3(0, 0, 50.0f));
+		sonicAttack->mark(targetEntity->getTransform().getPosition() + glm::vec3(0, 0.0f, 50.0f));
 		return;
 	}
 
