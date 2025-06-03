@@ -11,7 +11,7 @@ void IngameUI::updateArrowPosition() {
         activeList = &pausemenubuttons;
     }
     else {
-        if (playerObject.getHealth() <= 0) {
+        if (playerObject->getHealth() <= 0) {
             activeList = &deathmenubuttons;
         }
         else {
@@ -37,7 +37,7 @@ void IngameUI::updateArrowPosition() {
     arrow->getTransform().setPosition({ arrowX, bpos.y, bpos.z });
 }
 
-void IngameUI::initUI(std::list<DrawableObject*>& objectsList) {
+void IngameUI::initUI(std::list<DrawableObject*>& objectsList, PlayerObject* player) {
     deathmenubuttons.resize(2);
     pausemenubuttons.resize(3);
 
@@ -116,14 +116,15 @@ void IngameUI::initUI(std::list<DrawableObject*>& objectsList) {
         gunIcons.push_back(icon);
     }
 
+    playerObject = player;
+
     selectedButtonIndex = 0;
     deathmenubuttons[0]->setFocused(true);
     deathmenubuttons[1]->setFocused(false);
 }
 
-void IngameUI::updateUI(PlayerObject& player) {
+void IngameUI::updateUI() {
     camPos = GameEngine::getInstance()->getRenderer()->getCamera()->getPosition();
-    playerObject = player;
 
     if (isPaused) {
         healthBar->getTransform().setScale({ 0, 0, 0 });
@@ -163,7 +164,7 @@ void IngameUI::updateUI(PlayerObject& player) {
         return;
     }
 
-    if (playerObject.getHealth() > 0) {
+    if (playerObject->getHealth() > 0) {
 
         deathBlackdrop->getTransform().setScale({ 0, 0, 0 });
         deathText->getTransform().setScale({ 0, 0, 0 });
@@ -173,8 +174,8 @@ void IngameUI::updateUI(PlayerObject& player) {
         }
         arrow->getTransform().setScale({ 0, 0, 0 });
 
-        float healthPercent = (float)playerObject.getHealth() / 100.0f;
-        float staminaPercent = (float)playerObject.getStamina() / 100.0f;
+        float healthPercent = (float)playerObject->getHealth() / 100.0f;
+        float staminaPercent = (float)playerObject->getStamina() / 100.0f;
 
         float fullWidthHP = 4.0f;
         float frameHeightHP = 0.40f;
@@ -227,7 +228,7 @@ void IngameUI::updateUI(PlayerObject& player) {
             staminaBarFill->getTransform().setPosition({ stFillCenterX, staminaY, 0.0f });
         }
         {
-            int currentBullets = playerObject.getCurrentNumOfBullet();
+            int currentBullets = playerObject->getCurrentNumOfBullet();
             if (currentBullets < 0)            currentBullets = 0;
             if (currentBullets > MAX_BULLETS) currentBullets = MAX_BULLETS;
 
@@ -328,7 +329,7 @@ void IngameUI::handleInput(InputManager& input) {
         return;
     }
 
-    if (playerObject.getHealth() <= 0) {
+    if (playerObject->getHealth() <= 0) {
         if (input.getButtonDown(SDLK_w) || input.getButtonDown(SDLK_UP)) {
             deathmenubuttons[selectedButtonIndex]->setFocused(false);
             selectedButtonIndex = (selectedButtonIndex - 1 + deathmenubuttons.size())

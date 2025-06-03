@@ -16,7 +16,7 @@ private:
     TexturedObject* staminaBar = nullptr;
     SimpleObject* staminaBarFill = nullptr;
 
-    PlayerObject    playerObject;
+    PlayerObject* playerObject;
 
     SimpleObject* deathBlackdrop = nullptr;
     TexturedObject* deathText = nullptr;
@@ -37,8 +37,8 @@ private:
     void updateArrowPosition();
 
 public:
-    void initUI(std::list<DrawableObject*>& objectsList);
-    void updateUI(PlayerObject& playerObject);
+    void initUI(std::list<DrawableObject*>& objectsList, PlayerObject* playerObject);
+    void updateUI();
 
     void handleInput(InputManager& input);
 

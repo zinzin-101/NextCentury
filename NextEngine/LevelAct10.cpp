@@ -1,6 +1,6 @@
-#include "LevelAct5.h"
+#include "LevelAct10.h"
 
-void LevelAct5::levelLoad() {
+void LevelAct10::levelLoad() {
     SquareMeshVbo* square = new SquareMeshVbo();
     square->loadData();
     GameEngine::getInstance()->addMesh(SquareMeshVbo::MESH_NAME, square);
@@ -15,99 +15,76 @@ void LevelAct5::levelLoad() {
     removeLoadingScreen(objectsList);
 }
 
-void LevelAct5::levelInit() {
+void LevelAct10::levelInit() {
     UIobject = new IngameUI();
     player = new PlayerObject();
     GameEngine::getInstance()->getRenderer()->setClearColor(0.1f, 0.1f, 0.1f);
-
+    
     float pictureWidth = 960.0f;
     float pictureHeight = 360.0f;
+    float scaleX = (pictureWidth / pictureHeight) * 9.0f;
+    float scaleY = 9.0f;
 
-    ParallaxObject* sky = new ParallaxObject(0.0f, 0.0f, 550.0f, false, player, true, pictureWidth, pictureHeight);
-    sky->setTexture("../Resource/Texture/Act6/IMGT_P10_Sky.png");
-    objectsList.emplace(objectsList.begin(), sky);
+    TexturedObject* backGround1 = new TexturedObject();
+    backGround1->setTexture("../Resource/Texture/Act7/BR_P01_RoomBase.png");
+    backGround1->getTransform().setPosition(0.0f, 0.0f);
+    backGround1->getTransform().setScale(scaleX, scaleY);
+    objectsList.emplace(objectsList.begin(), backGround1);
 
-    ParallaxObject* mountain1 = new ParallaxObject(0.0f, 0.0f, 250.0f, false, player, true, pictureWidth, pictureHeight);
-    mountain1->setTexture("../Resource/Texture/Act6/IMGT_P08_Mountain02.png");
-    objectsList.emplace_back(mountain1);
+    TexturedObject* door = new TexturedObject();
+    door->getTransform().setPosition(-7.4f, -1.4f);
+    door->setTexture("../Resource/Texture/Act10/doorAct10.png");
+    door->getTransform().setScale(1.2f, 2.0f);
+    objectsList.emplace_back(door);
 
-    ParallaxObject* mountain2 = new ParallaxObject(0.0f, 0.0f, 200.0f, false, player, true, pictureWidth, pictureHeight);
-    mountain2->setTexture("../Resource/Texture/Act6/IMGT_P07_Mountain01.png");
-    objectsList.emplace_back(mountain2);
+    TexturedObject* window = new TexturedObject();
+    window->getTransform().setPosition(0.0f, 0.0f);
+    window->setTexture("../Resource/Texture/Act10/IPTH_P03_Window.png");
+    window->getTransform().setScale(scaleX, scaleY);
+    objectsList.emplace_back(window);
 
-    ParallaxObject* midGround1 = new ParallaxObject(0.0f, 0.0f, 100.0f, false, player, true, pictureWidth, pictureHeight);
-    midGround1->setTexture("../Resource/Texture/Act6/IMGT_P06_MidGround01.png");
-    objectsList.emplace_back(midGround1);
+    TexturedObject* shelf = new TexturedObject();
+    shelf->getTransform().setPosition(0.0f, 0.0f);
+    shelf->setTexture("../Resource/Texture/Act10/IPTH_P02_Shelfs.png");
+    shelf->getTransform().setScale(scaleX, scaleY);
+    objectsList.emplace_back(shelf);
 
-    ParallaxObject* midGround2 = new ParallaxObject(2.0f, -0.0f, 15.0f, false, player, true, pictureWidth, pictureHeight);
-    midGround2->setTexture("../Resource/Texture/Act6/IMGT_P05_MidGround02.png");
-    objectsList.emplace_back(midGround2);
+    TexturedObject* bed = new TexturedObject();
+    bed->getTransform().setPosition(0.0f, 0.0f);
+    bed->setTexture("../Resource/Texture/Act3/MCR_P04_Mid2.png");
+    bed->getTransform().setScale((640.0f / pictureHeight) * 9.0f, scaleY);
+    objectsList.emplace_back(bed);
 
-    ParallaxObject* midGround3 = new ParallaxObject(2.0f, -0.0f, 10.0f, false, player, true, pictureWidth, pictureHeight);
-    midGround3->setTexture("../Resource/Texture/Act6/IMGT_P04_MidGround03.png");
-    objectsList.emplace_back(midGround3);
-
-    TexturedObject* fakeEnem1 = new TexturedObject();
-    fakeEnem1->setTexture("../Resource/Texture/Purifier2.png");
-    fakeEnem1->initAnimation(6, 8);
-    fakeEnem1->getAnimationComponent()->addState("Idle", 0, 0, 6, true);
-    fakeEnem1->getAnimationComponent()->setState("Idle");
-    fakeEnem1->getTransform().setPosition(glm::vec3(7.5f, -1.35f, 0.0f));
-    fakeEnem1->getTransform().setScale(-1.579f, 2.05f);
-    objectsList.emplace_back(fakeEnem1);
-
-    TexturedObject* fakeEnem2 = new TexturedObject();
-    fakeEnem2->setTexture("../Resource/Texture/Purifier2.png");
-    fakeEnem2->initAnimation(6, 8);
-    fakeEnem2->getAnimationComponent()->addState("Idle", 0, 0, 6, true);
-    fakeEnem2->getAnimationComponent()->setState("Idle");
-    fakeEnem2->getTransform().setPosition(glm::vec3(9.5f, 0.2f, 0.0f));
-    fakeEnem2->getTransform().setScale(-1.579f, 2.05f);
-    objectsList.emplace_back(fakeEnem2);
-
-    ParallaxObject* watchTower = new ParallaxObject(4.2f, -0.6f, 10.0f, false, player, false, 960.0f, 360.0f);
-    watchTower->setTexture("../Resource/Texture/Act6/IMGT_P02_WatchTower.png");
-    watchTower->getTransform().setScale(18.66f, 7.0f);
-    objectsList.emplace_back(watchTower);
-
-    //ParallaxObject* spaceShips = new ParallaxObject(0.0f, -0.0f, 90.0f, false, player, true, pictureWidth, pictureHeight); // SHOULD BE AN OBJECT FLYING ON ITS OWN
-    //spaceShips->setTexture("../Resource/Texture/OutskirtParallax/OSKT_P08_Spaceship.png");
-    //objectsList.emplace_back(spaceShips);
-
-    TexturedObject* spaceShip = new TexturedObject(); // SHOULD BE AN OBJECT FLYING ON ITS OWN
-    spaceShip->setTexture("../Resource/Texture/Act6/IMGT_P09_Spaceship.png");
-    spaceShip->getTransform().setScale(13.21f, 9.0f);
-    spaceShip->getTransform().setPosition(glm::vec3(-10.0f, 1.0f, 0.0f));
-    spS = spaceShip;
-    objectsList.emplace_back(spaceShip);
-
-    ParallaxObject* ground = new ParallaxObject(0.0f, 0.0f, 0.0f, false, player, true, pictureWidth, pictureHeight);
-    ground->setTexture("../Resource/Texture/Act6/IMGT_P01_Ground.png");
-    objectsList.emplace_back(ground);
+    TexturedObject* board = new TexturedObject();
+    board->getTransform().setPosition(-1.0f, -0.5f);
+    board->setTexture("../Resource/Texture/Act10/boardAct10.png");
+    board->getTransform().setScale(2.5f, 1.41f);
+    objectsList.emplace_back(board);
 
     //float height = 8.0f;
     //float width = height * 1.467889908256881;
     //for (auto a : objectsList) {
     //    a->getTransform().setScale(width, height);
     //}
-    Level::importTransformData(objectsList, "act5", false);
+    Level::importTransformData(objectsList, "act10", false);
 
 
     //player->getTransform().setScale(4.166f, 2.5f);
     //player->getColliderComponent()->getTransform().translate(0.0f, -0.44f);
     //player->getColliderComponent()->setDimension(0.25f, 0.65f);
-    player->getTransform().setPosition(glm::vec3(-6.0f, -1.6f, 0.0f));
+    player->getTransform().setPosition(glm::vec3(-7.3f, -1.6f, 0.0f));
     objectsList.emplace_back(player);
 
-    vector<glm::vec3> l;
-    l.push_back(glm::vec3(6.5f, 0.5f, 0.0f));
-    l.push_back(glm::vec3(7.5f, 2.0f, 0.0f));
-    immigrats1 = new ChatBubble("../Resource/Texture/StoryStuff/chat1Act5.txt", player, l, objectsList);
+    stair = new InteractableObject("../Resource/Texture/StoryStuff/ComputerAct7.txt", player, "../Resource/Texture/Act10/stairsAct10.png", objectsList);
+    stair->getTransform().setScale(3.0f, 1.06f);
+    stair->getTransform().setPosition(7.8f, -1.95f);
+    objectsList.emplace_back(stair);
 
-    eToPermit = new ProtagThoughts("../Resource/Texture/StoryStuff/protagAct5.txt", player);
-    objectsList.emplace_back(eToPermit);
-
-    immigrats2 = new ChatBubble("../Resource/Texture/StoryStuff/chat2Act5.txt", player, l, objectsList);
+    TexturedObject* backGround = new TexturedObject();
+    backGround->getTransform().setPosition(0.0f, 0.0f);
+    backGround->setTexture("../Resource/Texture/Act10/IPTH_P04_Frame.png");
+    backGround->getTransform().setScale(scaleX, scaleY);
+    objectsList.emplace_back(backGround);
 
     isStop = false;
 
@@ -141,10 +118,10 @@ void LevelAct5::levelInit() {
     objectsList.emplace_back(fb);
     fb->FadeToTransparent();
 
-    GameEngine::getInstance()->getRenderer()->getCamera()->setPosition(glm::vec3(0.0f, 0.0f, 0.0f));
+    GameEngine::getInstance()->getRenderer()->getCamera()->setPosition(glm::vec3(-4.0f, 0.0f, 0.0f));
 
     GameEngine::getInstance()->getRenderer()->getCamera()->setDeadLimitBool(true);
-    GameEngine::getInstance()->getRenderer()->getCamera()->setDeadLimitMinMax(-5.0f, 40.75f);
+    GameEngine::getInstance()->getRenderer()->getCamera()->setDeadLimitMinMax(-9.0f, 9.0f);
 
     GameEngine::getInstance()->getRenderer()->getCamera()->setOffset(glm::vec3(0.0f, -0.5f, 0.0f));
     GameEngine::getInstance()->getRenderer()->setToggleViewport(true);
@@ -153,48 +130,20 @@ void LevelAct5::levelInit() {
 
 }
 
-void LevelAct5::levelUpdate() {
+void LevelAct10::levelUpdate() {
     updateObjects(objectsList);
 
     GameEngine::getInstance()->getRenderer()->updateCamera();
-
-    if (player->getTransform().getPosition().x > 5.8f) {
-
-        if (!immigrats2->hasEnded()) {
-            isStop = true;
-        }
-        else {
-            isStop = false;
-        }
-        if (!immigrats1->hasEnded()) {
-            immigrats1->runChat(objectsList);
-        }
-        else {
-            if (!eToPermit->getDialogueObject()->isEnd) {
-                eToPermit->activateDialogue();
-            }
-            else {
-                immigrats2->runChat(objectsList);
-            }
-        }
-    }
-
-    if (player->getTransform().getPosition().x > 17.5f) {
-        if (!end) {
-            fb->FadeToBlack();
-            end = true;
-        }
+    if(end){
         timefade -= GameEngine::getInstance()->getTime()->getDeltaTime();
         if (timefade < 0.0f) {
-            NextLevel();
+            loadNextLevel();
         }
     }
-
-    spS->getTransform().setPosition(spS->getTransform().getPosition() + glm::vec3(0.1f, 0.0f, 0.0f));
     //UIobject->updateUI(*player, camPos);
 }
 
-void LevelAct5::levelDraw() {
+void LevelAct10::levelDraw() {
     GameEngine::getInstance()->render(objectsList);
 
 #ifdef DEBUG_MODE_ON
@@ -202,25 +151,22 @@ void LevelAct5::levelDraw() {
 #endif
 }
 
-void LevelAct5::levelFree() {
+void LevelAct10::levelFree() {
     for (DrawableObject* obj : objectsList) {
         delete obj;
     }
     objectsList.clear();
 
-    delete immigrats1;
-    delete immigrats2;
-
     delete UIobject;
 }
 
-void LevelAct5::levelUnload() {
+void LevelAct10::levelUnload() {
     GameEngine::getInstance()->clearMesh();
     GameEngine::getInstance()->getRenderer()->setClearColor(0.1f, 0.1f, 0.1f);
     //cout << "Unload Level" << endl;
 }
 
-void LevelAct5::handleKey(InputManager& input) {
+void LevelAct10::handleKey(InputManager& input) {
     // For debugging
     if (input.getButton(SDLK_z)) GameEngine::getInstance()->getRenderer()->increaseZoomRatio(0.1f);
     if (input.getButton(SDLK_x)) GameEngine::getInstance()->getRenderer()->decreaseZoomRatio(0.1f);
@@ -307,8 +253,9 @@ void LevelAct5::handleKey(InputManager& input) {
     }
 
     if (input.getButtonDown(SDLK_e)) {
-        if (eToPermit->getDialogueObject()->isDialogueActive) {
-            eToPermit->stopDialogue();
+        if (stair->getIsClickable()) {
+            fb->FadeToBlack();
+            end = true;
         }
     }
 }

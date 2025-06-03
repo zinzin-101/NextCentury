@@ -122,7 +122,7 @@ void LevelAct4::levelInit() {
     //player->getTransform().scales(1.0f, 1.0f);
     //player->move(glm::vec2(-1, 0));
 
-    //UIobject->initUI(objectsList);
+    UIobject->initUI(objectsList, player);
 
     fb = new FadeBlack(1.0f);
     objectsList.emplace_back(fb);
@@ -160,7 +160,7 @@ void LevelAct4::levelUpdate() {
     }
     // at the very start of the game freeze everything and chatEnemy is "YOU HAVE MAGIC" THEN fight...
 
-    //UIobject->updateUI(*player, camPos);
+    UIobject->updateUI();
 }
 
 void LevelAct4::levelDraw() {
@@ -172,12 +172,13 @@ void LevelAct4::levelDraw() {
 }
 
 void LevelAct4::levelFree() {
+    delete UIobject;
     for (DrawableObject* obj : objectsList) {
         delete obj;
     }
     objectsList.clear();
     delete chat1;
-    delete UIobject;
+    //
 }
 
 void LevelAct4::levelUnload() {
