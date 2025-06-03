@@ -13,6 +13,7 @@ ElivaBoss::ElivaBoss(): EnemyObject(DefaultEnemyStat::ELIVA_INFO) {
 	stunnedTimer = 0.0f;
 	hasShield = false;
 	isFuryUsed = false;
+	hasInjectedSerum = false;
 	canBlink = false;
 	isDead = false;
 	canUsePoisonCloud = true;
@@ -124,6 +125,7 @@ void ElivaBoss::start(list<DrawableObject*>& objectsList) {
 	bayonetCollider->setFollowOffset(glm::vec3(-1.0f, -1.0f, 0));
 	bayonetCollider->getColliderComponent()->setDimension(2.0f, 2.0f);
 	bayonetCollider->setDrawCollider(true); // debug
+	bayonetCollider->setCanDamage(false);
 	objectsList.emplace_back(bayonetCollider);
 
 	poisonCollider = new PoisonCloudCollider(this);
@@ -390,9 +392,16 @@ void ElivaBoss::handleBayonetSlash() {
 
 	int currentFrame = animState.currentFrame;
 
-	if (currentFrame == 4 + 1) {
+	if (currentFrame == 3 + 1) {
 		bayonetCollider->trigger(this->getTransform().getPosition());
+		bayonetCollider->setCanDamage(false);
 		bayonetCollider->setCanDecreaseTime(false);
+
+		return;
+	}
+
+	if (currentFrame == 4 + 1) {
+		bayonetCollider->setCanDamage(true);
 
 		return;
 	}
@@ -515,6 +524,7 @@ void ElivaBoss::handleSerumInject() {
 
 	if (currentFrame == 20 + 1) {
 		setCanTakeDamage(true);
+		hasInjectedSerum = true;
 		return;
 	}
 }
@@ -553,9 +563,16 @@ void ElivaBoss::handleFuryBayonetSlash() {
 
 	int currentFrame = animState.currentFrame;
 
-	if (currentFrame == 4 + 1) {
+	if (currentFrame == 3 + 1) {
 		bayonetCollider->trigger(this->getTransform().getPosition());
+		bayonetCollider->setCanDamage(false);
 		bayonetCollider->setCanDecreaseTime(false);
+
+		return;
+	}
+
+	if (currentFrame == 4 + 1) {
+		bayonetCollider->setCanDamage(true);
 
 		return;
 	}
@@ -599,6 +616,8 @@ void ElivaBoss::onCollisionStay(Collider* collider) {}
 void ElivaBoss::takeDamage(int damage) {
 	if (this->getHealth() - damage <= 0 && !isDead) {
 		isDead = true;
+
+		LivingEntity::takeDamage(0);
 
 		this->setHealth(1);
 		this->setCanTakeDamage(false);
@@ -714,6 +733,10 @@ bool ElivaBoss::isShieldActivated() const {
 
 bool ElivaBoss::hasFuryBeenActivated() const{
 	return isFuryUsed;
+}
+
+bool ElivaBoss::hasSerumBeenInjected() const {
+	return hasInjectedSerum;
 }
 
 float ElivaBoss::getStunnedTimer() const {

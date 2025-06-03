@@ -9,7 +9,7 @@ namespace StateTransition {
 		}
 
 		if (boss->getHealth() <= ElivaStat::HEALTH_TO_BEGIN_SERUM_INJECT && !boss->isShieldActivated()) {
-			return true;
+			return !boss->hasSerumBeenInjected();
 		}
 
 		return false;

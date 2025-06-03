@@ -180,7 +180,7 @@ void PlayerObject::dodge(float xDirection) {
 }
 
 void PlayerObject::useHealthPotion() {
-    if (isHealing || isAttacking || isParrying || isDodging || isJumping) {
+    if (isHealing || isAttacking || isParrying || isDodging || isJumping || isInAttackState || isInHeavyAttack || isInRangeAttack) {
         return;
     }
 
@@ -204,8 +204,8 @@ void PlayerObject::start(list<DrawableObject*>& objectsList) {
     //attackHitbox = new DamageCollider<EnemyObject>(this, damage, 2.5f);
     attackHitbox->setActive(false);
     attackHitbox->setFollowOwner(true);
-    attackHitbox->setFollowOffset(glm::vec3(0.5f, 0.0f, 0));
-    attackHitbox->getColliderComponent()->setWidth(1.5f);
+    attackHitbox->setFollowOffset(glm::vec3(0.1f, 0.0f, 0));
+    attackHitbox->getColliderComponent()->setWidth(1.8f);
     attackHitbox->addEmitter(objectsList);
     objectsList.emplace_back(attackHitbox);
 
@@ -743,6 +743,8 @@ void PlayerObject::handleHealing() {
     Animation::State animState = this->getAnimationComponent()->getCurrentAnimationState();
     if (animState.currentFrame == healFrame && !healed) {
         this->heal(PlayerStat::HEAL_AMOUNT);
+        resetAttack();
+        endMeleeAttack();
         healed = true;
         return;
     }
@@ -895,18 +897,15 @@ void PlayerObject::handleParryAttack() {
     if (currentFrame == parryFrame.startAttackFrame + 1) {
         startMeleeAttack();
 
-        this->setCanTakeDamage(false);
+        //this->setCanTakeDamage(false);
 
         return;
     }
 
-    if (currentFrame == parryFrame.allowNextComboFrame + 1) {
+    if (currentFrame == parryFrame.allowNextComboFrame + 1 || (successfulParry)) {
         endMeleeAttack();
-        return;
-    }
-
-    if (currentFrame == parryFrame.allowNextComboFrame + 2 || (successfulParry && moveDirection.x != 0.0f)) {
-        this->setCanTakeDamage(true);
+        
+        //this->setCanTakeDamage(true);
         attackCooldownRemaining = successfulParry ? 0.0f : PlayerStat::ATTACK_COOLDOWN;
 
         if (successfulParry) {
@@ -968,7 +967,7 @@ void PlayerObject::takeDamage(int damage) {
     if (!this->getCanTakeDamage()) {
         return;
     }
-    //cout << "took damage" << endl;
+
     this->LivingEntity::takeDamage(damage);
     iFrameTimeRemaining = PlayerStat::INVINCIBLE_DURATION_AFTER_TAKING_DAMAGE;
 }

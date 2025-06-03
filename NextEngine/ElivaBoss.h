@@ -18,7 +18,7 @@ namespace ElivaStat {
 	constexpr float RIFLE_SHOT_SPEED = 10.0f;
 	constexpr float RIFLE_SHOT_LIFESPAN = 10.0f;
 
-	constexpr float BAYONET_SLASH_RANGE = 2.0f;
+	constexpr float BAYONET_SLASH_RANGE = 2.5f;
 	constexpr float MAX_BLINK_DISTANCE_FROM_PLAYER = 6.0f;
 	constexpr float MIN_BLINK_DISTANCE_FOR_RIFLE_SHOT_FROM_PLAYER = 4.0f;
 	constexpr float MIN_BLINK_DISTANCE_FOR_BAYONET_FROM_PLAYER = 1.0f;
@@ -93,6 +93,7 @@ class ElivaBoss : public EnemyObject {
 		float getDistanceFromPlayer() const;
 		bool isShieldActivated() const;
 		bool hasFuryBeenActivated() const;
+		bool hasSerumBeenInjected() const;
 		float getStunnedTimer() const;
 		bool getCanUsePoisonCloud() const;
 
@@ -114,6 +115,7 @@ class ElivaBoss : public EnemyObject {
 		bool canBlink;
 
 		bool isFuryUsed;
+		bool hasInjectedSerum;
 		float cooldownTimer;
 
 		float stunnedTimer;
