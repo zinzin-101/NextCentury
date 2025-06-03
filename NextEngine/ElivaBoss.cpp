@@ -243,8 +243,8 @@ void ElivaBoss::handleBlink() {
 	if (canBlink && currentFrame == 6 + 1) {
 		canBlink = false;
 
-		//glm::vec3 playerPos = targetEntity->getTransform().getPosition();
-		glm::vec3 playerPos = glm::vec3();
+		glm::vec3 playerPos = targetEntity->getTransform().getPosition();
+		glm::vec3 origin = glm::vec3();
 		glm::vec3 elivaPos = this->getTransform().getPosition();
 		float direction = Random::Float() < 0.5f ? -1.0f : 1.0f;
 		float distance = Random::Float() * ElivaStat::MAX_BLINK_DISTANCE_FROM_PLAYER;
@@ -253,7 +253,7 @@ void ElivaBoss::handleBlink() {
 		}
 		float offsetX = direction * distance;
 		glm::vec3 newPos = elivaPos;
-		newPos.x = playerPos.x + offsetX;
+		newPos.x = origin.x + offsetX;
 		this->getTransform().setPosition(newPos);
 
 		float offsetFromPlayer = playerPos.x - elivaPos.x;
@@ -283,8 +283,8 @@ void ElivaBoss::handleFuryBlink() {
 	if (canBlink && currentFrame == 6 + 1) {
 		canBlink = false;
 
-		//glm::vec3 playerPos = targetEntity->getTransform().getPosition();
-		glm::vec3 playerPos = glm::vec3();
+		glm::vec3 playerPos = targetEntity->getTransform().getPosition();
+		glm::vec3 origin = glm::vec3();
 		glm::vec3 elivaPos = this->getTransform().getPosition();
 		float direction = Random::Float() < 0.5f ? -1.0f : 1.0f;
 		float distance = Random::Float() * ElivaStat::MAX_BLINK_DISTANCE_FROM_PLAYER;
@@ -293,7 +293,7 @@ void ElivaBoss::handleFuryBlink() {
 		}
 		float offsetX = direction * distance;
 		glm::vec3 newPos = elivaPos;
-		newPos.x = playerPos.x + offsetX;
+		newPos.x = origin.x + offsetX;
 		this->getTransform().setPosition(newPos);
 
 		float offsetFromPlayer = playerPos.x - elivaPos.x;
@@ -323,8 +323,8 @@ void ElivaBoss::handleCloseBlink() {
 	if (canBlink && currentFrame == 6 + 1) {
 		canBlink = false;
 
-		//glm::vec3 playerPos = targetEntity->getTransform().getPosition();
-		glm::vec3 playerPos = glm::vec3();
+		glm::vec3 playerPos = targetEntity->getTransform().getPosition();
+		glm::vec3 origin = glm::vec3();
 		glm::vec3 elivaPos = this->getTransform().getPosition();
 		float direction = Random::Float() < 0.5f ? -1.0f : 1.0f;
 		float distance = Random::Float() * ElivaStat::BAYONET_SLASH_RANGE;
@@ -333,7 +333,7 @@ void ElivaBoss::handleCloseBlink() {
 		}
 		float offsetX = direction * distance;
 		glm::vec3 newPos = elivaPos;
-		newPos.x = playerPos.x + offsetX;
+		newPos.x = origin.x + offsetX;
 		this->getTransform().setPosition(newPos);
 
 		float offsetFromPlayer = playerPos.x - elivaPos.x;
