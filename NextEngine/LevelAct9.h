@@ -21,6 +21,9 @@ private:
     SoundEffect m_jumpSfx;
     SoundEffect m_deathSfx;
     Music       m_backgroundMusic;
+
+    int killCount = 0;
+
 public:
     virtual void levelLoad();
     virtual void levelInit();
@@ -30,4 +33,6 @@ public:
     virtual void levelUnload();
 
     virtual void handleKey(InputManager& input);
+
+    virtual void signalFromEngine();
 };

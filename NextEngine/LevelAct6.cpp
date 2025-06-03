@@ -173,6 +173,8 @@ void LevelAct6::levelInit() {
 }
 
 void LevelAct6::levelUpdate() {
+    std::cout << "kill count " << killCount << std::endl;
+
     updateObjects(objectsList);
     GameEngine::getInstance()->getRenderer()->updateCamera();
     
@@ -360,4 +362,8 @@ void LevelAct6::handleKey(InputManager& input) {
             }
         }
     }
+}
+
+void LevelAct6::signalFromEngine() {
+    this->killCount++;
 }

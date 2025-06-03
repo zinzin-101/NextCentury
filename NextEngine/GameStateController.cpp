@@ -112,3 +112,7 @@ void GameStateController::handleMouseLevel(int type, int x, int y) {
 void GameStateController::handleAnalogLevel(int type, float amount) {
 	currentLevel->handleAnalogStick(type, amount);
 }
+
+Level* GameStateController::getCurrentLevel() const {
+	return currentLevel;
+}

@@ -55,6 +55,8 @@ void EnemyObject::onDeath(std::list<DrawableObject*>& objectsList) {
 		return;
 	}
 	
+	GameEngine::getInstance()->signalToCurrentLevel();
+
 	GameEngine::getInstance()->pauseTimeForSeconds(0.125f);
 	//GameEngine::getInstance()->freezeGameForSeconds(0.125f);
 

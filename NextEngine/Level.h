@@ -13,11 +13,11 @@
 #include "IngameUI.h"
 #include "InteractableObject.h"
 #include "Dialogue.h"
+#include "GameStateList.h"
 #include "ProtagThoughts.h"
 #include "GotItemText.h"
 #include "ChatBubble.h"
 #include "FadeBlack.h"
-#include "GameStateList.h"
 
 namespace LevelConstant {
     constexpr float DEFAULT_BUFFER_DURATION = 0.3f;
@@ -42,8 +42,6 @@ protected:
     static void appendEnemyData(std::ofstream& output, EnemyObject* enemy);
     static void readEnemyData(std::ifstream& file, std::string type, std::list<DrawableObject*>& objectsList, bool setDrawCollider);
 
-    int killCount = 0;
-
 public:
     //SimpleObject* healthBar = nullptr;
     virtual void levelLoad();
@@ -53,6 +51,8 @@ public:
     virtual void levelFree();
     virtual void levelUnload();
     void NextLevel();
+
+    virtual void signalFromEngine();
 
     virtual void handleKey(char key);
     virtual void handleKey(InputManager& input);

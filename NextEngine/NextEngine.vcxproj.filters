@@ -83,10 +83,6 @@
     <ClCompile Include="ElivaBoss.cpp" />
     <ClCompile Include="ElivaBossState.cpp" />
     <ClCompile Include="PoisonCloud.cpp" />
-    <ClCompile Include="ChatBubble.cpp" />
-    <ClCompile Include="FadeBlack.cpp" />
-    <ClCompile Include="LevelAct7.cpp" />
-    <ClCompile Include="LevelAct8.cpp" />
     <ClCompile Include="InteractableObject.cpp" />
     <ClCompile Include="LevelAct2.cpp" />
     <ClCompile Include="LevelAct3.cpp" />
@@ -96,9 +92,6 @@
     <ClCompile Include="LevelMainMenu.cpp" />
     <ClCompile Include="UIMainMenu.cpp" />
     <ClCompile Include="DialogueList.cpp" />
-    <ClCompile Include="GotItemText.cpp" />
-    <ClCompile Include="ProtagThoughts.cpp" />
-    <ClCompile Include="LevelAct9.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
@@ -200,10 +193,6 @@
     <ClInclude Include="ElivaBoss.h" />
     <ClInclude Include="ElivaBossState.h" />
     <ClInclude Include="PoisonCloud.h" />
-    <ClInclude Include="ChatBubble.h" />
-    <ClInclude Include="FadeBlack.h" />
-    <ClInclude Include="LevelAct7.h" />
-    <ClInclude Include="LevelAct8.h" />
     <ClInclude Include="LevelAct2.h" />
     <ClInclude Include="LevelAct3.h" />
     <ClInclude Include="LevelAct4.h" />
@@ -213,9 +202,6 @@
     <ClInclude Include="LevelMainMenu.h" />
     <ClInclude Include="UIMainMenu.h" />
     <ClInclude Include="DialogueList.h" />
-    <ClInclude Include="GotItemText.h" />
-    <ClInclude Include="ProtagThoughts.h" />
-    <ClInclude Include="LevelAct9.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Resource\Shader\fragment.shd" />

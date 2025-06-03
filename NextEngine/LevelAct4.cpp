@@ -273,3 +273,7 @@ void LevelAct4::handleKey(InputManager& input) {
         }
     }
 }
+
+void LevelAct4::signalFromEngine() {
+    this->killCount++;
+}
