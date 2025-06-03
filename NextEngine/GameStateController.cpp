@@ -7,7 +7,6 @@
 #include "LevelAnimTest.h"
 #include "LevelCollisionTest.h"
 #include "LevelImgui.h"
-#include "LevelUITest.h"
 #include "LevelMapEditorTest.h"
 #include "LevelEnemTest.h"
 #include "LevelPrototype.h"
@@ -18,9 +17,6 @@
 #include "LevelAct4.h"
 #include "LevelAct5.h"
 #include "LevelAct6.h"
-#include "LevelAct7.h"
-#include "LevelAct8.h"
-#include "LevelAct9.h"
 #include "LevelMainMenu.h"
 
 GameStateController::GameStateController() {
@@ -48,25 +44,25 @@ void GameStateController::loadLevel() {
 			currentLevel = new LevelAct1();
 			break;
 		case GameState::GS_LEVEL3:
-			currentLevel = new LevelAct2();
+			currentLevel = new LevelAct1();
 			break;
 		case GameState::GS_ACT1:
-			currentLevel = new LevelAct3();
+			currentLevel = new LevelAct2();
 			break;
 		case GameState::GS_ACT2:
-			currentLevel = new LevelAct4();
+			currentLevel = new LevelAct3();
 			break;
 		case GameState::GS_ACT3:
-			currentLevel = new LevelAct5();
+			currentLevel = new LevelAct4();
 			break;
 		case GameState::GS_ACT4:
-			currentLevel = new LevelAct6();
+			currentLevel = new LevelAct5();
 			break;
 		case GameState::GS_ACT5:
-			currentLevel = new LevelAct7();
+			currentLevel = new LevelAct6();
 			break;
 		case GameState::GS_ACT6:
-			currentLevel = new LevelAct8();
+			currentLevel = new LevelAct6();
 			break;
 
 		default:
@@ -111,8 +107,4 @@ void GameStateController::handleMouseLevel(int type, int x, int y) {
 
 void GameStateController::handleAnalogLevel(int type, float amount) {
 	currentLevel->handleAnalogStick(type, amount);
-}
-
-Level* GameStateController::getCurrentLevel() const {
-	return currentLevel;
 }

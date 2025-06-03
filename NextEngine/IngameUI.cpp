@@ -1,7 +1,46 @@
 ﻿#include "IngameUI.h"
+#include "GameEngine.h"
+#include <SDL.h>
+#include <iostream>
+
+void IngameUI::updateArrowPosition() {
+    if (!arrow) return;
+
+    std::vector<Button*>* activeList = nullptr;
+    if (isPaused) {
+        activeList = &pausemenubuttons;
+    }
+    else {
+        if (playerObject.getHealth() <= 0) {
+            activeList = &deathmenubuttons;
+        }
+        else {
+            arrow->getTransform().setScale({ 0, 0, 0 });
+            return;
+        }
+    }
+
+    if (activeList->empty()) return;
+
+    Transform& bt = (*activeList)[selectedButtonIndex]->getTransform();
+    glm::vec3   bpos = bt.getPosition();
+    glm::vec3   bscale = bt.getScale();
+
+    glm::vec3 ascale = arrow->getTransform().getScale();
+    const float margin = 0.1f;
+
+    float arrowX = bpos.x
+        - (bscale.x * 0.5f)
+        - (ascale.x * 0.5f)
+        - margin;
+
+    arrow->getTransform().setPosition({ arrowX, bpos.y, bpos.z });
+}
 
 void IngameUI::initUI(std::list<DrawableObject*>& objectsList) {
-    // --- Health Bar ---
+    deathmenubuttons.resize(2);
+    pausemenubuttons.resize(3);
+
     healthBar = new TexturedObject();
     healthBar->setTexture("../Resource/Texture/UI/Ingame/MC_HP_Bar.png");
     objectsList.push_back(healthBar);
@@ -10,139 +49,307 @@ void IngameUI::initUI(std::list<DrawableObject*>& objectsList) {
     healthBarFill->setColor(glm::vec4(0.0353f, 0.7216f, 0.6706f, 1.0f));
     objectsList.push_back(healthBarFill);
 
-    // --- Stamina Bar ---
     staminaBar = new TexturedObject();
     staminaBar->setTexture("../Resource/Texture/UI/Ingame/MC_Mana_Bar.png");
     objectsList.push_back(staminaBar);
 
     staminaBarFill = new SimpleObject();
-    staminaBarFill->setColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+    staminaBarFill->setColor(glm::vec4{ 1.0f, 1.0f, 1.0f, 1.0f });
     objectsList.push_back(staminaBarFill);
 
-    // --- Gun Icons (one per bullet) ---
-    // We’ll create MAX_BULLETS separate TexturedObjects and push them both
-    // into objectsList and into our gunIcons vector.
-    baseGunScale = glm::vec3(0.6f, 0.6f, 0.0f);
+    deathBlackdrop = new SimpleObject();
+    deathBlackdrop->setColor(glm::vec4(0.0f, 0.0f, 0.0f, 1.0f));
+	deathBlackdrop->setRenderOpacity(0.8f);
+    deathBlackdrop->getTransform().setScale({ 0, 0, 0 });
+    objectsList.push_back(deathBlackdrop);
 
+    deathText = new TexturedObject();
+    deathText->setTexture("../Resource/Texture/UI/DeathScreen/DeathText.png");
+    deathText->getTransform().setScale({ 0, 0, 0 });
+    objectsList.push_back(deathText);
+
+    deathmenubuttons[0] = new Button("RestartButton", "../Resource/Texture/UI/MainMenu/Retry.png");
+    deathmenubuttons[0]->getTransform().setScale({ 0, 0, 0 });
+    deathmenubuttons[0]->getTransform().setPosition({ 0, 0, 0 });
+    deathmenubuttons[0]->setOnClickCallback([]() {
+        std::cout << "Restart Button clicked!" << std::endl;
+        GameEngine::getInstance()->getStateController()->gameStateNext = GameState::GS_RESTART;
+        });
+    objectsList.push_back(deathmenubuttons[0]);
+
+    deathmenubuttons[1] = new Button("MainMenuButton", "../Resource/Texture/UI/MainMenu/MainMenu.png");
+    deathmenubuttons[1]->getTransform().setScale({ 0, 0, 0 });
+    deathmenubuttons[1]->getTransform().setPosition({ 0, 0, 0 });
+    deathmenubuttons[1]->setOnClickCallback([]() {
+        std::cout << "Main Menu Button clicked!" << std::endl;
+        GameEngine::getInstance()->getStateController()->gameStateNext = GameState::GS_LEVEL1;
+        });
+    objectsList.push_back(deathmenubuttons[1]);
+
+    pausemenubuttons[0] = new Button("ResumeButton", "../Resource/Texture/UI/MainMenu/PlayGame.png");
+    pausemenubuttons[0]->getTransform().setScale({ 0, 0, 0 });
+    pausemenubuttons[0]->getTransform().setPosition({ 0, 0, 0 });
+    objectsList.push_back(pausemenubuttons[0]);
+
+    pausemenubuttons[1] = new Button("SettingsButton", "../Resource/Texture/UI/MainMenu/Setting.png");
+    pausemenubuttons[1]->getTransform().setScale({ 0, 0, 0 });
+    pausemenubuttons[1]->getTransform().setPosition({ 0, 0, 0 });
+    objectsList.push_back(pausemenubuttons[1]);
+
+    pausemenubuttons[2] = new Button("MainMenuButton", "../Resource/Texture/UI/MainMenu/MainMenu.png");
+    pausemenubuttons[2]->getTransform().setScale({ 0, 0, 0 });
+    pausemenubuttons[2]->getTransform().setPosition({ 0, 0, 0 });
+    objectsList.push_back(pausemenubuttons[2]);
+
+    arrow = new TexturedObject("arrow");
+    arrow->setTexture("../Resource/Texture/UI/MainMenu/Arrow.png");
+    arrow->getTransform().setScale({ 0, 0, 0 });
+    arrow->getTransform().setPosition({ 0, 0, 0 });
+    objectsList.push_back(arrow);
+
+    baseGunScale = { 0.6f, 0.6f, 0.0f };
     for (int i = 0; i < MAX_BULLETS; ++i) {
         TexturedObject* icon = new TexturedObject();
         icon->setTexture("../Resource/Texture/UI/Ingame/Gun.png");
-
-        // Initially hide all icons by scaling to zero
-        icon->getTransform().setScale(glm::vec3(0.0f, 0.0f, 0.0f));
-
+        icon->getTransform().setScale({ 0, 0, 0 });
         objectsList.push_back(icon);
         gunIcons.push_back(icon);
     }
+
+    selectedButtonIndex = 0;
+    deathmenubuttons[0]->setFocused(true);
+    deathmenubuttons[1]->setFocused(false);
 }
 
-void IngameUI::updateUI(PlayerObject& playerObject) {
-    // 1) Camera position
+void IngameUI::updateUI(PlayerObject& player) {
     camPos = GameEngine::getInstance()->getRenderer()->getCamera()->getPosition();
+    playerObject = player;
 
-    // 2) Health and Stamina percentages
-    float healthPercent = static_cast<float>(playerObject.getHealth()) / 100.0f;
-    float staminaPercent = static_cast<float>(playerObject.getStamina()) / 100.0f;
+    if (isPaused) {
+        healthBar->getTransform().setScale({ 0, 0, 0 });
+        healthBarFill->getTransform().setScale({ 0, 0, 0 });
+        staminaBar->getTransform().setScale({ 0, 0, 0 });
+        staminaBarFill->getTransform().setScale({ 0, 0, 0 });
+        for (auto* icon : gunIcons) {
+            icon->getTransform().setScale({ 0, 0, 0 });
+        }
 
-    // --- Health‐bar metrics ---
-    float fullWidthHP = 4.0f;
-    float frameHeightHP = 0.40f;
-    float paddingHP = 0.08f;
-    float innerWidthHP = fullWidthHP - 2.0f * paddingHP;
-    float innerHeightHP = frameHeightHP - 2.0f * paddingHP;
-    float horizontalOffsetHP = -5.0f;
-    float verticalOffsetHP = 3.80f;
+        deathText->getTransform().setScale({ 0, 0, 0 });
+        for (auto* btn : deathmenubuttons) {
+            btn->getTransform().setScale({ 0, 0, 0 });
+            btn->setFocused(false);
+        }
 
-    // --- Stamina‐bar metrics ---
-    float fullWidthST = 2.5f;
-    float frameHeightST = 0.20f;
-    float paddingST = 0.06f;
-    float innerWidthST = fullWidthST - 2.0f * paddingST;
-    float innerHeightST = frameHeightST - 2.0f * paddingST;
-    float horizontalOffsetST = -5.75f;
-    float verticalOffsetST = 3.50f;
+        float blackoutWidth = 20.0f;
+        float blackoutHeight = 16.0f;
+        deathBlackdrop->getTransform().setScale({ blackoutWidth, blackoutHeight, 0.0f });
+        deathBlackdrop->getTransform().setPosition({ camPos.x, camPos.y, camPos.z });
 
-    // 3) Compute left edges in world space
-    float leftEdgeX_HP = camPos.x - (fullWidthHP * 0.5f);
-    float leftEdgeX_ST = camPos.x - (fullWidthST * 0.5f);
+        glm::vec3 btnScale = { 1.5f, 0.5f, 0.0f };
 
-    // 4) Compute Y positions for health & stamina bars
-    float healthY = camPos.y - verticalOffsetHP;
-    float staminaY = camPos.y - verticalOffsetST;
+        pausemenubuttons[0]->getTransform().setScale(btnScale);
+        pausemenubuttons[0]->getTransform().setPosition({ camPos.x, camPos.y - 1.0f, camPos.z });
+        pausemenubuttons[1]->getTransform().setScale(btnScale);
+        pausemenubuttons[1]->getTransform().setPosition({ camPos.x, camPos.y - 2.0f, camPos.z });
+        pausemenubuttons[2]->getTransform().setScale(btnScale);
+        pausemenubuttons[2]->getTransform().setPosition({ camPos.x, camPos.y - 3.0f, camPos.z });
 
-    // ——————————————————————————————————————————
-    // 5) Draw the Health‐bar frame
-    {
-        float centerX_HP = (leftEdgeX_HP + (fullWidthHP * 0.5f)) + horizontalOffsetHP;
-        healthBar->getTransform().setScale(glm::vec3(fullWidthHP, frameHeightHP, 0.0f));
-        healthBar->getTransform().setPosition(glm::vec3(centerX_HP, healthY, 0.0f));
+        for (int i = 0; i < (int)pausemenubuttons.size(); ++i) {
+            pausemenubuttons[i]->setFocused(i == selectedButtonIndex);
+        }
+
+        arrow->getTransform().setScale({ 0.213f, 0.213f, 0.0f });
+        updateArrowPosition();
+        return;
     }
 
-    // 6) Draw the Stamina‐bar frame
-    float centerX_ST;
-    {
-        centerX_ST = (leftEdgeX_ST + (fullWidthST * 0.5f)) + horizontalOffsetST;
-        staminaBar->getTransform().setScale(glm::vec3(fullWidthST, frameHeightST, 0.0f));
-        staminaBar->getTransform().setPosition(glm::vec3(centerX_ST, staminaY, 0.0f));
-    }
+    if (playerObject.getHealth() > 0) {
 
-    // ——————————————————————————————————————————
-    // 7) Draw the Health‐bar fill (unchanged)
-    {
-        float hpFillWidth = healthPercent * innerWidthHP;
-        float hpFillLeftX = (leftEdgeX_HP + paddingHP) + horizontalOffsetHP;
-        float hpFillCenterX = hpFillLeftX + (hpFillWidth * 0.5f);
+        deathBlackdrop->getTransform().setScale({ 0, 0, 0 });
+        deathText->getTransform().setScale({ 0, 0, 0 });
+        for (auto* btn : deathmenubuttons) {
+            btn->getTransform().setScale({ 0, 0, 0 });
+            btn->setFocused(false);
+        }
+        arrow->getTransform().setScale({ 0, 0, 0 });
 
-        healthBarFill->getTransform().setScale(glm::vec3(hpFillWidth, innerHeightHP, 0.0f));
-        healthBarFill->getTransform().setPosition(glm::vec3(hpFillCenterX, healthY, 0.0f));
-    }
+        float healthPercent = (float)playerObject.getHealth() / 100.0f;
+        float staminaPercent = (float)playerObject.getStamina() / 100.0f;
 
-    // ——————————————————————————————————————————
-    // 8) Draw the Stamina‐bar fill (colored quad)
-    {
-        // Anchor the fill on the right, so it shrinks right→left
-        float stFillWidth = staminaPercent * innerWidthST;
+        float fullWidthHP = 4.0f;
+        float frameHeightHP = 0.40f;
+        float paddingHP = 0.08f;
+        float innerWidthHP = fullWidthHP - 2.0f * paddingHP;
+        float innerHeightHP = frameHeightHP - 2.0f * paddingHP;
+        float horizontalOffsetHP = -5.0f;
+        float verticalOffsetHP = 3.80f;
 
-        // Compute the world‐space X of the *right* inner edge:
-        float rightEdgeX_ST = (leftEdgeX_ST + fullWidthST) + horizontalOffsetST;
-        float stInnerRightX = rightEdgeX_ST - paddingST;
+        float fullWidthST = 2.5f;
+        float frameHeightST = 0.20f;
+        float paddingST = 0.06f;
+        float innerWidthST = fullWidthST - 2.0f * paddingST;
+        float innerHeightST = frameHeightST - 2.0f * paddingST;
+        float horizontalOffsetST = -5.75f;
+        float verticalOffsetST = 3.50f;
 
-        // Center the fill halfway to the left from that right edge:
-        float stFillCenterX = stInnerRightX - (stFillWidth * 0.5f);
+        float leftEdgeX_HP = camPos.x - (fullWidthHP * 0.5f);
+        float leftEdgeX_ST = camPos.x - (fullWidthST * 0.5f);
 
-        staminaBarFill->getTransform().setScale(glm::vec3(stFillWidth, innerHeightST, 0.0f));
-        staminaBarFill->getTransform().setPosition(glm::vec3(stFillCenterX, staminaY, 0.0f));
-    }
+        float healthY = camPos.y - verticalOffsetHP;
+        float staminaY = camPos.y - verticalOffsetST;
 
-    // ——————————————————————————————————————————
-    // 9) Draw discrete gun icons based on current bullet count
-    {
-        int currentBullets = playerObject.getCurrentNumOfBullet();
-        if (currentBullets < 0) currentBullets = 0;
-        if (currentBullets > MAX_BULLETS) currentBullets = MAX_BULLETS;
+        {
+            float centerX_HP = (leftEdgeX_HP + (fullWidthHP * 0.5f)) + horizontalOffsetHP;
+            healthBar->getTransform().setScale({ fullWidthHP, frameHeightHP, 0.0f });
+            healthBar->getTransform().setPosition({ centerX_HP, healthY, 0.0f });
+        }
+        float centerX_ST;
+        {
+            centerX_ST = (leftEdgeX_ST + (fullWidthST * 0.5f)) + horizontalOffsetST;
+            staminaBar->getTransform().setScale({ fullWidthST, frameHeightST, 0.0f });
+            staminaBar->getTransform().setPosition({ centerX_ST, staminaY, 0.0f });
+        }
+        {
+            float hpFillWidth = healthPercent * innerWidthHP;
+            float hpFillLeftX = (leftEdgeX_HP + paddingHP) + horizontalOffsetHP;
+            float hpFillCenterX = hpFillLeftX + (hpFillWidth * 0.5f);
 
-        // We will line them up horizontally, each offset by +0.5f in X from the previous.
-        // Let’s choose the first icon’s X so that the group is roughly centered over centerX_ST.
-        // For example, if MAX_BULLETS=4 and offset=0.5, the group’s total width = 3 * 0.5 = 1.5 units
-        // (distance from icon[0] to icon[3]). We can shift the first icon left by half that:
-        float totalGroupWidth = (MAX_BULLETS - 1) * 0.5f;
-        float startX = centerX_ST - (totalGroupWidth * 0.5f);
+            healthBarFill->getTransform().setScale({ hpFillWidth, innerHeightHP, 0.0f });
+            healthBarFill->getTransform().setPosition({ hpFillCenterX, healthY, 0.0f });
+        }
+        {
+            float stFillWidth = staminaPercent * innerWidthST;
+            float rightEdgeX_ST = (leftEdgeX_ST + fullWidthST) + horizontalOffsetST;
+            float stInnerRightX = rightEdgeX_ST - paddingST;
+            float stFillCenterX = stInnerRightX - (stFillWidth * 0.5f);
 
-        for (int i = 0; i < MAX_BULLETS; ++i) {
-            TexturedObject* icon = gunIcons[i];
-            if (i < currentBullets) {
-                // Show this icon:
-                icon->getTransform().setScale(baseGunScale);
+            staminaBarFill->getTransform().setScale({ stFillWidth, innerHeightST, 0.0f });
+            staminaBarFill->getTransform().setPosition({ stFillCenterX, staminaY, 0.0f });
+        }
+        {
+            int currentBullets = playerObject.getCurrentNumOfBullet();
+            if (currentBullets < 0)            currentBullets = 0;
+            if (currentBullets > MAX_BULLETS) currentBullets = MAX_BULLETS;
 
-                // Position it at startX + (0.5f * i)
-                float iconX = startX + (0.8f * i);
-                float iconY = staminaY + 0.5f;  // same Y offset you used before
-                icon->getTransform().setPosition(glm::vec3(iconX, iconY, 0.0f));
-            }
-            else {
-                // Hide this icon by scaling to zero
-                icon->getTransform().setScale(glm::vec3(0.0f, 0.0f, 0.0f));
+            float totalGroupWidth = (MAX_BULLETS - 1) * 0.5f;
+            float startX = centerX_ST - (totalGroupWidth * 0.5f);
+
+            for (int i = 0; i < MAX_BULLETS; ++i) {
+                TexturedObject* icon = gunIcons[i];
+                if (i < currentBullets) {
+                    icon->getTransform().setScale(baseGunScale);
+                    float iconX = startX + (0.8f * i);
+                    float iconY = staminaY + 0.5f;
+                    icon->getTransform().setPosition({ iconX, iconY, 0.0f });
+                }
+                else {
+                    icon->getTransform().setScale({ 0, 0, 0 });
+                }
             }
         }
     }
+    else {
+        healthBar->getTransform().setScale({ 0, 0, 0 });
+        healthBarFill->getTransform().setScale({ 0, 0, 0 });
+        staminaBar->getTransform().setScale({ 0, 0, 0 });
+        staminaBarFill->getTransform().setScale({ 0, 0, 0 });
+        for (auto* icon : gunIcons) {
+            icon->getTransform().setScale({ 0, 0, 0 });
+        }
+
+        float blackoutWidth = 20.0f;
+        float blackoutHeight = 16.0f;
+        deathBlackdrop->getTransform().setScale({ blackoutWidth, blackoutHeight, 0.0f });
+        deathBlackdrop->getTransform().setPosition({ camPos.x, camPos.y, camPos.z });
+
+        float textScaleX = 10.6666667f;
+        float textScaleY = 6.0f;
+        deathText->getTransform().setScale({ textScaleX, textScaleY, 0.0f });
+        deathText->getTransform().setPosition({ camPos.x, camPos.y + 1.0f, camPos.z });
+
+        glm::vec3 btnScale = { 1.5f, 0.5f, 0.0f };
+        deathmenubuttons[0]->getTransform().setScale(btnScale);
+        deathmenubuttons[0]->getTransform().setPosition({ camPos.x, camPos.y - 1.5f, camPos.z });
+        deathmenubuttons[1]->getTransform().setScale(btnScale);
+        deathmenubuttons[1]->getTransform().setPosition({ camPos.x, camPos.y - 2.5f, camPos.z });
+
+        for (int i = 0; i < (int)deathmenubuttons.size(); ++i) {
+            deathmenubuttons[i]->setFocused(i == selectedButtonIndex);
+        }
+
+        arrow->getTransform().setScale({ 0.213f, 0.213f, 0.0f });
+        updateArrowPosition();
+    }
+}
+
+void IngameUI::handleInput(InputManager& input) {
+    if (input.getButtonDown(SDLK_q)) {
+        isPaused = !isPaused;
+
+        if (isPaused) {
+            GameEngine::getInstance()->pauseTime();
+            selectedButtonIndex = 0;
+            pausemenubuttons[0]->setFocused(true);
+            pausemenubuttons[1]->setFocused(false);
+            pausemenubuttons[2]->setFocused(false);
+        }
+        else {
+            GameEngine::getInstance()->resumeTime();
+            for (auto* btn : pausemenubuttons) {
+                btn->getTransform().setScale({ 0, 0, 0 });
+                btn->setFocused(false);
+            }
+            deathBlackdrop->getTransform().setScale({ 0, 0, 0 });
+        }
+
+        arrow->getTransform().setScale({ 0, 0, 0 });
+        return;
+    }
+
+    if (isPaused) {
+        if (input.getButtonDown(SDLK_w) || input.getButtonDown(SDLK_UP)) {
+            pausemenubuttons[selectedButtonIndex]->setFocused(false);
+            selectedButtonIndex = (selectedButtonIndex - 1 + pausemenubuttons.size()) % pausemenubuttons.size();
+            pausemenubuttons[selectedButtonIndex]->setFocused(true);
+            updateArrowPosition();
+        }
+        if (input.getButtonDown(SDLK_s) || input.getButtonDown(SDLK_DOWN)) {
+            pausemenubuttons[selectedButtonIndex]->setFocused(false);
+            selectedButtonIndex = (selectedButtonIndex + 1) % pausemenubuttons.size();
+            pausemenubuttons[selectedButtonIndex]->setFocused(true);
+            updateArrowPosition();
+        }
+        if (input.getButtonDown(SDLK_RETURN) || input.getButtonDown(SDLK_SPACE)) {
+            pausemenubuttons[selectedButtonIndex]->handleKeyboardInput(SDLK_RETURN, true);
+        }
+        if (input.getButtonUp(SDLK_RETURN) || input.getButtonUp(SDLK_SPACE)) {
+            pausemenubuttons[selectedButtonIndex]->handleKeyboardInput(SDLK_RETURN, false);
+        }
+        return;
+    }
+
+    if (playerObject.getHealth() <= 0) {
+        if (input.getButtonDown(SDLK_w) || input.getButtonDown(SDLK_UP)) {
+            deathmenubuttons[selectedButtonIndex]->setFocused(false);
+            selectedButtonIndex = (selectedButtonIndex - 1 + deathmenubuttons.size())
+                % deathmenubuttons.size();
+            deathmenubuttons[selectedButtonIndex]->setFocused(true);
+            updateArrowPosition();
+        }
+        if (input.getButtonDown(SDLK_s) || input.getButtonDown(SDLK_DOWN)) {
+            deathmenubuttons[selectedButtonIndex]->setFocused(false);
+            selectedButtonIndex = (selectedButtonIndex + 1) % deathmenubuttons.size();
+            deathmenubuttons[selectedButtonIndex]->setFocused(true);
+            updateArrowPosition();
+        }
+        if (input.getButtonDown(SDLK_RETURN) || input.getButtonDown(SDLK_SPACE)) {
+            deathmenubuttons[selectedButtonIndex]->handleKeyboardInput(SDLK_RETURN, true);
+        }
+        if (input.getButtonUp(SDLK_RETURN) || input.getButtonUp(SDLK_SPACE)) {
+            deathmenubuttons[selectedButtonIndex]->handleKeyboardInput(SDLK_RETURN, false);
+        }
+    }
+}
+
+IngameUI::~IngameUI() {
 }

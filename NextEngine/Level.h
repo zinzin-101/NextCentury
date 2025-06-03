@@ -50,7 +50,7 @@ public:
     virtual void levelDraw();
     virtual void levelFree();
     virtual void levelUnload();
-    void NextLevel();
+    void loadNextLevel();
 
     virtual void signalFromEngine();
 

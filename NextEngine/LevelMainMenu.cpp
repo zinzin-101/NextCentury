@@ -18,8 +18,6 @@ void LevelMainMenu::levelLoad() {
 void LevelMainMenu::levelInit() {
     UIobject = new UI();
     UIobject->initUI(objectsList);
-
-    
 }
 
 void LevelMainMenu::levelUpdate() {

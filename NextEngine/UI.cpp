@@ -8,15 +8,15 @@ UI::UI() {
 
 void UI::initUI(std::list<DrawableObject*>& objectsList) {
 
-    SimpleObject* background = new SimpleObject();
-    background->getTransform().setScale(glm::vec3(800.0f, 800.0f, 0.0f));
-    background->setColor(glm::vec4(0.f, 0.f, 0.f, 1.0f));
+    TexturedObject* background = new TexturedObject();
+    background->setTexture("../Resource/Texture/UI/MainMenu/MainmenuArt.png");
+    background->getTransform().setScale(glm::vec3(17.77777777777f, 10.0f, 0.0f));
     objectsList.push_back(background);
 
     TexturedObject* title = new TexturedObject("title");
     title->setTexture("../Resource/Texture/UI/MainMenu/NextCenturyTitle.png");
     title->getTransform().setScale(glm::vec3(14.22222222222222f, 8.0f, 0.0f));
-    title->getTransform().setPosition(glm::vec3(0.0f, 0.0f, 0.0f));
+    title->getTransform().setPosition(glm::vec3(-1.0f, 0.5f, 0.0f));
     objectsList.push_back(title);
 
     arrow = new TexturedObject("arrow");
@@ -34,7 +34,7 @@ void UI::initUI(std::list<DrawableObject*>& objectsList) {
     buttons[0] = new Button("PlayGameButton", "");           
     buttons[0]->setTexture("../Resource/Texture/UI/MainMenu/PlayGame.png");
     buttons[0]->getTransform().setScale(glm::vec3(1.5f, 0.5f, 0.0f));
-    buttons[0]->getTransform().setPosition(glm::vec3(-3.0f, 1.0f, 0.0f));
+    buttons[0]->getTransform().setPosition(glm::vec3(-5.0f, 1.0f, 0.0f));
     buttons[0]->setOnClickCallback([]() {
         std::cout << "Start Button clicked!" << std::endl;
         });
@@ -43,7 +43,7 @@ void UI::initUI(std::list<DrawableObject*>& objectsList) {
     buttons[1] = new Button("SettingButton", "");
     buttons[1]->setTexture("../Resource/Texture/UI/MainMenu/Setting.png");
     buttons[1]->getTransform().setScale(glm::vec3(1.5f, 0.5f, 0.0f));
-    buttons[1]->getTransform().setPosition(glm::vec3(-3.0f, 0.0f, 0.0f));
+    buttons[1]->getTransform().setPosition(glm::vec3(-5.0f, 0.0f, 0.0f));
     buttons[1]->setOnClickCallback([]() {
         std::cout << "Button Two clicked!" << std::endl;
         });
@@ -52,7 +52,7 @@ void UI::initUI(std::list<DrawableObject*>& objectsList) {
     buttons[2] = new Button("CreditsButton", "");
     buttons[2]->setTexture("../Resource/Texture/UI/MainMenu/Credits.png");
     buttons[2]->getTransform().setScale(glm::vec3(1.5f, 0.5f, 0.0f));
-    buttons[2]->getTransform().setPosition(glm::vec3(-3.0f, -1.0f, 0.0f));
+    buttons[2]->getTransform().setPosition(glm::vec3(-5.0f, -1.0f, 0.0f));
     buttons[2]->setOnClickCallback([]() {
         std::cout << "Button Three clicked!" << std::endl;
         });
@@ -61,7 +61,7 @@ void UI::initUI(std::list<DrawableObject*>& objectsList) {
     buttons[3] = new Button("QuitGameButton", "");
     buttons[3]->setTexture("../Resource/Texture/UI/MainMenu/QuitGame.png");
     buttons[3]->getTransform().setScale(glm::vec3(1.5f, 0.5f, 0.0f));
-    buttons[3]->getTransform().setPosition(glm::vec3(-3.0f, -2.0f, 0.0f));
+    buttons[3]->getTransform().setPosition(glm::vec3(-5.0f, -2.0f, 0.0f));
     buttons[3]->setOnClickCallback([]() {
         std::cout << "Button Four clicked!" << std::endl;
         });

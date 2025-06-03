@@ -144,7 +144,7 @@ void LevelAct6::levelInit() {
 
     player->getDamageCollider()->setFollowOffset(glm::vec3(1.0f, -0.2f, 0));
 
-    //UIobject->initUI(objectsList);
+    UIobject->initUI(objectsList);
 
     camTarget = new SimpleObject();
     camTarget->getTransform().setPosition(glm::vec3(34.0f, 0.0f, 0.0f));
@@ -236,11 +236,11 @@ void LevelAct6::levelUpdate() {
     if (end) {
         timefade -= GameEngine::getInstance()->getTime()->getDeltaTime();
         if (timefade < 0.0f) {
-            NextLevel();
+            loadNextLevel();
         }
     }
     //cout << set2FightDone << endl;
-    //UIobject->updateUI(*player, camPos);
+    UIobject->updateUI(*player);
 }
 
 void LevelAct6::levelDraw() {
