@@ -164,7 +164,7 @@ void LevelAct3::levelUpdate() {
     if (end) {
         fadetime -= GameEngine::getInstance()->getTime()->getDeltaTime();
         if (fadetime < 0.0f) {
-            NextLevel();
+            loadNextLevel();
         }
     }
 

@@ -155,7 +155,7 @@ void LevelAct4::levelUpdate() {
         }
         timefade -= GameEngine::getInstance()->getTime()->getDeltaTime();
         if (timefade < 0.0f) {
-            NextLevel();
+            loadNextLevel();
         }
     }
     // at the very start of the game freeze everything and chatEnemy is "YOU HAVE MAGIC" THEN fight...
