@@ -967,7 +967,7 @@ void Level::resetGameStateSave() {
     output.close();
 }
 
-void Level::NextLevel() {
+void Level::loadNextLevel() {
     GameEngine::getInstance()->getStateController()->gameStateNext = (GameState)((GameEngine::getInstance()->getStateController()->gameStateCurr + 1) % 9);
 }
 
