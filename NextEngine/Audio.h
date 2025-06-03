@@ -11,11 +11,15 @@ class SoundEffect {
 public:
 	friend class AudioEngine;
 
-	/// @brief This function plays the sound effect
-	/// @param loop is the number of times to repeat the sound effect
+	/// @brief Plays the sound effect, but only if it's not already playing.
+	/// @param loop The number of times to repeat (0 = play once, 1 = play twice, etc.)
 	void play(int loop = 0);
+
 private:
 	Mix_Chunk* m_chunk = nullptr;
+	int        m_channel = -1;
+	// m_channel holds the channel index returned by the last Mix_PlayChannel call.
+	// If m_channel >= 0 and Mix_Playing(m_channel) != 0, we won’t play again.
 };
 
 /// @brief This class provides an interface to play a music

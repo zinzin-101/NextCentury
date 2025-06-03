@@ -9,9 +9,22 @@
 
 void SoundEffect::play(int loop)
 {
-	if (Mix_PlayChannel(-1, m_chunk, loop) == -1)
+	if (m_channel >= 0)
 	{
-		std::cout << "Mix_PlayChannel Error " << std::string(Mix_GetError());
+		if (Mix_Playing(m_channel))
+		{
+			return;
+		}
+	}
+
+	int newlyAssignedChannel = Mix_PlayChannel(-1, m_chunk, loop);
+	if (newlyAssignedChannel == -1)
+	{
+		std::cerr << "Mix_PlayChannel Error: " << Mix_GetError() << std::endl;
+	}
+	else
+	{
+		m_channel = newlyAssignedChannel;
 	}
 }
 

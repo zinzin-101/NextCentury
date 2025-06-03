@@ -118,7 +118,7 @@ PlayerObject::~PlayerObject() {
 
 void PlayerObject::move(glm::vec2 direction) {
     this->moveDirection.x += direction.x;
-
+	GameEngine::getInstance()->playSoundEffect("Walk.wav");
     if (this->moveDirection.x != 0.0f) {
         this->moveDirection.x /= abs(this->moveDirection.x);
 
