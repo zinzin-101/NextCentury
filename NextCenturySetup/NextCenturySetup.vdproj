@@ -28823,7 +28823,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Next Century"
         "ProductCode" = "8:{272EF897-7C33-4C7E-ACF0-247894E8921E}"
-        "PackageCode" = "8:{4319E8E7-60E4-4A59-A747-B94F1C5ACF7B}"
+        "PackageCode" = "8:{35D49DEC-CF6E-4A8A-ADE7-248BD5394FDD}"
         "UpgradeCode" = "8:{9BAC7EA7-69E0-41E7-8A83-B54FCF0BFB9F}"
         "AspNetVersion" = "8:2.0.50727.0"
         "RestartWWWService" = "11:FALSE"
@@ -28945,7 +28945,7 @@
         {
             "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_7D04403940BA4C2891247FE85307F302"
             {
-            "Name" = "8:NextCentury"
+            "Name" = "8:Next Century"
             "Arguments" = "8:"
             "Description" = "8:"
             "ShowCmd" = "3:1"
@@ -28959,7 +28959,7 @@
             }
             "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_B421921492BF48FC9223B3F699AED33C"
             {
-            "Name" = "8:NextCentury"
+            "Name" = "8:Next Century"
             "Arguments" = "8:"
             "Description" = "8:"
             "ShowCmd" = "3:1"
