@@ -10,7 +10,7 @@ BlightFlame::BlightFlame(const EnemyInfo& enemyinfo) : EnemyObject(enemyinfo) {
 }
 void BlightFlame::start(list<DrawableObject*>& objectsList) {
 	//setTexture("../Resource/Texture/incineratorSizeFlip.png");
-	setTexture("../Resource/Texture/incineratorFixed.png");
+	setTexture("../Resource/Texture/incineratorFixed2.png");
 	//initAnimation(6, 2);
 	initAnimation(8, 11);
 	targetEntity = nullptr;

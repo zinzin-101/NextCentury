@@ -92,6 +92,14 @@
     <ClCompile Include="LevelMainMenu.cpp" />
     <ClCompile Include="UIMainMenu.cpp" />
     <ClCompile Include="DialogueList.cpp" />
+    <ClCompile Include="ChatBubble.cpp" />
+    <ClCompile Include="FadeBlack.cpp" />
+    <ClCompile Include="GotItemText.cpp" />
+    <ClCompile Include="LevelAct7.cpp" />
+    <ClCompile Include="LevelAct8.cpp" />
+    <ClCompile Include="LevelAct9.cpp" />
+    <ClCompile Include="ProtagThoughts.cpp" />
+    <ClCompile Include="LevelAct10.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
@@ -202,6 +210,14 @@
     <ClInclude Include="LevelMainMenu.h" />
     <ClInclude Include="UIMainMenu.h" />
     <ClInclude Include="DialogueList.h" />
+    <ClInclude Include="ChatBubble.h" />
+    <ClInclude Include="FadeBlack.h" />
+    <ClInclude Include="GotItemText.h" />
+    <ClInclude Include="LevelAct7.h" />
+    <ClInclude Include="LevelAct8.h" />
+    <ClInclude Include="LevelAct9.h" />
+    <ClInclude Include="ProtagThoughts.h" />
+    <ClInclude Include="LevelAct10.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Resource\Shader\fragment.shd" />
