@@ -37,6 +37,8 @@ PlayerObject::PlayerObject() : LivingEntity("Player", PlayerStat::MAX_HEALTH) {
 
     getAnimationComponent()->addState("Healing", 15, 0, 7, false);
 
+    getAnimationComponent()->addState("Dead", 16, 0, 6, false);
+
     //getTransform().setScale(1, 1);
     addColliderComponent();
     addPhysicsComponent();
@@ -54,6 +56,8 @@ PlayerObject::PlayerObject() : LivingEntity("Player", PlayerStat::MAX_HEALTH) {
     groundedFrameNum = 4;
     canMove = true;
     canChangeFacingDirection = true;
+
+    isDead = false;
 
     baseDamage[PlayerCombo::FIRST] = PlayerStat::COMBO_DAMAGE_1;
     baseDamage[PlayerCombo::SECOND] = PlayerStat::COMBO_DAMAGE_2;
@@ -209,7 +213,7 @@ void PlayerObject::start(list<DrawableObject*>& objectsList) {
     attackHitbox->addEmitter(objectsList);
     objectsList.emplace_back(attackHitbox);
 
-    this->getTransform().setScale(3.5f, 2.5f);
+    this->getTransform().setScale(3.1868f, 2.5f);
     this->getColliderComponent()->getTransform().translate(0.0f, -0.44f);
     this->getColliderComponent()->setDimension(0.25f, 0.65f);
 
@@ -267,6 +271,11 @@ void PlayerObject::updateBehavior(list<DrawableObject*>& objectsList) {
     glm::vec2 vel = this->physics->getVelocity();
 
     updateStat();
+
+    if (isDead) {
+        handleDead();
+        return;
+    }
 
     if (iFrameTimeRemaining > 0.0f) {
         this->setCanTakeDamage(false);
@@ -781,6 +790,9 @@ void PlayerObject::handleNormalAttack() {
 
     if (currentFrame == comboFrame[currentCombo].startAttackFrame + 1) {
         startMeleeAttack();
+
+        GameEngine::getInstance()->playSoundEffect("MC_Sound_Attack_Light_1.wav");
+
         return;
     }
 
@@ -943,6 +955,14 @@ void PlayerObject::handleFlinch() {
     }
 }
 
+void PlayerObject::handleDead() {
+    this->getAnimationComponent()->setState("Dead");
+    glm::vec2 vel = this->getPhysicsComponent()->getVelocity();
+    vel.x = 0.0f;
+    this->getPhysicsComponent()->setVelocity(vel);
+    moveDirection.x = 0.0f;
+}
+
 bool PlayerObject::getCanMove() const {
     return canMove;
 }
@@ -965,6 +985,17 @@ void PlayerObject::signalSuccessfulParry() {
 
 void PlayerObject::takeDamage(int damage) {
     if (!this->getCanTakeDamage()) {
+        return;
+    }
+
+    if (this->getHealth() - damage <= 0 && !isDead) {
+        this->LivingEntity::takeDamage(damage);
+        this->setHealth(0);
+        this->setCanTakeDamage(false);
+        isDead = true;
+
+        this->getAnimationComponent()->setState("Dead");
+
         return;
     }
 
@@ -1004,4 +1035,8 @@ int PlayerObject::getCurrentNumOfPotion() const {
 
 float PlayerObject::getPotionRechargeTimer() const {
     return potionRechargeTimer;
+}
+
+bool PlayerObject::getIsDead() const {
+    return this->isDead;
 }

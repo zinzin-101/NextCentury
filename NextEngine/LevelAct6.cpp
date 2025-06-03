@@ -160,6 +160,8 @@ void LevelAct6::levelInit() {
     objectsList.emplace_back(fb);
     fb->FadeToTransparent();
 
+    GameEngine::getInstance()->getRenderer()->getCamera()->setPosition(glm::vec3(0.0f, 0.0f, 0.0f));
+
     GameEngine::getInstance()->getRenderer()->getCamera()->setDeadLimitBool(true);
     GameEngine::getInstance()->getRenderer()->getCamera()->setDeadLimitMinMax(-5.0f, 80.75f);
 
@@ -171,6 +173,8 @@ void LevelAct6::levelInit() {
 }
 
 void LevelAct6::levelUpdate() {
+    std::cout << "kill count " << killCount << std::endl;
+
     updateObjects(objectsList);
     GameEngine::getInstance()->getRenderer()->updateCamera();
     
@@ -213,29 +217,11 @@ void LevelAct6::levelUpdate() {
             eObj->setAggroRange(10.0f); // nvm it kinda mattered :)
         }
     }
-    //if (killCount >= 6) {
-    //    door->setActive(true);
-    //}
 
-    //if (player->getTransform().getPosition().x > 26.5f) {
-    //    chat2->runChat(objectsList);
-    //    if (!chat2->hasEnded()) {
-    //        isStop = true;
-    //    }
-    //    else {
-    //        isStop = false;
-    //    }
-    //}
-
-    // Placeholder death logic
     bool k = false;
     for (std::list<DrawableObject*>::iterator itr = objectsList.begin(); itr != objectsList.end(); ++itr) {
         EnemyObject* enemy = dynamic_cast<EnemyObject*>(*itr);
         if (enemy != NULL) {
-            if (enemy->getHealth() <= 0) {
-                DrawableObject::destroyObject(enemy);
-                killCount++;
-            }
             k = true;
         }
         else {
@@ -250,7 +236,7 @@ void LevelAct6::levelUpdate() {
     if (end) {
         timefade -= GameEngine::getInstance()->getTime()->getDeltaTime();
         if (timefade < 0.0f) {
-            GameEngine::getInstance()->getStateController()->gameStateNext = (GameState)((GameEngine::getInstance()->getStateController()->gameStateCurr + 1) % 9);
+            loadNextLevel();
         }
     }
     //cout << set2FightDone << endl;
@@ -376,4 +362,8 @@ void LevelAct6::handleKey(InputManager& input) {
             }
         }
     }
+}
+
+void LevelAct6::signalFromEngine() {
+    this->killCount++;
 }

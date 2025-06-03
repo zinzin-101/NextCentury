@@ -122,7 +122,7 @@ void LevelAct4::levelInit() {
     //player->getTransform().scales(1.0f, 1.0f);
     //player->move(glm::vec2(-1, 0));
 
-    UIobject->initUI(objectsList);
+    //UIobject->initUI(objectsList);
 
     fb = new FadeBlack(1.0f);
     objectsList.emplace_back(fb);
@@ -148,30 +148,19 @@ void LevelAct4::levelUpdate() {
         enem->setAggroRange(10.0f);
         //GameEngine::getInstance()->getTime()->setTimeScale(1);
     }
-    if (player->getTransform().getPosition().x > 11.5f && enemyDeadCount == 1) {
+    if (player->getTransform().getPosition().x > 11.5f && killCount == 1) {
         if (!end) {
             fb->FadeToBlack();
             end = true;
         }
         timefade -= GameEngine::getInstance()->getTime()->getDeltaTime();
         if (timefade < 0.0f) {
-            NextLevel();
+            loadNextLevel();
         }
     }
     // at the very start of the game freeze everything and chatEnemy is "YOU HAVE MAGIC" THEN fight...
 
-    // Placeholder death logic
-    for (std::list<DrawableObject*>::iterator itr = objectsList.begin(); itr != objectsList.end(); ++itr) {
-        EnemyObject* enemy = dynamic_cast<EnemyObject*>(*itr);
-        if (enemy != NULL) {
-            if (enemy->getHealth() <= 0) {
-                enemyDeadCount++;
-                DrawableObject::destroyObject(enemy);
-            }
-        }
-    }
-
-    UIobject->updateUI(*player);
+    //UIobject->updateUI(*player, camPos);
 }
 
 void LevelAct4::levelDraw() {
@@ -223,7 +212,6 @@ void LevelAct4::handleKey(InputManager& input) {
             if (input.getButton(SDLK_d) && !input.getButton(SDLK_a)) player->move(glm::vec2(1, 0));
             if (input.getButtonDown(SDLK_j)) player->parryAttack();
             if (input.getMouseButtonDown(SDL_BUTTON_RIGHT)) player->parryAttack();
-            if (input.getButtonDown(SDLK_m)) player->setHealth(0);
         }
 
         /// Use processed key here ///
@@ -284,5 +272,8 @@ void LevelAct4::handleKey(InputManager& input) {
             }
         }
     }
-	UIobject->handleInput(input);
+}
+
+void LevelAct4::signalFromEngine() {
+    this->killCount++;
 }

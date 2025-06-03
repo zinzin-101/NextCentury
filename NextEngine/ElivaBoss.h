@@ -31,7 +31,7 @@ namespace ElivaStat {
 	constexpr float RIFLE_SHOT_TIME_PER_FRAME = 0.1667f;
 	constexpr float BAYONET_SLASH_TIME_PER_FRAME = 0.1667f;
 	constexpr float PARRIED_TIME_PER_FRAME = 0.1667f;
-	constexpr float POISON_CLOUD_TIME_PER_FRAME = 0.1667f;
+	constexpr float POISON_CLOUD_TIME_PER_FRAME = 0.0833f;
 	constexpr float SERUM_INJECT_TIME_PER_FRAME = 0.1667f;
 	constexpr float RAPID_BURST_TIME_PER_FRAME = 0.1667f;
 	constexpr float DEAD_TIME_PER_FRAME = 0.1667f;
@@ -101,6 +101,9 @@ class ElivaBoss : public EnemyObject {
 		~ElivaBoss();
 
 	private:
+		unsigned int normalSprite;
+		unsigned int shieldedSprite;
+
 		State states[14];
 		State* currentState;
 		Phase currentPhase;

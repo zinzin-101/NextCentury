@@ -167,6 +167,10 @@ void Animation::setPaused(bool value) {
 	isPaused = value;
 }
 
+void Animation::setTexture(unsigned int& texture) {
+	this->texture = texture;
+}
+
 int Animation::getCurrentFrame() const {
 	return currentState->currentFrame;
 }

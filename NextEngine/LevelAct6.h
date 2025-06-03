@@ -23,10 +23,11 @@ private:
     ColliderObject* set1Block;
     list<EnemyObject*> enemSet1;
     list<EnemyObject*> enemSet2;
-    int killCount = 0;
 
     bool end;
     float timefade = 1.0f;
+
+    int killCount = 0;
 
 public:
     virtual void levelLoad();
@@ -37,4 +38,6 @@ public:
     virtual void levelUnload();
 
     virtual void handleKey(InputManager& input);
+
+    virtual void signalFromEngine();
 };

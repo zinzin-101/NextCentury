@@ -21,6 +21,7 @@
   <ItemGroup>
     <None Include="..\Resource\Shader\fragment.shd" />
     <None Include="..\Resource\Shader\vertext.shd" />
+    <None Include="imgui.ini" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Resource\imgui\backends\imgui_impl_opengl3.cpp" />
@@ -40,6 +41,7 @@
     <ClCompile Include="ColliderObject.cpp" />
     <ClCompile Include="CollisionHandler.cpp" />
     <ClCompile Include="Dialogue.cpp" />
+    <ClCompile Include="DialogueList.cpp" />
     <ClCompile Include="DrawableObject.cpp" />
     <ClCompile Include="ElivaBoss.cpp" />
     <ClCompile Include="ElivaBossState.cpp" />
@@ -59,6 +61,9 @@
     <ClCompile Include="LevelAct4.cpp" />
     <ClCompile Include="LevelAct5.cpp" />
     <ClCompile Include="LevelAct6.cpp" />
+    <ClCompile Include="LevelAct7.cpp" />
+    <ClCompile Include="LevelAct8.cpp" />
+    <ClCompile Include="LevelAct9.cpp" />
     <ClCompile Include="LevelAlphaNMMN.cpp" />
     <ClCompile Include="LevelAlphaTest.cpp" />
     <ClCompile Include="LevelAnimTest.cpp" />
@@ -124,6 +129,7 @@
     <ClInclude Include="DamageCollider.h" />
     <ClInclude Include="DebugMode.h" />
     <ClInclude Include="Dialogue.h" />
+    <ClInclude Include="DialogueList.h" />
     <ClInclude Include="DrawableObject.h" />
     <ClInclude Include="ElivaBoss.h" />
     <ClInclude Include="ElivaBossState.h" />
@@ -141,6 +147,9 @@
     <ClInclude Include="LevelAct4.h" />
     <ClInclude Include="LevelAct5.h" />
     <ClInclude Include="LevelAct6.h" />
+    <ClInclude Include="LevelAct7.h" />
+    <ClInclude Include="LevelAct8.h" />
+    <ClInclude Include="LevelAct9.h" />
     <ClInclude Include="LevelLoading.h" />
     <ClInclude Include="HitScanDamage.h" />
     <ClInclude Include="IngameUI.h" />

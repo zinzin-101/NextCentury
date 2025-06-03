@@ -28,9 +28,10 @@ class GameEngine {
 	bool isGamePaused;
 	float prevTimeScale;
 
-	AudioEngine audioEngine;
+    AudioEngine audioEngine;
 
-	GameEngine();
+    GameEngine();
+
 public:
 	static GameEngine* getInstance();
 	GLRenderer * getRenderer();
@@ -63,4 +64,6 @@ public:
 	void playSoundEffect(const std::string& fileName, int loop = 0);
 	void playMusic(const std::string& fileName, int loop = -1);
 	void stopMusic();
+	
+	void signalToCurrentLevel();
 };

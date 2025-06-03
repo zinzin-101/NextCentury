@@ -53,7 +53,7 @@ void LevelAct5::levelInit() {
     fakeEnem1->getAnimationComponent()->addState("Idle", 0, 0, 6, true);
     fakeEnem1->getAnimationComponent()->setState("Idle");
     fakeEnem1->getTransform().setPosition(glm::vec3(7.5f, -1.35f, 0.0f));
-    fakeEnem1->getTransform().setScale(-1.7f, 2.0f);
+    fakeEnem1->getTransform().setScale(-1.579f, 2.05f);
     objectsList.emplace_back(fakeEnem1);
 
     TexturedObject* fakeEnem2 = new TexturedObject();
@@ -62,7 +62,7 @@ void LevelAct5::levelInit() {
     fakeEnem2->getAnimationComponent()->addState("Idle", 0, 0, 6, true);
     fakeEnem2->getAnimationComponent()->setState("Idle");
     fakeEnem2->getTransform().setPosition(glm::vec3(9.5f, 0.2f, 0.0f));
-    fakeEnem2->getTransform().setScale(-1.7f, 2.0f);
+    fakeEnem2->getTransform().setScale(-1.579f, 2.05f);
     objectsList.emplace_back(fakeEnem2);
 
     ParallaxObject* watchTower = new ParallaxObject(4.2f, -0.6f, 10.0f, false, player, false, 960.0f, 360.0f);
@@ -141,6 +141,8 @@ void LevelAct5::levelInit() {
     objectsList.emplace_back(fb);
     fb->FadeToTransparent();
 
+    GameEngine::getInstance()->getRenderer()->getCamera()->setPosition(glm::vec3(0.0f, 0.0f, 0.0f));
+
     GameEngine::getInstance()->getRenderer()->getCamera()->setDeadLimitBool(true);
     GameEngine::getInstance()->getRenderer()->getCamera()->setDeadLimitMinMax(-5.0f, 40.75f);
 
@@ -184,17 +186,7 @@ void LevelAct5::levelUpdate() {
         }
         timefade -= GameEngine::getInstance()->getTime()->getDeltaTime();
         if (timefade < 0.0f) {
-            NextLevel();
-        }
-    }
-
-    // Placeholder death logic
-    for (std::list<DrawableObject*>::iterator itr = objectsList.begin(); itr != objectsList.end(); ++itr) {
-        EnemyObject* enemy = dynamic_cast<EnemyObject*>(*itr);
-        if (enemy != NULL) {
-            if (enemy->getHealth() <= 0) {
-                DrawableObject::destroyObject(enemy);
-            }
+            loadNextLevel();
         }
     }
 

@@ -27,4 +27,6 @@ public:
 	void handleKeyLevel(char key);
 	void handleMouseLevel(int type, int x, int y);
 	void handleAnalogLevel(int type, float amount);
+
+	Level* getCurrentLevel() const;
 };

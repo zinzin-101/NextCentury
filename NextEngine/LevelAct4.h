@@ -14,9 +14,10 @@ private:
     FadeBlack* fb;
     bool end = false;
     float timefade = 1.0f;
-    int enemyDeadCount = 0;
     bool isStop = false;
     EnemyObject* enem;
+    
+    int killCount = 0;
 
 public:
     virtual void levelLoad();
@@ -27,4 +28,6 @@ public:
     virtual void levelUnload();
 
     virtual void handleKey(InputManager& input);
+
+    virtual void signalFromEngine();
 };

@@ -4,6 +4,7 @@
 
 namespace ZealotStat {
 	constexpr float STUN_DURATION = 2.0f;
+	constexpr float ATTACK_ANIMATION_TIME_PER_FRAME = 0.12f;
 }
 
 class Zealot : public EnemyObject {

@@ -16,8 +16,9 @@ TexturedObject::~TexturedObject() {
 	}
 }
 
-void TexturedObject::setTexture(string path) {
+unsigned int TexturedObject::setTexture(string path) {
 	texture = GameEngine::getInstance()->getRenderer()->LoadTexture(path);
+	return texture;
 }
 
 void TexturedObject::render(glm::mat4 globalModelTransform) {

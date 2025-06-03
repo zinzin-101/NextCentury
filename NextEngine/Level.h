@@ -13,6 +13,7 @@
 #include "IngameUI.h"
 #include "InteractableObject.h"
 #include "Dialogue.h"
+#include "GameStateList.h"
 #include "ProtagThoughts.h"
 #include "GotItemText.h"
 #include "ChatBubble.h"
@@ -49,7 +50,9 @@ public:
     virtual void levelDraw();
     virtual void levelFree();
     virtual void levelUnload();
-    void NextLevel();
+    void loadNextLevel();
+
+    virtual void signalFromEngine();
 
     virtual void handleKey(char key);
     virtual void handleKey(InputManager& input);
@@ -74,6 +77,10 @@ public:
     #endif
     static void exportTransformData(std::list<DrawableObject*>& objectsList, std::string fileName);
     static void importTransformData(std::list<DrawableObject*>& objectsList, std::string fileName, bool drawOutline);
+
+    static void saveCurrentGameState();
+    static GameState getLastGameStateData();
+    static void resetGameStateSave();
 
 	virtual void addLoadingScreen(std::list<DrawableObject*>& objectsList);
 	virtual void removeLoadingScreen(std::list<DrawableObject*>& objectsList);

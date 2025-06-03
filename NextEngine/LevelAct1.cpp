@@ -118,6 +118,8 @@ void LevelAct1::levelInit() {
     objectsList.emplace_back(fb);
     fb->FadeToTransparent();
 
+    //UIobject->initUI(objectsList);
+
     GameEngine::getInstance()->getRenderer()->getCamera()->setDeadLimitBool(true);
     GameEngine::getInstance()->getRenderer()->getCamera()->setDeadLimitMinMax(-5.0f, 40.75f);
 
@@ -148,19 +150,11 @@ void LevelAct1::levelUpdate() {
         }
         fadetime -= GameEngine::getInstance()->getTime()->getDeltaTime();
         if (fadetime < 0.0f) {
-            GameEngine::getInstance()->getStateController()->gameStateNext = (GameState)((GameEngine::getInstance()->getStateController()->gameStateCurr + 1) % 9);
+            loadNextLevel();
         }
     }
 
-    // Placeholder death logic
-    for (std::list<DrawableObject*>::iterator itr = objectsList.begin(); itr != objectsList.end(); ++itr) {
-        EnemyObject* enemy = dynamic_cast<EnemyObject*>(*itr);
-        if (enemy != NULL) {
-            if (enemy->getHealth() <= 0) {
-                DrawableObject::destroyObject(enemy);
-            }
-        }
-    }
+    //UIobject->updateUI(*player, camPos);
 }
 
 void LevelAct1::levelDraw() {

@@ -152,6 +152,9 @@ class PlayerObject : public LivingEntity {
         void handleHeavyAttack();
         void handleRangeAttack();
         void handleParryAttack();
+
+        bool isDead;
+        void handleDead();
         
         bool isDodging;
         bool canDodge;
@@ -235,4 +238,5 @@ class PlayerObject : public LivingEntity {
         float getRangeAttackCooldownRemaining() const;
         int getCurrentNumOfPotion() const;
         float getPotionRechargeTimer() const;
+        virtual bool getIsDead() const;
 };
