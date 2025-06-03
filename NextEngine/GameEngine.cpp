@@ -46,7 +46,7 @@ void GameEngine::init(int width, int height) {
 
 	time = new Time();
 	inputHandler = new InputManager();  
-	audioEngine.init("../Resource/Audio/SoundEffect/", "../Resource/Audio/Music/");
+	audioEngine.init("../Resource/Audio/SoundEffect/MC", "../Resource/Audio/Music/");
 }
 
 void GameEngine::updateEngineComponent() {
