@@ -24,7 +24,6 @@
     <ClCompile Include="LevelPrototype.cpp" />
     <ClCompile Include="LevelPrototypeNMMN.cpp" />
     <ClCompile Include="LevelTest.cpp" />
-    <ClCompile Include="LevelUITest.cpp" />
     <ClCompile Include="LightSource.cpp" />
     <ClCompile Include="LivingEntity.cpp" />
     <ClCompile Include="Main.cpp" />
@@ -83,6 +82,18 @@
     <ClCompile Include="ElivaBoss.cpp" />
     <ClCompile Include="ElivaBossState.cpp" />
     <ClCompile Include="PoisonCloud.cpp" />
+    <ClCompile Include="ChatBubble.cpp" />
+    <ClCompile Include="FadeBlack.cpp" />
+    <ClCompile Include="GotItemText.cpp" />
+    <ClCompile Include="InteractableObject.cpp" />
+    <ClCompile Include="LevelAct2.cpp" />
+    <ClCompile Include="LevelAct3.cpp" />
+    <ClCompile Include="LevelAct4.cpp" />
+    <ClCompile Include="LevelAct5.cpp" />
+    <ClCompile Include="LevelAct6.cpp" />
+    <ClCompile Include="LevelMainMenu.cpp" />
+    <ClCompile Include="ProtagThoughts.cpp" />
+    <ClCompile Include="UIMainMenu.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
@@ -113,7 +124,6 @@
     <ClInclude Include="LevelPrototype.h" />
     <ClInclude Include="LevelPrototypeNMMN.h" />
     <ClInclude Include="LevelTest.h" />
-    <ClInclude Include="LevelUITest.h" />
     <ClInclude Include="LightSource.h" />
     <ClInclude Include="LivingEntity.h" />
     <ClInclude Include="MapLoader.h" />
@@ -184,6 +194,18 @@
     <ClInclude Include="ElivaBoss.h" />
     <ClInclude Include="ElivaBossState.h" />
     <ClInclude Include="PoisonCloud.h" />
+    <ClInclude Include="ChatBubble.h" />
+    <ClInclude Include="FadeBlack.h" />
+    <ClInclude Include="GotItemText.h" />
+    <ClInclude Include="LevelAct2.h" />
+    <ClInclude Include="LevelAct3.h" />
+    <ClInclude Include="LevelAct4.h" />
+    <ClInclude Include="LevelAct5.h" />
+    <ClInclude Include="LevelAct6.h" />
+    <ClInclude Include="LevelLoading.h" />
+    <ClInclude Include="LevelMainMenu.h" />
+    <ClInclude Include="ProtagThoughts.h" />
+    <ClInclude Include="UIMainMenu.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Resource\Shader\fragment.shd" />

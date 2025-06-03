@@ -51,11 +51,10 @@ void GameEngine::init(int width, int height) {
 void GameEngine::updateEngineComponent() {
 	if (engineTimer > 0.0f) {
 		engineTimer -= time->getDeltaTimeRealTime();
-	}
-
-	if (engineTimer <= 0.0f && isGamePaused) {
+	if (engineTimer <= 0.0f) {
 		isGamePaused = false;
 		time->setTimeScale(prevTimeScale);
+		}
 	}
 }
 
@@ -66,10 +65,6 @@ void GameEngine::render(list<DrawableObject*> renderObjects, bool clear) {
 void GameEngine::setDrawArea(float left, float right, float bottom, float top) {
 	renderer->setOrthoProjection(left, right, bottom, top);
 }
-
-//void GameEngine::setBackgroundColor(float r, float g, float b) {
-//	renderer->setClearColor(1.0f, 1.0f, 200.0f / 255);
-//}
 
 void GameEngine::setBackgroundColor(float r, float g, float b) {
 	renderer->setClearColor(r, g, b);
@@ -124,6 +119,22 @@ void GameEngine::pauseTimeForSeconds(float duration) {
 	prevTimeScale = 1.0f;
 	isGamePaused = true;
 	time->setTimeScale(0.0f);
+}
+
+void GameEngine::pauseTime() {
+	if (!isGamePaused) {
+		prevTimeScale = time->getTimeScale();
+		isGamePaused = true;
+		time->setTimeScale(0.0f);
+	}
+}
+
+
+void GameEngine::resumeTime() {
+	if (isGamePaused) {
+		isGamePaused = false;
+		time->setTimeScale(prevTimeScale);
+	}
 }
 
 bool GameEngine::getIsGamePaused() const {

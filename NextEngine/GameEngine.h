@@ -53,6 +53,8 @@ public:
 	void freezeGameForSeconds(float duration);
 	void pauseTimeForSeconds(float duration);
 	bool getIsGamePaused() const;
+	void pauseTime();
+	void resumeTime();
 
 	SDL_Window* getSDLWindow() const;
 	SDL_GLContext* getGLContextPtr() const;

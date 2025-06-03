@@ -122,7 +122,7 @@ void LevelAct4::levelInit() {
     //player->getTransform().scales(1.0f, 1.0f);
     //player->move(glm::vec2(-1, 0));
 
-    //UIobject->initUI(objectsList);
+    UIobject->initUI(objectsList);
 
     fb = new FadeBlack(1.0f);
     objectsList.emplace_back(fb);
@@ -171,7 +171,7 @@ void LevelAct4::levelUpdate() {
         }
     }
 
-    //UIobject->updateUI(*player, camPos);
+    UIobject->updateUI(*player);
 }
 
 void LevelAct4::levelDraw() {
@@ -223,6 +223,7 @@ void LevelAct4::handleKey(InputManager& input) {
             if (input.getButton(SDLK_d) && !input.getButton(SDLK_a)) player->move(glm::vec2(1, 0));
             if (input.getButtonDown(SDLK_j)) player->parryAttack();
             if (input.getMouseButtonDown(SDL_BUTTON_RIGHT)) player->parryAttack();
+            if (input.getButtonDown(SDLK_m)) player->setHealth(0);
         }
 
         /// Use processed key here ///
@@ -283,4 +284,5 @@ void LevelAct4::handleKey(InputManager& input) {
             }
         }
     }
+	UIobject->handleInput(input);
 }

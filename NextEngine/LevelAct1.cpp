@@ -118,8 +118,6 @@ void LevelAct1::levelInit() {
     objectsList.emplace_back(fb);
     fb->FadeToTransparent();
 
-    //UIobject->initUI(objectsList);
-
     GameEngine::getInstance()->getRenderer()->getCamera()->setDeadLimitBool(true);
     GameEngine::getInstance()->getRenderer()->getCamera()->setDeadLimitMinMax(-5.0f, 40.75f);
 
@@ -163,7 +161,6 @@ void LevelAct1::levelUpdate() {
             }
         }
     }
-    //UIobject->updateUI(*player, camPos);
 }
 
 void LevelAct1::levelDraw() {
