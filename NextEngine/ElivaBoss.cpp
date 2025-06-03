@@ -324,7 +324,7 @@ void ElivaBoss::handleCloseBlink() {
 		canBlink = false;
 
 		glm::vec3 playerPos = targetEntity->getTransform().getPosition();
-		glm::vec3 origin = glm::vec3();
+		//glm::vec3 origin = glm::vec3();
 		glm::vec3 elivaPos = this->getTransform().getPosition();
 		float direction = Random::Float() < 0.5f ? -1.0f : 1.0f;
 		float distance = Random::Float() * ElivaStat::BAYONET_SLASH_RANGE;
@@ -333,7 +333,7 @@ void ElivaBoss::handleCloseBlink() {
 		}
 		float offsetX = direction * distance;
 		glm::vec3 newPos = elivaPos;
-		newPos.x = origin.x + offsetX;
+		newPos.x = playerPos.x + offsetX;
 		this->getTransform().setPosition(newPos);
 
 		float offsetFromPlayer = playerPos.x - elivaPos.x;
@@ -360,6 +360,7 @@ void ElivaBoss::handleRifleShot() {
 		isFacingRight = offsetX < 0.0f;
 		hasRifleBeenFired = false;
 		canUsePoisonCloud = true;
+		hasInjectedSerum = false;
 		return;
 	}
 
@@ -392,6 +393,7 @@ void ElivaBoss::handleBayonetSlash() {
 		isFacingRight = offsetX < 0.0f;
 
 		canUsePoisonCloud = true;
+		hasInjectedSerum = false;
 
 		return;
 	}
