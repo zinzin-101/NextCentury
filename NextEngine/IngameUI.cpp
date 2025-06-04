@@ -347,7 +347,6 @@ void IngameUI::initUI(std::list<DrawableObject*>& objectsList) {
 	deathText->setRenderOrder(101);
     objectsList.push_back(deathText);
 
-    // 4) Death-menu buttons
     deathmenubuttons[0] = new Button("RestartButton", "../Resource/Texture/UI/MainMenu/Retry.png");
     deathmenubuttons[0]->getTransform().setScale(glm::vec3(0.0f));
     deathmenubuttons[0]->setOnClickCallback([]() {
@@ -364,7 +363,6 @@ void IngameUI::initUI(std::list<DrawableObject*>& objectsList) {
 	deathmenubuttons[1]->setRenderOrder(103);
     objectsList.push_back(deathmenubuttons[1]);
 
-    // 5) Pause-menu buttons
     pausemenubuttons[0] = new Button("ResumeButton", "../Resource/Texture/UI/MainMenu/PlayGame.png");
     pausemenubuttons[0]->getTransform().setScale(glm::vec3(0.0f)); 
     pausemenubuttons[0]->setRenderOrder(103);

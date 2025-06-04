@@ -79,7 +79,6 @@ void ProjectileObject<TargetEntity>::update(std::list<DrawableObject*>& objectsL
 		}
 	}
 
-	/// test ///
 	unsigned int ticks = GameEngine::getInstance()->getTime()->getTicks();
 	if (emitter != nullptr) {
 
