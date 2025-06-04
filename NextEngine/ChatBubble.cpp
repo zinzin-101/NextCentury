@@ -81,7 +81,6 @@ ChatBubble::ChatBubble(string fileName, PlayerObject* player, vector<glm::vec3> 
 	}
 }
 void ChatBubble::runChat(list<DrawableObject*>& objectsList) {
-	cout << isChatting << endl;
 	isChatting = true;
 	if (chats.empty()) {
 		bubble->setActive(false);
@@ -165,10 +164,6 @@ bool ChatBubble::hasEnded() {
 
 void ChatBubble::skipSentence() {
 	if (isChatting && !isEnd) {
-		cout << "a" << endl;
 		nextChat();
-	}
-	else {
-		cout << "b" << endl;
 	}
 }
