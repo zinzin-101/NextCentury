@@ -135,7 +135,7 @@ void LevelAct5::levelInit() {
     //fog->setTexture("../Resource/Texture/OutskirtParallax/OSKT_P01_Fog.png");
     //objectsList.emplace_back(fog);
 
-    UIobject->initUI(objectsList, player);
+    UIobject->initUI(objectsList);
 
     fb = new FadeBlack(1.0f);
     objectsList.emplace_back(fb);
@@ -191,7 +191,7 @@ void LevelAct5::levelUpdate() {
     }
 
     spS->getTransform().setPosition(spS->getTransform().getPosition() + glm::vec3(0.1f, 0.0f, 0.0f));
-    UIobject->updateUI();
+    UIobject->updateUI(player);
 }
 
 void LevelAct5::levelDraw() {

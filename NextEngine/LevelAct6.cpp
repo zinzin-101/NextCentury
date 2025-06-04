@@ -144,7 +144,7 @@ void LevelAct6::levelInit() {
 
     player->getDamageCollider()->setFollowOffset(glm::vec3(1.0f, -0.2f, 0));
 
-    UIobject->initUI(objectsList, player);
+    UIobject->initUI(objectsList);
 
     camTarget = new SimpleObject();
     camTarget->getTransform().setPosition(glm::vec3(34.0f, 0.0f, 0.0f));
@@ -240,7 +240,7 @@ void LevelAct6::levelUpdate() {
         }
     }
     //cout << set2FightDone << endl;
-    UIobject->updateUI();
+    UIobject->updateUI(player);
 }
 
 void LevelAct6::levelDraw() {
@@ -362,6 +362,7 @@ void LevelAct6::handleKey(InputManager& input) {
             }
         }
     }
+	UIobject->handleInput(input,player);
 }
 
 void LevelAct6::signalFromEngine() {

@@ -118,7 +118,7 @@ PlayerObject::~PlayerObject() {
 
 void PlayerObject::move(glm::vec2 direction) {
     this->moveDirection.x += direction.x;
-	GameEngine::getInstance()->playSoundEffect("Walk.wav");
+	
     if (this->moveDirection.x != 0.0f) {
         this->moveDirection.x /= abs(this->moveDirection.x);
 
@@ -633,6 +633,7 @@ void PlayerObject::startRangeAttack(float dt) {
     if (rangeHeldDuration > rangeChargeDuration[PlayerRangeCharge::CHARGE_3] && currentNumOfBullets >= rangeChargeDuration[PlayerRangeCharge::CHARGE_3]) {
         currentRangeCharge = PlayerRangeCharge::CHARGE_3;
         this->getAnimationComponent()->setState("GunCharge3");
+        GameEngine::getInstance()->playSoundEffect("Sound_Gun_Charge.wav");
         //GameEngine::getInstance()->getRenderer()->getCamera()->shake = true;
         return;
     }
@@ -649,6 +650,7 @@ void PlayerObject::startRangeAttack(float dt) {
 
 void PlayerObject::handleDodging() {
     this->getAnimationComponent()->setState("Dodging");
+	GameEngine::getInstance()->playSoundEffect("Rolling.wav");
 
     canChangeFacingDirection = false;
 
@@ -695,6 +697,7 @@ void PlayerObject::handleMovement() {
     }
     else {
         this->getAnimationComponent()->setState("Walking");
+        GameEngine::getInstance()->playSoundEffect("Walk.wav");
     }
 
     vel = this->physics->getVelocity();
@@ -752,6 +755,7 @@ void PlayerObject::handleHealing() {
     Animation::State animState = this->getAnimationComponent()->getCurrentAnimationState();
     if (animState.currentFrame == healFrame && !healed) {
         this->heal(PlayerStat::HEAL_AMOUNT);
+		GameEngine::getInstance()->playSoundEffect("Sound_Heal.wav");
         resetAttack();
         endMeleeAttack();
         healed = true;
@@ -791,7 +795,7 @@ void PlayerObject::handleNormalAttack() {
     if (currentFrame == comboFrame[currentCombo].startAttackFrame + 1) {
         startMeleeAttack();
 
-        GameEngine::getInstance()->playSoundEffect("MC_Sound_Attack_Light_1.wav");
+        GameEngine::getInstance()->playSoundEffect("Sound_Attack_Light_1.wav");
 
         return;
     }
@@ -883,6 +887,7 @@ void PlayerObject::handleRangeAttack() {
             isAttacking = false;
             canMove = true;
             getAnimationComponent()->setState("Idle");
+			GameEngine::getInstance()->playSoundEffect("Sound_Gun_Shoot.wav");
         }
         return;
     }
@@ -926,6 +931,7 @@ void PlayerObject::handleParryAttack() {
             canMove = true;
             isParrying = false;
             moveDirection.x = 0.0f;
+			GameEngine::getInstance()->playSoundEffect("Sound_Parry.wav");
         }
 
         return;

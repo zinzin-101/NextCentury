@@ -61,7 +61,10 @@ void LivingEntity::setIsFacingRight(bool value) {
 }
 
 int LivingEntity::getHealth() const {
-    return health;
+    if (this != nullptr) {
+        return health;
+    }
+    
 }
 
 int LivingEntity::getMaxHealth() const {
