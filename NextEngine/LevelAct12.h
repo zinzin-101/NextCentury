@@ -1,15 +1,27 @@
 #pragma once
+
 #include "Level.h"
 #include "ObjectHeader.h"
 
-class LevelAlphaTest : public Level {
+class LevelAct12 : public Level {
 private:
     list<DrawableObject*> objectsList;
     list<DrawableObject*> UIobjectsList;
     PlayerObject* player = nullptr;
-    glm::vec3 camPos = glm::vec3(0.0f, 0.0f, 0.0f);
+    IngameUI* UIobject;
 
-    int counter;
+    ChatBubble* preFight;
+    ChatBubble* postFight;
+    InteractableObject* door;
+    ElivaBoss* boss;
+
+    bool isStop;
+    FadeBlack* fb;
+    bool end = false;
+    bool once = false;
+    float timefade = 1.0f;
+
+    int killCount = 0;
 
 public:
     virtual void levelLoad();

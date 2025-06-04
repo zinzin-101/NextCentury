@@ -93,6 +93,7 @@
     <ClCompile Include="LevelAct6.cpp" />
     <ClCompile Include="LevelMainMenu.cpp" />
     <ClCompile Include="ProtagThoughts.cpp" />
+    <ClCompile Include="UIMainMenu.cpp" />
     <ClCompile Include="DialogueList.cpp" />
     <ClCompile Include="ChatBubble.cpp" />
     <ClCompile Include="FadeBlack.cpp" />
@@ -102,8 +103,10 @@
     <ClCompile Include="LevelAct9.cpp" />
     <ClCompile Include="ProtagThoughts.cpp" />
     <ClCompile Include="LevelAct10.cpp" />
-    <ClCompile Include="UISetting.cpp" />
-    <ClCompile Include="LevelCredit.cpp" />
+    <ClCompile Include="LevelAct11.cpp" />
+    <ClCompile Include="LevelAct12.cpp" />
+    <ClCompile Include="LevelAct13.cpp" />
+    <ClCompile Include="LevelAct14.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
@@ -215,6 +218,7 @@
     <ClInclude Include="LevelLoading.h" />
     <ClInclude Include="LevelMainMenu.h" />
     <ClInclude Include="ProtagThoughts.h" />
+    <ClInclude Include="UIMainMenu.h" />
     <ClInclude Include="DialogueList.h" />
     <ClInclude Include="ChatBubble.h" />
     <ClInclude Include="FadeBlack.h" />
@@ -224,8 +228,10 @@
     <ClInclude Include="LevelAct9.h" />
     <ClInclude Include="ProtagThoughts.h" />
     <ClInclude Include="LevelAct10.h" />
-    <ClInclude Include="UISetting.h" />
-    <ClInclude Include="LevelCredit.h" />
+    <ClInclude Include="LevelAct11.h" />
+    <ClInclude Include="LevelAct12.h" />
+    <ClInclude Include="LevelAct13.h" />
+    <ClInclude Include="LevelAct14.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Resource\Shader\fragment.shd" />

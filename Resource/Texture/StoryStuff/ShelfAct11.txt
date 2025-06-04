@@ -1,0 +1,27 @@
+Report on Frenzied Symptoms in Ascendburg
+28
+b
+  
+28
+b
+Frenzied creatures are drawn to the 
+20
+n
+NEAREST SOURCE of the same type of MAGIC ENERGY,
+20
+n
+seeking to MERGE with it.
+20
+n
+  
+20
+n
+In the early stages, a frenzied being can still exert
+20
+n
+some control over itself, but as more magic energy 
+20
+n
+integrates into its body, this control gradually diminishes.
+20
+n

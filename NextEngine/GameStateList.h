@@ -2,10 +2,7 @@
 
 enum GameState {
 	// list of all game states 
-	GS_LEVEL1 = 0,
-	GS_LEVEL2,
-	GS_LEVEL3,
-	GS_MAINMENU,
+	GS_MENU,
 	GS_ACT1,
 	GS_ACT2,
 	GS_ACT3,
@@ -14,7 +11,10 @@ enum GameState {
 	GS_ACT6,
 	GS_ACT7,
 	GS_ACT8,
-	GS_CREDIT,
+	GS_ACT9,
+	GS_ACT10,
+	GS_ACT11,
+	GS_ACT12,
 	
 
 	// special game state. Do not change

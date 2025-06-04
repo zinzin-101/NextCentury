@@ -134,7 +134,7 @@ void LevelMapEditorTest::handleKey(char key) {
     case 'g': player->getPhysicsComponent()->setEnableGravity(!player->getPhysicsComponent()->isGravityEnable()); break;
     case 'q': GameEngine::getInstance()->getStateController()->gameStateNext = GameState::GS_QUIT; ; break;
     case 'r': GameEngine::getInstance()->getStateController()->gameStateNext = GameState::GS_RESTART; ; break;
-    case 'e': GameEngine::getInstance()->getStateController()->gameStateNext = GameState::GS_LEVEL1; ; break;
+    //case 'e': GameEngine::getInstance()->getStateController()->gameStateNext = GameState::GS_LEVEL1; ; break;
     case 'z': GameEngine::getInstance()->getRenderer()->increaseZoomRatio(0.1f); break;
     case 'x': GameEngine::getInstance()->getRenderer()->decreaseZoomRatio(0.1f); break;
     case '1': loadMap(mapLoader, 1, objectsList, player); break;

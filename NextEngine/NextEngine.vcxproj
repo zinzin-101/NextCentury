@@ -57,6 +57,10 @@
     <ClCompile Include="Level.cpp" />
     <ClCompile Include="LevelAct1.cpp" />
     <ClCompile Include="LevelAct10.cpp" />
+    <ClCompile Include="LevelAct11.cpp" />
+    <ClCompile Include="LevelAct12.cpp" />
+    <ClCompile Include="LevelAct13.cpp" />
+    <ClCompile Include="LevelAct14.cpp" />
     <ClCompile Include="LevelAct2.cpp" />
     <ClCompile Include="LevelAct3.cpp" />
     <ClCompile Include="LevelAct4.cpp" />
@@ -145,6 +149,10 @@
     <ClInclude Include="GLRenderer.h" />
     <ClInclude Include="GotItemText.h" />
     <ClInclude Include="LevelAct10.h" />
+    <ClInclude Include="LevelAct11.h" />
+    <ClInclude Include="LevelAct12.h" />
+    <ClInclude Include="LevelAct13.h" />
+    <ClInclude Include="LevelAct14.h" />
     <ClInclude Include="LevelAct2.h" />
     <ClInclude Include="LevelAct3.h" />
     <ClInclude Include="LevelAct4.h" />

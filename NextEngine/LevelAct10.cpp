@@ -49,17 +49,19 @@ void LevelAct10::levelInit() {
     shelf->getTransform().setScale(scaleX, scaleY);
     objectsList.emplace_back(shelf);
 
+    TexturedObject* board = new TexturedObject();
+    board->getTransform().setPosition(-1.7f, -0.5f);
+    board->setTexture("../Resource/Texture/Act10/board2Act10.png");
+    board->getTransform().setScale(2.5f, 1.41f);
+    objectsList.emplace_back(board);
+
     TexturedObject* bed = new TexturedObject();
     bed->getTransform().setPosition(0.0f, 0.0f);
-    bed->setTexture("../Resource/Texture/Act3/MCR_P04_Mid2.png");
+    bed->setTexture("../Resource/Texture/Act10/com2Act10.png");
     bed->getTransform().setScale((640.0f / pictureHeight) * 9.0f, scaleY);
     objectsList.emplace_back(bed);
 
-    TexturedObject* board = new TexturedObject();
-    board->getTransform().setPosition(-1.0f, -0.5f);
-    board->setTexture("../Resource/Texture/Act10/boardAct10.png");
-    board->getTransform().setScale(2.5f, 1.41f);
-    objectsList.emplace_back(board);
+
 
     //float height = 8.0f;
     //float width = height * 1.467889908256881;

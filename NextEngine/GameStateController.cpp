@@ -21,8 +21,11 @@
 #include "LevelAct8.h"
 #include "LevelAct9.h"
 #include "LevelAct10.h"
+#include "LevelAct11.h"
+#include "LevelAct12.h"
+#include "LevelAct13.h"
+#include "LevelAct14.h"
 #include "LevelMainMenu.h"
-#include "LevelCredit.h"
 
 GameStateController::GameStateController() {
 	// set the initial game state
@@ -42,38 +45,44 @@ void GameStateController::loadLevel() {
 	}
 	cout << gameStateCurr << endl;
 	switch (gameStateCurr) {
-		case GameState::GS_MAINMENU:
-			currentLevel = new LevelMainMenu();
-			break;
-		case GameState::GS_LEVEL1:
-			currentLevel = new LevelAct1();
-			break;
-		case GameState::GS_LEVEL2:
-			currentLevel = new LevelAct4();
-			break;
-		case GameState::GS_LEVEL3:
-			currentLevel = new LevelAct1();
+		case GameState::GS_MENU:
+			currentLevel = new LevelAct12();
 			break;
 		case GameState::GS_ACT1:
-			currentLevel = new LevelAct2();
+			currentLevel = new LevelAct1();
 			break;
 		case GameState::GS_ACT2:
-			currentLevel = new LevelAct3();
+			currentLevel = new LevelAct2();
 			break;
 		case GameState::GS_ACT3:
-			currentLevel = new LevelAct4();
+			currentLevel = new LevelAct3();
 			break;
 		case GameState::GS_ACT4:
-			currentLevel = new LevelAct5();
+			currentLevel = new LevelAct4();
 			break;
 		case GameState::GS_ACT5:
-			currentLevel = new LevelAct6();
+			currentLevel = new LevelAct5();
 			break;
 		case GameState::GS_ACT6:
 			currentLevel = new LevelAct6();
 			break;
-		case GameState::GS_CREDIT:
-			currentLevel = new LevelCredit();
+		case GameState::GS_ACT7:
+			currentLevel = new LevelAct7();
+			break;
+		case GameState::GS_ACT8:
+			currentLevel = new LevelAct8();
+			break;
+		case GameState::GS_ACT9:
+			currentLevel = new LevelAct9();
+			break;
+		case GameState::GS_ACT10:
+			currentLevel = new LevelAct10();
+			break;
+		case GameState::GS_ACT11:
+			currentLevel = new LevelAct11();
+			break;
+		case GameState::GS_ACT12:
+			currentLevel = new LevelAct12();
 			break;
 
 		default:
@@ -90,7 +99,6 @@ void GameStateController::initLevel() {
 
 void GameStateController::updateLevel() {
 	currentLevel->levelUpdate();
-	
 }
 
 void GameStateController::drawLevel() {

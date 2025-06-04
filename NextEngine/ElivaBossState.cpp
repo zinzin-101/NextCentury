@@ -241,4 +241,14 @@ namespace StateTransition {
 
 		return boss->getCurrentPhase() == ElivaBoss::Phase::Third;
 	}
+
+	bool introToBlink(ElivaBoss* boss) {
+		bool canStart = boss->getCanStart();
+
+		if (canStart) {
+			boss->setCanTakeDamage(true);
+		}
+
+		return canStart;
+	}
 }

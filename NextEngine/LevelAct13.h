@@ -1,15 +1,22 @@
 #pragma once
+
 #include "Level.h"
 #include "ObjectHeader.h"
 
-class LevelAlphaTest : public Level {
+class LevelAct13 : public Level {
 private:
     list<DrawableObject*> objectsList;
     list<DrawableObject*> UIobjectsList;
     PlayerObject* player = nullptr;
-    glm::vec3 camPos = glm::vec3(0.0f, 0.0f, 0.0f);
+    IngameUI* UIobject;
 
-    int counter;
+    InteractableObject* door;
+    InteractableObject* com;
+    ProtagThoughts* repeatNotDone;
+    bool isStop;
+    FadeBlack* fb;
+    bool end = false;
+    float timefade = 1.0f;
 
 public:
     virtual void levelLoad();
@@ -20,6 +27,4 @@ public:
     virtual void levelUnload();
 
     virtual void handleKey(InputManager& input);
-
-    virtual void signalFromEngine();
 };

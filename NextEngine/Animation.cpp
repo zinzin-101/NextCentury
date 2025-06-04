@@ -138,6 +138,10 @@ void Animation::updateCurrentState() {
 		return;
 	}
 
+	if (currentState->paused) {
+		return;
+	}
+
 	if (currentState->currentFrame >= currentState->frameCount) {
 		if (currentState->canLoop) {
 			currentState->currentFrame = 0;

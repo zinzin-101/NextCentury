@@ -10,14 +10,15 @@ private:
     PlayerObject* player = nullptr;
     IngameUI* UIobject;
     
-    InteractableObject* shelf;
+    InteractableObject* ishelf;
     InteractableObject* medicine;
     ProtagThoughts* p1;
 
     bool isStop;
     FadeBlack* fb;
     bool end = false;
-    float timefade = 1.0f;
+    bool once = false;
+    float timefade = 10.0f;
 
 public:
     virtual void levelLoad();

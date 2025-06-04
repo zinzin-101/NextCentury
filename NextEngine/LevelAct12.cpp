@@ -1,6 +1,7 @@
-#include "LevelAct11.h"
+#include "LevelAct12.h"
+#include "ElivaBoss.h"
 
-void LevelAct11::levelLoad() {
+void LevelAct12::levelLoad() {
     SquareMeshVbo* square = new SquareMeshVbo();
     square->loadData();
     GameEngine::getInstance()->addMesh(SquareMeshVbo::MESH_NAME, square);
@@ -15,7 +16,7 @@ void LevelAct11::levelLoad() {
     removeLoadingScreen(objectsList);
 }
 
-void LevelAct11::levelInit() {
+void LevelAct12::levelInit() {
     UIobject = new IngameUI();
     player = new PlayerObject();
     GameEngine::getInstance()->getRenderer()->setClearColor(0.1f, 0.1f, 0.1f);
@@ -31,10 +32,16 @@ void LevelAct11::levelInit() {
     backGround1->getTransform().setScale(scaleX, scaleY);
     objectsList.emplace(objectsList.begin(), backGround1);
 
-    TexturedObject* door = new TexturedObject();
+    TexturedObject* door2 = new TexturedObject();
+    door2->getTransform().setPosition(-7.4f, -1.4f);
+    door2->setTexture("../Resource/Texture/Act10/doorAct10.png");
+    door2->getTransform().setScale(1.2f, 2.0f);
+    objectsList.emplace_back(door2);
+
+    door = new InteractableObject("../Resource/Texture/StoryStuff/medicineAct11.txt", player, "../Resource/Texture/Act11/doorAct12.png", objectsList);
+    door->getTransform().setScale(1.218f, 2.0f);
     door->getTransform().setPosition(-7.4f, -1.4f);
-    door->setTexture("../Resource/Texture/Act10/doorAct10.png");
-    door->getTransform().setScale(1.2f, 2.0f);
+    door->setActive(false);
     objectsList.emplace_back(door);
 
     TexturedObject* desk = new TexturedObject();
@@ -61,19 +68,27 @@ void LevelAct11::levelInit() {
     board->getTransform().setScale(scaleX, scaleY);
     objectsList.emplace_back(board);
 
-    ishelf = new InteractableObject("../Resource/Texture/StoryStuff/ShelfAct11.txt", player, "../Resource/Texture/Act11/shelfAct11.png", objectsList);
+    TexturedObject* ishelf = new TexturedObject();
     ishelf->getTransform().setScale(1.13f, 1.54f);
+    ishelf->setTexture("../Resource/Texture/Act11/shelfAct12.png");
     ishelf->getTransform().setPosition(-5.0f, -1.65f);
     objectsList.emplace_back(ishelf);
 
-    medicine = new InteractableObject("../Resource/Texture/StoryStuff/medicineAct11.txt", player, "../Resource/Texture/Act11/medicineAct11.png", objectsList);
+    TexturedObject* medicine = new TexturedObject();
     medicine->getTransform().setScale(1.1f, 0.52f);
+    medicine->setTexture("../Resource/Texture/Act11/medicineAct12.png");
     medicine->getTransform().setPosition(2.9f, -1.34f);
     objectsList.emplace_back(medicine);
 
-    Level::importTransformData(objectsList, "act10", false);
+    Level::importTransformData(objectsList, "act12", false);
 
-    player->getTransform().setPosition(glm::vec3(-7.3f, -1.6f, 0.0f));
+    boss = new ElivaBoss();
+    boss->getTransform().setPosition(-5.9f, -1.6f);
+    boss->setBlinkOrigin(0.0f);
+    objectsList.emplace_back(boss);
+
+    player->getTransform().setPosition(glm::vec3(4.0f, -1.6f, 0.0f));
+    player->setIsFacingRight(false);
     objectsList.emplace_back(player);
 
     TexturedObject* backGround = new TexturedObject();
@@ -82,35 +97,40 @@ void LevelAct11::levelInit() {
     backGround->getTransform().setScale(scaleX, scaleY);
     objectsList.emplace_back(backGround);
 
-    isStop = false;
-
-    p1 = new ProtagThoughts("../Resource/Texture/StoryStuff/protagAct11.txt", player);
-    objectsList.emplace_back(p1);
+    isStop = true;
 
     GameEngine::getInstance()->getRenderer()->getCamera()->setTarget(player);
     GameEngine::getInstance()->getRenderer()->setToggleViewport(false);
 
-    // initializing parallax object
-    for (DrawableObject* obj : objectsList) {
-        ParallaxObject* pObj = dynamic_cast<ParallaxObject*>(obj);
-        if (pObj != NULL) {
-            pObj->setPlayer(player);
-        }
-    }
-
     startObjects(objectsList);
 
+    GameEngine::getInstance()->getRenderer()->getCamera()->setTarget(player);
     player->getDamageCollider()->setFollowOffset(glm::vec3(1.0f, -0.2f, 0));
 
-    //UIobject->initUI(objectsList);
+    UIobject->initUI(objectsList);
 
     fb = new FadeBlack(1.0f);
     objectsList.emplace_back(fb);
     fb->FadeToTransparent();
 
+    vector<glm::vec3> l;
+    //l.push_back(glm::vec3(-1.1f, 0.8f, 0.0f));
+    l.push_back(glm::vec3(-7.0f, 0.8f, 0.0f));
+    preFight = new ChatBubble("../Resource/Texture/StoryStuff/preBossFight.txt", player, l, objectsList);
+    //preFight = new ChatBubble("../Resource/Texture/StoryStuff/postBossFight.txt", player, l, objectsList);
+    
+    // initializing parallax object
+    //for (DrawableObject* obj : objectsList) {
+    //    if (obj != boss) {
+    //        obj->getTransform().translate(5.9f, 0.0f);
+    //    }
+    //}
+
+    //GameEngine::getInstance()->getRenderer()->getCamera()->setPosition(glm::vec3(1.9f, 0.0f, 0.0f));
     GameEngine::getInstance()->getRenderer()->getCamera()->setPosition(glm::vec3(-4.0f, 0.0f, 0.0f));
 
     GameEngine::getInstance()->getRenderer()->getCamera()->setDeadLimitBool(true);
+    //GameEngine::getInstance()->getRenderer()->getCamera()->setDeadLimitMinMax(-3.1f, 14.9f);
     GameEngine::getInstance()->getRenderer()->getCamera()->setDeadLimitMinMax(-9.0f, 9.0f);
 
     GameEngine::getInstance()->getRenderer()->getCamera()->setOffset(glm::vec3(0.0f, -0.5f, 0.0f));
@@ -120,25 +140,38 @@ void LevelAct11::levelInit() {
 
 }
 
-void LevelAct11::levelUpdate() {
+void LevelAct12::levelUpdate() {
     updateObjects(objectsList);
-
-    GameEngine::getInstance()->getRenderer()->updateCamera();
+    preFight->runChat(objectsList);
+    if (preFight->hasEnded()) {
+        isStop = false;
+        GameEngine::getInstance()->getRenderer()->updateCamera();
+        boss->signalCanStart();
+    }
+    if (killCount == 1 && !once) {
+        vector <glm::vec3> l2;
+        l2.push_back(glm::vec3(boss->getTransform().getPosition().x - 1.2f, boss->getTransform().getPosition().y + 0.5f, 0.0f));
+        postFight = new ChatBubble("../Resource/Texture/StoryStuff/postBossFight.txt", player, l2, objectsList);
+        
+        once = true;
+    }
+    else if (killCount == 1) {
+        postFight->runChat(objectsList);
+        if (postFight->hasEnded()) {
+            door->setActive(true);
+        }
+    }
     if (end) {
         timefade -= GameEngine::getInstance()->getTime()->getDeltaTime();
-        if (timefade < 6.1f && !once) {
-            fb->FadeToBlack();
-            // play walking down stair sound
-            once = true;
-        }
         if (timefade < 0.0f) {
             loadNextLevel();
         }
     }
-    //UIobject->updateUI(*player, camPos);
+
+    UIobject->updateUI(player);
 }
 
-void LevelAct11::levelDraw() {
+void LevelAct12::levelDraw() {
     GameEngine::getInstance()->render(objectsList);
 
 #ifdef DEBUG_MODE_ON
@@ -146,22 +179,23 @@ void LevelAct11::levelDraw() {
 #endif
 }
 
-void LevelAct11::levelFree() {
+void LevelAct12::levelFree() {
     for (DrawableObject* obj : objectsList) {
         delete obj;
     }
     objectsList.clear();
-
+    delete preFight;
+    delete postFight;
     delete UIobject;
 }
 
-void LevelAct11::levelUnload() {
+void LevelAct12::levelUnload() {
     GameEngine::getInstance()->clearMesh();
     GameEngine::getInstance()->getRenderer()->setClearColor(0.1f, 0.1f, 0.1f);
     //cout << "Unload Level" << endl;
 }
 
-void LevelAct11::handleKey(InputManager& input) {
+void LevelAct12::handleKey(InputManager& input) {
     // For debugging
     if (input.getButton(SDLK_z)) GameEngine::getInstance()->getRenderer()->increaseZoomRatio(0.1f);
     if (input.getButton(SDLK_x)) GameEngine::getInstance()->getRenderer()->decreaseZoomRatio(0.1f);
@@ -247,18 +281,19 @@ void LevelAct11::handleKey(InputManager& input) {
         }
     }
 
+    if (input.getButtonDown(SDLK_r)) {
+        player->useHealthPotion();
+    }
+
     if (input.getButtonDown(SDLK_e)) {
-        if (ishelf->getIsClickable()) {
-            ishelf->setDescriptionActive(!ishelf->getDescriptionActive());
-            if (ishelf->isClickedOnce && !ishelf->getDescriptionActive()) {
-                p1->activateDialogue();
-            }
-        }
-        if (medicine->getIsClickable()) {
-            medicine->setDescriptionActive(!medicine->getDescriptionActive());
-        }
-        if (medicine->isClickedOnce && ishelf->isClickedOnce) {
+        if (door->getIsActive() && door->getIsClickable()) {
+            fb->FadeToBlack();
             end = true;
         }
     }
 }
+
+void LevelAct12::signalFromEngine() {
+    this->killCount++;
+}
+

@@ -1,15 +1,26 @@
 #pragma once
+
 #include "Level.h"
 #include "ObjectHeader.h"
+#include "Audio.h"
 
-class LevelAlphaTest : public Level {
+class LevelAct14 : public Level {
 private:
     list<DrawableObject*> objectsList;
     list<DrawableObject*> UIobjectsList;
     PlayerObject* player = nullptr;
-    glm::vec3 camPos = glm::vec3(0.0f, 0.0f, 0.0f);
+    IngameUI* UIobject;
 
-    int counter;
+    FadeBlack* fb;
+    bool isStop;
+    bool isFadingToBlack = false;
+    float timefade = 8.0f;
+    bool end = false;
+
+    AudioEngine m_audio;
+    SoundEffect m_jumpSfx;
+    SoundEffect m_deathSfx;
+    Music       m_backgroundMusic;
 
 public:
     virtual void levelLoad();
@@ -20,6 +31,4 @@ public:
     virtual void levelUnload();
 
     virtual void handleKey(InputManager& input);
-
-    virtual void signalFromEngine();
 };

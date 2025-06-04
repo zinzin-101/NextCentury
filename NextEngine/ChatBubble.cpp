@@ -43,6 +43,7 @@ ChatBubble::ChatBubble(string fileName, PlayerObject* player, vector<glm::vec3> 
 			tText->setBackDropActive(false);
 			tText->addSentence(myText);
 			tText->isDialogueActive = false;
+			tText->getTransform().setPosition(0.0f, 10.0f);
 			objectsList.emplace_back(tText);
 
 			c.titleText = tText;
@@ -74,6 +75,7 @@ ChatBubble::ChatBubble(string fileName, PlayerObject* player, vector<glm::vec3> 
 		k->setBackDropActive(false);
 		k->addSentence(myText);
 		k->isDialogueActive = false;
+		k->getTransform().setPosition(0.0f, 10.0f);
 		objectsList.emplace_back(k);
 		c.dialogueText.emplace_back(k);
 	}
@@ -87,10 +89,10 @@ void ChatBubble::runChat(list<DrawableObject*>& objectsList) {
 	}
 
 	bubble->setActive(true);
-
+	
 	glm::vec3 currentTalkerPos = eachTalker.at(chats.front().talkerIndex);
 	setCurrentChatPos(glm::vec3(currentTalkerPos.x, currentTalkerPos.y, 0.0f));
-
+	chats.front().titleText->setActive(true);
 	float offsetY = (bubble->getTransform().getPosition().y + 0.225f) * 120.0f;
 	for (int i = 0; i < chats.front().dialogueText.size(); i++) {
 		float offsetX = (bubble->getTransform().getPosition().x) + ((chats.front().dialogueText[i]->getTextScale().x / 2.0f) / 120.0f) - 1.2f;
@@ -98,9 +100,9 @@ void ChatBubble::runChat(list<DrawableObject*>& objectsList) {
 		offsetY += chats.front().dialogueText[i]->getTextScale().y;
 		chats.front().dialogueText[i]->update(objectsList);
 	}
-	
+	chats.front().dialogueText.front()->setActive(true);
 	chats.front().titleText->update(objectsList);
-
+	
 	//if (isChatting) { SOME HOW UPDATE RUNS JUST STARTED ITSELF
 		if (!timeAppearEachChat.empty()) {
 			if (timeAppearEachChat.front() < 0.0f) {
@@ -108,7 +110,7 @@ void ChatBubble::runChat(list<DrawableObject*>& objectsList) {
 				timeAppearEachChat.pop();
 			}
 			else {
-				timeAppearEachChat.front() -= GameEngine::getInstance()->getTime()->getDeltaTimeRealTime();
+				timeAppearEachChat.front() -= GameEngine::getInstance()->getTime()->getDeltaTime();
 			}
 		}
 		if (!chats.empty()) {

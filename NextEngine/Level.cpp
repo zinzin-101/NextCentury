@@ -617,6 +617,19 @@ void Level::drawImGui(std::list<DrawableObject*>& objectList) {
     }
     ImGui::End();
 
+    ImGui::Begin("Signal To Start Boss");
+
+    if (ImGui::Button("Signal")) {
+        for (DrawableObject* obj : objectList) {
+            ElivaBoss* boss = dynamic_cast<ElivaBoss*>(obj);
+            if (boss) {
+                boss->signalCanStart();
+            }
+        }
+    }
+
+    ImGui::End();
+
     ImGui::Render();
 
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
@@ -968,8 +981,7 @@ void Level::resetGameStateSave() {
 }
 
 void Level::loadNextLevel() {
-    GameEngine::getInstance()->getStateController()->gameStateNext = (GameState)((GameEngine::getInstance()->getStateController()->gameStateCurr + 1) % 9);
-    
+    GameEngine::getInstance()->getStateController()->gameStateNext = (GameState)((GameEngine::getInstance()->getStateController()->gameStateCurr + 1) % 13);
 }
 
 void Level::signalFromEngine() {}
