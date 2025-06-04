@@ -325,4 +325,5 @@ void LevelAct3::handleKey(InputManager& input) {
             desk->setDescriptionActive(!desk->getDescriptionActive());
         }
     }
+    UIobject->handleInput(input, player);
 }

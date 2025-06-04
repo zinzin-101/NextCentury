@@ -281,4 +281,5 @@ void LevelAct13::handleKey(InputManager& input) {
             com->setDescriptionActive(!com->getDescriptionActive());
         }
     }
+    UIobject->handleInput(input, player);
 }

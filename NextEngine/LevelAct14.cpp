@@ -259,4 +259,5 @@ void LevelAct14::handleKey(InputManager& input) {
     if (input.getButtonDown(SDLK_e)) {
         
     }
+    UIobject->handleInput(input, player);
 }

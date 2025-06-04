@@ -315,4 +315,5 @@ void LevelAct5::handleKey(InputManager& input) {
             eToPermit->stopDialogue();
         }
     }
+    UIobject->handleInput(input, player);
 }

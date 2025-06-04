@@ -268,6 +268,7 @@ void LevelAct9::handleKey(InputManager& input) {
             fb->FadeToBlack();
         }
     }
+    UIobject->handleInput(input, player);
 }
 
 void LevelAct9::signalFromEngine() {

@@ -292,4 +292,6 @@ void LevelAct1::handleKey(InputManager& input) {
             }
         }
     }
+
+    UIobject->handleInput(input, player);
 }
