@@ -172,6 +172,7 @@ void PlayerObject::dodge() {
     stamina -= PlayerStat::DODGE_STAMINA_CONSUMPTION;
     resetStaminaRechargeDelay();
 
+	GameEngine::getInstance()->getAudioEngine().playSoundEffectByName("Sound_Rolling.wav");
     isDodging = true;
     canChangeFacingDirection = false;
 
@@ -203,6 +204,7 @@ void PlayerObject::useHealthPotion() {
     healed = false;
 
     this->getAnimationComponent()->setState("Healing");
+	GameEngine::getInstance()->getAudioEngine().playSoundEffectByName("Sound_Heal.wav");
 }
 
 void PlayerObject::start(list<DrawableObject*>& objectsList) {
@@ -497,6 +499,7 @@ void PlayerObject::rangeAttack(std::list<DrawableObject*>& objectsList) {
 
     isAttacking = true;
     canChangeFacingDirection = false;
+    GameEngine::getInstance()->playSoundEffect("Sound_Gun_Shoot.wav");
 
     if (moveDirection.x != 0.0f) {
         isFacingRight = moveDirection.x >= 0.0f ? true : false;
@@ -635,7 +638,7 @@ void PlayerObject::startRangeAttack(float dt) {
     if (rangeHeldDuration > rangeChargeDuration[PlayerRangeCharge::CHARGE_3] && currentNumOfBullets >= rangeChargeDuration[PlayerRangeCharge::CHARGE_3]) {
         currentRangeCharge = PlayerRangeCharge::CHARGE_3;
         this->getAnimationComponent()->setState("GunCharge3");
-        //GameEngine::getInstance()->getRenderer()->getCamera()->shake = true;
+		GameEngine::getInstance()->getAudioEngine().playSoundEffectByName("Sound_Gun_Charge.wav");
         return;
     }
 
@@ -786,7 +789,20 @@ void PlayerObject::handleNormalAttack() {
 
     Animation::State currentState = this->getAnimationComponent()->getCurrentAnimationState();
     int currentFrame = currentState.currentFrame;
-
+    if (currentFrame == 0) {
+        switch (currentCombo)
+        {
+		case PlayerCombo::FIRST:
+			GameEngine::getInstance()->playSoundEffect("Sound_Attack_Light_1.wav");
+			break;
+		case PlayerCombo::SECOND:
+			GameEngine::getInstance()->playSoundEffect("Sound_Attack_Light_2.wav");
+			break;
+		case PlayerCombo::THIRD:
+			GameEngine::getInstance()->playSoundEffect("Sound_Attack_Light_3.wav");
+			break;
+        }
+    }
     if (currentFrame < comboFrame[currentCombo].startAttackFrame + 1) {
         return;
     }
@@ -794,7 +810,7 @@ void PlayerObject::handleNormalAttack() {
     if (currentFrame == comboFrame[currentCombo].startAttackFrame + 1) {
         startMeleeAttack();
 
-        GameEngine::getInstance()->playSoundEffect("MC_Sound_Attack_Light_1.wav");
+        
 
         return;
     }
@@ -855,6 +871,7 @@ void PlayerObject::handleHeavyAttack() {
             vel = this->getPhysicsComponent()->getVelocity();
             this->getPhysicsComponent()->setVelocity(glm::vec2(0.0f, vel.y));
             attackCooldownRemaining = heavyAttackCooldown[currentHeavyCharge];
+			GameEngine::getInstance()->playSoundEffect("Sound_Attack_Heavy.wav");
             return;
         }
 
@@ -879,7 +896,6 @@ void PlayerObject::handleRangeAttack() {
 
     glm::vec2 vel = this->getPhysicsComponent()->getVelocity();
     this->getPhysicsComponent()->setVelocity(glm::vec2(0.0f, vel.y));
-
     if (isAttacking) {
         if (!getAnimationComponent()->getCurrentAnimationState().isPlaying) {
             isInRangeAttack = false;
@@ -960,10 +976,16 @@ void PlayerObject::handleFlinch() {
 
 void PlayerObject::handleDead() {
     this->getAnimationComponent()->setState("Dead");
+
     glm::vec2 vel = this->getPhysicsComponent()->getVelocity();
     vel.x = 0.0f;
     this->getPhysicsComponent()->setVelocity(vel);
     moveDirection.x = 0.0f;
+
+    if (!deathSoundPlayed) {
+        deathSoundPlayed = true;
+        GameEngine::getInstance()->playSoundEffect("Sound_Died.wav");
+    }
 }
 
 bool PlayerObject::getCanMove() const {
@@ -1004,6 +1026,7 @@ void PlayerObject::takeDamage(int damage) {
 
     this->LivingEntity::takeDamage(damage);
     iFrameTimeRemaining = PlayerStat::INVINCIBLE_DURATION_AFTER_TAKING_DAMAGE;
+	GameEngine::getInstance()->playSoundEffect("Sound_GettingHit.wav");
 }
 
 void PlayerObject::resetStaminaRechargeDelay() {
