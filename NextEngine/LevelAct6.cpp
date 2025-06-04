@@ -264,6 +264,8 @@ void LevelAct6::levelFree() {
 }
 
 void LevelAct6::levelUnload() {
+    GameEngine::getInstance()->stopMusic();
+    GameEngine::getInstance()->stopSfx();
     GameEngine::getInstance()->clearMesh();
     GameEngine::getInstance()->getRenderer()->setClearColor(0.1f, 0.1f, 0.1f);
     //cout << "Unload Level" << endl;

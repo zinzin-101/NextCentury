@@ -125,6 +125,8 @@ public:
 
 	/// @brief This function prints the current volume of the music and the sound effect
 	void printVolume();
+
+	void stopAllSoundEffects();
 private:
 	bool isInit = false;
 	int currentSoundEffectVolume;

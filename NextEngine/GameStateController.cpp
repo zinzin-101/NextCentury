@@ -90,6 +90,7 @@ void GameStateController::initLevel() {
 
 void GameStateController::updateLevel() {
 	currentLevel->levelUpdate();
+	
 }
 
 void GameStateController::drawLevel() {

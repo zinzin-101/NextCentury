@@ -64,6 +64,7 @@ public:
 	void playSoundEffect(const std::string& fileName, int loop = 0);
 	void playMusic(const std::string& fileName, int loop = -1);
 	void stopMusic();
+	void stopSfx();
 	
 	void signalToCurrentLevel();
 

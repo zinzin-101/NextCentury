@@ -18,7 +18,6 @@ void LevelMainMenu::levelLoad() {
 void LevelMainMenu::levelInit() {
     UIobject = new UI();
     UIobject->initUI(objectsList);
-    
 }
 
 void LevelMainMenu::levelUpdate() {
@@ -31,6 +30,8 @@ void LevelMainMenu::levelDraw() {
 }
 
 void LevelMainMenu::levelFree() {
+    GameEngine::getInstance()->stopMusic();
+    GameEngine::getInstance()->stopSfx();
     for (DrawableObject* obj : objectsList) {
         delete obj;
     }

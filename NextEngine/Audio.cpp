@@ -330,4 +330,9 @@ void AudioEngine::printVolume() {
 void AudioEngine::stopMusic() {
 	Music music;
 	music.stop();
+	Mix_HaltMusic();
+}
+
+void AudioEngine::stopAllSoundEffects() {
+	Mix_HaltChannel(-1);
 }
