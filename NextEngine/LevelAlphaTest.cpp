@@ -11,7 +11,7 @@ void LevelAlphaTest::levelLoad() {
 }
 
 void LevelAlphaTest::levelInit() {
-    
+    counter = 0;
     GameEngine::getInstance()->getRenderer()->setClearColor(0.1f, 0.1f, 0.1f);
 
     ParallaxObject* background = new ParallaxObject(0.0f, 0.0f, 550.0f, false, player, true, 1000, 360);
@@ -88,7 +88,8 @@ void LevelAlphaTest::levelUpdate() {
     updateObjects(objectsList);
    
     GameEngine::getInstance()->getRenderer()->updateCamera();
-     
+
+    std::cout << "test counter: " << counter << std::endl;
 }
 
 void LevelAlphaTest::levelDraw() {
@@ -199,4 +200,8 @@ void LevelAlphaTest::handleKey(InputManager& input) {
     if (input.getButtonDown(SDLK_e)) {
         player->useHealthPotion();
     }
+}
+
+void LevelAlphaTest::signalFromEngine() {
+    counter++;
 }

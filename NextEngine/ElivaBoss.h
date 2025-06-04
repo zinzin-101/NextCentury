@@ -137,6 +137,8 @@ class ElivaBoss : public EnemyObject {
 		bool canUsePoisonCloud;
 
 		bool hasSignalDeath;
+		float deathTimer;
+		bool isDyingDialoguePlaying;
 
 		void processState();
 		void (ElivaBoss::*statesHandler[15])();

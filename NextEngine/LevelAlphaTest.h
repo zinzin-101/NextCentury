@@ -9,6 +9,8 @@ private:
     PlayerObject* player = nullptr;
     glm::vec3 camPos = glm::vec3(0.0f, 0.0f, 0.0f);
 
+    int counter;
+
 public:
     virtual void levelLoad();
     virtual void levelInit();
@@ -18,4 +20,6 @@ public:
     virtual void levelUnload();
 
     virtual void handleKey(InputManager& input);
+
+    virtual void signalFromEngine();
 };
