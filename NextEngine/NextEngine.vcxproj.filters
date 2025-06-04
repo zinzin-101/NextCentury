@@ -103,6 +103,8 @@
     <ClCompile Include="LevelAct9.cpp" />
     <ClCompile Include="ProtagThoughts.cpp" />
     <ClCompile Include="LevelAct10.cpp" />
+    <ClCompile Include="LevelAct11.cpp" />
+    <ClCompile Include="LevelAct12.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
@@ -224,10 +226,13 @@
     <ClInclude Include="LevelAct9.h" />
     <ClInclude Include="ProtagThoughts.h" />
     <ClInclude Include="LevelAct10.h" />
+    <ClInclude Include="LevelAct11.h" />
+    <ClInclude Include="LevelAct12.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Resource\Shader\fragment.shd" />
     <None Include="..\Resource\Shader\vertext.shd" />
+    <None Include="imgui.ini" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Imgui">

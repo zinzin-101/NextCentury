@@ -3,16 +3,16 @@
 #include "Level.h"
 #include "ObjectHeader.h"
 
-class LevelAct11 : public Level {
+class LevelAct12 : public Level {
 private:
     list<DrawableObject*> objectsList;
     list<DrawableObject*> UIobjectsList;
     PlayerObject* player = nullptr;
     IngameUI* UIobject;
-    
-    InteractableObject* ishelf;
-    InteractableObject* medicine;
-    ProtagThoughts* p1;
+
+    ChatBubble* preFight;
+    ChatBubble* postFight;
+    InteractableObject* door;
 
     bool isStop;
     FadeBlack* fb;

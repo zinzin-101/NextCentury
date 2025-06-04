@@ -21,6 +21,8 @@
 #include "LevelAct8.h"
 #include "LevelAct9.h"
 #include "LevelAct10.h"
+#include "LevelAct11.h"
+#include "LevelAct12.h"
 #include "LevelMainMenu.h"
 
 GameStateController::GameStateController() {

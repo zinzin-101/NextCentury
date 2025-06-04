@@ -1,6 +1,6 @@
-#include "LevelAct10.h"
+#include "LevelAct12.h"
 
-void LevelAct10::levelLoad() {
+void LevelAct12::levelLoad() {
     SquareMeshVbo* square = new SquareMeshVbo();
     square->loadData();
     GameEngine::getInstance()->addMesh(SquareMeshVbo::MESH_NAME, square);
@@ -15,11 +15,11 @@ void LevelAct10::levelLoad() {
     removeLoadingScreen(objectsList);
 }
 
-void LevelAct10::levelInit() {
+void LevelAct12::levelInit() {
     UIobject = new IngameUI();
     player = new PlayerObject();
     GameEngine::getInstance()->getRenderer()->setClearColor(0.1f, 0.1f, 0.1f);
-    
+
     float pictureWidth = 960.0f;
     float pictureHeight = 360.0f;
     float scaleX = (pictureWidth / pictureHeight) * 9.0f;
@@ -31,56 +31,59 @@ void LevelAct10::levelInit() {
     backGround1->getTransform().setScale(scaleX, scaleY);
     objectsList.emplace(objectsList.begin(), backGround1);
 
-    TexturedObject* door = new TexturedObject();
+    TexturedObject* door2 = new TexturedObject();
+    door2->getTransform().setPosition(-7.4f, -1.4f);
+    door2->setTexture("../Resource/Texture/Act10/doorAct10.png");
+    door2->getTransform().setScale(1.2f, 2.0f);
+    objectsList.emplace_back(door2);
+
+    door = new InteractableObject("../Resource/Texture/StoryStuff/medicineAct11.txt", player, "../Resource/Texture/Act11/doorAct12.png", objectsList);
+    door->getTransform().setScale(1.218f, 2.0f);
     door->getTransform().setPosition(-7.4f, -1.4f);
-    door->setTexture("../Resource/Texture/Act10/doorAct10.png");
-    door->getTransform().setScale(1.2f, 2.0f);
+    door->setActive(false);
     objectsList.emplace_back(door);
 
-    TexturedObject* window = new TexturedObject();
-    window->getTransform().setPosition(0.0f, 0.0f);
-    window->setTexture("../Resource/Texture/Act10/IPTH_P03_Window.png");
-    window->getTransform().setScale(scaleX, scaleY);
-    objectsList.emplace_back(window);
+    TexturedObject* desk = new TexturedObject();
+    desk->getTransform().setPosition(0.0f, 0.0f);
+    desk->setTexture("../Resource/Texture/Act11/BS_P02_Desk.png");
+    desk->getTransform().setScale(scaleX, scaleY);
+    objectsList.emplace_back(desk);
 
     TexturedObject* shelf = new TexturedObject();
     shelf->getTransform().setPosition(0.0f, 0.0f);
-    shelf->setTexture("../Resource/Texture/Act10/IPTH_P02_Shelfs.png");
+    shelf->setTexture("../Resource/Texture/Act11/BS_P04_Shelf.png");
     shelf->getTransform().setScale(scaleX, scaleY);
     objectsList.emplace_back(shelf);
 
-    TexturedObject* board = new TexturedObject();
-    board->getTransform().setPosition(-1.7f, -0.5f);
-    board->setTexture("../Resource/Texture/Act10/boardAct10.png");
-    board->getTransform().setScale(2.5f, 1.41f);
-    objectsList.emplace_back(board);
-
     TexturedObject* bed = new TexturedObject();
     bed->getTransform().setPosition(0.0f, 0.0f);
-    bed->setTexture("../Resource/Texture/Act10/com2Act10.png");
-    bed->getTransform().setScale((640.0f / pictureHeight) * 9.0f, scaleY);
+    bed->setTexture("../Resource/Texture/Act11/BS_P01_Bed.png");
+    bed->getTransform().setScale(scaleX, scaleY);
     objectsList.emplace_back(bed);
 
+    TexturedObject* board = new TexturedObject();
+    board->getTransform().setPosition(0.0f, 0.0f);
+    board->setTexture("../Resource/Texture/Act11/BS_P05_Board.png");
+    board->getTransform().setScale(scaleX, scaleY);
+    objectsList.emplace_back(board);
 
+    TexturedObject* ishelf = new TexturedObject();
+    ishelf->getTransform().setScale(1.13f, 1.54f);
+    ishelf->setTexture("../Resource/Texture/Act11/shelfAct12.png");
+    ishelf->getTransform().setPosition(-5.0f, -1.65f);
+    objectsList.emplace_back(ishelf);
 
-    //float height = 8.0f;
-    //float width = height * 1.467889908256881;
-    //for (auto a : objectsList) {
-    //    a->getTransform().setScale(width, height);
-    //}
-    Level::importTransformData(objectsList, "act10", false);
+    TexturedObject* medicine = new TexturedObject();
+    medicine->getTransform().setScale(1.1f, 0.52f);
+    medicine->setTexture("../Resource/Texture/Act11/medicineAct12.png");
+    medicine->getTransform().setPosition(2.9f, -1.34f);
+    objectsList.emplace_back(medicine);
 
+    Level::importTransformData(objectsList, "act12", false);
 
-    //player->getTransform().setScale(4.166f, 2.5f);
-    //player->getColliderComponent()->getTransform().translate(0.0f, -0.44f);
-    //player->getColliderComponent()->setDimension(0.25f, 0.65f);
-    player->getTransform().setPosition(glm::vec3(-7.3f, -1.6f, 0.0f));
+    player->getTransform().setPosition(glm::vec3(4.0f, -1.6f, 0.0f));
+    player->setIsFacingRight(false);
     objectsList.emplace_back(player);
-
-    stair = new InteractableObject("../Resource/Texture/StoryStuff/ComputerAct7.txt", player, "../Resource/Texture/Act10/stairsAct10.png", objectsList);
-    stair->getTransform().setScale(3.0f, 1.06f);
-    stair->getTransform().setPosition(7.8f, -1.95f);
-    objectsList.emplace_back(stair);
 
     TexturedObject* backGround = new TexturedObject();
     backGround->getTransform().setPosition(0.0f, 0.0f);
@@ -89,11 +92,6 @@ void LevelAct10::levelInit() {
     objectsList.emplace_back(backGround);
 
     isStop = false;
-
-    //ParallaxObject* Fog = new ParallaxObject(0.0f, -0.1f, 100.0f, false, player, true, pictureWidth, pictureHeight);
-    //Fog->setTexture("../Resource/Texture/OutskirtParallax/OSKT_P01_Fog.png");
-    //Fog->setRenderOpacity(0.25f);
-    //objectsList.emplace_back(Fog);
 
     GameEngine::getInstance()->getRenderer()->getCamera()->setTarget(player);
     GameEngine::getInstance()->getRenderer()->setToggleViewport(false);
@@ -108,11 +106,8 @@ void LevelAct10::levelInit() {
 
     startObjects(objectsList);
 
+    GameEngine::getInstance()->getRenderer()->getCamera()->setTarget(player);
     player->getDamageCollider()->setFollowOffset(glm::vec3(1.0f, -0.2f, 0));
-
-    //ParallaxObject* fog = new ParallaxObject(0.0f, -0.1f, 60.0f, false, player, true, pictureWidth, pictureHeight);
-    //fog->setTexture("../Resource/Texture/OutskirtParallax/OSKT_P01_Fog.png");
-    //objectsList.emplace_back(fog);
 
     //UIobject->initUI(objectsList);
 
@@ -120,7 +115,11 @@ void LevelAct10::levelInit() {
     objectsList.emplace_back(fb);
     fb->FadeToTransparent();
 
-    GameEngine::getInstance()->getRenderer()->getCamera()->setPosition(glm::vec3(-4.0f, 0.0f, 0.0f));
+    vector<glm::vec3> l;
+    l.push_back(glm::vec3(-7.0f, 0.8f, 0.0f));
+    preFight = new ChatBubble("../Resource/Texture/StoryStuff/preBossFight.txt", player, l, objectsList);
+    
+    GameEngine::getInstance()->getRenderer()->getCamera()->setPosition(glm::vec3(-5.0f, 0.0f, 0.0f));
 
     GameEngine::getInstance()->getRenderer()->getCamera()->setDeadLimitBool(true);
     GameEngine::getInstance()->getRenderer()->getCamera()->setDeadLimitMinMax(-9.0f, 9.0f);
@@ -132,20 +131,30 @@ void LevelAct10::levelInit() {
 
 }
 
-void LevelAct10::levelUpdate() {
+void LevelAct12::levelUpdate() {
     updateObjects(objectsList);
-
-    GameEngine::getInstance()->getRenderer()->updateCamera();
-    if(end){
+    preFight->runChat(objectsList);
+    if (preFight->hasEnded()) {
+        GameEngine::getInstance()->getRenderer()->updateCamera();
+    }
+    if (end) {
         timefade -= GameEngine::getInstance()->getTime()->getDeltaTime();
+        if (timefade < 6.1f && !once) {
+            fb->FadeToBlack();
+            // play walking down stair sound
+            once = true;
+        }
         if (timefade < 0.0f) {
             loadNextLevel();
         }
     }
+
+    
+
     //UIobject->updateUI(*player, camPos);
 }
 
-void LevelAct10::levelDraw() {
+void LevelAct12::levelDraw() {
     GameEngine::getInstance()->render(objectsList);
 
 #ifdef DEBUG_MODE_ON
@@ -153,22 +162,22 @@ void LevelAct10::levelDraw() {
 #endif
 }
 
-void LevelAct10::levelFree() {
+void LevelAct12::levelFree() {
     for (DrawableObject* obj : objectsList) {
         delete obj;
     }
     objectsList.clear();
-
+    delete preFight;
     delete UIobject;
 }
 
-void LevelAct10::levelUnload() {
+void LevelAct12::levelUnload() {
     GameEngine::getInstance()->clearMesh();
     GameEngine::getInstance()->getRenderer()->setClearColor(0.1f, 0.1f, 0.1f);
     //cout << "Unload Level" << endl;
 }
 
-void LevelAct10::handleKey(InputManager& input) {
+void LevelAct12::handleKey(InputManager& input) {
     // For debugging
     if (input.getButton(SDLK_z)) GameEngine::getInstance()->getRenderer()->increaseZoomRatio(0.1f);
     if (input.getButton(SDLK_x)) GameEngine::getInstance()->getRenderer()->decreaseZoomRatio(0.1f);
@@ -255,9 +264,6 @@ void LevelAct10::handleKey(InputManager& input) {
     }
 
     if (input.getButtonDown(SDLK_e)) {
-        if (stair->getIsClickable()) {
-            fb->FadeToBlack();
-            end = true;
-        }
+        
     }
 }

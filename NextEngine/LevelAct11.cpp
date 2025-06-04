@@ -37,39 +37,44 @@ void LevelAct11::levelInit() {
     door->getTransform().setScale(1.2f, 2.0f);
     objectsList.emplace_back(door);
 
-    TexturedObject* window = new TexturedObject();
-    window->getTransform().setPosition(0.0f, 0.0f);
-    window->setTexture("../Resource/Texture/Act10/IPTH_P03_Window.png");
-    window->getTransform().setScale(scaleX, scaleY);
-    objectsList.emplace_back(window);
+    TexturedObject* desk = new TexturedObject();
+    desk->getTransform().setPosition(0.0f, 0.0f);
+    desk->setTexture("../Resource/Texture/Act11/BS_P02_Desk.png");
+    desk->getTransform().setScale(scaleX, scaleY);
+    objectsList.emplace_back(desk);
 
     TexturedObject* shelf = new TexturedObject();
     shelf->getTransform().setPosition(0.0f, 0.0f);
-    shelf->setTexture("../Resource/Texture/Act10/IPTH_P02_Shelfs.png");
+    shelf->setTexture("../Resource/Texture/Act11/BS_P04_Shelf.png");
     shelf->getTransform().setScale(scaleX, scaleY);
     objectsList.emplace_back(shelf);
 
     TexturedObject* bed = new TexturedObject();
     bed->getTransform().setPosition(0.0f, 0.0f);
-    bed->setTexture("../Resource/Texture/Act3/MCR_P04_Mid2.png");
-    bed->getTransform().setScale((640.0f / pictureHeight) * 9.0f, scaleY);
+    bed->setTexture("../Resource/Texture/Act11/BS_P01_Bed.png");
+    bed->getTransform().setScale(scaleX, scaleY);
     objectsList.emplace_back(bed);
 
     TexturedObject* board = new TexturedObject();
-    board->getTransform().setPosition(-1.0f, -0.5f);
-    board->setTexture("../Resource/Texture/Act10/boardAct10.png");
-    board->getTransform().setScale(2.5f, 1.41f);
+    board->getTransform().setPosition(0.0f, 0.0f);
+    board->setTexture("../Resource/Texture/Act11/BS_P05_Board.png");
+    board->getTransform().setScale(scaleX, scaleY);
     objectsList.emplace_back(board);
+
+    ishelf = new InteractableObject("../Resource/Texture/StoryStuff/ShelfAct11.txt", player, "../Resource/Texture/Act11/shelfAct11.png", objectsList);
+    ishelf->getTransform().setScale(1.13f, 1.54f);
+    ishelf->getTransform().setPosition(-5.0f, -1.65f);
+    objectsList.emplace_back(ishelf);
+
+    medicine = new InteractableObject("../Resource/Texture/StoryStuff/medicineAct11.txt", player, "../Resource/Texture/Act11/medicineAct11.png", objectsList);
+    medicine->getTransform().setScale(1.1f, 0.52f);
+    medicine->getTransform().setPosition(2.9f, -1.34f);
+    objectsList.emplace_back(medicine);
 
     Level::importTransformData(objectsList, "act10", false);
 
     player->getTransform().setPosition(glm::vec3(-7.3f, -1.6f, 0.0f));
     objectsList.emplace_back(player);
-
-    //stair = new InteractableObject("../Resource/Texture/StoryStuff/ComputerAct7.txt", player, "../Resource/Texture/Act10/stairsAct10.png", objectsList);
-    //stair->getTransform().setScale(3.0f, 1.06f);
-    //stair->getTransform().setPosition(7.8f, -1.95f);
-    //objectsList.emplace_back(stair);
 
     TexturedObject* backGround = new TexturedObject();
     backGround->getTransform().setPosition(0.0f, 0.0f);
@@ -79,10 +84,8 @@ void LevelAct11::levelInit() {
 
     isStop = false;
 
-    //ParallaxObject* Fog = new ParallaxObject(0.0f, -0.1f, 100.0f, false, player, true, pictureWidth, pictureHeight);
-    //Fog->setTexture("../Resource/Texture/OutskirtParallax/OSKT_P01_Fog.png");
-    //Fog->setRenderOpacity(0.25f);
-    //objectsList.emplace_back(Fog);
+    p1 = new ProtagThoughts("../Resource/Texture/StoryStuff/protagAct11.txt", player);
+    objectsList.emplace_back(p1);
 
     GameEngine::getInstance()->getRenderer()->getCamera()->setTarget(player);
     GameEngine::getInstance()->getRenderer()->setToggleViewport(false);
@@ -98,10 +101,6 @@ void LevelAct11::levelInit() {
     startObjects(objectsList);
 
     player->getDamageCollider()->setFollowOffset(glm::vec3(1.0f, -0.2f, 0));
-
-    //ParallaxObject* fog = new ParallaxObject(0.0f, -0.1f, 60.0f, false, player, true, pictureWidth, pictureHeight);
-    //fog->setTexture("../Resource/Texture/OutskirtParallax/OSKT_P01_Fog.png");
-    //objectsList.emplace_back(fog);
 
     //UIobject->initUI(objectsList);
 
@@ -127,6 +126,11 @@ void LevelAct11::levelUpdate() {
     GameEngine::getInstance()->getRenderer()->updateCamera();
     if (end) {
         timefade -= GameEngine::getInstance()->getTime()->getDeltaTime();
+        if (timefade < 6.1f && !once) {
+            fb->FadeToBlack();
+            // play walking down stair sound
+            once = true;
+        }
         if (timefade < 0.0f) {
             loadNextLevel();
         }
@@ -244,9 +248,17 @@ void LevelAct11::handleKey(InputManager& input) {
     }
 
     if (input.getButtonDown(SDLK_e)) {
-        //if (stair->getIsClickable()) {
-        //    fb->FadeToBlack();
-        //    end = true;
-        //}
+        if (ishelf->getIsClickable()) {
+            ishelf->setDescriptionActive(!ishelf->getDescriptionActive());
+            if (ishelf->isClickedOnce && !ishelf->getDescriptionActive()) {
+                p1->activateDialogue();
+            }
+        }
+        if (medicine->getIsClickable()) {
+            medicine->setDescriptionActive(!medicine->getDescriptionActive());
+        }
+        if (medicine->isClickedOnce && ishelf->isClickedOnce) {
+            end = true;
+        }
     }
 }
