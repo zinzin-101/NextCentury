@@ -33,6 +33,8 @@ void LevelCredit::levelInit() {
     creditText->getTransform().setScale(glm::vec3(1.0f*12.0f, (1348.0f / 640.0f) * 12.0f, 0.0f));
     creditText->getTransform().setPosition(glm::vec3(0.0f, -17.0f, 0.0f));
 
+    GameEngine::getInstance()->getRenderer()->getCamera()->setPosition(glm::vec3(0.0f,0.0f,0.0f));
+
     objectsList.push_back(creditText);
 }
 
