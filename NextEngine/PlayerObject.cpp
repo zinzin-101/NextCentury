@@ -35,7 +35,7 @@ PlayerObject::PlayerObject() : LivingEntity("Player", PlayerStat::MAX_HEALTH) {
     getAnimationComponent()->addState("GunCharge1", 12, 0, 6, true, PlayerStat::GUN_CHARGE_ANIMATION_TIME_PER_FRAME);
     getAnimationComponent()->addState("GunCharge2", 13, 0, 6, true, PlayerStat::GUN_CHARGE_ANIMATION_TIME_PER_FRAME);
     getAnimationComponent()->addState("GunCharge3", 14, 0, 6, true, PlayerStat::GUN_CHARGE_ANIMATION_TIME_PER_FRAME);
-    getAnimationComponent()->addState("GunShoot", 11, 0, 3, false, PlayerStat::GUN_SHOT_ANIMATION_TIME_PER_FRAME);
+    getAnimationComponent()->addState("GunShoot", 11, 1, 3, false, PlayerStat::GUN_SHOT_ANIMATION_TIME_PER_FRAME);
 
     getAnimationComponent()->addState("Healing", 16, 0, 7, false);
 
@@ -104,8 +104,9 @@ PlayerObject::PlayerObject() : LivingEntity("Player", PlayerStat::MAX_HEALTH) {
     staminaRechargeDelayTimer = 0.0f;
     staminaRechargeTimer = 0.0f;
 
+    setMaxNumOfPotion(PlayerStat::MAX_HEALTH_POTION);
 
-    resetNumOfPotion();
+    resetNumOfBullet();
     resetHealing();
     healFrame = 4;
 
@@ -253,14 +254,14 @@ void PlayerObject::updateStat() {
         }
     }
 
-    if (potionRechargeTimer > 0.0f && currentNumOfPotion < PlayerStat::MAX_HEALTH_POTION) {
-        potionRechargeTimer -= dt;
-    }
+    //if (potionRechargeTimer > 0.0f && currentNumOfPotion < PlayerStat::MAX_HEALTH_POTION) {
+    //    potionRechargeTimer -= dt;
+    //}
 
-    if (currentNumOfPotion < PlayerStat::MAX_HEALTH_POTION && potionRechargeTimer <= 0.0f) {
-        potionRechargeTimer = PlayerStat::POTION_RECHARGE_TIMER;
-        currentNumOfPotion++;
-    }
+    //if (currentNumOfPotion < PlayerStat::MAX_HEALTH_POTION && potionRechargeTimer <= 0.0f) {
+    //    potionRechargeTimer = PlayerStat::POTION_RECHARGE_TIMER;
+    //    currentNumOfPotion++;
+    //}
     //cout << "potion left: " << currentNumOfPotion << endl;
 }
 
@@ -1009,7 +1010,7 @@ void PlayerObject::resetStaminaRechargeDelay() {
     staminaRechargeDelayTimer = PlayerStat::STAMINA_RECHARGE_DELAY;
 }
 
-void PlayerObject::resetNumOfPotion() {
+void PlayerObject::resetNumOfBullet() {
     currentNumOfBullets = PlayerStat::MAX_BULLET;
     bulletRechargeTimer = PlayerStat::BULLET_RECHARGE_TIMER;
 }
@@ -1021,6 +1022,11 @@ void PlayerObject::resetHealing() {
 
 void PlayerObject::setWieldWeaponSprite(bool value) {
     value ? this->getAnimationComponent()->setTexture(normalSprite) : this->getAnimationComponent()->setTexture(noWeaponSprite);
+}
+
+void PlayerObject::setMaxNumOfPotion(int n) {
+    this->maxNumOfPotion = n;
+    this->currentNumOfPotion = this->maxNumOfPotion;
 }
 
 int PlayerObject::getStamina() const {

@@ -190,6 +190,7 @@ class PlayerObject : public LivingEntity {
         int currentNumOfBullets;
         float bulletRechargeTimer;
 
+        int maxNumOfPotion;
         int currentNumOfPotion;
         float potionRechargeTimer;
         bool isHealing;
@@ -226,7 +227,7 @@ class PlayerObject : public LivingEntity {
         void dodge(float xDirection);
 
         void useHealthPotion();
-        void resetNumOfPotion();
+        void resetNumOfBullet();
 
         bool getCanMove() const;
         bool getIsParrying() const;
@@ -238,6 +239,7 @@ class PlayerObject : public LivingEntity {
         void flinch(float duration);
 
         void setWieldWeaponSprite(bool value);
+        void setMaxNumOfPotion(int n);
 
         int getStamina() const;
         int getCurrentNumOfBullet() const;
