@@ -45,6 +45,8 @@ private:
     UISetting* settingsUI = nullptr;
     bool isShowingSettings = false;
 
+
+
     glm::vec3 healthBarBasePos = { -5.5f, -4.0f, 0.0f };
     glm::vec3 healthBarBaseScale = { 2.0f,  (2.0f / 14.0f), 0.0f };
 
@@ -90,6 +92,7 @@ private:
         pausemenubuttons[0]->setFocused(true);
         pausemenubuttons[1]->setFocused(false);
         pausemenubuttons[2]->setFocused(false);
+        pausemenubuttons[3]->setFocused(false);
     }
 public:
     void initUI(std::list<DrawableObject*>& objectsList);

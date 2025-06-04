@@ -1001,6 +1001,7 @@ DamageCollider<EnemyObject>* PlayerObject::getDamageCollider() const {
 }
 
 void PlayerObject::signalSuccessfulParry() {
+	GameEngine::getInstance()->playSoundEffect("Enemy_Getting Parry.wav");
     successfulParry = true;
     stamina += PlayerStat::STAMINA_GAIN_FROM_PARRY;
     if (stamina > PlayerStat::MAX_STAMINA) {

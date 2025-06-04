@@ -1,9 +1,10 @@
 ﻿#include "UI.h"
 #include <iostream>
 #include <SDL.h>
+#include "Level.h"
 
 UI::UI() {
-    buttons.resize(4);
+    buttons.resize(5);
     selectedButtonIndex = 0;
 }
 
@@ -37,54 +38,63 @@ void UI::initUI(std::list<DrawableObject*>& objectsList) {
     objectsList.push_back(arrow);
     arrow->setRenderOrder(22);
 
-    TexturedObject* confirm = new TexturedObject("confirm");
-    confirm->setTexture("../Resource/Texture/UI/MainMenu/AConfirm_BBack.png");
-    confirm->getTransform().setScale(glm::vec3(2.295652173913043, 0.3f, 0.0f));
-    confirm->getTransform().setPosition(glm::vec3(0.0f, -4.0f, 0.0f));
-    objectsList.push_back(confirm);
-    confirm->setRenderOrder(23);
-
-    buttons[0] = new Button("PlayGameButton", "");
-    buttons[0]->setTexture("../Resource/Texture/UI/MainMenu/PlayGame.png");
-    buttons[0]->getTransform().setScale(glm::vec3(1.5f, 0.5f, 0.0f));
-    buttons[0]->getTransform().setPosition(glm::vec3(-5.0f, 1.0f, 0.0f));
+    buttons[0] = new Button("ContinueButton", "");
+    buttons[0]->setTexture("../Resource/Texture/UI/MainMenu/ContinueButton.png");
+    buttons[0]->getTransform().setScale(glm::vec3(1.5f, 0.27f, 0.0f));
+    buttons[0]->getTransform().setPosition(glm::vec3(-5.0f, 1.5f, 0.0f));
     buttons[0]->setOnClickCallback([]() {
+        GameState last = Level::getLastGameStateData();
+        if (last != GameState::GS_NONE) {
+            GameEngine::getInstance()->getStateController()->gameStateNext = last;
+        }
+        else {
+            std::cout << "No saved game found; cannot continue.\n";
+        }
+        });
+    buttons[0]->setRenderOrder(27);
+    objectsList.push_back(buttons[0]);
+
+    buttons[1] = new Button("PlayGameButton", "");
+    buttons[1]->setTexture("../Resource/Texture/UI/MainMenu/PlayGame.png");
+    buttons[1]->getTransform().setScale(glm::vec3(1.5f, 0.5f, 0.0f));
+    buttons[1]->getTransform().setPosition(glm::vec3(-5.0f, 0.5f, 0.0f));
+    buttons[1]->setOnClickCallback([]() {
 		GameEngine::getInstance()->getStateController()->gameStateNext = GameState::GS_ACT1;
         });
-    buttons[0]->setRenderOrder(24);
-    objectsList.push_back(buttons[0]);
+    buttons[1]->setRenderOrder(24);
+    objectsList.push_back(buttons[1]);
     
 
-    buttons[1] = new Button("SettingButton", ""); 
-    buttons[1]->setTexture("../Resource/Texture/UI/MainMenu/Setting.png");
-    buttons[1]->getTransform().setScale(glm::vec3(1.5f, 0.5f, 0.0f));
-    buttons[1]->getTransform().setPosition(glm::vec3(-5.0f, 0.0f, 0.0f));
-    buttons[1]->setOnClickCallback([this]() {
+    buttons[2] = new Button("SettingButton", ""); 
+    buttons[2]->setTexture("../Resource/Texture/UI/MainMenu/Setting.png");
+    buttons[2]->getTransform().setScale(glm::vec3(1.5f, 0.5f, 0.0f));
+    buttons[2]->getTransform().setPosition(glm::vec3(-5.0f, -0.5f, 0.0f));
+    buttons[2]->setOnClickCallback([this]() {
         this->inSettings = true;
         std::cout << "Switched to Settings Screen\n";
         });
-	buttons[1]->setRenderOrder(24);
-    objectsList.push_back(buttons[1]);
-
-    buttons[2] = new Button("CreditsButton", "");
-    buttons[2]->setTexture("../Resource/Texture/UI/MainMenu/Credits.png");
-    buttons[2]->getTransform().setScale(glm::vec3(1.5f, 0.5f, 0.0f));
-    buttons[2]->getTransform().setPosition(glm::vec3(-5.0f, -1.0f, 0.0f));
-    buttons[2]->setOnClickCallback([]() {
-        GameEngine::getInstance()->getStateController()->gameStateNext = GameState::GS_CREDIT;
-        });
-    buttons[2]->setRenderOrder(25);
+	buttons[2]->setRenderOrder(24);
     objectsList.push_back(buttons[2]);
 
-    buttons[3] = new Button("QuitGameButton", "");
-    buttons[3]->setTexture("../Resource/Texture/UI/MainMenu/QuitGame.png");
+    buttons[3] = new Button("CreditsButton", "");
+    buttons[3]->setTexture("../Resource/Texture/UI/MainMenu/Credits.png");
     buttons[3]->getTransform().setScale(glm::vec3(1.5f, 0.5f, 0.0f));
-    buttons[3]->getTransform().setPosition(glm::vec3(-5.0f, -2.0f, 0.0f));
+    buttons[3]->getTransform().setPosition(glm::vec3(-5.0f, -1.5f, 0.0f));
     buttons[3]->setOnClickCallback([]() {
-        GameEngine::getInstance()->getStateController()->gameStateNext = GameState::GS_QUIT;
+        GameEngine::getInstance()->getStateController()->gameStateNext = GameState::GS_CREDIT;
         });
-    buttons[3]->setRenderOrder(26);
+    buttons[3]->setRenderOrder(25);
     objectsList.push_back(buttons[3]);
+
+    buttons[4] = new Button("QuitGameButton", "");
+    buttons[4]->setTexture("../Resource/Texture/UI/MainMenu/QuitGame.png");
+    buttons[4]->getTransform().setScale(glm::vec3(1.5f, 0.5f, 0.0f));
+    buttons[4]->getTransform().setPosition(glm::vec3(-5.0f, -2.5f, 0.0f));
+    buttons[4]->setOnClickCallback([]() {
+		GameEngine::getInstance()->getStateController()->gameStateNext = GameState::GS_QUIT;
+        });
+    buttons[4]->setRenderOrder(26);
+    objectsList.push_back(buttons[4]);
     
     
     
@@ -203,7 +213,6 @@ void UI::handleInput(char key) {
         selectedButtonIndex = (selectedButtonIndex - 1 + buttons.size()) % buttons.size();
         buttons[selectedButtonIndex]->setFocused(true);
         updateArrowPosition();
-        
     }
     else if (key == 'd') {
         GameEngine::getInstance()->getAudioEngine().playSoundEffectByName("hover.wav");

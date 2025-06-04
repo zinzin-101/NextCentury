@@ -291,7 +291,7 @@ void IngameUI::updatePotionUI(PlayerObject* playerObject) {
 
 void IngameUI::initUI(std::list<DrawableObject*>& objectsList) {
     deathmenubuttons.resize(2);
-    pausemenubuttons.resize(3);
+    pausemenubuttons.resize(4);
 
     healthBar = new TexturedObject();
     healthBar->setTexture("../Resource/Texture/UI/Ingame/MC_HP_Bar.png");
@@ -387,10 +387,19 @@ void IngameUI::initUI(std::list<DrawableObject*>& objectsList) {
     settingsUI->initUI(objectsList);
     settingsUI->hideAllSettings();
 
-    pausemenubuttons[1] = new Button("SettingsButton", "../Resource/Texture/UI/MainMenu/Setting.png");
-    pausemenubuttons[1]->getTransform().setScale(glm::vec3(0.0f)); 
-    pausemenubuttons[1]->setRenderOrder(104);
-    pausemenubuttons[1]->setOnClickCallback([this]() {
+	pausemenubuttons[1] = new Button("RetryButtin", "../Resource/Texture/UI/MainMenu/Retry.png");
+	pausemenubuttons[1]->getTransform().setScale(glm::vec3(0.0f));
+	pausemenubuttons[1]->setRenderOrder(107);
+	pausemenubuttons[1]->setOnClickCallback([]() {
+		GameEngine::getInstance()->getStateController()->gameStateNext = GameState::GS_RESTART;
+		});
+	objectsList.push_back(pausemenubuttons[1]);
+
+
+    pausemenubuttons[2] = new Button("SettingsButton", "../Resource/Texture/UI/MainMenu/Setting.png");
+    pausemenubuttons[2]->getTransform().setScale(glm::vec3(0.0f)); 
+    pausemenubuttons[2]->setRenderOrder(104);
+    pausemenubuttons[2]->setOnClickCallback([this]() {
         for (auto* btn : pausemenubuttons) {
             if (btn) {
                 btn->getTransform().setScale(glm::vec3(0.0f));
@@ -403,17 +412,17 @@ void IngameUI::initUI(std::list<DrawableObject*>& objectsList) {
         isShowingSettings = true;
         settingsUI->showAllSettings();
         });
-    objectsList.push_back(pausemenubuttons[1]);
+    objectsList.push_back(pausemenubuttons[2]);
 
     
 
-    pausemenubuttons[2] = new Button("MainMenuButton", "../Resource/Texture/UI/MainMenu/MainMenu.png");
-    pausemenubuttons[2]->getTransform().setScale(glm::vec3(0.0f)); 
-    pausemenubuttons[2]->setRenderOrder(105);
-	pausemenubuttons[2]->setOnClickCallback([]() {
+    pausemenubuttons[3] = new Button("MainMenuButton", "../Resource/Texture/UI/MainMenu/MainMenu.png");
+    pausemenubuttons[3]->getTransform().setScale(glm::vec3(0.0f)); 
+    pausemenubuttons[3]->setRenderOrder(105);
+	pausemenubuttons[3]->setOnClickCallback([]() {
 		GameEngine::getInstance()->getStateController()->gameStateNext = GameState::GS_MAINMENU;
 		});
-    objectsList.push_back(pausemenubuttons[2]);
+    objectsList.push_back(pausemenubuttons[3]);
 
 	potionIcon0 = new TexturedObject("PotionIcon0");
 	potionIcon0->setTexture("../Resource/Texture/UI/Ingame/Heal0.png");
