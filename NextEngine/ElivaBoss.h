@@ -91,6 +91,7 @@ class ElivaBoss : public EnemyObject {
 		void breakShield();
 		void signalStun();
 		void signalStagger();
+		void setBlinkOrigin(float x);
 
 		bool getCanStart() const;
 		Phase getCurrentPhase() const;
@@ -139,6 +140,8 @@ class ElivaBoss : public EnemyObject {
 		bool hasSignalDeath;
 		float deathTimer;
 		bool isDyingDialoguePlaying;
+
+		glm::vec3 blinkOrigin;
 
 		void processState();
 		void (ElivaBoss::*statesHandler[15])();
