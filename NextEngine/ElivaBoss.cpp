@@ -24,6 +24,9 @@ ElivaBoss::ElivaBoss(): EnemyObject(DefaultEnemyStat::ELIVA_INFO) {
 	canStart = false;
 	hasSignalDeath = false;
 
+	deathTimer = ElivaStat::DEATH_DIALOGUE_TIMER;
+	isDyingDialoguePlaying = false;
+
 	for (int i = 0; i < 3; i++) {
 		rifleProjectiles[i] = nullptr;
 	}
@@ -618,32 +621,34 @@ void ElivaBoss::handleDead() {
 
 	//GameEngine::getInstance()->getTime()->setTimeScale(0.5f);
 
-	static float timer = ElivaStat::DEATH_DIALOGUE_TIMER;
-	static bool isDialoguePlaying = false;
-
 	Animation::State& animState = this->getAnimationComponent()->getCurrentAnimationStateRef();
 	int currentFrame = animState.currentFrame;
 
 	if (currentFrame == 0) {
-		timer = ElivaStat::DEATH_DIALOGUE_TIMER;
-		isDialoguePlaying = false;
+		deathTimer = ElivaStat::DEATH_DIALOGUE_TIMER;
+		isDyingDialoguePlaying = false;
 
 		return;
 	}
 
-	if (currentFrame == 3 + 1 && !isDialoguePlaying) {
+	if (currentFrame == 3 + 1 && !isDyingDialoguePlaying) {
 		animState.paused = true;
-		isDialoguePlaying = true;
+		isDyingDialoguePlaying = true;
+
+		if (!hasSignalDeath) {
+			hasSignalDeath = true;
+			GameEngine::getInstance()->signalToCurrentLevel();
+		}
 
 		return;
 	}
 
-	if (isDialoguePlaying) {
-		timer -= GameEngine::getInstance()->getTime()->getDeltaTime();
+	if (isDyingDialoguePlaying) {
+		deathTimer -= GameEngine::getInstance()->getTime()->getDeltaTime();
 
-		if (timer <= 0.0f) {
+		if (deathTimer <= 0.0f) {
 			animState.paused = false;
-			isDialoguePlaying = false;
+			isDyingDialoguePlaying = false;
 		}
 	}
 	
@@ -722,12 +727,7 @@ void ElivaBoss::takeDamage(int damage) {
 	LivingEntity::takeDamage(static_cast<int>(damage));
 }
 
-void ElivaBoss::onDeath(list<DrawableObject*>& objectsList) {
-	if (!hasSignalDeath) {
-		hasSignalDeath = true;
-		GameEngine::getInstance()->signalToCurrentLevel();
-	}
-}
+void ElivaBoss::onDeath(list<DrawableObject*>& objectsList) {}
 
 void ElivaBoss::signalCanStart() {
 	this->canStart = true;
