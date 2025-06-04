@@ -281,6 +281,13 @@ void UISetting::initUI(std::list<DrawableObject*>& objectsList) {
     selectedButtonIndex = 0;
     buttons[0]->setFocused(true);
     updateArrowHighlight();
+
+    arrowMasterLeft->getTransform().setRotation(-90);
+    arrowMasterRight->getTransform().setRotation(-90);
+    arrowSFXLeft->getTransform().setRotation(-90);
+    arrowSFXRight->getTransform().setRotation(-90);
+    arrowMusicLeft->getTransform().setRotation(-90);
+    arrowMusicRight->getTransform().setRotation(-90);
 }
 
 void UISetting::updateArrowHighlight() {
@@ -418,7 +425,10 @@ void UISetting::handleInput(SDL_Keycode key) {
     case SDLK_UP:
         if (currentPage == Page::AUDIO) {
             buttons[selectedButtonIndex]->setFocused(false);
-            selectedButtonIndex = (selectedButtonIndex - 1 + 6) % 6;
+            selectedButtonIndex = selectedButtonIndex - 2;
+            if (selectedButtonIndex < 0) {
+                selectedButtonIndex = 4;
+            }
             updateArrowHighlight();
         }
         break;
@@ -427,22 +437,22 @@ void UISetting::handleInput(SDL_Keycode key) {
     case SDLK_DOWN:
         if (currentPage == Page::AUDIO) {
             buttons[selectedButtonIndex]->setFocused(false);
-            selectedButtonIndex = (selectedButtonIndex + 1) % 6;
+            selectedButtonIndex = (selectedButtonIndex + 2) % 6;
             updateArrowHighlight();
         }
         break;
 
     case SDLK_a:
     case SDLK_LEFT:
-        if (currentPage == Page::AUDIO && (selectedButtonIndex % 2 == 0)) {
+        if (currentPage == Page::AUDIO) {
             adjustVolume(selectedButtonIndex);
         }
         break;
 
     case SDLK_d:
     case SDLK_RIGHT:
-        if (currentPage == Page::AUDIO && (selectedButtonIndex % 2 == 1)) {
-            adjustVolume(selectedButtonIndex);
+        if (currentPage == Page::AUDIO) {
+            adjustVolume(selectedButtonIndex + 1);
         }
         break;
 
