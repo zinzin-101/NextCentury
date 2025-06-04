@@ -198,6 +198,9 @@ class PlayerObject : public LivingEntity {
         void resetHealing();
         void handleHealing();
 
+        unsigned int noWeaponSprite;
+        unsigned int normalSprite;
+
     public:
         PlayerObject();
         ~PlayerObject();
@@ -233,6 +236,8 @@ class PlayerObject : public LivingEntity {
 
         virtual void takeDamage(int damage);
         void flinch(float duration);
+
+        void setWieldWeaponSprite(bool value);
 
         int getStamina() const;
         int getCurrentNumOfBullet() const;

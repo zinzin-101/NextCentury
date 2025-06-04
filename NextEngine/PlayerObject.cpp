@@ -10,8 +10,10 @@
 PlayerObject::PlayerObject() : LivingEntity("Player", PlayerStat::MAX_HEALTH) {
     //this->damage = playerInfo.damage;
 
-    setTexture("../Resource/Texture/MC.png");
+    noWeaponSprite = setTexture("../Resource/Texture/MC.png");
+    normalSprite = setTexture("../Resource/Texture/MC.png");
     initAnimation(18, 9);
+    this->getAnimationComponent()->setTexture(normalSprite);
 
     getAnimationComponent()->addState("Idle", 0, 0, 6, true);
     getAnimationComponent()->addState("Walking", 1, 0, 6, true);
@@ -1015,6 +1017,10 @@ void PlayerObject::resetNumOfPotion() {
 void PlayerObject::resetHealing() {
     isHealing = false;
     healed = false;
+}
+
+void PlayerObject::setWieldWeaponSprite(bool value) {
+    value ? this->getAnimationComponent()->setTexture(normalSprite) : this->getAnimationComponent()->setTexture(noWeaponSprite);
 }
 
 int PlayerObject::getStamina() const {
