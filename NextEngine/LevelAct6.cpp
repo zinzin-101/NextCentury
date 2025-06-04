@@ -17,6 +17,7 @@ void LevelAct6::levelLoad() {
 }
 
 void LevelAct6::levelInit() {
+    GameEngine::getInstance()->playMusic("BGM_Fight.wav", 1);
     UIobject = new IngameUI();
     player = new PlayerObject();
     GameEngine::getInstance()->getRenderer()->setClearColor(0.1f, 0.1f, 0.1f);
@@ -146,7 +147,7 @@ void LevelAct6::levelInit() {
     player->getDamageCollider()->setFollowOffset(glm::vec3(1.0f, -0.2f, 0));
     player->setMaxNumOfPotion(1);
 
-    UIobject->initUI(objectsList);
+    
 
     camTarget = new SimpleObject();
     camTarget->getTransform().setPosition(glm::vec3(34.0f, 0.0f, 0.0f));
@@ -161,6 +162,8 @@ void LevelAct6::levelInit() {
     fb = new FadeBlack(1.0f);
     objectsList.emplace_back(fb);
     fb->FadeToTransparent();
+
+    UIobject->initUI(objectsList);
 
     GameEngine::getInstance()->getRenderer()->getCamera()->setPosition(glm::vec3(0.0f, 0.0f, 0.0f));
 
@@ -298,6 +301,8 @@ void LevelAct6::handleKey(InputManager& input) {
         if (input.getButton(SDLK_d) && !input.getButton(SDLK_a)) player->move(glm::vec2(1, 0));
         if (input.getButtonDown(SDLK_j)) player->parryAttack();
         if (input.getMouseButtonDown(SDL_BUTTON_RIGHT)) player->parryAttack();
+        if (input.getButtonDown(SDLK_b)) player->takeDamage(10);
+		if (input.getButtonDown(SDLK_r)) player->useHealthPotion();
 
         /// Use processed key here ///
         if (keyHeldDuration[SDLK_k] < PlayerStat::DURATION_TO_START_HEAVY_ATTACK) {

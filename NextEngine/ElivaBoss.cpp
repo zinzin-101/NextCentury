@@ -234,6 +234,7 @@ void ElivaBoss::updateBehavior(list<DrawableObject*>& objectsList) {
 
 void ElivaBoss::handleCooldown() {
 	this->getAnimationComponent()->setState("Idle");
+	GameEngine::getInstance()->playSoundEffect("Boss_Idle.wav");
 
 	if (cooldownTimer <= 0.0f) {
 		cooldownTimer = ElivaStat::COOLDOWN_DURATION;
@@ -252,6 +253,7 @@ void ElivaBoss::handleBlink() {
 	if (currentFrame == 3 + 1) {
 		canBlink = true;
 		this->setCanTakeDamage(false);
+		GameEngine::getInstance()->playSoundEffect("Boss_BlinkOut.wav");
 		return;
 	}
 
@@ -280,6 +282,7 @@ void ElivaBoss::handleBlink() {
 	if (currentFrame == 8 + 1) {
 		this->setCanTakeDamage(true);
 		canBlink = false;
+		GameEngine::getInstance()->playSoundEffect("Boss_BlinkIn.wav");
 		return;
 	}
 }
@@ -290,6 +293,7 @@ void ElivaBoss::handleFuryBlink() {
 
 	int currentFrame = animState.currentFrame;
 	if (currentFrame == 3 + 1) {
+		GameEngine::getInstance()->playSoundEffect("Boss_BlinkOut.wav");
 		canBlink = true;
 		this->setCanTakeDamage(false);
 		return;
@@ -319,6 +323,7 @@ void ElivaBoss::handleFuryBlink() {
 
 	if (currentFrame == 8 + 1) {
 		this->setCanTakeDamage(true);
+		GameEngine::getInstance()->playSoundEffect("Boss_BlinkIn.wav");
 		canBlink = false;
 		return;
 	}
@@ -326,6 +331,7 @@ void ElivaBoss::handleFuryBlink() {
 
 void ElivaBoss::handleCloseBlink() {
 	this->getAnimationComponent()->setState("FuryBlinking");
+	GameEngine::getInstance()->playSoundEffect("Boss_BlinkIn.wav");
 	const Animation::State& animState = this->getAnimationComponent()->getCurrentAnimationStateRef();
 
 	int currentFrame = animState.currentFrame;
@@ -360,6 +366,7 @@ void ElivaBoss::handleCloseBlink() {
 	if (currentFrame == 8 + 1) {
 		this->setCanTakeDamage(true);
 		canBlink = false;
+		GameEngine::getInstance()->playSoundEffect("Boss_Slash.wav");
 		return;
 	}
 }
@@ -368,7 +375,9 @@ void ElivaBoss::handleRifleShot() {
 	const Animation::State& animState = this->getAnimationComponent()->getCurrentAnimationStateRef();
 
 	if (animState.name != "RifleShot") {
+
 		this->getAnimationComponent()->setState("RifleShot");
+		GameEngine::getInstance()->playSoundEffect("Boss_RifleCharge.wav");
 		glm::vec3 playerPos = targetEntity->getTransform().getPosition();
 		glm::vec3 elivaPos = this->getTransform().getPosition();
 		float offsetX = playerPos.x - elivaPos.x;
@@ -383,7 +392,7 @@ void ElivaBoss::handleRifleShot() {
 
 	if (currentFrame == 6 + 1 && !hasRifleBeenFired) {
 		hasRifleBeenFired = true;
-
+		GameEngine::getInstance()->playSoundEffect("Boss_RifleShoot.wav");
 		glm::vec3 playerPos = targetEntity->getTransform().getPosition();
 		glm::vec3 elivaPos = this->getTransform().getPosition();
 		float offsetX = playerPos.x - elivaPos.x;
@@ -393,7 +402,9 @@ void ElivaBoss::handleRifleShot() {
 		spawnPos.x += (direction * 0.5f); // horizontal offset, tweak later
 		spawnPos.y -= 0.5f; // vertical offset, tweak later
 		rifleProjectiles[++currentProjectileIndex % 3]->activate(spawnPos, bulletVelocity, ElivaStat::RIFLE_SHOT_LIFESPAN);
+
 		return;
+
 	}
 }
 
@@ -402,6 +413,7 @@ void ElivaBoss::handleBayonetSlash() {
 
 	if (animState.name != "BayonetSlash") {
 		this->getAnimationComponent()->setState("BayonetSlash");
+		GameEngine::getInstance()->playSoundEffect("Boss_Slash.wav");
 		glm::vec3 playerPos = targetEntity->getTransform().getPosition();
 		glm::vec3 elivaPos = this->getTransform().getPosition();
 		float offsetX = playerPos.x - elivaPos.x;
@@ -437,6 +449,7 @@ void ElivaBoss::handleBayonetSlash() {
 
 void ElivaBoss::handlePoisonCloud() {
 	this->getAnimationComponent()->setState("PoisonCloud");
+	
 
 	const Animation::State& animState = this->getAnimationComponent()->getCurrentAnimationStateRef();
 	int currentFrame = animState.currentFrame;
@@ -444,6 +457,8 @@ void ElivaBoss::handlePoisonCloud() {
 	if (currentFrame == 9 + 1) {
 		poisonCollider->setActive(true);
 		canUsePoisonCloud = false;
+		GameEngine::getInstance()->playSoundEffect("Boss_Posion.wav");
+
 		return;
 	}
 
@@ -457,6 +472,7 @@ void ElivaBoss::handleRapidBurst() {
 	const Animation::State& animState = this->getAnimationComponent()->getCurrentAnimationStateRef();
 
 	if (animState.name != "RapidBurst") {
+		
 		this->getAnimationComponent()->setState("RapidBurst");
 		glm::vec3 playerPos = targetEntity->getTransform().getPosition();
 		glm::vec3 elivaPos = this->getTransform().getPosition();
@@ -470,7 +486,7 @@ void ElivaBoss::handleRapidBurst() {
 
 	if (currentFrame == 6 + 1 && !hasRifleBeenFired) {
 		hasRifleBeenFired = true;
-
+		GameEngine::getInstance()->playSoundEffect("Boss_Burst.wav");
 		glm::vec3 playerPos = targetEntity->getTransform().getPosition();
 		glm::vec3 elivaPos = this->getTransform().getPosition();
 		float offsetX = playerPos.x - elivaPos.x;
@@ -527,7 +543,7 @@ void ElivaBoss::handleRapidBurst() {
 
 void ElivaBoss::handleSerumInject() {
 	this->getAnimationComponent()->setState("SerumInject");
-
+	GameEngine::getInstance()->playSoundEffect("Boss_SerumInject.wav");
 	const Animation::State& animState = this->getAnimationComponent()->getCurrentAnimationStateRef();
 	int currentFrame = animState.currentFrame;
 
@@ -555,12 +571,13 @@ void ElivaBoss::handleFury() {
 	std::cout << "enter fury" << std::endl;
 	isFuryUsed = true;
 	breakShield();
+	GameEngine::getInstance()->playSoundEffect("Boss_BlinkIn.wav");
 	currentPhase = Phase::Third;
 }
 
 void ElivaBoss::handleStunned() {
 	this->getAnimationComponent()->setState("Parried");
-
+	GameEngine::getInstance()->playSoundEffect("Boss_Idle.wav");
 	std::cout << "boss stunned" << std::endl;
 
 	if (stunnedTimer <= 0.0f) {
@@ -573,7 +590,7 @@ void ElivaBoss::handleStunned() {
 
 void ElivaBoss::handleFuryBayonetSlash() {
 	const Animation::State& animState = this->getAnimationComponent()->getCurrentAnimationStateRef();
-
+	GameEngine::getInstance()->playSoundEffect("Boss_Slash.wav");
 	if (animState.name != "FuryBayonetSlash") {
 		this->getAnimationComponent()->setState("FuryBayonetSlash");
 		glm::vec3 playerPos = targetEntity->getTransform().getPosition();
@@ -608,6 +625,7 @@ void ElivaBoss::handleFuryBayonetSlash() {
 
 void ElivaBoss::handleFuryCooldown(){
 	this->getAnimationComponent()->setState("Idle");
+	GameEngine::getInstance()->playSoundEffect("Boss_Idle.wav");
 
 	if (cooldownTimer <= 0.0f) {
 		cooldownTimer = ElivaStat::FURY_COOLDOWN_DURATION;
@@ -621,15 +639,12 @@ void ElivaBoss::handleFuryCooldown(){
 void ElivaBoss::handleDead() {
 	this->getAnimationComponent()->setState("Dead");
 
-	//GameEngine::getInstance()->getTime()->setTimeScale(0.5f);
-
 	Animation::State& animState = this->getAnimationComponent()->getCurrentAnimationStateRef();
 	int currentFrame = animState.currentFrame;
 
 	if (currentFrame == 0) {
 		deathTimer = ElivaStat::DEATH_DIALOGUE_TIMER;
 		isDyingDialoguePlaying = false;
-
 		return;
 	}
 
@@ -641,22 +656,24 @@ void ElivaBoss::handleDead() {
 			hasSignalDeath = true;
 			GameEngine::getInstance()->signalToCurrentLevel();
 		}
-
 		return;
 	}
 
 	if (isDyingDialoguePlaying) {
 		deathTimer -= GameEngine::getInstance()->getTime()->getDeltaTime();
-
 		if (deathTimer <= 0.0f) {
 			animState.paused = false;
 			isDyingDialoguePlaying = false;
 		}
 	}
-	
+
 	if (!animState.isPlaying) {
 		this->setHealth(0);
-		//GameEngine::getInstance()->getTime()->setTimeScale(1.0f);
+
+		if (!deathSoundPlayed) {
+			deathSoundPlayed = true;
+			GameEngine::getInstance()->playSoundEffect("Boss_Died.wav");
+		}
 	}
 }
 

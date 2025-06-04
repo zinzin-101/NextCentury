@@ -17,6 +17,7 @@ void LevelAct13::levelLoad() {
 }
 
 void LevelAct13::levelInit() {
+    GameEngine::getInstance()->playMusic("BGM_Act2.wav", 1);
     UIobject = new IngameUI();
     player = new PlayerObject();
     GameEngine::getInstance()->getRenderer()->setClearColor(0.1f, 0.1f, 0.1f);

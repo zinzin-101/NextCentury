@@ -143,6 +143,8 @@ class ElivaBoss : public EnemyObject {
 
 		glm::vec3 blinkOrigin;
 
+		bool deathSoundPlayed = false;
+
 		void processState();
 		void (ElivaBoss::*statesHandler[15])();
 
