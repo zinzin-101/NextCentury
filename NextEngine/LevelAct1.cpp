@@ -18,7 +18,7 @@ void LevelAct1::levelLoad() {
 void LevelAct1::levelInit() {
     UIobject = new IngameUI();
     GameEngine::getInstance()->getRenderer()->setClearColor(0.1f, 0.1f, 0.1f);
-
+    player = new PlayerObject();
     float pictureWidth = 1920.0f;
     float pictureHeight = 360.0f;
 
@@ -58,7 +58,7 @@ void LevelAct1::levelInit() {
     ground->setTexture("../Resource/Texture/Act1/City_P11_Ground.png");
     objectsList.emplace_back(ground);
 
-    player = new PlayerObject();
+    player->setWieldWeaponSprite(false);
 
     it = new InteractableObject("../Resource/Texture/StoryStuff/NeonBoardDescription.txt", player, "../Resource/Texture/StoryStuff/BoardNeon.png", objectsList);
     it->getTransform().setPosition(glm::vec3(25.0f, -0.85f, 0.0f));

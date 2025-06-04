@@ -42,6 +42,7 @@ Dialogue* ProtagThoughts::getDialogueObject() {
 }
 void ProtagThoughts::activateDialogue() { // can only be active once
 	isActiveDialogue = true;
+	cout << fontSize << endl;
 	if (!lifeTimeEachSentence.empty()) {
 		dialogueText->isDialogueActive = true;
 	}

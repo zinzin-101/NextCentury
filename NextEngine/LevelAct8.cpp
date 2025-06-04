@@ -57,7 +57,7 @@ void LevelAct8::levelInit() {
     objectsList.emplace_back(shelf);
     shelf->setActive(false);
 
-    p1 = new ProtagThoughts("../Resource/Texture/StoryStuff/protagAct8.txt", player);
+    p1 = new ProtagThoughts("../Resource/Texture/StoryStuff/protagAct8.txt", player, 24);
     objectsList.emplace_back(p1);
 
     player->getTransform().setPosition(glm::vec3(-8.0f, 0.0f, 0.0f));
@@ -90,6 +90,8 @@ void LevelAct8::levelInit() {
     combatBlock->getTransform().setPosition(7.4f, 0.0f);
     combatBlock->getTransform().setScale(1.0f, 10.0f);
     objectsList.emplace_back(combatBlock);
+
+    player->setMaxNumOfPotion(2);
 
     repeat = new ProtagThoughts("../Resource/Texture/StoryStuff/ProtagThoughtsAct3/repeat.txt", player);
     objectsList.emplace_back(repeat);

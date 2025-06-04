@@ -104,7 +104,9 @@ void LevelAct14::levelInit() {
 
     isStop = false;
 
-    //UIobject->initUI(objectsList);
+    UIobject->initUI(objectsList);
+    UIobject->setDeathMenuDeactivate(true);
+    player->setMaxNumOfPotion(3);
 
     GameEngine::getInstance()->getRenderer()->getCamera()->setPosition(glm::vec3(3.8f, 0.0f, 0.0f));
 
@@ -143,7 +145,7 @@ void LevelAct14::levelUpdate() {
             loadNextLevel();
         }
     }
-    //UIobject->updateUI(player);
+    UIobject->updateUI(player);
 }
 
 void LevelAct14::levelDraw() {

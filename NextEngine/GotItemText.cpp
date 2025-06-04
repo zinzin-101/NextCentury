@@ -51,3 +51,11 @@ void GotItemText::setAppearPos(float x, float y) {
 	appearPosX = x;
 	appearPosY = y;
 }
+
+void GotItemText::setAppearTime(float t) {
+	appearTime = t;
+}
+
+bool GotItemText::getIsReturning() {
+	return isReturning;
+}

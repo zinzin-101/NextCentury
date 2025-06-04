@@ -26,6 +26,8 @@ void LevelAct4::levelInit() {
     float scaleX = (pictureWidth / pictureHeight) * 9.0f;
     float scaleY = 9.0f;
 
+    player->setMaxNumOfPotion(1);
+
 	TexturedObject* backGround1 = new TexturedObject();
     backGround1->setTexture("../Resource/Texture/Act2/RSDT_P01_Background01.png");
     backGround1->getTransform().setPosition(0.0f, 0.0f);

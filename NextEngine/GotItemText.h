@@ -14,4 +14,6 @@ public:
 	void update(list<DrawableObject*>& objectsList);
 	void activateAppear();
 	void setAppearPos(float x, float y);
+	void setAppearTime(float t);
+	bool getIsReturning();
 };

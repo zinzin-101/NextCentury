@@ -93,6 +93,8 @@ void LevelAct10::levelInit() {
 
     startObjects(objectsList);
 
+    player->setMaxNumOfPotion(2);
+
     player->getDamageCollider()->setFollowOffset(glm::vec3(1.0f, -0.2f, 0));
 
     //ParallaxObject* fog = new ParallaxObject(0.0f, -0.1f, 60.0f, false, player, true, pictureWidth, pictureHeight);

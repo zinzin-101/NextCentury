@@ -71,6 +71,8 @@ void LevelAct11::levelInit() {
     medicine->getTransform().setPosition(2.9f, -1.34f);
     objectsList.emplace_back(medicine);
 
+    player->setMaxNumOfPotion(2);
+
     Level::importTransformData(objectsList, "act10", false);
 
     player->getTransform().setPosition(glm::vec3(-7.3f, -1.6f, 0.0f));
@@ -84,7 +86,7 @@ void LevelAct11::levelInit() {
 
     isStop = false;
 
-    p1 = new ProtagThoughts("../Resource/Texture/StoryStuff/protagAct11.txt", player);
+    p1 = new ProtagThoughts("../Resource/Texture/StoryStuff/protagAct11.txt", player, 36);
     objectsList.emplace_back(p1);
 
     GameEngine::getInstance()->getRenderer()->getCamera()->setTarget(player);
@@ -256,6 +258,7 @@ void LevelAct11::handleKey(InputManager& input) {
         }
         if (medicine->getIsClickable()) {
             medicine->setDescriptionActive(!medicine->getDescriptionActive());
+            player->setMaxNumOfPotion(3);
         }
         if (medicine->isClickedOnce && ishelf->isClickedOnce) {
             end = true;

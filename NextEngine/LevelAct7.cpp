@@ -84,6 +84,9 @@ void LevelAct7::levelInit() {
     map = new GotItemText("- Got Map", player, objectsList);
     map->setAppearPos(4.0f, 0.0f);
 
+    medicine = new GotItemText("+ 1 Medicine", player, objectsList);
+    medicine->setAppearPos(4.0f, 0.0f);
+
     player->getTransform().setPosition(glm::vec3(-8.0f, -1.0f, 0.0f));
     objectsList.emplace_back(player);
 
@@ -105,7 +108,7 @@ void LevelAct7::levelInit() {
     player->setIsFacingRight(true);
 
     UIobject->initUI(objectsList);
-
+    player->setMaxNumOfPotion(1);
     fb = new FadeBlack(1.0f);
     objectsList.emplace_back(fb);
     fb->FadeToTransparent();
@@ -153,6 +156,7 @@ void LevelAct7::levelFree() {
     objectsList.clear();
     delete UIobject;
     delete map;
+    delete medicine;
 }
 
 void LevelAct7::levelUnload() {
@@ -266,6 +270,10 @@ void LevelAct7::handleKey(InputManager& input) {
             }
             else if (board->getIsClickable()) {
                 board->setDescriptionActive(!board->getDescriptionActive());
+                if (board->isClickedOnce && !board->getDescriptionActive()) {
+                    medicine->activateAppear();
+                    player->setMaxNumOfPotion(2);
+                }
             }
             else if (computer->getIsClickable()) {
                 computer->setDescriptionActive(!computer->getDescriptionActive());

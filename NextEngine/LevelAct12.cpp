@@ -98,6 +98,7 @@ void LevelAct12::levelInit() {
     objectsList.emplace_back(backGround);
 
     isStop = true;
+    player->setMaxNumOfPotion(3);
 
     GameEngine::getInstance()->getRenderer()->getCamera()->setTarget(player);
     GameEngine::getInstance()->getRenderer()->setToggleViewport(false);

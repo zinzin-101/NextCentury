@@ -20,6 +20,7 @@ void LevelAct2::levelInit() {
     GameEngine::getInstance()->getRenderer()->setClearColor(0.1f, 0.1f, 0.1f);
 
     player = new PlayerObject();
+    player->setWieldWeaponSprite(false);
 
     float pictureWidth = 1000.0f;
     float pictureHeight = 360.0f;

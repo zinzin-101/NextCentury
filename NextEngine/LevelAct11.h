@@ -13,6 +13,7 @@ private:
     InteractableObject* ishelf;
     InteractableObject* medicine;
     ProtagThoughts* p1;
+    
 
     bool isStop;
     FadeBlack* fb;

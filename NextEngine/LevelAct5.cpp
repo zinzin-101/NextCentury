@@ -97,6 +97,7 @@ void LevelAct5::levelInit() {
     //player->getColliderComponent()->getTransform().translate(0.0f, -0.44f);
     //player->getColliderComponent()->setDimension(0.25f, 0.65f);
     player->getTransform().setPosition(glm::vec3(-6.0f, -1.6f, 0.0f));
+    player->setMaxNumOfPotion(1);
     objectsList.emplace_back(player);
 
     vector<glm::vec3> l;

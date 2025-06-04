@@ -122,6 +122,7 @@ void LevelAct13::levelInit() {
     player->getDamageCollider()->setFollowOffset(glm::vec3(1.0f, -0.2f, 0));
 
     UIobject->initUI(objectsList);
+    player->setMaxNumOfPotion(3);
 
     fb = new FadeBlack(1.0f);
     objectsList.emplace_back(fb);

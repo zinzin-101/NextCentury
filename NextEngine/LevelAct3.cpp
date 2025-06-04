@@ -77,25 +77,22 @@ void LevelAct3::levelInit() {
     desk->getTransform().setPosition(glm::vec3(3.5f, -1.49f, 0.0f));
     desk->getTransform().setScale(glm::vec3(2.5f, 1.77f, 0.0f));
     objectsList.emplace_back(desk);
-
+    
     chest = new InteractableObject("../Resource/Texture/StoryStuff/NeonBoardDescription.txt", player, "../Resource/Texture/Act3/ChestSheet.png", objectsList);
     chest->getTransform().setPosition(glm::vec3(-3.75f, -2.25f, 0.0f));
     chest->getTransform().setScale(glm::vec3(0.5f, 0.2f, 0.0f));
     objectsList.emplace_back(chest);
 
-    done = new ProtagThoughts("../Resource/Texture/StoryStuff/ProtagThoughtsAct3/done.txt", player);
-    objectsList.emplace_back(done);
-
-    repeatNotDone = new ProtagThoughts("../Resource/Texture/StoryStuff/ProtagThoughtsAct3/repeat.txt", player);
-    objectsList.emplace_back(repeatNotDone);
-
-    medicineOnTable = new GotItemText("- Got Medicine", player, objectsList);
+    medicineOnTable = new GotItemText("- Got Medicine  :  [ R ]", player, objectsList);
+    medicineOnTable->setAppearTime(6.0f);
     medicineOnTable->setAppearPos(4.35f, 0.0f);
     fakePassport = new GotItemText("- Got Forged permit", player, objectsList);
     fakePassport->setAppearPos(4.0f, 0.0f);
-    magicPistol = new GotItemText("- Magic Pistol", player, objectsList);
+    magicPistol = new GotItemText("- Magic Pistol  :  [ MiddleMouse / U ]", player, objectsList);
+    magicPistol->setAppearTime(6.0f);
     magicPistol->setAppearPos(4.0f, 0.0f);
-    duoBlade = new GotItemText("- Duo Blade", player, objectsList);
+    duoBlade = new GotItemText("- Blade  :  [ LeftClick / K ] , [ RightClick / J ]", player, objectsList);
+    duoBlade->setAppearTime(6.5f);
     duoBlade->setAppearPos(4.0f, -1.0f);
 
     Level::importTransformData(objectsList, "act3", false);
@@ -105,6 +102,7 @@ void LevelAct3::levelInit() {
     //player->getColliderComponent()->setDimension(0.25f, 0.65f);
     player->getTransform().setPosition(glm::vec3(-1.0f, -1.0f, 0.0f));
     objectsList.emplace_back(player);
+    player->setMaxNumOfPotion(1);
 
     GameEngine::getInstance()->getRenderer()->getCamera()->setTarget(player);
     GameEngine::getInstance()->getRenderer()->setToggleViewport(false);
@@ -119,6 +117,7 @@ void LevelAct3::levelInit() {
 
     startObjects(objectsList);
 
+    player->setWieldWeaponSprite(false);
     player->getDamageCollider()->setFollowOffset(glm::vec3(1.0f, -0.2f, 0));
 
     TexturedObject* backGround2 = new TexturedObject();
@@ -129,7 +128,7 @@ void LevelAct3::levelInit() {
 
     repeatNotDone = new ProtagThoughts("../Resource/Texture/StoryStuff/ProtagThoughtsAct3/repeat.txt", player);
     objectsList.emplace_back(repeatNotDone);
-    done = new ProtagThoughts("../Resource/Texture/StoryStuff/ProtagThoughtsAct3/done.txt", player);
+    done = new ProtagThoughts("../Resource/Texture/StoryStuff/ProtagThoughtsAct3/done.txt", player, 24);
     objectsList.emplace_back(done);
 
     UIobject->initUI(objectsList);
@@ -225,64 +224,66 @@ void LevelAct3::handleKey(InputManager& input) {
     // handle event here
     if (input.getButton(SDLK_a) && !input.getButton(SDLK_d)) player->move(glm::vec2(-1, 0));
     if (input.getButton(SDLK_d) && !input.getButton(SDLK_a)) player->move(glm::vec2(1, 0));
-    if (input.getButtonDown(SDLK_j)) player->parryAttack();
-    if (input.getMouseButtonDown(SDL_BUTTON_RIGHT)) player->parryAttack();
+    if (chest->isClickedOnce) {
+        if (input.getButtonDown(SDLK_j)) player->parryAttack();
+        if (input.getMouseButtonDown(SDL_BUTTON_RIGHT)) player->parryAttack();
 
-    /// Use processed key here ///
-    if (keyHeldDuration[SDLK_k] < PlayerStat::DURATION_TO_START_HEAVY_ATTACK) {
-        if (input.getButtonUp(SDLK_k)) {
-            player->normalAttack();
-        }
-    }
-    else {
-        if (input.getButtonUp(SDLK_k)) {
-            player->heavyAttack();
-        }
-        else if (input.getButton(SDLK_k)) {
-            player->startHeavyAttack();
-        }
-    }
-
-    if (mouseHeldDuration[SDL_BUTTON_LEFT] < PlayerStat::DURATION_TO_START_HEAVY_ATTACK) {
-        if (input.getMouseButtonUp(SDL_BUTTON_LEFT)) {
-            player->normalAttack();
-        }
-    }
-    else {
-        if (input.getMouseButtonUp(SDL_BUTTON_LEFT)) {
-            player->heavyAttack();
-        }
-        else if (input.getMouseButton(SDL_BUTTON_LEFT)) {
-            player->startHeavyAttack();
-        }
-    }
-
-    if (input.getButtonUp(SDLK_u)) {
-        player->rangeAttack(objectsList);
-    }
-    else if (input.getButton(SDLK_u)) {
-        player->startRangeAttack(dt);
-    }
-
-    if (input.getMouseButtonUp(SDL_BUTTON_MIDDLE)) {
-        player->rangeAttack(objectsList);
-    }
-    else if (input.getMouseButton(SDL_BUTTON_MIDDLE)) {
-        player->startRangeAttack(dt);
-    }
-
-    if ((isKeyInBuffer(SDLK_LSHIFT) || (isKeyInBuffer(SDLK_SPACE))) && player->getCanMove()) {
-        clearKeyBuffer(SDLK_SPACE);
-        clearKeyBuffer(SDLK_LSHIFT);
-
-        if (input.getButton(SDLK_a)) {
-            player->dodge(-1.0f);
-        }
-        else if (input.getButton(SDLK_d)) {
-            player->dodge(1.0f);
+        /// Use processed key here ///
+        if (keyHeldDuration[SDLK_k] < PlayerStat::DURATION_TO_START_HEAVY_ATTACK) {
+            if (input.getButtonUp(SDLK_k)) {
+                player->normalAttack();
+            }
         }
         else {
-            player->dodge();
+            if (input.getButtonUp(SDLK_k)) {
+                player->heavyAttack();
+            }
+            else if (input.getButton(SDLK_k)) {
+                player->startHeavyAttack();
+            }
+        }
+
+        if (mouseHeldDuration[SDL_BUTTON_LEFT] < PlayerStat::DURATION_TO_START_HEAVY_ATTACK) {
+            if (input.getMouseButtonUp(SDL_BUTTON_LEFT)) {
+                player->normalAttack();
+            }
+        }
+        else {
+            if (input.getMouseButtonUp(SDL_BUTTON_LEFT)) {
+                player->heavyAttack();
+            }
+            else if (input.getMouseButton(SDL_BUTTON_LEFT)) {
+                player->startHeavyAttack();
+            }
+        }
+
+        if (input.getButtonUp(SDLK_u)) {
+            player->rangeAttack(objectsList);
+        }
+        else if (input.getButton(SDLK_u)) {
+            player->startRangeAttack(dt);
+        }
+
+        if (input.getMouseButtonUp(SDL_BUTTON_MIDDLE)) {
+            player->rangeAttack(objectsList);
+        }
+        else if (input.getMouseButton(SDL_BUTTON_MIDDLE)) {
+            player->startRangeAttack(dt);
+        }
+
+        if ((isKeyInBuffer(SDLK_LSHIFT) || (isKeyInBuffer(SDLK_SPACE))) && player->getCanMove()) {
+            clearKeyBuffer(SDLK_SPACE);
+            clearKeyBuffer(SDLK_LSHIFT);
+
+            if (input.getButton(SDLK_a)) {
+                player->dodge(-1.0f);
+            }
+            else if (input.getButton(SDLK_d)) {
+                player->dodge(1.0f);
+            }
+            else {
+                player->dodge();
+            }
         }
     }
 
@@ -303,6 +304,7 @@ void LevelAct3::handleKey(InputManager& input) {
             magicPistol->activateAppear();
             duoBlade->activateAppear();
             UIobject->setDeactivateGunUI(false);
+            player->setWieldWeaponSprite(true);
             chest->isClickedOnce = true;
         }
 

@@ -10,7 +10,7 @@
 PlayerObject::PlayerObject() : LivingEntity("Player", PlayerStat::MAX_HEALTH) {
     //this->damage = playerInfo.damage;
 
-    noWeaponSprite = setTexture("../Resource/Texture/MC.png");
+    noWeaponSprite = setTexture("../Resource/Texture/MACAOWALK.png");
     normalSprite = setTexture("../Resource/Texture/MC.png");
     initAnimation(18, 9);
     this->getAnimationComponent()->setTexture(normalSprite);

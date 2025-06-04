@@ -143,6 +143,7 @@ void LevelAct6::levelInit() {
     startObjects(objectsList);
 
     player->getDamageCollider()->setFollowOffset(glm::vec3(1.0f, -0.2f, 0));
+    player->setMaxNumOfPotion(1);
 
     UIobject->initUI(objectsList);
 

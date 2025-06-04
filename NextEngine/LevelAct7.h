@@ -15,6 +15,7 @@ private:
     InteractableObject* board;
     InteractableObject* computer;
     GotItemText* map;
+    GotItemText* medicine;
     ProtagThoughts* repeat;
 
     bool end = false;
