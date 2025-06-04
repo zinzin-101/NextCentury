@@ -88,7 +88,7 @@ void LevelAnimTest::handleKey(char key) {
 			break;
 		case 'q': GameEngine::getInstance()->getStateController()->gameStateNext = GameState::GS_QUIT; ; break;
 		case 'r': GameEngine::getInstance()->getStateController()->gameStateNext = GameState::GS_RESTART; ; break;
-		case 'e': GameEngine::getInstance()->getStateController()->gameStateNext = GameState::GS_LEVEL2; ; break;
+		//case 'e': GameEngine::getInstance()->getStateController()->gameStateNext = GameState::GS_Act; ; break;
 	}
 }
 

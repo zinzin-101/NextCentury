@@ -82,7 +82,7 @@ void LevelParallax::handleKey(char key) {
     case 'g': player->getPhysicsComponent()->setEnableGravity(!player->getPhysicsComponent()->isGravityEnable()); break;
     case 'q': GameEngine::getInstance()->getStateController()->gameStateNext = GameState::GS_QUIT; ; break;
     case 'r': GameEngine::getInstance()->getStateController()->gameStateNext = GameState::GS_RESTART; ; break;
-    case 'e': GameEngine::getInstance()->getStateController()->gameStateNext = GameState::GS_LEVEL2; ; break;
+    //case 'e': GameEngine::getInstance()->getStateController()->gameStateNext = GameState::GS_LEVEL2; ; break;
     case 'z': GameEngine::getInstance()->getRenderer()->increaseZoomRatio(10.0f); break;
     case 'x': GameEngine::getInstance()->getRenderer()->decreaseZoomRatio(10.0f); break;
     }
