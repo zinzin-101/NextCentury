@@ -39,13 +39,11 @@ void UISetting::initUI(std::list<DrawableObject*>& objectsList) {
     audioTextAnim->setPaused(true);
     audioTextAnim->setFrame(0, 0);
 
-
     controlText = new TexturedObject("ControlText");
     controlText->setTexture("../Resource/Texture/UI/Setting/Control.png");
     controlText->getTransform().setScale({ 0.0f, 0.0f, 0.0f });
     controlText->getTransform().setPosition({ 3.0f, 3.1f, 0.0f });
     controlText->setRenderOrder(233);
-
     objectsList.push_back(controlText);
 
     controlText->initAnimation(1, 3);
@@ -276,6 +274,21 @@ void UISetting::initUI(std::list<DrawableObject*>& objectsList) {
     });
     buttons[3]->setRenderOrder(256);
 
+	f8 = new TexturedObject("F8Text");
+	f8->setTexture("../Resource/Texture/UI/Setting/F8.png");
+	f8->getTransform().setScale({ 0.0f, 0.0f, 0.0f });
+	f8->getTransform().setPosition({ -3.0f, -2.5f, 0.0f });
+	f8->setRenderOrder(257);
+	objectsList.push_back(f8);
+
+	f11 = new TexturedObject("F11Text");
+	f11->setTexture("../Resource/Texture/UI/Setting/F11.png");
+	f11->getTransform().setScale({ 0.0f, 0.0f, 0.0f });
+	f11->getTransform().setPosition({ -3.0f, -3.0f, 0.0f });
+	f11->setRenderOrder(258);
+	objectsList.push_back(f11);
+
+
     objectsList.push_back(buttons[3]);
     selectedButtonIndex = 0;
     buttons[0]->setFocused(true);
@@ -305,6 +318,9 @@ void UISetting::updateUI() {
         ->getPosition();
 
     if (currentPage == Page::AUDIO) {
+        f8->getTransform().setPosition({ camPos.x - 3.0f, camPos.y - 2.5f, camPos.z + 0.0f });
+        f11->getTransform().setPosition({ camPos.x - 3.0f, camPos.y - 3.0f, camPos.z + 0.0f });
+
         // ─── Blackdrop always fills the screen, centered on camera ───
         blackdrop->getTransform().setScale({ 20.0f, 20.0f, 0.0f });
         blackdrop->getTransform().setPosition({ camPos.x, camPos.y, camPos.z });
@@ -328,6 +344,9 @@ void UISetting::updateUI() {
         if (audioTextAnim) {
             audioTextAnim->updateCurrentState();
         }
+
+		f8->getTransform().setScale({ 5.0f, (12.0f / 80.0f) * 5.0f, 0.0f });
+		f11->getTransform().setScale({ 5.0f, (12.0f / 80.0f) * 5.0f, 0.0f });
 
         // ─── Determine arrow scale/position based on which button is focused ───
         const float zeroScale[3] = { 0.0f, 0.0f, 0.0f };
@@ -533,6 +552,9 @@ void UISetting::handleInput(SDL_Keycode key) {
 
         if (audioText)   audioText->getTransform().setScale({ 0.0f, 0.0f, 0.0f });
         if (controlText) controlText->getTransform().setScale({ 0.0f, 0.0f, 0.0f });
+
+		if (f8) f8->getTransform().setScale({ 0.0f, 0.0f, 0.0f });
+		if (f11) f11->getTransform().setScale({ 0.0f, 0.0f, 0.0f });
 
         for (auto* b : buttons) {
             if (b) {

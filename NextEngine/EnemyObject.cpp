@@ -54,7 +54,8 @@ void EnemyObject::onDeath(std::list<DrawableObject*>& objectsList) {
 		destroyObject(this);
 		return;
 	}
-	
+	GameEngine::getInstance()->playSoundEffect("Enemy_Died.wav", 0.0f);
+
 	GameEngine::getInstance()->signalToCurrentLevel();
 
 	GameEngine::getInstance()->pauseTimeForSeconds(0.125f);

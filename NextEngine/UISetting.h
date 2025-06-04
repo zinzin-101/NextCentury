@@ -63,6 +63,9 @@ private:
     Animation* audioTextAnim = nullptr;
     Animation* controlTextAnim = nullptr;
 
+	TexturedObject* f8 = nullptr;
+	TexturedObject* f11 = nullptr;
+
     void updateArrowHighlight();
     void adjustVolume(int buttonIndex);
     std::list<DrawableObject*>* sharedObjectsList = nullptr;

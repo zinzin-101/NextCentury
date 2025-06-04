@@ -74,12 +74,6 @@ class EnemyObject : public LivingEntity {
         virtual void setCurrentState(State state);
         State getCurrentState();
 
-        /*SimpleObject* getHitbox() const;
-
-        void activateHitbox();
-        void deactivateHitbox();
-        bool isHitboxActive() const;*/
-
         void findTarget(std::string name, std::list<DrawableObject*>& objectList);
         void setTarget(LivingEntity* target);
         
