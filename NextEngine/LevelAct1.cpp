@@ -65,13 +65,6 @@ void LevelAct1::levelInit() {
     it->getTransform().setScale(glm::vec3(6.0f, 4.0f, 0.0f));
     objectsList.emplace_back(it);
 
-	//float height = 7.0f; 
-	//float width = height * 5.3333333f;
- //   for (auto a : objectsList) {
- //       a->getTransform().setScale(width, height);
- //   }
-
-
  //   lightPole->getTransform().setScale(47.999999f, 9.0f);
 
  //   sky->getTransform().setScale(500.f, 500.f);
@@ -108,22 +101,31 @@ void LevelAct1::levelInit() {
     pole->setTexture("../Resource/Texture/Act1/City_P12_FGPole.png");
     objectsList.emplace_back(pole);
 
-    p1 = new ProtagThoughts("../Resource/Texture/StoryStuff/ProtagThoughtsAct1/one.txt", player);
+    p1 = new ProtagThoughts("../Resource/Texture/StoryStuff/ProtagThoughtsAct1/one.txt", player, 24);
     //objectsList.emplace_back(p1->getDialogueObject());
     objectsList.emplace_back(p1);
-    p2 = new ProtagThoughts("../Resource/Texture/StoryStuff/ProtagThoughtsAct1/two.txt", player);
+    p2 = new ProtagThoughts("../Resource/Texture/StoryStuff/ProtagThoughtsAct1/two.txt", player, 24);
     objectsList.emplace_back(p2);
 
     fb = new FadeBlack(1.0f);
     objectsList.emplace_back(fb);
     fb->FadeToTransparent();
 
+    set1Block = new ColliderObject();
+    set1Block->getTransform().setPosition(glm::vec3(29.0f, 0.0f, 0.0f));
+    set1Block->getTransform().setScale(1.0f, 10.0f);
+    objectsList.emplace_back(set1Block);
+    set1Block->setName("NO");
+
     UIobject->initUI(objectsList);
+
+    UIobject->setDeactivateGunUI(true);
+    UIobject->setDeactivatePotionUI(true);
 
     GameEngine::getInstance()->getRenderer()->getCamera()->setPosition(glm::vec3(0.0f, 0.0f, 0.0f));
 
     GameEngine::getInstance()->getRenderer()->getCamera()->setDeadLimitBool(true);
-    GameEngine::getInstance()->getRenderer()->getCamera()->setDeadLimitMinMax(-5.0f, 40.75f);
+    GameEngine::getInstance()->getRenderer()->getCamera()->setDeadLimitMinMax(-5.0f, 999.0f);
 
     GameEngine::getInstance()->getRenderer()->getCamera()->setOffset(glm::vec3(0.0f, -0.5f, 0.0f));
     GameEngine::getInstance()->getRenderer()->setToggleViewport(true);
@@ -143,9 +145,10 @@ void LevelAct1::levelUpdate() {
 
     if (interactCount == 2) {
         p2->activateDialogue();
+        set1Block->setActive(false);
     }
 
-    if (player->getTransform().getPosition().x > 39.0f && p2->getDialogueObject()->isEnd) {
+    if (p2->getDialogueObject()->isEnd) {
         if (!isFadingToBlack) {
             fb->FadeToBlack();
             isFadingToBlack = true;

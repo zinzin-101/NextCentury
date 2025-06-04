@@ -2,7 +2,7 @@
 
 enum GameState {
 	// list of all game states 
-	GS_MENU,
+	GS_MAINMENU,
 	GS_ACT1,
 	GS_ACT2,
 	GS_ACT3,
@@ -17,7 +17,6 @@ enum GameState {
 	GS_ACT12,
 	GS_ACT13,
 	GS_ACT14,
-	GS_MAINMENU,
 	GS_CREDIT,
 	
 

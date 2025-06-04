@@ -133,6 +133,8 @@ void LevelAct3::levelInit() {
     objectsList.emplace_back(done);
 
     UIobject->initUI(objectsList);
+    UIobject->setDeactivateGunUI(true);
+    UIobject->setDeactivatePotionUI(true);
 
     fb = new FadeBlack(1.0f);
     objectsList.emplace_back(fb);
@@ -300,6 +302,7 @@ void LevelAct3::handleKey(InputManager& input) {
         if (chest->getIsClickable()) {
             magicPistol->activateAppear();
             duoBlade->activateAppear();
+            UIobject->setDeactivateGunUI(false);
             chest->isClickedOnce = true;
         }
 
@@ -312,6 +315,7 @@ void LevelAct3::handleKey(InputManager& input) {
             board->setDescriptionActive(!board->getDescriptionActive());
             if (board->isClickedOnce && !board->getDescriptionActive()) {
                 medicineOnTable->activateAppear();
+                UIobject->setDeactivatePotionUI(false);
             }
         }
         else if (desk->getIsClickable()) {

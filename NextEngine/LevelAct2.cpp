@@ -89,6 +89,8 @@ void LevelAct2::levelInit() {
     player->getTransform().setPosition(glm::vec3(-6.0f, -1.6f, 0.0f));
 
     UIobject->initUI(objectsList);
+    UIobject->setDeactivateGunUI(true);
+    UIobject->setDeactivatePotionUI(true);
 
     start = new ProtagThoughts("../Resource/Texture/StoryStuff/ProtagThoughtsAct2/start.txt", player);
     objectsList.emplace_back(start);

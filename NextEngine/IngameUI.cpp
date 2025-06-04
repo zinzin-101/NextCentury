@@ -351,7 +351,7 @@ void IngameUI::initUI(std::list<DrawableObject*>& objectsList) {
     deathmenubuttons[1] = new Button("MainMenuButton", "../Resource/Texture/UI/MainMenu/MainMenu.png");
     deathmenubuttons[1]->getTransform().setScale(glm::vec3(0.0f)); 
     deathmenubuttons[1]->setOnClickCallback([]() {
-        GameEngine::getInstance()->getStateController()->gameStateNext = GameState::GS_MENU;
+        GameEngine::getInstance()->getStateController()->gameStateNext = GameState::GS_MAINMENU;
         });
     objectsList.push_back(deathmenubuttons[1]);
 

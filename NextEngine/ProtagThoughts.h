@@ -10,6 +10,7 @@ class ProtagThoughts : public DrawableObject { // THIS CLASS IS INTENDED TO BE U
 	PlayerObject* player;
 	void readFile(string fileName);
 public:
+	ProtagThoughts(string fileName, PlayerObject* player, int fSize);
 	ProtagThoughts(string fileName, PlayerObject* player);
 	Dialogue* getDialogueObject();
 	void update(list<DrawableObject*>& objectsList);

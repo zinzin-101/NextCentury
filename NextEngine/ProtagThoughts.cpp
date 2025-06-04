@@ -27,6 +27,16 @@ ProtagThoughts::ProtagThoughts(string fileName, PlayerObject* player) {
 	readFile(fileName);
 	keepTime = lifeTimeEachSentence.front();
 }
+
+ProtagThoughts::ProtagThoughts(string fileName, PlayerObject* player, int fSize) {
+	isActiveDialogue = false;
+	fontSize = fSize;
+	dialogueText = new Dialogue(fontSize, player, false);
+	//dialogueText->setBackDropActive(false);
+	this->player = player;
+	readFile(fileName);
+	keepTime = lifeTimeEachSentence.front();
+}
 Dialogue* ProtagThoughts::getDialogueObject() {
 	return dialogueText;
 }

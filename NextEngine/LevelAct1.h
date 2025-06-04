@@ -19,6 +19,7 @@ private:
     FadeBlack* fb;
     bool isFadingToBlack = false;
     float fadetime = 1.0f;
+    ColliderObject* set1Block;
 
     AudioEngine m_audio;                      
     SoundEffect m_jumpSfx;                     
