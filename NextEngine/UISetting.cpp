@@ -473,6 +473,9 @@ void UISetting::updateUI() {
         masterFill->getTransform().setScale({ 0.0f, 0.0f, 0.0f });
         sfxFill->getTransform().setScale({ 0.0f, 0.0f, 0.0f });
         musicFill->getTransform().setScale({ 0.0f, 0.0f, 0.0f });
+
+        f8->getTransform().setScale(0, 0);
+        f11->getTransform().setScale(0, 0);
     }
 }
 

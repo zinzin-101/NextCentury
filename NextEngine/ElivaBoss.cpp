@@ -227,9 +227,9 @@ void ElivaBoss::updateBehavior(list<DrawableObject*>& objectsList) {
 		this->getPhysicsComponent()->setVelocity(glm::vec2(0.0f, 0.0f));
 	}
 
-	std::cout << "current state: " << (int)currentState->currentState << std::endl;
-	std::cout << "current phase: " << (int)currentPhase << std::endl;
-	std::cout << "Health: " << this->getHealth() << std::endl;
+	//std::cout << "current state: " << (int)currentState->currentState << std::endl;
+	//std::cout << "current phase: " << (int)currentPhase << std::endl;
+	//std::cout << "Health: " << this->getHealth() << std::endl;
 }
 
 void ElivaBoss::handleCooldown() {
@@ -242,7 +242,7 @@ void ElivaBoss::handleCooldown() {
 	}
 
 	cooldownTimer -= GameEngine::getInstance()->getTime()->getDeltaTime();
-	std::cout << "boss under cooldown" << std::endl;
+	//std::cout << "boss under cooldown" << std::endl;
 }
 
 void ElivaBoss::handleBlink() {
@@ -568,7 +568,7 @@ void ElivaBoss::handleSerumInject() {
 }
 
 void ElivaBoss::handleFury() {
-	std::cout << "enter fury" << std::endl;
+	//std::cout << "enter fury" << std::endl;
 	isFuryUsed = true;
 	breakShield();
 	GameEngine::getInstance()->playSoundEffect("Boss_BlinkIn.wav");
@@ -578,7 +578,7 @@ void ElivaBoss::handleFury() {
 void ElivaBoss::handleStunned() {
 	this->getAnimationComponent()->setState("Parried");
 	GameEngine::getInstance()->playSoundEffect("Boss_Idle.wav");
-	std::cout << "boss stunned" << std::endl;
+	//std::cout << "boss stunned" << std::endl;
 
 	if (stunnedTimer <= 0.0f) {
 		stunnedTimer = ElivaStat::STUNNED_DURATION;
@@ -633,7 +633,7 @@ void ElivaBoss::handleFuryCooldown(){
 	}
 
 	cooldownTimer -= GameEngine::getInstance()->getTime()->getDeltaTime();
-	std::cout << "boss under fury cooldown" << std::endl;
+	//std::cout << "boss under fury cooldown" << std::endl;
 }
 
 void ElivaBoss::handleDead() {
