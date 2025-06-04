@@ -174,11 +174,11 @@ void LevelAct6::levelInit() {
     GameEngine::getInstance()->getRenderer()->setToggleViewport(true);
 
     GameEngine::getInstance()->freezeGameForSeconds(0.5f);
-
+    GameEngine::getInstance()->getTime()->setTimeScale(1.0f);
 }
 
 void LevelAct6::levelUpdate() {
-    std::cout << "kill count " << killCount << std::endl;
+    //std::cout << "kill count " << killCount << std::endl;
 
     updateObjects(objectsList);
     GameEngine::getInstance()->getRenderer()->updateCamera();
@@ -364,17 +364,21 @@ void LevelAct6::handleKey(InputManager& input) {
             }
         }
 
-        if (input.getButtonDown(SDLK_f)) {
-            if (door->getIsClickable()) {
-                //sfx
-                //transition
-                fb->FadeToBlack();
-                end = true;
-            }
-        }
         if (input.getButtonDown(SDLK_e)) {
             player->useHealthPotion();
         }
+    }
+    if (input.getButtonDown(SDLK_f)) {
+        if (door->getIsClickable()) {
+            //sfx
+            //transition
+            fb->FadeToBlack();
+            end = true;
+        }
+        cout << "what" << endl;
+        chat1->skipSentence();
+        chat2->skipSentence();
+        thought1->skipSentence();
     }
 	UIobject->handleInput(input,player);
 }

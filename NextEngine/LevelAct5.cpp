@@ -153,7 +153,7 @@ void LevelAct5::levelInit() {
     GameEngine::getInstance()->getRenderer()->setToggleViewport(true);
 
     GameEngine::getInstance()->freezeGameForSeconds(0.5f);
-
+    GameEngine::getInstance()->getTime()->setTimeScale(1.0f);
 }
 
 void LevelAct5::levelUpdate() {
@@ -314,6 +314,10 @@ void LevelAct5::handleKey(InputManager& input) {
     if (input.getButtonDown(SDLK_f)) {
         if (eToPermit->getDialogueObject()->isDialogueActive) {
             eToPermit->stopDialogue();
+        }
+        else {
+            immigrats1->skipSentence();
+            immigrats2->skipSentence();
         }
     }
     if (input.getButtonDown(SDLK_e)) {

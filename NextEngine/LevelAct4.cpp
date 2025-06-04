@@ -120,7 +120,7 @@ void LevelAct4::levelInit() {
     GameEngine::getInstance()->getRenderer()->setToggleViewport(true);
 
     GameEngine::getInstance()->freezeGameForSeconds(0.5f);
-
+    GameEngine::getInstance()->getTime()->setTimeScale(1.0f);
 }
 
 void LevelAct4::levelUpdate() {
@@ -268,6 +268,9 @@ void LevelAct4::handleKey(InputManager& input) {
     }
     if (input.getButtonDown(SDLK_e)) {
         player->useHealthPotion();
+    }
+    if (input.getButtonDown(SDLK_f)) {
+        chat1->skipSentence();
     }
 	UIobject->handleInput(input,player);   
 }

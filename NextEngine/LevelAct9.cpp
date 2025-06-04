@@ -122,6 +122,7 @@ void LevelAct9::levelInit() {
     GameEngine::getInstance()->getRenderer()->setToggleViewport(true);
 
     GameEngine::getInstance()->freezeGameForSeconds(0.5f);
+    GameEngine::getInstance()->getTime()->setTimeScale(1.0f);
 }
 
 void LevelAct9::levelUpdate() {
@@ -131,6 +132,10 @@ void LevelAct9::levelUpdate() {
 
     //Dialogue logics
 
+    if (killCount >= 5) {
+        door->setActive(true);
+    }
+
     if (end) {
         timefade -= GameEngine::getInstance()->getTime()->getDeltaTime();
         if (timefade < 0.0f) {
@@ -138,19 +143,19 @@ void LevelAct9::levelUpdate() {
         }
     }
 
-    bool k = false;
-    for (std::list<DrawableObject*>::iterator itr = objectsList.begin(); itr != objectsList.end(); ++itr) {
-        EnemyObject* enemy = dynamic_cast<EnemyObject*>(*itr);
-        if (enemy != NULL) {
-            k = true;
-        }
-        else {
+    //bool k = false;
+    //for (std::list<DrawableObject*>::iterator itr = objectsList.begin(); itr != objectsList.end(); ++itr) {
+    //    EnemyObject* enemy = dynamic_cast<EnemyObject*>(*itr);
+    //    if (enemy != NULL) {
+    //        k = true;
+    //    }
+    //    else {
 
-        }
-    }
-    if (!k) {
-        door->setActive(true);
-    }
+    //    }
+    //}
+    //if (!k) {
+    //    door->setActive(true);
+    //}
     UIobject->updateUI(player);
 }
 

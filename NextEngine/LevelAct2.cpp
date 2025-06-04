@@ -111,6 +111,7 @@ void LevelAct2::levelInit() {
     GameEngine::getInstance()->getRenderer()->setToggleViewport(true);
 
     GameEngine::getInstance()->freezeGameForSeconds(0.5f);
+    GameEngine::getInstance()->getTime()->setTimeScale(1.0f);
 }
 
 void LevelAct2::levelUpdate() {
@@ -188,6 +189,7 @@ void LevelAct2::handleKey(InputManager& input) {
             fb->FadeToBlack();
             end = true;
         }
+        start->skipSentence();
     }
     UIobject->handleInput(input, player);
 }

@@ -18,4 +18,5 @@ public:
 	void activateDialogue();
 	void reActivateDialogue(string txtFile);
 	void stopDialogue();
+	void skipSentence();
 };

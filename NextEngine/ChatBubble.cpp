@@ -14,7 +14,7 @@ ChatBubble::ChatBubble(string fileName, PlayerObject* player, vector<glm::vec3> 
 
 	offsetX = 0;
 
-	isChatting = true;
+	isChatting = false;
 	isEnd = false;
 
 	string myText;
@@ -81,10 +81,12 @@ ChatBubble::ChatBubble(string fileName, PlayerObject* player, vector<glm::vec3> 
 	}
 }
 void ChatBubble::runChat(list<DrawableObject*>& objectsList) {
-	
+	cout << isChatting << endl;
+	isChatting = true;
 	if (chats.empty()) {
 		bubble->setActive(false);
 		isEnd = true;
+		isChatting = false;
 		return;
 	}
 
@@ -159,4 +161,14 @@ void ChatBubble::setOffSetX(float x) {
 
 bool ChatBubble::hasEnded() {
 	return isEnd;
+}
+
+void ChatBubble::skipSentence() {
+	if (isChatting && !isEnd) {
+		cout << "a" << endl;
+		nextChat();
+	}
+	else {
+		cout << "b" << endl;
+	}
 }

@@ -105,7 +105,7 @@ void LevelAct8::levelInit() {
     GameEngine::getInstance()->getRenderer()->setToggleViewport(true);
 
     GameEngine::getInstance()->freezeGameForSeconds(0.5f);
-
+    GameEngine::getInstance()->getTime()->setTimeScale(1.0f);
 }
 
 void LevelAct8::levelUpdate() {
@@ -266,6 +266,7 @@ void LevelAct8::handleKey(InputManager& input) {
                     p1->activateDialogue();
                 }
             }
+            p1->skipSentence();
         }
         if (input.getButtonDown(SDLK_e)) {
             player->useHealthPotion();

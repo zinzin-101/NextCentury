@@ -154,7 +154,7 @@ void LevelAct12::levelInit() {
     GameEngine::getInstance()->getRenderer()->setToggleViewport(true);
 
     GameEngine::getInstance()->freezeGameForSeconds(0.5f);
-
+    GameEngine::getInstance()->getTime()->setTimeScale(1.0f);
 }
 
 void LevelAct12::levelUpdate() {
@@ -344,6 +344,8 @@ void LevelAct12::handleKey(InputManager& input) {
             fb->FadeToBlack();
             end = true;
         }
+        preFight->skipSentence();
+        postFight->skipSentence();
     }
 	UIobject->handleInput(input, player);
 }

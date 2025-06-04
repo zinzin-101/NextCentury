@@ -146,7 +146,7 @@ void LevelAct3::levelInit() {
     GameEngine::getInstance()->getRenderer()->setToggleViewport(true);
 
     GameEngine::getInstance()->freezeGameForSeconds(0.5f);
-
+    GameEngine::getInstance()->getTime()->setTimeScale(1.0f);
 }
 
 void LevelAct3::levelUpdate() {
@@ -301,7 +301,8 @@ void LevelAct3::handleKey(InputManager& input) {
                 repeatNotDone->reActivateDialogue("../Resource/Texture/StoryStuff/ProtagThoughtsAct3/repeat.txt");
             }
         }
-
+        done->skipSentence();
+        repeatNotDone->skipSentence();
         if (chest->getIsClickable()) {
             magicPistol->activateAppear();
             duoBlade->activateAppear();
@@ -325,6 +326,7 @@ void LevelAct3::handleKey(InputManager& input) {
         else if (desk->getIsClickable()) {
             desk->setDescriptionActive(!desk->getDescriptionActive());
         }
+        
     }
     if (input.getButtonDown(SDLK_e)) {
         player->useHealthPotion();

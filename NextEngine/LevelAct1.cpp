@@ -133,6 +133,7 @@ void LevelAct1::levelInit() {
     GameEngine::getInstance()->getRenderer()->setToggleViewport(true);
 
     GameEngine::getInstance()->freezeGameForSeconds(0.5f);
+    GameEngine::getInstance()->getTime()->setTimeScale(1.0f);
 }
 
 void LevelAct1::levelUpdate() {
@@ -292,6 +293,10 @@ void LevelAct1::handleKey(InputManager& input) {
                 it->setDescriptionActive(!it->getDescriptionActive());
             }
         }
+        else {
+            p1->skipSentence();
+        }
+        p2->skipSentence();
     }
 
     UIobject->handleInput(input, player);

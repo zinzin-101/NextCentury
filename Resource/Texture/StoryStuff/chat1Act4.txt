@@ -4,10 +4,3 @@ Cultist
 4.2
 YOU! You have magic!!
 NEXTCHAT
-Cultist
-0
-0
-6.0
-I better "ROLL" to "DODGE" 
-those magic with [LEFT SHIFT]. :)
-NEXTCHAT

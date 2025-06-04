@@ -121,7 +121,7 @@ void LevelAct11::levelInit() {
     GameEngine::getInstance()->getRenderer()->setToggleViewport(true);
 
     GameEngine::getInstance()->freezeGameForSeconds(0.5f);
-
+    GameEngine::getInstance()->getTime()->setTimeScale(1.0f);
 }
 
 void LevelAct11::levelUpdate() {
@@ -130,7 +130,7 @@ void LevelAct11::levelUpdate() {
     GameEngine::getInstance()->getRenderer()->updateCamera();
     if (end) {
         timefade -= GameEngine::getInstance()->getTime()->getDeltaTime();
-        if (timefade < 6.1f && !once) {
+        if (timefade < 1.0f && !once) {
             fb->FadeToBlack();
             // play walking down stair sound
             once = true;
@@ -265,6 +265,7 @@ void LevelAct11::handleKey(InputManager& input) {
         if (medicine->isClickedOnce && ishelf->isClickedOnce) {
             end = true;
         }
+        p1->skipSentence();
     }
 
     if (input.getButtonDown(SDLK_e)) {

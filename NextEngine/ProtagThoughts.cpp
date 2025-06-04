@@ -42,7 +42,6 @@ Dialogue* ProtagThoughts::getDialogueObject() {
 }
 void ProtagThoughts::activateDialogue() { // can only be active once
 	isActiveDialogue = true;
-	cout << fontSize << endl;
 	if (!lifeTimeEachSentence.empty()) {
 		dialogueText->isDialogueActive = true;
 	}
@@ -84,7 +83,7 @@ void ProtagThoughts::update(list<DrawableObject*>& objectsList) {
 		}
 	}
 	if (lifeTimeEachSentence.empty()) {
-		dialogueText->isDialogueActive = false;
+		stopDialogue();
 	}
 }
 
@@ -93,4 +92,19 @@ void ProtagThoughts::render(glm::mat4 globalModelTransform) {
 	//	dialogueText->render(globalModelTransform);
 	//}
 	dialogueText->render(globalModelTransform);
+}
+
+void ProtagThoughts::skipSentence() {
+	if (isActiveDialogue) {
+		if (!lifeTimeEachSentence.empty()) {
+			lifeTimeEachSentence.pop();
+			if (!lifeTimeEachSentence.empty()) {
+				cout << "1";
+				keepTime = lifeTimeEachSentence.front();
+				dialogueText->nextSentence();
+				cout << "2" << endl;
+			}
+		}
+
+	}
 }

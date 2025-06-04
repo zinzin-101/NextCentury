@@ -25,4 +25,5 @@ public:
 	void activateChat();
 	void setOffSetX(float x);
 	bool hasEnded();
+	void skipSentence();
 };
