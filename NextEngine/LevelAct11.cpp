@@ -130,10 +130,13 @@ void LevelAct11::levelUpdate() {
     GameEngine::getInstance()->getRenderer()->updateCamera();
     if (end) {
         timefade -= GameEngine::getInstance()->getTime()->getDeltaTime();
-        if (timefade < 1.0f && !once) {
+        if (timefade < 6.1f && !once) {
             fb->FadeToBlack();
-            // play walking down stair sound
             once = true;
+        }
+        if (timefade < 5.0f && !once2) {
+            // play walking down stair sound
+            once2 = true;
         }
         if (timefade < 0.0f) {
             loadNextLevel();

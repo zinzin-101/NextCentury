@@ -19,7 +19,8 @@ private:
     FadeBlack* fb;
     bool end = false;
     bool once = false;
-    float timefade = 7.0f;
+    bool once2 = false;
+    float timefade = 10.0f;
 
 public:
     virtual void levelLoad();
