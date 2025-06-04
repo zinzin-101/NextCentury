@@ -129,6 +129,7 @@ void UI::handleInput(SDL_Keycode key) {
 
     switch (key) {
     case SDLK_w:
+        GameEngine::getInstance()->getAudioEngine().playSoundEffectByName("hover.wav");
         buttons[selectedButtonIndex]->setState(Button::ButtonState::NORMAL);
         selectedButtonIndex = (selectedButtonIndex - 1 + buttons.size()) % buttons.size();
         buttons[selectedButtonIndex]->setState(Button::ButtonState::HOVERED);
@@ -136,6 +137,7 @@ void UI::handleInput(SDL_Keycode key) {
         break;
 
     case SDLK_s:
+        GameEngine::getInstance()->getAudioEngine().playSoundEffectByName("hover.wav");
         buttons[selectedButtonIndex]->setState(Button::ButtonState::NORMAL);
         selectedButtonIndex = (selectedButtonIndex + 1) % buttons.size();
         buttons[selectedButtonIndex]->setState(Button::ButtonState::HOVERED);
@@ -182,12 +184,15 @@ void UI::handleInput(char key) {
     }
 
     if (key == 'a') {
+		GameEngine::getInstance()->getAudioEngine().playSoundEffectByName("hover.wav");
         buttons[selectedButtonIndex]->setFocused(false);
         selectedButtonIndex = (selectedButtonIndex - 1 + buttons.size()) % buttons.size();
         buttons[selectedButtonIndex]->setFocused(true);
         updateArrowPosition();
+        
     }
     else if (key == 'd') {
+        GameEngine::getInstance()->getAudioEngine().playSoundEffectByName("hover.wav");
         buttons[selectedButtonIndex]->setFocused(false);
         selectedButtonIndex = (selectedButtonIndex + 1) % buttons.size();
         buttons[selectedButtonIndex]->setFocused(true);
