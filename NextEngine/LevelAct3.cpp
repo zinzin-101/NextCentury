@@ -194,6 +194,8 @@ void LevelAct3::levelFree() {
 }
 
 void LevelAct3::levelUnload() {
+    GameEngine::getInstance()->stopMusic();
+    GameEngine::getInstance()->stopSfx();
     GameEngine::getInstance()->clearMesh();
     GameEngine::getInstance()->getRenderer()->setClearColor(0.1f, 0.1f, 0.1f);
     //cout << "Unload Level" << endl;

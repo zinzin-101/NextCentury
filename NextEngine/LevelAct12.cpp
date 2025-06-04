@@ -1,4 +1,4 @@
-#include "LevelAct12.h"
+﻿#include "LevelAct12.h"
 #include "ElivaBoss.h"
 
 void LevelAct12::levelLoad() {
@@ -112,25 +112,39 @@ void LevelAct12::levelInit() {
     fb = new FadeBlack(1.0f);
     objectsList.emplace_back(fb);
     fb->FadeToTransparent();
+    
+    bossHpBar = new TexturedObject("bossHpBar");
+    bossHpBar->setTexture("../Resource/Texture/UI/Ingame/Boss_HP_Bar.png");
+    bossHpBar->getTransform().setScale(glm::vec3(
+        1.0f * 5.0f,           
+        (5.0f / 389.0f) * 5.0f,  
+        0.0f
+    ));
+    bossHpBar->getTransform().setPosition(glm::vec3(0.0f, 3.0f, 0.0f));
+    objectsList.emplace_back(bossHpBar);
+
+    bossHpFill = new SimpleObject("bossHpFill");
+    bossHpFill->setColor(glm::vec3(1.0f, 1.0f, 1.0f));
+    bossHpFill->getTransform().setScale(glm::vec3(
+        1.0f * 2.0f,            
+        (5.0f / 389.0f) * 2.0f,   
+        0.0f
+    ));
+    bossHpFill->getTransform().setPosition(glm::vec3(0.0f, 3.0f, 0.0f));
+    objectsList.emplace_back(bossHpFill);
+
+	bossNameText = new TexturedObject("bossNameText");
+	bossNameText->setTexture("../Resource/Texture/UI/Ingame/Boss_Name.png");
+	bossNameText->getTransform().setScale(glm::vec3(1.0f * 2.0f, 0.5f, 0.0f));
+	bossNameText->getTransform().setPosition(glm::vec3(0.0f, 3.5f, 0.0f));
+	objectsList.emplace_back(bossNameText);
 
     vector<glm::vec3> l;
-    //l.push_back(glm::vec3(-1.1f, 0.8f, 0.0f));
     l.push_back(glm::vec3(-7.0f, 0.8f, 0.0f));
     preFight = new ChatBubble("../Resource/Texture/StoryStuff/preBossFight.txt", player, l, objectsList);
-    //preFight = new ChatBubble("../Resource/Texture/StoryStuff/postBossFight.txt", player, l, objectsList);
-    
-    // initializing parallax object
-    //for (DrawableObject* obj : objectsList) {
-    //    if (obj != boss) {
-    //        obj->getTransform().translate(5.9f, 0.0f);
-    //    }
-    //}
-
-    //GameEngine::getInstance()->getRenderer()->getCamera()->setPosition(glm::vec3(1.9f, 0.0f, 0.0f));
     GameEngine::getInstance()->getRenderer()->getCamera()->setPosition(glm::vec3(-4.0f, 0.0f, 0.0f));
 
     GameEngine::getInstance()->getRenderer()->getCamera()->setDeadLimitBool(true);
-    //GameEngine::getInstance()->getRenderer()->getCamera()->setDeadLimitMinMax(-3.1f, 14.9f);
     GameEngine::getInstance()->getRenderer()->getCamera()->setDeadLimitMinMax(-9.0f, 9.0f);
 
     GameEngine::getInstance()->getRenderer()->getCamera()->setOffset(glm::vec3(0.0f, -0.5f, 0.0f));
@@ -148,11 +162,49 @@ void LevelAct12::levelUpdate() {
         GameEngine::getInstance()->getRenderer()->updateCamera();
         boss->signalCanStart();
     }
+
+    glm::vec3 camPos = GameEngine::getInstance()
+        ->getRenderer()
+        ->getCamera()
+        ->getPosition();
+    glm::vec3 barOffset = { 0.0f, 3.0f, 0.0f };
+    glm::vec3 framePos = camPos + barOffset;
+    bossHpBar->getTransform().setPosition(framePos);
+
+    if (boss && bossHpBar && bossHpFill) {
+        glm::vec3 frameScale = bossHpBar->getTransform().getScale();
+        float     fullWidth = frameScale.x; 
+
+        float currentHP = static_cast<float>(boss->getHealth());
+        float maxHP = static_cast<float>(boss->getMaxHealth());
+        if (maxHP <= 0.0f) maxHP = 1.0f; 
+
+        float hpPct = glm::clamp(currentHP / maxHP, 0.0f, 1.0f);
+
+        float fillWidth = fullWidth * hpPct;
+        float frameLeftEdge = framePos.x - (fullWidth * 0.5f);
+        float fillCenterX = frameLeftEdge + (fillWidth * 0.5f);
+
+        glm::vec3 fillPos = { fillCenterX, framePos.y, framePos.z };
+
+        bossHpFill->getTransform().setScale({ fillWidth, frameScale.y, 0.0f });
+        bossHpFill->getTransform().setPosition(fillPos);
+    }
+
+    glm::vec3 nameOffset = { 0.0f, 3.5f, 0.0f };
+    bossNameText->getTransform().setPosition(camPos + nameOffset);
+
     if (killCount == 1 && !once) {
-        vector <glm::vec3> l2;
-        l2.push_back(glm::vec3(boss->getTransform().getPosition().x - 1.2f, boss->getTransform().getPosition().y + 0.5f, 0.0f));
-        postFight = new ChatBubble("../Resource/Texture/StoryStuff/postBossFight.txt", player, l2, objectsList);
-        
+        vector<glm::vec3> l2;
+        l2.push_back(glm::vec3(
+            boss->getTransform().getPosition().x - 1.2f,
+            boss->getTransform().getPosition().y + 0.5f,
+            0.0f
+        ));
+        postFight = new ChatBubble(
+            "../Resource/Texture/StoryStuff/postBossFight.txt",
+            player, l2, objectsList
+        );
         once = true;
     }
     else if (killCount == 1) {
@@ -161,6 +213,7 @@ void LevelAct12::levelUpdate() {
             door->setActive(true);
         }
     }
+
     if (end) {
         timefade -= GameEngine::getInstance()->getTime()->getDeltaTime();
         if (timefade < 0.0f) {
@@ -170,7 +223,6 @@ void LevelAct12::levelUpdate() {
 
     UIobject->updateUI(player);
 }
-
 void LevelAct12::levelDraw() {
     GameEngine::getInstance()->render(objectsList);
 
@@ -192,7 +244,6 @@ void LevelAct12::levelFree() {
 void LevelAct12::levelUnload() {
     GameEngine::getInstance()->clearMesh();
     GameEngine::getInstance()->getRenderer()->setClearColor(0.1f, 0.1f, 0.1f);
-    //cout << "Unload Level" << endl;
 }
 
 void LevelAct12::handleKey(InputManager& input) {
@@ -291,6 +342,7 @@ void LevelAct12::handleKey(InputManager& input) {
             end = true;
         }
     }
+	UIobject->handleInput(input, player);
 }
 
 void LevelAct12::signalFromEngine() {

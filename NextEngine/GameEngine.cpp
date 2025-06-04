@@ -160,6 +160,10 @@ void GameEngine::stopMusic() {
 	audioEngine.stopMusic();
 }
 
+void GameEngine::stopSfx() {
+	audioEngine.stopAllSoundEffects();
+}
+
 void GameEngine::signalToCurrentLevel() {
 	stateController->getCurrentLevel()->signalFromEngine();
 }

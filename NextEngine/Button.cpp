@@ -84,6 +84,7 @@ void Button::handleKeyboardInput(int key, bool isKeyPressed) {
         if (isKeyPressed && !isPressed) {
             isPressed = true;
             setState(ButtonState::PRESSED);
+            GameEngine::getInstance()->getAudioEngine().playSoundEffectByName("click.wav");
         }
         else if (!isKeyPressed) {
             isPressed = false;

@@ -37,7 +37,7 @@ public:
 	GLRenderer * getRenderer();
 	GameStateController* getStateController();
 	Time* getTime();
-	InputManager* getInputHandler();// Getter for input handler
+	InputManager* getInputHandler();
 	void init(int width, int height);
 	void updateEngineComponent();
 	void setDrawArea(float left, float right, float bottom, float top);
@@ -64,6 +64,9 @@ public:
 	void playSoundEffect(const std::string& fileName, int loop = 0);
 	void playMusic(const std::string& fileName, int loop = -1);
 	void stopMusic();
+	void stopSfx();
 	
 	void signalToCurrentLevel();
+
+	AudioEngine& getAudioEngine() { return audioEngine; }
 };

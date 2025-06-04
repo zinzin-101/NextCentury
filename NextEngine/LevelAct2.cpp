@@ -137,6 +137,8 @@ void LevelAct2::levelDraw() {
 }
 
 void LevelAct2::levelFree() {
+    GameEngine::getInstance()->stopMusic();
+    GameEngine::getInstance()->stopSfx();
     for (DrawableObject* obj : objectsList) {
         delete obj;
     }

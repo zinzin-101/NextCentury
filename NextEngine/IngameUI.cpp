@@ -49,6 +49,7 @@ void IngameUI::hideAllUI() {
     potionIcon1->getTransform().setScale(glm::vec3(0.0f));
     potionIcon2->getTransform().setScale(glm::vec3(0.0f));
     potionIcon3->getTransform().setScale(glm::vec3(0.0f));
+	pauseText->getTransform().setScale(glm::vec3(0.0f));
 }
 
 void IngameUI::updateHealthStaminaUI(PlayerObject* playerObject) {
@@ -138,6 +139,7 @@ void IngameUI::updateHealthStaminaUI(PlayerObject* playerObject) {
     }
 }
 void IngameUI::updateAmmoUI(PlayerObject* playerObject) {
+    if (hideGunUI) return;
     Animation* ammoAnim = ammoIcon->getAnimationComponent();
     ammoAnim->setPaused(false);
 
@@ -184,8 +186,18 @@ void IngameUI::showPauseMenu() {
 
     applyTransforms(
         deathBlackdrop->getTransform(),
-        { camPos.x + deathBlackdropBasePos.x, camPos.y + deathBlackdropBasePos.y, camPos.z + deathBlackdropBasePos.z },
+        { camPos.x + deathBlackdropBasePos.x,
+          camPos.y + deathBlackdropBasePos.y,
+          camPos.z + deathBlackdropBasePos.z },
         deathBlackdropBaseScale
+    );
+
+    applyTransforms(
+        pauseText->getTransform(),
+        { camPos.x + pauseTextBasePos.x,
+          camPos.y + pauseTextBasePos.y,
+          camPos.z + pauseTextBasePos.z },
+        pauseTextBaseScale
     );
 
     glm::vec3 btnScale = { 1.5f, 0.5f, 0.0f };
@@ -206,7 +218,10 @@ void IngameUI::showPauseMenu() {
     );
 }
 
+
 void IngameUI::showDeathMenu(PlayerObject* playerObject) {
+    if (isdeathMenuDeactivate)
+        return;
     hideAllUI();
 
     applyTransforms(
@@ -240,6 +255,7 @@ void IngameUI::showDeathMenu(PlayerObject* playerObject) {
 }
 
 void IngameUI::updatePotionUI(PlayerObject* playerObject) {
+    if (hidePotionUI) return;
     if (!playerObject) return;
 
     int count = playerObject->getCurrentNumOfPotion();
@@ -386,6 +402,11 @@ void IngameUI::initUI(std::list<DrawableObject*>& objectsList) {
     ammoIcon->setTexture("../Resource/Texture/UI/Ingame/Bullet2SpritesheetFix.png");
     ammoIcon->initAnimation(MAX_BULLETS + 1, 1);
 
+	pauseText = new TexturedObject("PauseText");
+	pauseText->setTexture("../Resource/Texture/UI/Setting/PAUSE.png");
+	pauseText->getTransform().setScale(glm::vec3(0.0f));
+	objectsList.push_back(pauseText);
+
     Animation* ammoAnim = ammoIcon->getAnimationComponent();
     for (int i = 0; i <= MAX_BULLETS; ++i) {
         std::string s = "ammo" + std::to_string(i);
@@ -405,7 +426,8 @@ void IngameUI::updateUI(PlayerObject* playerObject) {
         showPauseMenu();
         ammoIcon->getAnimationComponent()->setPaused(true);
         return;
-    }
+	}
+	else pauseText->getTransform().setScale(glm::vec3(0.0f));
 
     if (playerObject && playerObject->getHealth() > 0) {
         deathBlackdrop->getTransform().setScale(glm::vec3(0.0f));
@@ -430,7 +452,7 @@ void IngameUI::updateUI(PlayerObject* playerObject) {
 }
 
 void IngameUI::handleInput(InputManager& input, PlayerObject* playerObject) {
-    if (input.getButtonDown(SDLK_q)) {
+    if (input.getButtonDown(SDLK_ESCAPE)) {
         isPaused = !isPaused;
         if (isPaused) {
             GameEngine::getInstance()->pauseTime();

@@ -1,4 +1,4 @@
-#include "pch.h"
+﻿#include "pch.h"
 #include "Audio.h"
 #include <iostream>
 #include <vector>
@@ -281,13 +281,15 @@ void AudioEngine::adjustMusicVolume(int amount) {
 		newVolume = MIX_MAX_VOLUME;
 	}
 	else {
-		newVolume = currentMusicVolume + amount;
+		newVolume = currentVolume + amount;
 	}
 
 	currentMusicVolume = newVolume;
 	Mix_VolumeMusic(newVolume);
 	std::cout << "New music volume: " << currentMusicVolume << std::endl;
 }
+
+
 
 void AudioEngine::setSoundEffectVolume(int value) {
 	if ((value >= 0) && (value <= 128)) {
@@ -328,4 +330,9 @@ void AudioEngine::printVolume() {
 void AudioEngine::stopMusic() {
 	Music music;
 	music.stop();
+	Mix_HaltMusic();
+}
+
+void AudioEngine::stopAllSoundEffects() {
+	Mix_HaltChannel(-1);
 }

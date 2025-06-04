@@ -17,6 +17,7 @@ enum GameState {
 	GS_ACT12,
 	GS_ACT13,
 	GS_ACT14,
+	GS_MAINMENU,
 	GS_CREDIT,
 	
 

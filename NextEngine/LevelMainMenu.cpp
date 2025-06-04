@@ -22,6 +22,7 @@ void LevelMainMenu::levelInit() {
 
 void LevelMainMenu::levelUpdate() {
     updateObjects(objectsList);
+    UIobject->updateUI();
 }
 
 void LevelMainMenu::levelDraw() {
@@ -29,6 +30,8 @@ void LevelMainMenu::levelDraw() {
 }
 
 void LevelMainMenu::levelFree() {
+    GameEngine::getInstance()->stopMusic();
+    GameEngine::getInstance()->stopSfx();
     for (DrawableObject* obj : objectsList) {
         delete obj;
     }
@@ -47,4 +50,11 @@ void LevelMainMenu::handleKey(InputManager& input) {
     if (input.getButtonDown(SDLK_s)) UIobject->handleInput(SDLK_s);
     if (input.getButtonDown(SDLK_RETURN)) UIobject->handleInput(SDLK_RETURN);
     if (input.getButtonDown(SDLK_SPACE)) UIobject->handleInput(SDLK_SPACE);
+    if (input.getButtonDown(SDLK_q)) UIobject->handleInput(SDLK_q);
+    if (input.getButtonDown(SDLK_TAB))    UIobject->handleInput(SDLK_TAB);
+    if (input.getButtonDown(SDLK_ESCAPE)) UIobject->handleInput(SDLK_ESCAPE);
+    if (input.getButtonDown(SDLK_b)) GameEngine::getInstance()->playMusic("BGMAct1.wav", 1);
+    if (input.getButtonDown(SDLK_v)) GameEngine::getInstance()->playSoundEffect("Rolling.wav", 1);
+
+
 }
