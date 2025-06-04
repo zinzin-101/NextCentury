@@ -8,7 +8,7 @@ namespace ElivaStat {
 	constexpr float FURY_COOLDOWN_DURATION = 0.5f;
 	constexpr float DAMAGE_REDUCTION_ARMOR_BUFF = 0.5f;
 
-	constexpr int MAX_HEALTH = 200;
+	constexpr int MAX_HEALTH = 250;
 	constexpr int HEALTH_TO_BEGIN_SERUM_INJECT = MAX_HEALTH * 0.6f;
 	constexpr int HEALTH_TO_BEGIN_FURY = MAX_HEALTH * 0.25f;
 
