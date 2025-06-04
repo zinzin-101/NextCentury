@@ -207,6 +207,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_169EDA054D76478C992A55EC8FBC9703"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_16ED332B9BDC4934BFF7D92454359C78"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -352,6 +358,12 @@
         "Entry"
         {
         "MsmKey" = "8:_27065DF028D5438BB9E10E52D71E8985"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_27359BC5861B4F8EB7F251ACECBCEDBB"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -526,6 +538,12 @@
         "Entry"
         {
         "MsmKey" = "8:_32920C2633244ACABC19483B69D7A892"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_32E44061C9624DD5AE5B144B61CBBF7C"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -855,6 +873,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_5285208636D34F5CA18C24484D4AFEE7"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_5288C01B3F8B46628D22F617B409E8E5"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -1024,6 +1048,12 @@
         "Entry"
         {
         "MsmKey" = "8:_672D6BE3D35E4597B24F450C42DC3C68"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_67B3865ED90E4D28B8FC2C109184E266"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -1413,6 +1443,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_9460D17E208A464CAB5D576577F68EDD"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_947300E5708D4BD08E4465D3A418EB7C"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -1498,6 +1534,12 @@
         "Entry"
         {
         "MsmKey" = "8:_9EC54DAFF9914F06AA8E952DD664358F"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_A17B8013110941F1957ABA36416A1EDC"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -1755,6 +1797,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_CFDCB6A458CF4F3BB303310BACA4A213"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_D29E5821AF224A949AFECEAB42300C2B"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -2001,6 +2049,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_EB9E73FAD683408EB1D0266E3E1507C8"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_EBB05738E4CE4E93B16C808209F13F85"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -2020,6 +2074,12 @@
         "Entry"
         {
         "MsmKey" = "8:_ECF63D917E6548CA9326E2B34553F862"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_ED1FEC8959F54757AAAE8F18F7EEE45E"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -2152,6 +2212,12 @@
         "Entry"
         {
         "MsmKey" = "8:_FEB1C2BD40DA49AEACC3776D06D74E8C"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_FF4D10EF636E4C788CACDB2B09169884"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -2868,6 +2934,26 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_169EDA054D76478C992A55EC8FBC9703"
+            {
+            "SourcePath" = "8:..\\..\\GameBuild\\NextCenturyReleases\\NextCenturyBetaPrecompiledBuild\\Release\\SDL2_ttf.dll"
+            "TargetName" = "8:SDL2_ttf.dll"
+            "Tag" = "8:"
+            "Folder" = "8:_EE016482F9B64F35A2039BA3ECC776DE"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_16ED332B9BDC4934BFF7D92454359C78"
             {
             "SourcePath" = "8:..\\..\\GameBuild\\NextCenturyReleases\\NextCenturyBetaPrecompiledBuild\\Resource\\Texture\\UI\\Ingame\\Enemy_HP_Fill.png"
@@ -3354,6 +3440,26 @@
             "TargetName" = "8:Rolling.wav"
             "Tag" = "8:"
             "Folder" = "8:_6B63CC7DE20D4A389F0B10286E58770E"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_27359BC5861B4F8EB7F251ACECBCEDBB"
+            {
+            "SourcePath" = "8:..\\..\\GameBuild\\NextCenturyReleases\\NextCenturyBetaPrecompiledBuild\\Release\\libfreetype-6.dll"
+            "TargetName" = "8:libfreetype-6.dll"
+            "Tag" = "8:"
+            "Folder" = "8:_EE016482F9B64F35A2039BA3ECC776DE"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -3934,6 +4040,26 @@
             "TargetName" = "8:BS_P01_Bed.png"
             "Tag" = "8:"
             "Folder" = "8:_8BFEF5668FAE468589A6DDBF87A8A9CF"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_32E44061C9624DD5AE5B144B61CBBF7C"
+            {
+            "SourcePath" = "8:..\\..\\GameBuild\\NextCenturyReleases\\NextCenturyBetaPrecompiledBuild\\Release\\libjpeg-9.dll"
+            "TargetName" = "8:libjpeg-9.dll"
+            "Tag" = "8:"
+            "Folder" = "8:_EE016482F9B64F35A2039BA3ECC776DE"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -5028,6 +5154,26 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_5285208636D34F5CA18C24484D4AFEE7"
+            {
+            "SourcePath" = "8:..\\..\\GameBuild\\NextCenturyReleases\\NextCenturyBetaPrecompiledBuild\\Release\\libtiff-5.dll"
+            "TargetName" = "8:libtiff-5.dll"
+            "Tag" = "8:"
+            "Folder" = "8:_EE016482F9B64F35A2039BA3ECC776DE"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_5288C01B3F8B46628D22F617B409E8E5"
             {
             "SourcePath" = "8:..\\..\\GameBuild\\NextCenturyReleases\\NextCenturyBetaPrecompiledBuild\\Resource\\Texture\\RealOutskirt\\Outskirt_P07_Mid3.png"
@@ -5594,6 +5740,26 @@
             "TargetName" = "8:Blackdrop.png"
             "Tag" = "8:"
             "Folder" = "8:_DCA194969F43439490D660F74E765898"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_67B3865ED90E4D28B8FC2C109184E266"
+            {
+            "SourcePath" = "8:..\\..\\GameBuild\\NextCenturyReleases\\NextCenturyBetaPrecompiledBuild\\Release\\SDL2_image.dll"
+            "TargetName" = "8:SDL2_image.dll"
+            "Tag" = "8:"
+            "Folder" = "8:_EE016482F9B64F35A2039BA3ECC776DE"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -6888,6 +7054,26 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_9460D17E208A464CAB5D576577F68EDD"
+            {
+            "SourcePath" = "8:..\\..\\GameBuild\\NextCenturyReleases\\NextCenturyBetaPrecompiledBuild\\Release\\zlib1.dll"
+            "TargetName" = "8:zlib1.dll"
+            "Tag" = "8:"
+            "Folder" = "8:_EE016482F9B64F35A2039BA3ECC776DE"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_947300E5708D4BD08E4465D3A418EB7C"
             {
             "SourcePath" = "8:..\\..\\GameBuild\\NextCenturyReleases\\NextCenturyBetaPrecompiledBuild\\Resource\\Texture\\UI\\Credit\\Blackdrop.png"
@@ -7174,6 +7360,26 @@
             "TargetName" = "8:DoorAct2.png"
             "Tag" = "8:"
             "Folder" = "8:_64B76992559947E795215F805EFA9FA1"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_A17B8013110941F1957ABA36416A1EDC"
+            {
+            "SourcePath" = "8:..\\..\\GameBuild\\NextCenturyReleases\\NextCenturyBetaPrecompiledBuild\\Release\\SDL2.dll"
+            "TargetName" = "8:SDL2.dll"
+            "Tag" = "8:"
+            "Folder" = "8:_EE016482F9B64F35A2039BA3ECC776DE"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -8028,6 +8234,26 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_CFDCB6A458CF4F3BB303310BACA4A213"
+            {
+            "SourcePath" = "8:..\\..\\GameBuild\\NextCenturyReleases\\NextCenturyBetaPrecompiledBuild\\Release\\glew32.dll"
+            "TargetName" = "8:glew32.dll"
+            "Tag" = "8:"
+            "Folder" = "8:_EE016482F9B64F35A2039BA3ECC776DE"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_D29E5821AF224A949AFECEAB42300C2B"
             {
             "SourcePath" = "8:..\\..\\GameBuild\\NextCenturyReleases\\NextCenturyBetaPrecompiledBuild\\Resource\\Texture\\UI\\Ingame\\Sword.png"
@@ -8848,6 +9074,26 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_EB9E73FAD683408EB1D0266E3E1507C8"
+            {
+            "SourcePath" = "8:..\\..\\GameBuild\\NextCenturyReleases\\NextCenturyBetaPrecompiledBuild\\Release\\libwebp-7.dll"
+            "TargetName" = "8:libwebp-7.dll"
+            "Tag" = "8:"
+            "Folder" = "8:_EE016482F9B64F35A2039BA3ECC776DE"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_EBB05738E4CE4E93B16C808209F13F85"
             {
             "SourcePath" = "8:..\\..\\GameBuild\\NextCenturyReleases\\NextCenturyBetaPrecompiledBuild\\Resource\\Audio\\RawImport\\Sounds\\Character\\MC\\MC_converted\\Sound_Attack_Heavy.wav"
@@ -8914,6 +9160,26 @@
             "TargetName" = "8:NextCenturyTitle.png"
             "Tag" = "8:"
             "Folder" = "8:_0B09CFB9F8404F29B044558D19B34CCE"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_ED1FEC8959F54757AAAE8F18F7EEE45E"
+            {
+            "SourcePath" = "8:..\\..\\GameBuild\\NextCenturyReleases\\NextCenturyBetaPrecompiledBuild\\Release\\SDL2_mixer.dll"
+            "TargetName" = "8:SDL2_mixer.dll"
+            "Tag" = "8:"
+            "Folder" = "8:_EE016482F9B64F35A2039BA3ECC776DE"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -9354,6 +9620,26 @@
             "TargetName" = "8:ENMB_P05_Door3.png"
             "Tag" = "8:"
             "Folder" = "8:_C366E9EFDA6547978EC5C3FE02C2F184"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_FF4D10EF636E4C788CACDB2B09169884"
+            {
+            "SourcePath" = "8:..\\..\\GameBuild\\NextCenturyReleases\\NextCenturyBetaPrecompiledBuild\\Release\\libpng16-16.dll"
+            "TargetName" = "8:libpng16-16.dll"
+            "Tag" = "8:"
+            "Folder" = "8:_EE016482F9B64F35A2039BA3ECC776DE"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -9896,7 +10182,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Next Century"
         "ProductCode" = "8:{272EF897-7C33-4C7E-ACF0-247894E8921E}"
-        "PackageCode" = "8:{D7429066-9DD6-45EA-9293-739742690983}"
+        "PackageCode" = "8:{438B24D1-14E8-4661-8B34-124FB6AD18A9}"
         "UpgradeCode" = "8:{9BAC7EA7-69E0-41E7-8A83-B54FCF0BFB9F}"
         "AspNetVersion" = "8:2.0.50727.0"
         "RestartWWWService" = "11:FALSE"
