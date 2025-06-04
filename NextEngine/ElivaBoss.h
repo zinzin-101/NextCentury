@@ -34,10 +34,12 @@ namespace ElivaStat {
 	constexpr float POISON_CLOUD_TIME_PER_FRAME = 0.0833f;
 	constexpr float SERUM_INJECT_TIME_PER_FRAME = 0.1667f;
 	constexpr float RAPID_BURST_TIME_PER_FRAME = 0.1667f;
-	constexpr float DEAD_TIME_PER_FRAME = 0.1667f;
+	constexpr float DEAD_TIME_PER_FRAME = 0.3333f;
 
 	constexpr float FURY_BAYONET_SLASH_TIME_PER_FRAME = 0.0833f;
 	constexpr float FURY_BLINKING_TIME_PER_FRAME = 0.0833f;
+
+	constexpr float DEATH_DIALOGUE_TIMER = 4.0f;
 }
 
 class ElivaBoss;
@@ -60,7 +62,8 @@ class ElivaBoss : public EnemyObject {
 			Stunned,
 			FuryBayonetSlash,
 			FuryCooldown,
-			Dead
+			Dead,
+			Intro
 		};
 
 		struct State {
@@ -84,10 +87,12 @@ class ElivaBoss : public EnemyObject {
 		virtual void takeDamage(int damage);
 		virtual void onDeath(list<DrawableObject*>& objectsList);
 
+		void signalCanStart();
 		void breakShield();
 		void signalStun();
 		void signalStagger();
 
+		bool getCanStart() const;
 		Phase getCurrentPhase() const;
 		float getCoolDownTimer() const;
 		float getDistanceFromPlayer() const;
@@ -104,7 +109,7 @@ class ElivaBoss : public EnemyObject {
 		unsigned int normalSprite;
 		unsigned int shieldedSprite;
 
-		State states[14];
+		State states[15];
 		State* currentState;
 		Phase currentPhase;
 
@@ -114,6 +119,8 @@ class ElivaBoss : public EnemyObject {
 
 		DamageCollider<PlayerObject>* bayonetCollider;
 		PoisonCloudCollider* poisonCollider;
+
+		bool canStart;
 
 		bool canBlink;
 
@@ -129,8 +136,10 @@ class ElivaBoss : public EnemyObject {
 
 		bool canUsePoisonCloud;
 
+		bool hasSignalDeath;
+
 		void processState();
-		void (ElivaBoss::*statesHandler[14])();
+		void (ElivaBoss::*statesHandler[15])();
 
 		void handleCooldown();
 		void handleBlink();
@@ -146,4 +155,5 @@ class ElivaBoss : public EnemyObject {
 		void handleFuryBayonetSlash();
 		void handleFuryCooldown();
 		void handleDead();
+		void handleIntro();
 };

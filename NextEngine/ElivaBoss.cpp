@@ -9,6 +9,9 @@ ElivaBoss::ElivaBoss(): EnemyObject(DefaultEnemyStat::ELIVA_INFO) {
 	this->setMaxHealth(ElivaStat::MAX_HEALTH);
 	this->setHealth(ElivaStat::MAX_HEALTH);
 
+	normalSprite = 0;
+	shieldedSprite = 0;
+
 	cooldownTimer = ElivaStat::COOLDOWN_DURATION;
 	stunnedTimer = 0.0f;
 	hasShield = false;
@@ -17,6 +20,9 @@ ElivaBoss::ElivaBoss(): EnemyObject(DefaultEnemyStat::ELIVA_INFO) {
 	canBlink = false;
 	isDead = false;
 	canUsePoisonCloud = true;
+
+	canStart = false;
+	hasSignalDeath = false;
 
 	for (int i = 0; i < 3; i++) {
 		rifleProjectiles[i] = nullptr;
@@ -41,6 +47,7 @@ ElivaBoss::ElivaBoss(): EnemyObject(DefaultEnemyStat::ELIVA_INFO) {
 	states[BossState::FuryBayonetSlash] = State(BossState::FuryBayonetSlash);
 	states[BossState::FuryCooldown] = State(BossState::FuryCooldown);
 	states[BossState::Dead] = State(BossState::Dead);
+	states[BossState::Intro] = State(BossState::Intro);
 
 	states[BossState::Cooldown].nextStateAndTransitionCheck[&states[BossState::Blink]] = (&StateTransition::cooldownToBlink);
 
@@ -72,7 +79,9 @@ ElivaBoss::ElivaBoss(): EnemyObject(DefaultEnemyStat::ELIVA_INFO) {
 
 	states[BossState::FuryCooldown].nextStateAndTransitionCheck[&states[BossState::FuryBlink]] = (&StateTransition::cooldownToBlink);
 
-	currentState = &states[BossState::Cooldown];
+	states[BossState::Intro].nextStateAndTransitionCheck[&states[BossState::Blink]] = (&StateTransition::introToBlink);
+
+	currentState = &states[BossState::Intro];
 
 	statesHandler[BossState::Cooldown] = &ElivaBoss::handleCooldown;
 	statesHandler[BossState::Blink] = &ElivaBoss::handleBlink;
@@ -88,6 +97,7 @@ ElivaBoss::ElivaBoss(): EnemyObject(DefaultEnemyStat::ELIVA_INFO) {
 	statesHandler[BossState::FuryBayonetSlash] = &ElivaBoss::handleFuryBayonetSlash;
 	statesHandler[BossState::FuryCooldown] = &ElivaBoss::handleFuryCooldown;
 	statesHandler[BossState::Dead] = &ElivaBoss::handleDead;
+	statesHandler[BossState::Intro] = &ElivaBoss::handleIntro;
 
 	currentPhase = Phase::First;
 }
@@ -606,14 +616,46 @@ void ElivaBoss::handleFuryCooldown(){
 void ElivaBoss::handleDead() {
 	this->getAnimationComponent()->setState("Dead");
 
-	GameEngine::getInstance()->getTime()->setTimeScale(0.5f);
+	//GameEngine::getInstance()->getTime()->setTimeScale(0.5f);
 
-	const Animation::State& animState = this->getAnimationComponent()->getCurrentAnimationStateRef();
+	static float timer = ElivaStat::DEATH_DIALOGUE_TIMER;
+	static bool isDialoguePlaying = false;
+
+	Animation::State& animState = this->getAnimationComponent()->getCurrentAnimationStateRef();
+	int currentFrame = animState.currentFrame;
+
+	if (currentFrame == 0) {
+		timer = ElivaStat::DEATH_DIALOGUE_TIMER;
+		isDialoguePlaying = false;
+
+		return;
+	}
+
+	if (currentFrame == 3 + 1 && !isDialoguePlaying) {
+		animState.paused = true;
+		isDialoguePlaying = true;
+
+		return;
+	}
+
+	if (isDialoguePlaying) {
+		timer -= GameEngine::getInstance()->getTime()->getDeltaTime();
+
+		if (timer <= 0.0f) {
+			animState.paused = false;
+			isDialoguePlaying = false;
+		}
+	}
 	
 	if (!animState.isPlaying) {
 		this->setHealth(0);
-		GameEngine::getInstance()->getTime()->setTimeScale(1.0f);
+		//GameEngine::getInstance()->getTime()->setTimeScale(1.0f);
 	}
+}
+
+void ElivaBoss::handleIntro() {
+	this->getAnimationComponent()->setState("Idle");
+	this->setCanTakeDamage(false);
 }
 
 void ElivaBoss::postUpdateBehavior() {}
@@ -680,7 +722,16 @@ void ElivaBoss::takeDamage(int damage) {
 	LivingEntity::takeDamage(static_cast<int>(damage));
 }
 
-void ElivaBoss::onDeath(list<DrawableObject*>& objectsList) {}
+void ElivaBoss::onDeath(list<DrawableObject*>& objectsList) {
+	if (!hasSignalDeath) {
+		hasSignalDeath = true;
+		GameEngine::getInstance()->signalToCurrentLevel();
+	}
+}
+
+void ElivaBoss::signalCanStart() {
+	this->canStart = true;
+}
 
 void ElivaBoss::breakShield() {
 	if (hasShield) {
@@ -722,6 +773,10 @@ void ElivaBoss::signalStagger() {
 	currentState = &states[BossState::Cooldown];
 	cooldownTimer = ElivaStat::STAGGERED_DURATION;
 	bayonetCollider->setActive(false);
+}
+
+bool ElivaBoss::getCanStart() const {
+	return this->canStart;
 }
 
 ElivaBoss::Phase ElivaBoss::getCurrentPhase() const {

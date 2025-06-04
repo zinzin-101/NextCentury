@@ -28,4 +28,6 @@ namespace StateTransition {
 
 	bool stunnedToCooldown(ElivaBoss* boss);
 	bool stunnedToFuryCooldown(ElivaBoss* boss);
+
+	bool introToBlink(ElivaBoss* boss);
 }
