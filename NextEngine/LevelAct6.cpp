@@ -299,8 +299,6 @@ void LevelAct6::handleKey(InputManager& input) {
         if (input.getButton(SDLK_d) && !input.getButton(SDLK_a)) player->move(glm::vec2(1, 0));
         if (input.getButtonDown(SDLK_j)) player->parryAttack();
         if (input.getMouseButtonDown(SDL_BUTTON_RIGHT)) player->parryAttack();
-        if (input.getButtonDown(SDLK_b)) player->takeDamage(10);
-		if (input.getButtonDown(SDLK_r)) player->useHealthPotion();
 
         /// Use processed key here ///
         if (keyHeldDuration[SDLK_k] < PlayerStat::DURATION_TO_START_HEAVY_ATTACK) {

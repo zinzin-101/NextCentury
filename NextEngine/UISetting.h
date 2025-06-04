@@ -21,6 +21,10 @@ public:
     void updateUI();
     void handleInput(SDL_Keycode key);
     void hideAllSettings();
+	void showAllSettings();
+
+    bool isClosed() const { return justClosed; }
+    void resetClosedFlag() { justClosed = false; }
 
 private:
     enum class Page {
@@ -76,4 +80,5 @@ private:
     float computeFillFraction(int currentVol) {
         return float(currentVol) / float(MIX_MAX_VOLUME);
     }
+    bool justClosed = false;
 };
