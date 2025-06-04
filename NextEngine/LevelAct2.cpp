@@ -181,7 +181,7 @@ void LevelAct2::handleKey(InputManager& input) {
     if (input.getButton(SDLK_a) && !input.getButton(SDLK_d)) player->move(glm::vec2(-1, 0));
     if (input.getButton(SDLK_d) && !input.getButton(SDLK_a)) player->move(glm::vec2(1, 0));
 
-    if (input.getButtonDown(SDLK_e)) {
+    if (input.getButtonDown(SDLK_f)) {
         if (door->getIsClickable()) {
             //sfx
             //transition

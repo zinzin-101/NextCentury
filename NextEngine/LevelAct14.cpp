@@ -260,7 +260,7 @@ void LevelAct14::handleKey(InputManager& input) {
     }
 
     //Dialogue interact
-    if (input.getButtonDown(SDLK_e)) {
+    if (input.getButtonDown(SDLK_f)) {
         
     }
     UIobject->handleInput(input, player);

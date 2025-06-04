@@ -289,7 +289,7 @@ void LevelAct3::handleKey(InputManager& input) {
         }
     }
 
-    if (input.getButtonDown(SDLK_e)) {
+    if (input.getButtonDown(SDLK_f)) {
 
         //cout << board->isClickedOnce << " : " << desk->isClickedOnce << " : " << chest->isClickedOnce << " : " << shelf->isClickedOnce << endl;
 
@@ -326,7 +326,7 @@ void LevelAct3::handleKey(InputManager& input) {
             desk->setDescriptionActive(!desk->getDescriptionActive());
         }
     }
-    if (input.getButtonDown(SDLK_r)) {
+    if (input.getButtonDown(SDLK_e)) {
         player->useHealthPotion();
     }
     UIobject->handleInput(input, player);

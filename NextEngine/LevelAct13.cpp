@@ -267,7 +267,7 @@ void LevelAct13::handleKey(InputManager& input) {
         }
     }
 
-    if (input.getButtonDown(SDLK_e)) {
+    if (input.getButtonDown(SDLK_f)) {
         if (door->getIsClickable()) {
             if (com->isClickedOnce) {
                 fb->FadeToBlack();

@@ -223,18 +223,22 @@ void LevelAct6::levelUpdate() {
         }
     }
 
-    bool k = false;
-    for (std::list<DrawableObject*>::iterator itr = objectsList.begin(); itr != objectsList.end(); ++itr) {
-        EnemyObject* enemy = dynamic_cast<EnemyObject*>(*itr);
-        if (enemy != NULL) {
-            k = true;
-        }
-        else {
-            
-        }
-    }
-    if (!k) {
-        //cout << "WHAT" << endl;
+    //bool k = false;
+    //for (std::list<DrawableObject*>::iterator itr = objectsList.begin(); itr != objectsList.end(); ++itr) {
+    //    EnemyObject* enemy = dynamic_cast<EnemyObject*>(*itr);
+    //    if (enemy != NULL) {
+    //        k = true;
+    //    }
+    //    else {
+    //        
+    //    }
+    //}
+    //if (!k) {
+    //    //cout << "WHAT" << endl;
+    //    door->setActive(true);
+    //}
+
+    if (killCount >= 6) {
         door->setActive(true);
     }
 
@@ -360,7 +364,7 @@ void LevelAct6::handleKey(InputManager& input) {
             }
         }
 
-        if (input.getButtonDown(SDLK_e)) {
+        if (input.getButtonDown(SDLK_f)) {
             if (door->getIsClickable()) {
                 //sfx
                 //transition
@@ -368,7 +372,7 @@ void LevelAct6::handleKey(InputManager& input) {
                 end = true;
             }
         }
-        if (input.getButtonDown(SDLK_r)) {
+        if (input.getButtonDown(SDLK_e)) {
             player->useHealthPotion();
         }
     }
