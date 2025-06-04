@@ -293,7 +293,7 @@ void LevelAct3::handleKey(InputManager& input) {
         //cout << board->isClickedOnce << " : " << desk->isClickedOnce << " : " << chest->isClickedOnce << " : " << shelf->isClickedOnce << endl;
 
         if (door->getIsClickable()) {
-            if (((board->isClickedOnce && desk->isClickedOnce) && (chest->isClickedOnce && shelf->isClickedOnce))) {
+            if (((board->isClickedOnce && desk->isClickedOnce) && (chest->isClickedOnce && shelf->isClickedOnce)) && !door->isClickedOnce) {
                 done->reActivateDialogue("../Resource/Texture/StoryStuff/ProtagThoughtsAct3/done.txt");
             }
             else {
