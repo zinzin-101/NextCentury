@@ -105,7 +105,7 @@
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="TriangleMeshVbo.cpp" />
     <ClCompile Include="UI.cpp" />
-    <ClCompile Include="UIMainMenu.cpp" />
+    <ClCompile Include="UISetting.cpp" />
     <ClCompile Include="Wailer.cpp" />
     <ClCompile Include="Zealot.cpp" />
   </ItemGroup>
@@ -205,7 +205,7 @@
     <ClInclude Include="Transform.h" />
     <ClInclude Include="TriangleMeshVbo.h" />
     <ClInclude Include="UI.h" />
-    <ClInclude Include="UIMainMenu.h" />
+    <ClInclude Include="UISetting.h" />
     <ClInclude Include="UpgradeSystem.h" />
     <ClInclude Include="Wailer.h" />
     <ClInclude Include="Zealot.h" />

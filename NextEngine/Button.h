@@ -45,4 +45,7 @@ public:
     void handleKeyboardInput(int key, bool isKeyPressed);
 
     void render(glm::mat4 globalModelTransform) override;
+    std::function<void()> getOnClickCallback() const {
+        return onClick;
+    }
 };
