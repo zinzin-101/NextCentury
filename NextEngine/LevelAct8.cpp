@@ -80,7 +80,7 @@ void LevelAct8::levelInit() {
     player->getDamageCollider()->setFollowOffset(glm::vec3(1.0f, -0.2f, 0));
     player->setIsFacingRight(true);
 
-    //UIobject->initUI(objectsList);
+    UIobject->initUI(objectsList);
 
     fb = new FadeBlack(1.0f);
     objectsList.emplace_back(fb);
@@ -133,7 +133,7 @@ void LevelAct8::levelUpdate() {
         GameEngine::getInstance()->getRenderer()->updateCamera();
     }
 
-    //UIobject->updateUI(*player, camPos);
+    UIobject->updateUI(player);
 }
 
 void LevelAct8::levelDraw() {

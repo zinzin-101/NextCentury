@@ -104,7 +104,7 @@ void LevelAct7::levelInit() {
     player->getDamageCollider()->setFollowOffset(glm::vec3(1.0f, -0.2f, 0));
     player->setIsFacingRight(true);
 
-    //UIobject->initUI(objectsList);
+    UIobject->initUI(objectsList);
 
     fb = new FadeBlack(1.0f);
     objectsList.emplace_back(fb);
@@ -135,7 +135,7 @@ void LevelAct7::levelUpdate() {
 
     // Placeholder death logic
 
-    //UIobject->updateUI(*player, camPos);
+    UIobject->updateUI(player);
 }
 
 void LevelAct7::levelDraw() {

@@ -107,7 +107,7 @@ void LevelAct9::levelInit() {
     objectsList.emplace_back(fb);
     fb->FadeToTransparent();
 
-    //UIobject->initUI(objectsList);
+    UIobject->initUI(objectsList);
 
     GameEngine::getInstance()->getRenderer()->getCamera()->setPosition(glm::vec3(3.8f, 0.0f, 0.0f));
 
@@ -147,7 +147,7 @@ void LevelAct9::levelUpdate() {
     if (!k) {
         door->setActive(true);
     }
-    //UIobject->updateUI(*player, camPos);
+    UIobject->updateUI(player);
 }
 
 void LevelAct9::levelDraw() {

@@ -46,6 +46,7 @@ void GameStateController::loadLevel() {
 	cout << gameStateCurr << endl;
 	switch (gameStateCurr) {
 		case GameState::GS_MENU:
+			//currentLevel = new LevelMainMenu();
 			currentLevel = new LevelAct14();
 			break;
 		case GameState::GS_ACT1:
@@ -83,6 +84,15 @@ void GameStateController::loadLevel() {
 			break;
 		case GameState::GS_ACT12:
 			currentLevel = new LevelAct12();
+			break;
+		case GameState::GS_ACT13:
+			currentLevel = new LevelAct13();
+			break;
+		case GameState::GS_ACT14:
+			currentLevel = new LevelAct14();
+			break;
+		case GameState::GS_CREDIT:
+			currentLevel = new LevelAct14();
 			break;
 
 		default:

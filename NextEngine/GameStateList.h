@@ -15,6 +15,9 @@ enum GameState {
 	GS_ACT10,
 	GS_ACT11,
 	GS_ACT12,
+	GS_ACT13,
+	GS_ACT14,
+	GS_CREDIT,
 	
 
 	// special game state. Do not change

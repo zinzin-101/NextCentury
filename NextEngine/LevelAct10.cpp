@@ -61,19 +61,9 @@ void LevelAct10::levelInit() {
     bed->getTransform().setScale((640.0f / pictureHeight) * 9.0f, scaleY);
     objectsList.emplace_back(bed);
 
-
-
-    //float height = 8.0f;
-    //float width = height * 1.467889908256881;
-    //for (auto a : objectsList) {
-    //    a->getTransform().setScale(width, height);
-    //}
     Level::importTransformData(objectsList, "act10", false);
 
 
-    //player->getTransform().setScale(4.166f, 2.5f);
-    //player->getColliderComponent()->getTransform().translate(0.0f, -0.44f);
-    //player->getColliderComponent()->setDimension(0.25f, 0.65f);
     player->getTransform().setPosition(glm::vec3(-7.3f, -1.6f, 0.0f));
     objectsList.emplace_back(player);
 
@@ -89,11 +79,6 @@ void LevelAct10::levelInit() {
     objectsList.emplace_back(backGround);
 
     isStop = false;
-
-    //ParallaxObject* Fog = new ParallaxObject(0.0f, -0.1f, 100.0f, false, player, true, pictureWidth, pictureHeight);
-    //Fog->setTexture("../Resource/Texture/OutskirtParallax/OSKT_P01_Fog.png");
-    //Fog->setRenderOpacity(0.25f);
-    //objectsList.emplace_back(Fog);
 
     GameEngine::getInstance()->getRenderer()->getCamera()->setTarget(player);
     GameEngine::getInstance()->getRenderer()->setToggleViewport(false);
@@ -114,7 +99,7 @@ void LevelAct10::levelInit() {
     //fog->setTexture("../Resource/Texture/OutskirtParallax/OSKT_P01_Fog.png");
     //objectsList.emplace_back(fog);
 
-    //UIobject->initUI(objectsList);
+    UIobject->initUI(objectsList);
 
     fb = new FadeBlack(1.0f);
     objectsList.emplace_back(fb);
@@ -142,7 +127,7 @@ void LevelAct10::levelUpdate() {
             loadNextLevel();
         }
     }
-    //UIobject->updateUI(*player, camPos);
+    UIobject->updateUI(player);
 }
 
 void LevelAct10::levelDraw() {

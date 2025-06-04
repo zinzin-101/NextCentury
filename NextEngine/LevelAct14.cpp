@@ -143,7 +143,7 @@ void LevelAct14::levelUpdate() {
             loadNextLevel();
         }
     }
-    //UIobject->updateUI(*player, camPos);
+    //UIobject->updateUI(player);
 }
 
 void LevelAct14::levelDraw() {

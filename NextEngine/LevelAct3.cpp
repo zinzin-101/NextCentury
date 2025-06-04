@@ -132,7 +132,7 @@ void LevelAct3::levelInit() {
     done = new ProtagThoughts("../Resource/Texture/StoryStuff/ProtagThoughtsAct3/done.txt", player);
     objectsList.emplace_back(done);
 
-    //UIobject->initUI(objectsList);
+    UIobject->initUI(objectsList);
 
     fb = new FadeBlack(1.0f);
     objectsList.emplace_back(fb);
@@ -168,7 +168,7 @@ void LevelAct3::levelUpdate() {
         }
     }
 
-    //UIobject->updateUI(*player, camPos);
+    UIobject->updateUI(player);
 }
 
 void LevelAct3::levelDraw() {

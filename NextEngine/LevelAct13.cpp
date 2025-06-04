@@ -121,7 +121,7 @@ void LevelAct13::levelInit() {
 
     player->getDamageCollider()->setFollowOffset(glm::vec3(1.0f, -0.2f, 0));
 
-    //UIobject->initUI(objectsList);
+    UIobject->initUI(objectsList);
 
     fb = new FadeBlack(1.0f);
     objectsList.emplace_back(fb);
@@ -152,7 +152,7 @@ void LevelAct13::levelUpdate() {
             loadNextLevel();
         }
     }
-    //UIobject->updateUI(*player, camPos);
+    UIobject->updateUI(player);
 }
 
 void LevelAct13::levelDraw() {
