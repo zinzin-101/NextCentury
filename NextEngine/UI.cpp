@@ -48,7 +48,10 @@ void UI::initUI(std::list<DrawableObject*>& objectsList) {
             GameEngine::getInstance()->getStateController()->gameStateNext = last;
         }
         else {
-            std::cout << "No saved game found; cannot continue.\n";
+            //std::cout << "No saved game found; cannot continue.\n";
+            Level::resetGameStateSave();
+            last = Level::getLastGameStateData();
+            GameEngine::getInstance()->getStateController()->gameStateNext = last;
         }
         });
     buttons[0]->setRenderOrder(27);
