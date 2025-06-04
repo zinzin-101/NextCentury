@@ -467,4 +467,6 @@ void UISetting::hideAllSettings() {
     for (auto* b : buttons) {
         if (b) b->getTransform().setScale({ 0.0f, 0.0f, 0.0f });
     }
+
+    GameEngine::getInstance()->getAudioEngine().saveVolumeToFile();
 }
