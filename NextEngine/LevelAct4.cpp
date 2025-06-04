@@ -78,6 +78,7 @@ void LevelAct4::levelInit() {
     ground->getTransform().setScale(scaleX, scaleY);
     objectsList.emplace_back(ground);
 
+
     //float height = 8.0f;
     //float width = height * 2.7778f;
     //for (auto a : objectsList) {
@@ -122,7 +123,7 @@ void LevelAct4::levelInit() {
     //player->getTransform().scales(1.0f, 1.0f);
     //player->move(glm::vec2(-1, 0));
 
-    UIobject->initUI(objectsList, player);
+    UIobject->initUI(objectsList);
 
     fb = new FadeBlack(1.0f);
     objectsList.emplace_back(fb);
@@ -160,7 +161,7 @@ void LevelAct4::levelUpdate() {
     }
     // at the very start of the game freeze everything and chatEnemy is "YOU HAVE MAGIC" THEN fight...
 
-    UIobject->updateUI();
+    UIobject->updateUI(player);
 }
 
 void LevelAct4::levelDraw() {
@@ -273,6 +274,7 @@ void LevelAct4::handleKey(InputManager& input) {
             }
         }
     }
+	UIobject->handleInput(input,player);   
 }
 
 void LevelAct4::signalFromEngine() {

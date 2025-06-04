@@ -110,7 +110,7 @@ void LevelAlphaNMMN::levelInit() {
 
     player->getDamageCollider()->setFollowOffset(glm::vec3(1.0f, -0.2f, 0));
 
-    UIobject->initUI(objectsList, player);
+    UIobject->initUI(objectsList);
 
     GameEngine::getInstance()->getRenderer()->getCamera()->setOffset(glm::vec3(0.0f, -0.5f, 0.0f));
     GameEngine::getInstance()->getRenderer()->setToggleViewport(true);
