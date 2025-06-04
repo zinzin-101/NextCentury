@@ -19,7 +19,7 @@ private:
 	Mix_Chunk* m_chunk = nullptr;
 	int        m_channel = -1;
 	// m_channel holds the channel index returned by the last Mix_PlayChannel call.
-	// If m_channel >= 0 and Mix_Playing(m_channel) != 0, we won’t play again.
+	// If m_channel >= 0 and Mix_Playing(m_channel) != 0, we wonï¿½t play again.
 };
 
 /// @brief This class provides an interface to play a music

@@ -1,4 +1,5 @@
-﻿#include "pch.h"
+﻿#define _CRT_SECURE_NO_WARNINGS
+#include "pch.h"
 #include "Audio.h"
 #include <iostream>
 #include <vector>
@@ -6,6 +7,8 @@
 #include <fstream>
 
 #define MIX_MIN_VOLUME 0
+
+static const std::filesystem::path SAVE_PATH = std::filesystem::path(std::getenv("LOCALAPPDATA")) / "NextCentury" / "Audio";
 
 void SoundEffect::play(int loop)
 {
@@ -50,7 +53,10 @@ void Music::resume()
 
 AudioEngine::AudioEngine()
 {
-	std::ifstream volumeFile("../Resource/Audio/volumeFile.txt");
+	std::filesystem::create_directories(SAVE_PATH);
+
+	std::filesystem::path path = SAVE_PATH / "volumeFile.dat";
+	std::ifstream volumeFile(path);
 
 	if (volumeFile.is_open()) {
 		volumeFile >> currentSoundEffectVolume >> currentMusicVolume;
@@ -68,7 +74,8 @@ AudioEngine::AudioEngine()
 		volumeFile.close();
 	}
 	else {
-		std::ofstream newVolumeFile("../Resource/Audio/volumeFile.txt");
+		std::filesystem::path path = SAVE_PATH / "volumeFile.dat";
+		std::ofstream newVolumeFile(path);
 		if (newVolumeFile.is_open()) {
 			currentSoundEffectVolume = MIX_MAX_VOLUME / 2;
 			currentMusicVolume = MIX_MAX_VOLUME / 2;
@@ -311,15 +318,16 @@ void AudioEngine::setMusicVolume(int value) {
 }
 
 void AudioEngine::saveVolumeToFile() {
-	std::ofstream volumeFile("../Resource/Audio/volumeFile.txt");
+	std::filesystem::path path = SAVE_PATH / "volumeFile.dat";
+	std::ofstream volumeFile(path);
 
 	if (volumeFile.is_open()) {
 		volumeFile << currentSoundEffectVolume << "\n" << currentMusicVolume << "\n";
 		volumeFile.close();
-		std::cout << "Volume settings saved to ../Resource/Audio/volumeFile.txt" << std::endl;
+		//std::cout << "Volume settings saved to ../Resource/Audio/volumeFile.txt" << std::endl;
 	}
 	else {
-		std::cerr << "Error: Could not save volume to file: ../Resource/Audio/volumeFile.txt" << std::endl;
+		std::cerr << "Error: Could not save volume to file" << std::endl;
 	}
 }
 

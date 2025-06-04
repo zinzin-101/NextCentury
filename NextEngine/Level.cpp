@@ -1,7 +1,11 @@
+#define _CRT_SECURE_NO_WARNINGS
 #include "Level.h"
 #include "CollisionHandler.h"
 #include "MapLoader.h"
 #include <fstream>
+#include <filesystem>
+
+static const std::filesystem::path SAVE_PATH = std::filesystem::path(std::getenv("LOCALAPPDATA")) / "NextCentury" / "data";
 
 void Level::levelLoad() {
     SquareMeshVbo* square = new SquareMeshVbo();
@@ -938,7 +942,10 @@ void Level::LoadContent() {
 void Level::saveCurrentGameState() {
     GameState currentGameState = GameEngine::getInstance()->getStateController()->gameStateCurr;
 
-    std::ofstream output("../Resource/data/GlobalSave.dat");
+    std::filesystem::create_directories(SAVE_PATH);
+    std::filesystem::path path = SAVE_PATH / "GlobalSave.dat";
+    std::ofstream output(path);
+    //std::ofstream output("../Resource/data/GlobalSave.dat");
 
     if (!output) {
         std::cout << "Failed to write save" << std::endl;
@@ -951,7 +958,9 @@ void Level::saveCurrentGameState() {
 }
 
 GameState Level::getLastGameStateData() {
-    std::ifstream input("../Resource/data/GlobalSave.dat");
+    std::filesystem::create_directories(SAVE_PATH);
+    std::filesystem::path path = SAVE_PATH / "GlobalSave.dat";
+    std::ifstream input(path);
 
     if (!input) {
         return GameState::GS_NONE;
@@ -968,7 +977,9 @@ GameState Level::getLastGameStateData() {
 }
 
 void Level::resetGameStateSave() {
-    std::ofstream output("../Resource/data/GlobalSave.dat");
+    std::filesystem::create_directories(SAVE_PATH);
+    std::filesystem::path path = SAVE_PATH / "GlobalSave.dat";
+    std::ofstream output(path);
 
     if (!output) {
         std::cout << "Failed to write save" << std::endl;
