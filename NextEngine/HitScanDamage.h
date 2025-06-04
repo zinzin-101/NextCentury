@@ -25,14 +25,14 @@ class HitScanDamage : public RayObject {
 template <class TargetEntity>
 HitScanDamage<TargetEntity>::HitScanDamage(glm::vec3 pos, glm::vec3 dir, float length, int damage, float lifespan) :
 	RayObject(pos, dir, length), damage(damage), multiplier(1), lifespan(lifespan), used(false), closestEntity(nullptr) {
-	this->setDrawCollider(true);
+	//this->setDrawCollider(true);
 	std::cout << "spawn hitscan, damage = " << damage << std::endl;
 }
 
 template <class TargetEntity>
 HitScanDamage<TargetEntity>::HitScanDamage(glm::vec3 pos, glm::vec3 dir, float length, int damage, int multiplier, float lifespan) :
 	RayObject(pos, dir, length), damage(damage), multiplier(multiplier), lifespan(lifespan), used(false), closestEntity(nullptr) {
-	this->setDrawCollider(true);
+	//this->setDrawCollider(true);
 	std::cout << "spawn hitscan, damage = " << damage * multiplier << std::endl;
 }
 

@@ -2,6 +2,7 @@
 
 #include "Level.h"
 #include "ObjectHeader.h"
+#include "Audio.h"
 
 class LevelAct1 : public Level {
 private:
@@ -9,8 +10,20 @@ private:
     list<DrawableObject*> UIobjectsList;
     PlayerObject* player = nullptr;
     IngameUI* UIobject;
-    glm::vec3 camPos = glm::vec3(0.0f, 0.0f, 0.0f);
+    queue<Dialogue*> dialogueList;
+    list<InteractableObject*> interactableList;
+    InteractableObject* it = nullptr;
+    ProtagThoughts* p1 = nullptr;
+    ProtagThoughts* p2 = nullptr;
+    int interactCount = 0;
+    FadeBlack* fb;
+    bool isFadingToBlack = false;
+    float fadetime = 1.0f;
 
+    AudioEngine m_audio;                      
+    SoundEffect m_jumpSfx;                     
+    SoundEffect m_deathSfx;                   
+    Music       m_backgroundMusic;            
 public:
     virtual void levelLoad();
     virtual void levelInit();

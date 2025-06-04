@@ -1,19 +1,13 @@
 #pragma once
-
-#include "SquareMeshVbo.h"
-#include "DrawableObject.h"
+#include "TexturedObject.h"
 #include "Collider.h"
-#include "SimpleObject.h"
 #include "TextObject.h"
 #include "InputManager.h"
-#include "TextObject.h"
+#include "Animation.h"
 #include <functional>
-#include <iostream>
-#include "CollisionHandler.h"
 
-class Button : public SimpleObject {
+class Button : public TexturedObject {
 public:
-   
     enum class ButtonState {
         NORMAL,
         HOVERED,
@@ -27,17 +21,17 @@ private:
     bool isHovered;
     bool isPressed;
     bool isFocused;
-    glm::vec3 color;
     TextObject textObject;
+    Collider* collider;
 
     std::function<void()> onClick;
     std::function<void()> onHover;
 
 public:
     Button();
-    Button(std::string name, std::string label);
+    Button(const std::string& name, const std::string& texturePath);
 
-    std::string getLabel() const;
+    const std::string& getLabel() const;
     void setLabel(const std::string& newLabel);
 
     ButtonState getState() const;
@@ -49,9 +43,6 @@ public:
     void setFocused(bool focused);
     bool getFocused() const;
     void handleKeyboardInput(int key, bool isKeyPressed);
-
-    void setColor(float r, float g, float b);
-    void setColor(glm::vec3 color);
 
     void render(glm::mat4 globalModelTransform) override;
 };

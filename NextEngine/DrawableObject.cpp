@@ -291,6 +291,10 @@ void DrawableObject::setRenderOpacity(float opacity) {
 	this->renderOpacity = opacity;
 }
 
+float DrawableObject::getRenderOpacity() {
+	return this->renderOpacity;
+}
+
 void DrawableObject::setRenderOrder(int renderOrder) {
 	this->renderOrder = renderOrder;
 }

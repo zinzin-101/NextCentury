@@ -11,10 +11,10 @@ void LevelAlphaTest::levelLoad() {
 }
 
 void LevelAlphaTest::levelInit() {
-    UIobject = new IngameUI();
+    counter = 0;
     GameEngine::getInstance()->getRenderer()->setClearColor(0.1f, 0.1f, 0.1f);
 
-    ParallaxObject* background = new ParallaxObject(0.0f, 0.0f, 550.0f, false, player, true);
+    ParallaxObject* background = new ParallaxObject(0.0f, 0.0f, 550.0f, false, player, true, 1000, 360);
     background->setTexture("../Resource/Texture/OutskirtParallax/OSKT_P09_Sky.png");
     objectsList.emplace(objectsList.begin(), background);
 
@@ -22,27 +22,27 @@ void LevelAlphaTest::levelInit() {
     //spaceShip->setTexture("../Resource/Texture/OutskirtParallax/OSKT_P08_Spaceship.png");
     //objectsList.emplace_back(spaceShip);
 
-    ParallaxObject* Mountain1 = new ParallaxObject(0.0f, 1.5f, 250.0f, false, player, true);
+    ParallaxObject* Mountain1 = new ParallaxObject(0.0f, 1.5f, 250.0f, false, player, true, 1000, 360);
     Mountain1->setTexture("../Resource/Texture/OutskirtParallax/OSKT_P06_Mountain01.png");
     objectsList.emplace_back(Mountain1);
 
-    ParallaxObject* Mountain2 = new ParallaxObject(0.0f, 1.25f, 200.0f, false, player, true);
+    ParallaxObject* Mountain2 = new ParallaxObject(0.0f, 1.25f, 200.0f, false, player, true, 1000, 360);
     Mountain2->setTexture("../Resource/Texture/OutskirtParallax/OSKT_P07_Mountain02.png");
     objectsList.emplace_back(Mountain2);
 
-    ParallaxObject* MidGround1 = new ParallaxObject(0.0f, 0.75f, 150.0f, false, player, true);
+    ParallaxObject* MidGround1 = new ParallaxObject(0.0f, -1.75f, 150.0f, false, player, true, 1000, 360);
     MidGround1->setTexture("../Resource/Texture/OutskirtParallax/OSKT_P05_MidGround01.png");
     objectsList.emplace_back(MidGround1);
 
-    ParallaxObject* MidGround2 = new ParallaxObject(0.0f, 0.0f, 80.0f, false, player, true);
+    ParallaxObject* MidGround2 = new ParallaxObject(0.0f, -1.0f, 80.0f, false, player, true, 1000, 360);
     MidGround2->setTexture("../Resource/Texture/OutskirtParallax/OSKT_P04_MidGround02.png");
     objectsList.emplace_back(MidGround2);
 
-    ParallaxObject* MidGround3 = new ParallaxObject(0.0f, 0.0f, 50.0f, false, player, true);
+    ParallaxObject* MidGround3 = new ParallaxObject(0.0f, -1.0f, 50.0f, false, player, true, 1000, 360);
     MidGround3->setTexture("../Resource/Texture/OutskirtParallax/Mid3.png");
     objectsList.emplace_back(MidGround3);
 
-    ParallaxObject* Ground = new ParallaxObject(0.0f, 0.0f, 0.0f, false, player, true);
+    ParallaxObject* Ground = new ParallaxObject(0.0f, -1.0f, 0.0f, false, player, true, 1000, 360);
     Ground->setTexture("../Resource/Texture/OutskirtParallax/OSKT_P02_Ground.png");
     objectsList.emplace_back(Ground);
 
@@ -55,10 +55,10 @@ void LevelAlphaTest::levelInit() {
     objectsList.emplace_back(player);
 
 
-    ParallaxObject* Fog = new ParallaxObject(0.0f, 0.0f, 100.0f, false, player, true);
-    Fog->setTexture("../Resource/Texture/OutskirtParallax/OSKT_P01_Fog.png");
-    Fog->setRenderOpacity(0.25f);
-    objectsList.emplace_back(Fog);
+    //ParallaxObject* Fog = new ParallaxObject(0.0f, 0.0f, 100.0f, false, player, true);
+    //Fog->setTexture("../Resource/Texture/OutskirtParallax/OSKT_P01_Fog.png");
+    //Fog->setRenderOpacity(0.25f);
+    //objectsList.emplace_back(Fog);
 
     GameEngine::getInstance()->getRenderer()->getCamera()->setTarget(player);
     GameEngine::getInstance()->getRenderer()->setToggleViewport(false);
@@ -76,7 +76,6 @@ void LevelAlphaTest::levelInit() {
     player->getDamageCollider()->setFollowOffset(glm::vec3(1.0f, -0.2f, 0));
     player->getDamageCollider()->setDrawCollider(true);
 
-    UIobject->initUI(objectsList);
 
     GameEngine::getInstance()->getRenderer()->getCamera()->setOffset(glm::vec3(0.0f, -0.5f, 0.0f));
     GameEngine::getInstance()->getRenderer()->setToggleViewport(true);
@@ -88,10 +87,9 @@ void LevelAlphaTest::levelInit() {
 void LevelAlphaTest::levelUpdate() {
     updateObjects(objectsList);
    
-    GameEngine::getInstance()->getRenderer()->updateCamera(glm::vec3());
-     
-    GameEngine::getInstance()->getRenderer()->updateCamera(camPos);
-    UIobject->updateUI(*player, camPos);
+    GameEngine::getInstance()->getRenderer()->updateCamera();
+
+    std::cout << "test counter: " << counter << std::endl;
 }
 
 void LevelAlphaTest::levelDraw() {
@@ -108,7 +106,6 @@ void LevelAlphaTest::levelFree() {
     }
     objectsList.clear();
 
-    delete UIobject;
 }
 
 void LevelAlphaTest::levelUnload() {
@@ -203,4 +200,8 @@ void LevelAlphaTest::handleKey(InputManager& input) {
     if (input.getButtonDown(SDLK_e)) {
         player->useHealthPotion();
     }
+}
+
+void LevelAlphaTest::signalFromEngine() {
+    counter++;
 }

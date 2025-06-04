@@ -74,7 +74,8 @@ namespace StateTransition {
 			return false;
 		}
 
-		return boss->getCanUsePoisonCloud();
+		float distance = boss->getDistanceFromPlayer();
+		return boss->getCanUsePoisonCloud() && distance <= ElivaStat::BAYONET_SLASH_RANGE;
 	}
 
 	bool rifleShotToBayonetSlash(ElivaBoss* boss) {
@@ -239,5 +240,15 @@ namespace StateTransition {
 		}
 
 		return boss->getCurrentPhase() == ElivaBoss::Phase::Third;
+	}
+
+	bool introToBlink(ElivaBoss* boss) {
+		bool canStart = boss->getCanStart();
+
+		if (canStart) {
+			boss->setCanTakeDamage(true);
+		}
+
+		return canStart;
 	}
 }

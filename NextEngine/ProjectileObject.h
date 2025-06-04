@@ -46,8 +46,11 @@ ProjectileObject<TargetEntity>::ProjectileObject(LivingEntity* owner, int damage
 	this->getColliderComponent()->setTrigger(true);
 	(lifespan <= 0.0f) ? canDespawn = false : canDespawn = true;
 
+	this->getTransform().setScale(0.5f, 0.25f);
+	this->setColor(glm::vec3(0.0f, 0.9f, 0.0f));
+
 	/// test ///
-	particleProps = ParticleProperties(this->transform.getPosition(), glm::normalize(this->physics->getVelocity()), glm::vec2(1.0f, 1.0f), glm::vec3(),
+	particleProps = ParticleProperties(this->transform.getPosition(), glm::normalize(this->physics->getVelocity()), glm::vec2(1.0f, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f),
 		0.2f, 0.1f, 0.05f, 1.0f);
 	emitter = new ParticleSystem();
 }
@@ -81,7 +84,7 @@ void ProjectileObject<TargetEntity>::update(std::list<DrawableObject*>& objectsL
 	if (emitter != nullptr) {
 
 		if (ticks % 5 == 0) {
-			particleProps = ParticleProperties(this->transform.getPosition(), glm::normalize(this->physics->getVelocity()), glm::vec2(1.0f, 1.0f), glm::vec3(),
+			particleProps = ParticleProperties(this->transform.getPosition(), glm::normalize(this->physics->getVelocity()), glm::vec2(1.0f, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f),
 				0.2f, 0.1f, 0.05f, 1.0f);
 			particleProps.position = this->getTransform().getPosition();
 			emitter->emit(particleProps);

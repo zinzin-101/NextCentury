@@ -196,7 +196,7 @@ void Level::drawImGui(std::list<DrawableObject*>& objectList) {
     GameEngine::getInstance()->getRenderer()->setToggleViewport(!enableFreeViewPort);
 
     if (!GameEngine::getInstance()->getIsGamePaused()) {
-        //pauseGame ? GameEngine::getInstance()->getTime()->setTimeScale(0.0f) : GameEngine::getInstance()->getTime()->setTimeScale(1.0f);
+        pauseGame ? GameEngine::getInstance()->getTime()->setTimeScale(0.0f) : GameEngine::getInstance()->getTime()->setTimeScale(1.0f);
     }
 
     if (ImGui::Button("Reset Scene")) {
@@ -204,7 +204,7 @@ void Level::drawImGui(std::list<DrawableObject*>& objectList) {
     }
     ImGui::SameLine();
     if (ImGui::Button("Switch Scene")) {
-        GameEngine::getInstance()->getStateController()->gameStateNext = (GameState)((GameEngine::getInstance()->getStateController()->gameStateCurr + 1) % 3);
+        GameEngine::getInstance()->getStateController()->gameStateNext = (GameState)((GameEngine::getInstance()->getStateController()->gameStateCurr + 1) % 9);
     }
 
     static char stringBuffer[50] = "\0";
@@ -601,6 +601,35 @@ void Level::drawImGui(std::list<DrawableObject*>& objectList) {
     }
     ImGui::End();
 
+    ImGui::Begin("Load/Save Test");
+    if (ImGui::Button("Save current scene index")) {
+        Level::saveCurrentGameState();
+    }
+
+    static GameState currentData = GameState::GS_NONE;
+    if (ImGui::Button("Load scene index from save")) {
+        currentData = Level::getLastGameStateData();
+    }
+    ImGui::Text("Loaded data: %d", (int)currentData);
+
+    if (ImGui::Button("Reset scene index save")) {
+        Level::resetGameStateSave();
+    }
+    ImGui::End();
+
+    ImGui::Begin("Signal To Start Boss");
+
+    if (ImGui::Button("Signal")) {
+        for (DrawableObject* obj : objectList) {
+            ElivaBoss* boss = dynamic_cast<ElivaBoss*>(obj);
+            if (boss) {
+                boss->signalCanStart();
+            }
+        }
+    }
+
+    ImGui::End();
+
     ImGui::Render();
 
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
@@ -608,7 +637,7 @@ void Level::drawImGui(std::list<DrawableObject*>& objectList) {
 #endif
 
 void Level::exportTransformData(std::list<DrawableObject*>& objectsList, std::string fileName) {
-    std::ofstream output("../Resource/output/" + fileName + ".txt");
+    std::ofstream output("../Resource/scenes/" + fileName + ".dat");
 
     if (!output) {
         std::cout << "Failed to write file" << std::endl;
@@ -673,7 +702,7 @@ void Level::exportTransformData(std::list<DrawableObject*>& objectsList, std::st
 }
 
 void Level::importTransformData(std::list<DrawableObject*>& objectsList, std::string fileName, bool drawOutline) {
-    std::ifstream file("../Resource/output/" + fileName + ".txt");
+    std::ifstream file("../Resource/scenes/" + fileName + ".dat");
     if (!file) {
         std::cout << "Failed to read file" << std::endl;
         return;
@@ -888,21 +917,71 @@ void Level::readEnemyData(std::ifstream& file, std::string type, std::list<Drawa
     }
 }
 
-void Level::addLoadingScreen() {
-	blackLoadingScreen = new SimpleObject();
-	blackLoadingScreen->setName("BlackLoadingScreen");
-	blackLoadingScreen->getTransform().setPosition(0.0f, 0.0f);
-	blackLoadingScreen->getTransform().setScale(2000.0f, 2000.0f);
-	blackLoadingScreen->setDrawCollider(false);
-	blackLoadingScreen->setColor(0.0f, 0.0f, 0.0f);
-	objectsList.emplace_back(blackLoadingScreen);
+void Level::addLoadingScreen(std::list<DrawableObject*>& objectsList) {
+	blackLoadingScreen = SimpleObject();
+	blackLoadingScreen.setName("BlackLoadingScreen");
+	blackLoadingScreen.getTransform().setPosition(0.0f, 0.0f);
+	blackLoadingScreen.getTransform().setScale(20000.0f, 20000.0f);
+	blackLoadingScreen.setDrawCollider(false);
+	blackLoadingScreen.setColor(0.0f, 0.0f, 0.0f);
+	objectsList.emplace_back(&blackLoadingScreen);
 }
 
-void Level::removeLoadingScreen() {
-	objectsList.remove(blackLoadingScreen);
-	blackLoadingScreen = nullptr;
+void Level::removeLoadingScreen(std::list<DrawableObject*>& objectsList) {
+	objectsList.clear();
 }
 
 void Level::LoadContent() {
 
 }
+
+void Level::saveCurrentGameState() {
+    GameState currentGameState = GameEngine::getInstance()->getStateController()->gameStateCurr;
+
+    std::ofstream output("../Resource/data/GlobalSave.dat");
+
+    if (!output) {
+        std::cout << "Failed to write save" << std::endl;
+        return;
+    }
+
+    output << static_cast<int>(currentGameState);
+
+    output.close();
+}
+
+GameState Level::getLastGameStateData() {
+    std::ifstream input("../Resource/data/GlobalSave.dat");
+
+    if (!input) {
+        return GameState::GS_NONE;
+    }
+
+    std::string line;
+    std::getline(input, line);
+
+    GameState gameState = static_cast<GameState>(std::stoi(line));
+
+    input.close();
+
+    return gameState;
+}
+
+void Level::resetGameStateSave() {
+    std::ofstream output("../Resource/data/GlobalSave.dat");
+
+    if (!output) {
+        std::cout << "Failed to write save" << std::endl;
+        return;
+    }
+
+    output << static_cast<int>(GameState::GS_ACT1);
+
+    output.close();
+}
+
+void Level::loadNextLevel() {
+    GameEngine::getInstance()->getStateController()->gameStateNext = (GameState)((GameEngine::getInstance()->getStateController()->gameStateCurr + 1) % 9);
+}
+
+void Level::signalFromEngine() {}

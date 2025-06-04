@@ -20,7 +20,7 @@ class TexturedObject : virtual public DrawableObject
 		TexturedObject();
 		TexturedObject(std::string name);
 		~TexturedObject();
-		void setTexture(std::string path);
+		unsigned int setTexture(std::string path);
 		void initAnimation(int row, int column);
 		void render(glm::mat4 globalModelTransform);
 		Animation* getAnimationComponent();

@@ -17,6 +17,15 @@ void Camera::setPosition(const glm::vec3& pos) {
     position = pos;
 }
 
+void Camera::setDeadLimitBool(bool isDeadLimit) {
+    isUsingDeadLimit = isDeadLimit;
+}
+
+void Camera::setDeadLimitMinMax(float min, float max) {
+    deadLimitPosMin = min;
+    deadLimitPosMax = max;
+}
+
 void Camera::followTarget() {
     //cout << "target is set" << target->getTransform().getPosition().x << endl;
     if (target == nullptr) {
@@ -24,22 +33,34 @@ void Camera::followTarget() {
         return;
     }
     glm::vec3 newPos;
-    float x;
+    float x = position.x;;
     float y = target->getTransform().getPosition().y + offset.y;
     //cout << y << endl;
     
     if (GameEngine::getInstance()->getRenderer()->getIsViewportEnabled()) {
-        if (abs(target->getTransform().getPosition().x - position.x) > deadZoneX) {
-
-            if (target->getTransform().getPosition().x - position.x > 0) {
-                x = target->getTransform().getPosition().x - deadZoneX;
+        bool movable = true;
+        if (isUsingDeadLimit) {
+            if (abs(target->getTransform().getPosition().x - deadLimitPosMin) < deadZoneX + 1) { // Might need to change deadzone to some other number
+                movable = false;
             }
-            else {
-                x = target->getTransform().getPosition().x + deadZoneX;
+            if (abs(target->getTransform().getPosition().x - deadLimitPosMax) < deadZoneX + 1) {
+                movable = false;
             }
         }
-        else {
-            x = position.x;
+        
+        if (movable) {
+            if (abs(target->getTransform().getPosition().x - position.x) > deadZoneX) {
+
+                if (target->getTransform().getPosition().x - position.x > 0) {
+                    x = target->getTransform().getPosition().x - deadZoneX;
+                }
+                else {
+                    x = target->getTransform().getPosition().x + deadZoneX;
+                }
+            }
+            else {
+                x = position.x;
+            }
         }
     }
     else {

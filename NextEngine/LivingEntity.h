@@ -69,11 +69,12 @@ class LivingEntity : public TexturedObject {
         void setHealth(int hp);
         void setMaxHealth(int hp);
         void setCanTakeDamage(bool value);
+        void setIsFacingRight(bool value);
 
         int getHealth() const;
         int getMaxHealth() const;
         bool getCanTakeDamage() const;
-        bool getIsDead() const;
+        virtual bool getIsDead() const;
         bool getIsAlive() const;
         bool getIsStun() const;
         bool getIsFacingRight() const;

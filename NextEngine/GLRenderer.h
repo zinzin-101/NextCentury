@@ -89,7 +89,7 @@ public:
     void setGLViewport(int width, int height);
 
     void updateViewport(); 
-    void updateCamera(const glm::vec3& playerPosition);
+    void updateCamera();
     void applyViewMatrix();
     void render(list<DrawableObject*>& objList, bool clear = true);
     glm::vec3 getCamPos();
@@ -99,6 +99,10 @@ public:
     void drawCameraOutline();
     
     bool getIsViewportEnabled() const;
+
+	int getWindowWidth() const { return winWidth; }
+	int getWindowHeight() const { return winHeight; }
+
 };
 
 #endif

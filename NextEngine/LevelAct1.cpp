@@ -8,67 +8,79 @@ void LevelAct1::levelLoad() {
     SquareBorderMesh* border = new SquareBorderMesh();
     border->loadData();
     GameEngine::getInstance()->addMesh(SquareBorderMesh::MESH_NAME, border);
+
+
+    addLoadingScreen(objectsList);
+    levelDraw();
+    removeLoadingScreen(objectsList);
 }
 
 void LevelAct1::levelInit() {
     UIobject = new IngameUI();
     GameEngine::getInstance()->getRenderer()->setClearColor(0.1f, 0.1f, 0.1f);
 
+    float pictureWidth = 1920.0f;
+    float pictureHeight = 360.0f;
 
-
-    ParallaxObject* sky = new ParallaxObject(0.0f, 0.0f, 550.0f, false, player, true);
+    ParallaxObject* sky = new ParallaxObject(16.0f, 0.0f, 100.0f, false, player, true, pictureWidth, pictureHeight);
     sky->setTexture("../Resource/Texture/Act1/City_P01_Sky.png");
     objectsList.emplace(objectsList.begin(), sky);
 
-    ParallaxObject* city1 = new ParallaxObject(0.0f, -0.5f, 350.0f, false, player, true);
+    ParallaxObject* city1 = new ParallaxObject(16.0f, 0.0f, 50.0f, false, player, true, pictureWidth, pictureHeight);
     city1->setTexture("../Resource/Texture/Act1/City_P02_City1.png");
     objectsList.emplace_back(city1);
 
-    ParallaxObject* city2 = new ParallaxObject(0.0f, -0.5f, 300.0f, false, player, true);
+    ParallaxObject* city2 = new ParallaxObject(16.0f, 0.0f, 35.0f, false, player, true, pictureWidth, pictureHeight);
     city2->setTexture("../Resource/Texture/Act1/City_P03_City2.png");
     objectsList.emplace_back(city2);
 
-    ParallaxObject* city3 = new ParallaxObject(0.0f, -0.5f, 250.0f, false, player, true);
+    ParallaxObject* city3 = new ParallaxObject(16.0f, -0.5f, 30.0f, false, player, true, pictureWidth, pictureHeight);
     city3->setTexture("../Resource/Texture/Act1/City_P04_City3.png");
     objectsList.emplace_back(city3);
 
-    ParallaxObject* newsBoard = new ParallaxObject(0.0f, -1.75f, 150.0f, false, player, true);
+    ParallaxObject* newsBoard = new ParallaxObject(16.0f, -0.5f, 20.0f, false, player, true, pictureWidth, pictureHeight);
     newsBoard->setTexture("../Resource/Texture/Act1/City_P05_NewsBoardandBins.png");
-	newsBoard->getTransform().setScale(70.0f, 15.0f);
     objectsList.emplace_back(newsBoard);
 
-    ParallaxObject* lightPole = new ParallaxObject(0.0f, -1.25f, 100.0f, false, player, true);
+    ParallaxObject* lightPole = new ParallaxObject(16.0f, -0.5f, 15.0f, false, player, true, pictureWidth, pictureHeight);
     lightPole->setTexture("../Resource/Texture/Act1/City_P09_Lightpole.png");
     objectsList.emplace_back(lightPole);
 
-    ParallaxObject* car = new ParallaxObject(0.0f, -1.75f, 90.0f, false, player, true);
+    ParallaxObject* car = new ParallaxObject(16.0f, -0.5f, 10.0f, false, player, true, pictureWidth, pictureHeight);
     car->setTexture("../Resource/Texture/Act1/City_P10_Car.png");
     objectsList.emplace_back(car);
 
-    ParallaxObject* pole = new ParallaxObject(0.0f, -1.75f, 70.0f, false, player, true);
-    pole->setTexture("../Resource/Texture/Act1/City_P12_FGPole.png");
-    objectsList.emplace_back(pole);
-
-    ParallaxObject* fog = new ParallaxObject(0.0f, 0.0f, 60.0f, false, player, true);
+    ParallaxObject* fog = new ParallaxObject(16.0f, 1.0f, 60.0f, false, player, true, pictureWidth, pictureHeight);
     fog->setTexture("../Resource/Texture/Act1/City_P13_Fog.png");
     objectsList.emplace_back(fog);
 
-    ParallaxObject* ground = new ParallaxObject(0.0f, -1.75f, 0.0f, false, player, true);
+    ParallaxObject* ground = new ParallaxObject(16.0f, -0.5f, 0.0f, false, player, true, pictureWidth, pictureHeight);
     ground->setTexture("../Resource/Texture/Act1/City_P11_Ground.png");
     objectsList.emplace_back(ground);
 
-    for (auto a : objectsList) {
-        a->getTransform().setScale(35.0f,6.0f);
-    }
-
-    lightPole->getTransform().setScale(42.0f,8.0f);
-
-    Level::importTransformData(objectsList, "alpha1", false);
-
     player = new PlayerObject();
-    player->getTransform().setScale(4.166f, 2.5f);
-    player->getColliderComponent()->getTransform().translate(0.0f, -0.44f);
-    player->getColliderComponent()->setDimension(0.25f, 0.65f);
+
+    it = new InteractableObject("../Resource/Texture/StoryStuff/NeonBoardDescription.txt", player, "../Resource/Texture/StoryStuff/BoardNeon.png", objectsList);
+    it->getTransform().setPosition(glm::vec3(25.0f, -0.85f, 0.0f));
+    it->getTransform().setScale(glm::vec3(6.0f, 4.0f, 0.0f));
+    objectsList.emplace_back(it);
+
+	//float height = 7.0f; 
+	//float width = height * 5.3333333f;
+ //   for (auto a : objectsList) {
+ //       a->getTransform().setScale(width, height);
+ //   }
+
+
+ //   lightPole->getTransform().setScale(47.999999f, 9.0f);
+
+ //   sky->getTransform().setScale(500.f, 500.f);
+
+    Level::importTransformData(objectsList, "act1", false);
+
+    //player->getTransform().setScale(4.166f, 2.5f);
+    //player->getColliderComponent()->getTransform().translate(0.0f, -0.44f);
+    //player->getColliderComponent()->setDimension(0.25f, 0.65f);
     objectsList.emplace_back(player);
 
     GameEngine::getInstance()->getRenderer()->getCamera()->setTarget(player);
@@ -80,38 +92,70 @@ void LevelAct1::levelInit() {
         if (pObj != NULL) {
             pObj->setPlayer(player);
         }
+
+        LivingEntity* lObj = dynamic_cast<LivingEntity*>(obj);
+        if (lObj != NULL) {
+            lObj->setAffectedByLighting(true);
+        }
     }
 
     startObjects(objectsList);
 
     player->getDamageCollider()->setFollowOffset(glm::vec3(1.0f, -0.2f, 0));
+    player->getTransform().setPosition(glm::vec3( - 6.0f, -1.6f, 0.0f));
+
+    ParallaxObject* pole = new ParallaxObject(16.0f, 0.0f, 0.1f, false, player, true, pictureWidth, pictureHeight);
+    pole->setTexture("../Resource/Texture/Act1/City_P12_FGPole.png");
+    objectsList.emplace_back(pole);
+
+    p1 = new ProtagThoughts("../Resource/Texture/StoryStuff/ProtagThoughtsAct1/one.txt", player);
+    //objectsList.emplace_back(p1->getDialogueObject());
+    objectsList.emplace_back(p1);
+    p2 = new ProtagThoughts("../Resource/Texture/StoryStuff/ProtagThoughtsAct1/two.txt", player);
+    objectsList.emplace_back(p2);
+
+    fb = new FadeBlack(1.0f);
+    objectsList.emplace_back(fb);
+    fb->FadeToTransparent();
 
     //UIobject->initUI(objectsList);
+
+    GameEngine::getInstance()->getRenderer()->getCamera()->setPosition(glm::vec3(0.0f, 0.0f, 0.0f));
+
+    GameEngine::getInstance()->getRenderer()->getCamera()->setDeadLimitBool(true);
+    GameEngine::getInstance()->getRenderer()->getCamera()->setDeadLimitMinMax(-5.0f, 40.75f);
 
     GameEngine::getInstance()->getRenderer()->getCamera()->setOffset(glm::vec3(0.0f, -0.5f, 0.0f));
     GameEngine::getInstance()->getRenderer()->setToggleViewport(true);
 
     GameEngine::getInstance()->freezeGameForSeconds(0.5f);
-
 }
 
 void LevelAct1::levelUpdate() {
     updateObjects(objectsList);
 
-    GameEngine::getInstance()->getRenderer()->updateCamera(glm::vec3());
+    GameEngine::getInstance()->getRenderer()->updateCamera();
 
+    //Dialogue logics
+    if (player->getTransform().getPosition().x > -5.0f) {
+        p1->activateDialogue();
+    }
 
-    // Placeholder death logic
-    for (std::list<DrawableObject*>::iterator itr = objectsList.begin(); itr != objectsList.end(); ++itr) {
-        EnemyObject* enemy = dynamic_cast<EnemyObject*>(*itr);
-        if (enemy != NULL) {
-            if (enemy->getHealth() <= 0) {
-                DrawableObject::destroyObject(enemy);
-            }
+    if (interactCount == 2) {
+        p2->activateDialogue();
+    }
+
+    if (player->getTransform().getPosition().x > 39.0f && p2->getDialogueObject()->isEnd) {
+        if (!isFadingToBlack) {
+            fb->FadeToBlack();
+            isFadingToBlack = true;
+        }
+        fadetime -= GameEngine::getInstance()->getTime()->getDeltaTime();
+        if (fadetime < 0.0f) {
+            loadNextLevel();
         }
     }
 
-    GameEngine::getInstance()->getRenderer()->updateCamera(camPos);
     //UIobject->updateUI(*player, camPos);
 }
 
@@ -218,6 +262,28 @@ void LevelAct1::handleKey(InputManager& input) {
         }
         else {
             player->dodge();
+        }
+    }
+
+    //Dialogue interact
+    if (input.getButtonDown(SDLK_e)) {
+        
+        if (!dialogueList.empty()) {
+            Dialogue* currentDialogue = dialogueList.front();
+            if (currentDialogue->isDialogueActive) {
+                currentDialogue->nextSentence();
+                if (currentDialogue->sentences.empty()) {
+                    dialogueList.pop();
+                }
+            }
+        }
+
+        //InteractableObject* keep;
+        if (p1->getDialogueObject()->isEnd) {
+            if (it->getIsClickable()) {
+                interactCount++;
+                it->setDescriptionActive(!it->getDescriptionActive());
+            }
         }
     }
 }

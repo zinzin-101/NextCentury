@@ -138,6 +138,10 @@ void Animation::updateCurrentState() {
 		return;
 	}
 
+	if (currentState->paused) {
+		return;
+	}
+
 	if (currentState->currentFrame >= currentState->frameCount) {
 		if (currentState->canLoop) {
 			currentState->currentFrame = 0;
@@ -165,6 +169,10 @@ void Animation::setRandomFrame() {
 
 void Animation::setPaused(bool value) {
 	isPaused = value;
+}
+
+void Animation::setTexture(unsigned int& texture) {
+	this->texture = texture;
 }
 
 int Animation::getCurrentFrame() const {

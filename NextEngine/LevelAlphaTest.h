@@ -7,8 +7,9 @@ private:
     list<DrawableObject*> objectsList;
     list<DrawableObject*> UIobjectsList;
     PlayerObject* player = nullptr;
-    IngameUI* UIobject;
     glm::vec3 camPos = glm::vec3(0.0f, 0.0f, 0.0f);
+
+    int counter;
 
 public:
     virtual void levelLoad();
@@ -19,4 +20,6 @@ public:
     virtual void levelUnload();
 
     virtual void handleKey(InputManager& input);
+
+    virtual void signalFromEngine();
 };

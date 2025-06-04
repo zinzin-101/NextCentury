@@ -1,0 +1,4 @@
+ColliderObject,ColliderObject,0,-27.35,0,1,1,200,50,0,0,0,1,1
+ColliderObject,ColliderObject,-9.6,-1.5,0,1,5,1,2,0,0,0,1,1
+LightSource,LightSource,-2.8,1,0,1,1,1,10
+ColliderObject,ColliderObject,9.6,0,0,1,10,1,1,0,0,0,1,1

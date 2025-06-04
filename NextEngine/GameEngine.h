@@ -8,6 +8,7 @@
 #include "Time.h"
 #include "InputManager.h" 
 #include <SDL.h>
+#include "Audio.h"  
 
 using namespace std;
 
@@ -27,7 +28,10 @@ class GameEngine {
 	bool isGamePaused;
 	float prevTimeScale;
 
-	GameEngine();
+    AudioEngine audioEngine;
+
+    GameEngine();
+
 public:
 	static GameEngine* getInstance();
 	GLRenderer * getRenderer();
@@ -50,7 +54,16 @@ public:
 	void freezeGameForSeconds(float duration);
 	void pauseTimeForSeconds(float duration);
 	bool getIsGamePaused() const;
+	void pauseTime();
+	void resumeTime();
 
 	SDL_Window* getSDLWindow() const;
 	SDL_GLContext* getGLContextPtr() const;
+
+	void initAudio(const std::string& effectFolder, const std::string& musicFolder);
+	void playSoundEffect(const std::string& fileName, int loop = 0);
+	void playMusic(const std::string& fileName, int loop = -1);
+	void stopMusic();
+	
+	void signalToCurrentLevel();
 };

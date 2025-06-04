@@ -10,8 +10,14 @@
 #include "EnemyObject.h"
 #include "Audio.h"
 #include "ParallaxObject.h"
-#include "UI.h"
+#include "IngameUI.h"
+#include "InteractableObject.h"
 #include "Dialogue.h"
+#include "GameStateList.h"
+#include "ProtagThoughts.h"
+#include "GotItemText.h"
+#include "ChatBubble.h"
+#include "FadeBlack.h"
 
 namespace LevelConstant {
     constexpr float DEFAULT_BUFFER_DURATION = 0.3f;
@@ -23,8 +29,8 @@ private:
     list<DrawableObject*> objectsList;
     list<DrawableObject*> UIobjectsList;
     PlayerObject* player;
-    UI* UIobject;
-	SimpleObject* blackLoadingScreen;
+    IngameUI* UIobject;
+	SimpleObject blackLoadingScreen;
 
 protected:
     map<SDL_Keycode, float> keyHeldDuration;
@@ -44,6 +50,9 @@ public:
     virtual void levelDraw();
     virtual void levelFree();
     virtual void levelUnload();
+    void loadNextLevel();
+
+    virtual void signalFromEngine();
 
     virtual void handleKey(char key);
     virtual void handleKey(InputManager& input);
@@ -69,7 +78,11 @@ public:
     static void exportTransformData(std::list<DrawableObject*>& objectsList, std::string fileName);
     static void importTransformData(std::list<DrawableObject*>& objectsList, std::string fileName, bool drawOutline);
 
-	virtual void addLoadingScreen();
-	virtual void removeLoadingScreen();
+    static void saveCurrentGameState();
+    static GameState getLastGameStateData();
+    static void resetGameStateSave();
+
+	virtual void addLoadingScreen(std::list<DrawableObject*>& objectsList);
+	virtual void removeLoadingScreen(std::list<DrawableObject*>& objectsList);
 	virtual void LoadContent();
 };

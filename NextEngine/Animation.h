@@ -25,7 +25,7 @@ class Animation {
 			/// @param row the number of row in the source file of the animation
 			/// @param frameCount the number of frames in the animation
 			State(string name, int row, int startCol, int frameCount, bool canLoop, float timePerFrame) : name(name), row(row), startCol(startCol), 
-				frameCount(frameCount), currentFrame(0), canLoop(canLoop), isPlaying(canLoop), timePerFrame(timePerFrame) {}
+				frameCount(frameCount), currentFrame(0), canLoop(canLoop), isPlaying(canLoop), timePerFrame(timePerFrame), paused(false) {}
 			string name;
 			int row;
 			int startCol;
@@ -34,6 +34,7 @@ class Animation {
 			bool canLoop;
 			bool isPlaying;
 			float timePerFrame;
+			bool paused;
 		};
 
 	private:
@@ -94,6 +95,8 @@ class Animation {
 		/// @brief This function sets the current frame to the random frame of the current animation
 		void setRandomFrame();
 		void setPaused(bool value);
+
+		void setTexture(unsigned int& texture);
 
 		int getCurrentFrame() const;
 		bool getIsPlaying() const;

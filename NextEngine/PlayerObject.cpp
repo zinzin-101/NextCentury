@@ -37,6 +37,8 @@ PlayerObject::PlayerObject() : LivingEntity("Player", PlayerStat::MAX_HEALTH) {
 
     getAnimationComponent()->addState("Healing", 15, 0, 7, false);
 
+    getAnimationComponent()->addState("Dead", 16, 0, 6, false);
+
     //getTransform().setScale(1, 1);
     addColliderComponent();
     addPhysicsComponent();
@@ -54,6 +56,8 @@ PlayerObject::PlayerObject() : LivingEntity("Player", PlayerStat::MAX_HEALTH) {
     groundedFrameNum = 4;
     canMove = true;
     canChangeFacingDirection = true;
+
+    isDead = false;
 
     baseDamage[PlayerCombo::FIRST] = PlayerStat::COMBO_DAMAGE_1;
     baseDamage[PlayerCombo::SECOND] = PlayerStat::COMBO_DAMAGE_2;
@@ -114,7 +118,7 @@ PlayerObject::~PlayerObject() {
 
 void PlayerObject::move(glm::vec2 direction) {
     this->moveDirection.x += direction.x;
-
+	
     if (this->moveDirection.x != 0.0f) {
         this->moveDirection.x /= abs(this->moveDirection.x);
 
@@ -209,7 +213,7 @@ void PlayerObject::start(list<DrawableObject*>& objectsList) {
     attackHitbox->addEmitter(objectsList);
     objectsList.emplace_back(attackHitbox);
 
-    this->getTransform().setScale(3.5f, 2.5f);
+    this->getTransform().setScale(3.1868f, 2.5f);
     this->getColliderComponent()->getTransform().translate(0.0f, -0.44f);
     this->getColliderComponent()->setDimension(0.25f, 0.65f);
 
@@ -267,6 +271,11 @@ void PlayerObject::updateBehavior(list<DrawableObject*>& objectsList) {
     glm::vec2 vel = this->physics->getVelocity();
 
     updateStat();
+
+    if (isDead) {
+        handleDead();
+        return;
+    }
 
     if (iFrameTimeRemaining > 0.0f) {
         this->setCanTakeDamage(false);
@@ -624,6 +633,7 @@ void PlayerObject::startRangeAttack(float dt) {
     if (rangeHeldDuration > rangeChargeDuration[PlayerRangeCharge::CHARGE_3] && currentNumOfBullets >= rangeChargeDuration[PlayerRangeCharge::CHARGE_3]) {
         currentRangeCharge = PlayerRangeCharge::CHARGE_3;
         this->getAnimationComponent()->setState("GunCharge3");
+        GameEngine::getInstance()->playSoundEffect("Sound_Gun_Charge.wav");
         //GameEngine::getInstance()->getRenderer()->getCamera()->shake = true;
         return;
     }
@@ -640,6 +650,7 @@ void PlayerObject::startRangeAttack(float dt) {
 
 void PlayerObject::handleDodging() {
     this->getAnimationComponent()->setState("Dodging");
+	GameEngine::getInstance()->playSoundEffect("Rolling.wav");
 
     canChangeFacingDirection = false;
 
@@ -686,6 +697,7 @@ void PlayerObject::handleMovement() {
     }
     else {
         this->getAnimationComponent()->setState("Walking");
+        GameEngine::getInstance()->playSoundEffect("Walk.wav");
     }
 
     vel = this->physics->getVelocity();
@@ -743,6 +755,7 @@ void PlayerObject::handleHealing() {
     Animation::State animState = this->getAnimationComponent()->getCurrentAnimationState();
     if (animState.currentFrame == healFrame && !healed) {
         this->heal(PlayerStat::HEAL_AMOUNT);
+		GameEngine::getInstance()->playSoundEffect("Sound_Heal.wav");
         resetAttack();
         endMeleeAttack();
         healed = true;
@@ -781,6 +794,9 @@ void PlayerObject::handleNormalAttack() {
 
     if (currentFrame == comboFrame[currentCombo].startAttackFrame + 1) {
         startMeleeAttack();
+
+        GameEngine::getInstance()->playSoundEffect("Sound_Attack_Light_1.wav");
+
         return;
     }
 
@@ -871,6 +887,7 @@ void PlayerObject::handleRangeAttack() {
             isAttacking = false;
             canMove = true;
             getAnimationComponent()->setState("Idle");
+			GameEngine::getInstance()->playSoundEffect("Sound_Gun_Shoot.wav");
         }
         return;
     }
@@ -914,6 +931,7 @@ void PlayerObject::handleParryAttack() {
             canMove = true;
             isParrying = false;
             moveDirection.x = 0.0f;
+			GameEngine::getInstance()->playSoundEffect("Sound_Parry.wav");
         }
 
         return;
@@ -943,6 +961,14 @@ void PlayerObject::handleFlinch() {
     }
 }
 
+void PlayerObject::handleDead() {
+    this->getAnimationComponent()->setState("Dead");
+    glm::vec2 vel = this->getPhysicsComponent()->getVelocity();
+    vel.x = 0.0f;
+    this->getPhysicsComponent()->setVelocity(vel);
+    moveDirection.x = 0.0f;
+}
+
 bool PlayerObject::getCanMove() const {
     return canMove;
 }
@@ -968,6 +994,17 @@ void PlayerObject::takeDamage(int damage) {
         return;
     }
 
+    if (this->getHealth() - damage <= 0 && !isDead) {
+        this->LivingEntity::takeDamage(damage);
+        this->setHealth(0);
+        this->setCanTakeDamage(false);
+        isDead = true;
+
+        this->getAnimationComponent()->setState("Dead");
+
+        return;
+    }
+
     this->LivingEntity::takeDamage(damage);
     iFrameTimeRemaining = PlayerStat::INVINCIBLE_DURATION_AFTER_TAKING_DAMAGE;
 }
@@ -988,4 +1025,24 @@ void PlayerObject::resetHealing() {
 
 int PlayerObject::getStamina() const {
     return stamina;
+}
+
+int PlayerObject::getCurrentNumOfBullet() const {
+    return currentNumOfBullets;
+}
+
+float PlayerObject::getRangeAttackCooldownRemaining() const {
+    return rangeAttackCooldownRemaining;
+}
+
+int PlayerObject::getCurrentNumOfPotion() const {
+    return currentNumOfPotion;
+}
+
+float PlayerObject::getPotionRechargeTimer() const {
+    return potionRechargeTimer;
+}
+
+bool PlayerObject::getIsDead() const {
+    return this->isDead;
 }

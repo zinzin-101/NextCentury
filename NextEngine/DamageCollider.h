@@ -328,7 +328,7 @@ void DamageCollider<TargetEntityType>::onTriggerEnter(Collider* collider) { // f
 					projectile->getTransform().getPosition(),
 					20.0f * glm::vec2(parryDirection * Random::Float(), Random::Float()),
 					glm::vec2(-0.1f, 0.1f),
-					glm::vec3(0.0f, 0.0f, 0.0f),
+					glm::vec3(0.0f, 0.9f, 0.0f),
 					0.2f, 0.1f, 0.05f, 1.0f
 				);
 				if (this->emitter != nullptr) {

@@ -1,4 +1,5 @@
 #include "GameEngine.h"
+#include "Level.h"
 
 GameEngine* GameEngine::instance = nullptr;
 
@@ -45,16 +46,16 @@ void GameEngine::init(int width, int height) {
 
 	time = new Time();
 	inputHandler = new InputManager();  
+	audioEngine.init("../Resource/Audio/SoundEffect/MC", "../Resource/Audio/Music/");
 }
 
 void GameEngine::updateEngineComponent() {
 	if (engineTimer > 0.0f) {
 		engineTimer -= time->getDeltaTimeRealTime();
-	}
-
-	if (engineTimer <= 0.0f && isGamePaused) {
+	if (engineTimer <= 0.0f) {
 		isGamePaused = false;
 		time->setTimeScale(prevTimeScale);
+		}
 	}
 }
 
@@ -65,10 +66,6 @@ void GameEngine::render(list<DrawableObject*> renderObjects, bool clear) {
 void GameEngine::setDrawArea(float left, float right, float bottom, float top) {
 	renderer->setOrthoProjection(left, right, bottom, top);
 }
-
-//void GameEngine::setBackgroundColor(float r, float g, float b) {
-//	renderer->setClearColor(1.0f, 1.0f, 200.0f / 255);
-//}
 
 void GameEngine::setBackgroundColor(float r, float g, float b) {
 	renderer->setClearColor(r, g, b);
@@ -125,6 +122,44 @@ void GameEngine::pauseTimeForSeconds(float duration) {
 	time->setTimeScale(0.0f);
 }
 
+void GameEngine::pauseTime() {
+	if (!isGamePaused) {
+		prevTimeScale = time->getTimeScale();
+		isGamePaused = true;
+		time->setTimeScale(0.0f);
+	}
+}
+
+
+void GameEngine::resumeTime() {
+	if (isGamePaused) {
+		isGamePaused = false;
+		time->setTimeScale(prevTimeScale);
+	}
+}
+
 bool GameEngine::getIsGamePaused() const {
 	return isGamePaused;
+}
+
+void GameEngine::initAudio(const std::string& effectFolder, const std::string& musicFolder) {
+	audioEngine.init(effectFolder, musicFolder);
+	std::cout << "AudioEngine initialized with Effects:" << effectFolder
+		<< " Music:" << musicFolder << std::endl;
+}
+
+void GameEngine::playSoundEffect(const std::string& fileName, int loop) {
+	audioEngine.playSoundEffectByName(fileName, loop);
+}
+
+void GameEngine::playMusic(const std::string& fileName, int loop) {
+	audioEngine.playMusicByName(fileName, loop);
+}
+
+void GameEngine::stopMusic() {
+	audioEngine.stopMusic();
+}
+
+void GameEngine::signalToCurrentLevel() {
+	stateController->getCurrentLevel()->signalFromEngine();
 }
