@@ -64,7 +64,7 @@ void UI::initUI(std::list<DrawableObject*>& objectsList) {
     buttons[2]->getTransform().setScale(glm::vec3(1.5f, 0.5f, 0.0f));
     buttons[2]->getTransform().setPosition(glm::vec3(-5.0f, -1.0f, 0.0f));
     buttons[2]->setOnClickCallback([]() {
-        std::cout << "Credits Button clicked!" << std::endl;
+        GameEngine::getInstance()->getStateController()->gameStateNext = GameState::GS_CREDIT;
         });
     objectsList.push_back(buttons[2]);
 

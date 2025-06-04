@@ -22,6 +22,7 @@
 #include "LevelAct9.h"
 #include "LevelAct10.h"
 #include "LevelMainMenu.h"
+#include "LevelCredit.h"
 
 GameStateController::GameStateController() {
 	// set the initial game state
@@ -41,8 +42,11 @@ void GameStateController::loadLevel() {
 	}
 	cout << gameStateCurr << endl;
 	switch (gameStateCurr) {
-		case GameState::GS_LEVEL1:
+		case GameState::GS_MAINMENU:
 			currentLevel = new LevelMainMenu();
+			break;
+		case GameState::GS_LEVEL1:
+			currentLevel = new LevelAct1();
 			break;
 		case GameState::GS_LEVEL2:
 			currentLevel = new LevelAct4();
@@ -67,6 +71,9 @@ void GameStateController::loadLevel() {
 			break;
 		case GameState::GS_ACT6:
 			currentLevel = new LevelAct6();
+			break;
+		case GameState::GS_CREDIT:
+			currentLevel = new LevelCredit();
 			break;
 
 		default:

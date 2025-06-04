@@ -103,6 +103,7 @@
     <ClCompile Include="ProtagThoughts.cpp" />
     <ClCompile Include="LevelAct10.cpp" />
     <ClCompile Include="UISetting.cpp" />
+    <ClCompile Include="LevelCredit.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
@@ -224,6 +225,7 @@
     <ClInclude Include="ProtagThoughts.h" />
     <ClInclude Include="LevelAct10.h" />
     <ClInclude Include="UISetting.h" />
+    <ClInclude Include="LevelCredit.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Resource\Shader\fragment.shd" />

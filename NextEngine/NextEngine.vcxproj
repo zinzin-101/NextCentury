@@ -69,6 +69,7 @@
     <ClCompile Include="LevelAlphaTest.cpp" />
     <ClCompile Include="LevelAnimTest.cpp" />
     <ClCompile Include="LevelCollisionTest.cpp" />
+    <ClCompile Include="LevelCredit.cpp" />
     <ClCompile Include="LevelEnemTest.cpp" />
     <ClCompile Include="LevelImgui.cpp" />
     <ClCompile Include="LevelMainMenu.cpp" />
@@ -152,6 +153,7 @@
     <ClInclude Include="LevelAct7.h" />
     <ClInclude Include="LevelAct8.h" />
     <ClInclude Include="LevelAct9.h" />
+    <ClInclude Include="LevelCredit.h" />
     <ClInclude Include="LevelLoading.h" />
     <ClInclude Include="HitScanDamage.h" />
     <ClInclude Include="IngameUI.h" />
