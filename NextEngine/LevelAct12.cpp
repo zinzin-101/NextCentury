@@ -14,6 +14,7 @@ void LevelAct12::levelLoad() {
     addLoadingScreen(objectsList);
     levelDraw();
     removeLoadingScreen(objectsList);
+    saveCurrentGameState();
 }
 
 void LevelAct12::levelInit() {

@@ -13,6 +13,7 @@ void LevelAct9::levelLoad() {
     addLoadingScreen(objectsList);
     levelDraw();
     removeLoadingScreen(objectsList);
+    saveCurrentGameState();
 }
 
 void LevelAct9::levelInit() {

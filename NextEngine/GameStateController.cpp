@@ -48,7 +48,7 @@ void GameStateController::loadLevel() {
 	switch (gameStateCurr) {
 		case GameState::GS_MAINMENU:
 			//currentLevel = new LevelMainMenu();
-			currentLevel = new LevelAct11();
+			currentLevel = new LevelAct4();
 			break;
 		case GameState::GS_ACT1:
 			currentLevel = new LevelAct1();
