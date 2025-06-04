@@ -20,6 +20,7 @@ namespace PlayerStat {
     constexpr float PARRY_ANIMATION_TIME_PER_FRAME = 0.04f;
     constexpr float CHARGE_ANIMATION_TIME_PER_FRAME = 0.08f;
     constexpr float GUN_CHARGE_ANIMATION_TIME_PER_FRAME = 0.08f;
+    constexpr float GUN_SHOT_ANIMATION_TIME_PER_FRAME = 0.08f;
 
     constexpr int COMBO_DAMAGE_1 = 10;
     constexpr int COMBO_DAMAGE_2 = 15;

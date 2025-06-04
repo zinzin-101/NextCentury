@@ -10,8 +10,8 @@
 PlayerObject::PlayerObject() : LivingEntity("Player", PlayerStat::MAX_HEALTH) {
     //this->damage = playerInfo.damage;
 
-    setTexture("../Resource/Texture/MCFINAL3.png");
-    initAnimation(17, 8);
+    setTexture("../Resource/Texture/MC.png");
+    initAnimation(18, 9);
 
     getAnimationComponent()->addState("Idle", 0, 0, 6, true);
     getAnimationComponent()->addState("Walking", 1, 0, 6, true);
@@ -23,21 +23,21 @@ PlayerObject::PlayerObject() : LivingEntity("Player", PlayerStat::MAX_HEALTH) {
     getAnimationComponent()->addState("Combo2", 5, 0, 5, false, PlayerStat::ATTACK_ANIMATION_TIME_PER_FRAME);
     getAnimationComponent()->addState("Combo3", 6, 0, 5, false, PlayerStat::ATTACK_ANIMATION_TIME_PER_FRAME);
 
-    getAnimationComponent()->addState("Charging", 7, 0, 6, false, PlayerStat::CHARGE_ANIMATION_TIME_PER_FRAME);
-    getAnimationComponent()->addState("MaxCharging", 7, 1, 3, true, PlayerStat::CHARGE_ANIMATION_TIME_PER_FRAME);
-    getAnimationComponent()->addState("Charge1", 8, 0, 4, false, PlayerStat::ATTACK_ANIMATION_TIME_PER_FRAME);
-    getAnimationComponent()->addState("Charge2", 9, 0, 4, false, PlayerStat::ATTACK_ANIMATION_TIME_PER_FRAME);
+    getAnimationComponent()->addState("Charging", 7, 0, 8, false, PlayerStat::CHARGE_ANIMATION_TIME_PER_FRAME);
+    getAnimationComponent()->addState("MaxCharging", 8, 0, 3, true, PlayerStat::CHARGE_ANIMATION_TIME_PER_FRAME);
+    getAnimationComponent()->addState("Charge1", 9, 0, 4, false, PlayerStat::ATTACK_ANIMATION_TIME_PER_FRAME);
+    getAnimationComponent()->addState("Charge2", 10, 0, 4, false, PlayerStat::ATTACK_ANIMATION_TIME_PER_FRAME);
 
-    getAnimationComponent()->addState("Parrying", 14, 0, 8, false, PlayerStat::PARRY_ANIMATION_TIME_PER_FRAME);
+    getAnimationComponent()->addState("Parrying", 15, 0, 8, false, PlayerStat::PARRY_ANIMATION_TIME_PER_FRAME);
 
-    getAnimationComponent()->addState("GunCharge1", 11, 0, 6, true, PlayerStat::GUN_CHARGE_ANIMATION_TIME_PER_FRAME);
-    getAnimationComponent()->addState("GunCharge2", 12, 0, 6, true, PlayerStat::GUN_CHARGE_ANIMATION_TIME_PER_FRAME);
-    getAnimationComponent()->addState("GunCharge3", 13, 0, 6, true, PlayerStat::GUN_CHARGE_ANIMATION_TIME_PER_FRAME);
-    getAnimationComponent()->addState("GunShoot", 10, 0, 3, false, 0.08f);
+    getAnimationComponent()->addState("GunCharge1", 12, 0, 6, true, PlayerStat::GUN_CHARGE_ANIMATION_TIME_PER_FRAME);
+    getAnimationComponent()->addState("GunCharge2", 13, 0, 6, true, PlayerStat::GUN_CHARGE_ANIMATION_TIME_PER_FRAME);
+    getAnimationComponent()->addState("GunCharge3", 14, 0, 6, true, PlayerStat::GUN_CHARGE_ANIMATION_TIME_PER_FRAME);
+    getAnimationComponent()->addState("GunShoot", 11, 0, 3, false, PlayerStat::GUN_SHOT_ANIMATION_TIME_PER_FRAME);
 
-    getAnimationComponent()->addState("Healing", 15, 0, 7, false);
+    getAnimationComponent()->addState("Healing", 16, 0, 7, false);
 
-    getAnimationComponent()->addState("Dead", 16, 0, 6, false);
+    getAnimationComponent()->addState("Dead", 17, 0, 6, false);
 
     //getTransform().setScale(1, 1);
     addColliderComponent();
