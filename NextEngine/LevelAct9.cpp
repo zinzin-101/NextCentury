@@ -263,14 +263,14 @@ void LevelAct9::handleKey(InputManager& input) {
     }
 
     //Dialogue interact
-    if (input.getButtonDown(SDLK_e)) {
+    if (input.getButtonDown(SDLK_f)) {
         if (door->getIsClickable() && door->getIsActive()) {
             end = true;
             fb->FadeToBlack();
         }
     }
 
-    if (input.getButtonDown(SDLK_r)) {
+    if (input.getButtonDown(SDLK_e)) {
         player->useHealthPotion();
     }
 

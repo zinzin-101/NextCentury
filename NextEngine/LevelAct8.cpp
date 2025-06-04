@@ -251,7 +251,7 @@ void LevelAct8::handleKey(InputManager& input) {
         }
 
 
-        if (input.getButtonDown(SDLK_e)) {
+        if (input.getButtonDown(SDLK_f)) {
             if (shelf->isClickedOnce && door->getIsClickable()) {
                 fb->FadeToBlack();
                 end = true;
@@ -267,7 +267,7 @@ void LevelAct8::handleKey(InputManager& input) {
                 }
             }
         }
-        if (input.getButtonDown(SDLK_r)) {
+        if (input.getButtonDown(SDLK_e)) {
             player->useHealthPotion();
         }
     }

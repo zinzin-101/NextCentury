@@ -273,7 +273,7 @@ void LevelAct1::handleKey(InputManager& input) {
     //}
 
     //Dialogue interact
-    if (input.getButtonDown(SDLK_e)) {
+    if (input.getButtonDown(SDLK_f)) {
         
         if (!dialogueList.empty()) {
             Dialogue* currentDialogue = dialogueList.front();

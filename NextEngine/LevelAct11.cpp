@@ -251,7 +251,7 @@ void LevelAct11::handleKey(InputManager& input) {
         }
     }
 
-    if (input.getButtonDown(SDLK_e)) {
+    if (input.getButtonDown(SDLK_f)) {
         if (ishelf->getIsClickable()) {
             ishelf->setDescriptionActive(!ishelf->getDescriptionActive());
             if (ishelf->isClickedOnce && !ishelf->getDescriptionActive()) {
@@ -267,7 +267,7 @@ void LevelAct11::handleKey(InputManager& input) {
         }
     }
 
-    if (input.getButtonDown(SDLK_r)) {
+    if (input.getButtonDown(SDLK_e)) {
         player->useHealthPotion();
     }
 

@@ -20,6 +20,7 @@ void LevelMainMenu::levelInit() {
     GameEngine::getInstance()->playMusic("BGM_MainMenu.wav", 1);
     UIobject = new UI();
     UIobject->initUI(objectsList);
+    GameEngine::getInstance()->getRenderer()->getCamera()->setPosition(glm::vec3(0.0f, 0.0f, 0.0f));
 }
 
 void LevelMainMenu::levelUpdate() {

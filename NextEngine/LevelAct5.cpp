@@ -311,12 +311,12 @@ void LevelAct5::handleKey(InputManager& input) {
         }
     }
 
-    if (input.getButtonDown(SDLK_e)) {
+    if (input.getButtonDown(SDLK_f)) {
         if (eToPermit->getDialogueObject()->isDialogueActive) {
             eToPermit->stopDialogue();
         }
     }
-    if (input.getButtonDown(SDLK_r)) {
+    if (input.getButtonDown(SDLK_e)) {
         player->useHealthPotion();
     }
     UIobject->handleInput(input, player);

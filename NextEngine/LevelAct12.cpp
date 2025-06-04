@@ -335,11 +335,11 @@ void LevelAct12::handleKey(InputManager& input) {
         }
     }
 
-    if (input.getButtonDown(SDLK_r)) {
+    if (input.getButtonDown(SDLK_e)) {
         player->useHealthPotion();
     }
 
-    if (input.getButtonDown(SDLK_e)) {
+    if (input.getButtonDown(SDLK_f)) {
         if (door->getIsActive() && door->getIsClickable()) {
             fb->FadeToBlack();
             end = true;
