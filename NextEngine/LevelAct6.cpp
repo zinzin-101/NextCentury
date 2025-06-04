@@ -144,7 +144,7 @@ void LevelAct6::levelInit() {
 
     player->getDamageCollider()->setFollowOffset(glm::vec3(1.0f, -0.2f, 0));
 
-    UIobject->initUI(objectsList);
+    
 
     camTarget = new SimpleObject();
     camTarget->getTransform().setPosition(glm::vec3(34.0f, 0.0f, 0.0f));
@@ -159,6 +159,8 @@ void LevelAct6::levelInit() {
     fb = new FadeBlack(1.0f);
     objectsList.emplace_back(fb);
     fb->FadeToTransparent();
+
+    UIobject->initUI(objectsList);
 
     GameEngine::getInstance()->getRenderer()->getCamera()->setPosition(glm::vec3(0.0f, 0.0f, 0.0f));
 
