@@ -63,10 +63,10 @@ private:
     glm::vec3 gunIconsBaseScale = { 1.0f * 0.4f,  (15.0f/21.0f) * 0.4f, 0.0f };
 
     glm::vec3 deathBlackdropBasePos = { 0.0f,  0.0f, 0.0f };
-    glm::vec3 deathBlackdropBaseScale = { 20.0f,  20.0f, 0.0f };
+    glm::vec3 deathBlackdropBaseScale = { 20.0f, 20.0f, 0.0f };
 
     glm::vec3 deathTextBasePos = { 0.0f,  0.0f, 0.0f };
-    glm::vec3 deathTextBaseScale = { 0.0f,  0.0f, 0.0f };
+    glm::vec3 deathTextBaseScale =  { 1.0f * 15.0f, (360.0f / 640.0f) * 15.0f, 0.0f };
 
     glm::vec3 arrowBasePos = { 0.0f,  0.0f, 0.0f };
     glm::vec3 arrowBaseScale = { 0.213f, 0.213f, 0.0f };
@@ -87,6 +87,7 @@ public:
     void updateUI(PlayerObject* playerObject);
     void handleInput(InputManager& input, PlayerObject* playerObject);
     ~IngameUI();
+
     void setDeathMenuDeactivate(bool deactivate) {
         isdeathMenuDeactivate = deactivate;
         if (deactivate) {

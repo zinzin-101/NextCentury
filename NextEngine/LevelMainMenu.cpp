@@ -48,6 +48,8 @@ void LevelMainMenu::levelUnload() {
 void LevelMainMenu::handleKey(InputManager& input) {
     if (input.getButtonDown(SDLK_w)) UIobject->handleInput(SDLK_w);
     if (input.getButtonDown(SDLK_s)) UIobject->handleInput(SDLK_s);
+    if (input.getButtonDown(SDLK_a)) UIobject->handleInput(SDLK_a);
+    if (input.getButtonDown(SDLK_d)) UIobject->handleInput(SDLK_d);
     if (input.getButtonDown(SDLK_RETURN)) UIobject->handleInput(SDLK_RETURN);
     if (input.getButtonDown(SDLK_SPACE)) UIobject->handleInput(SDLK_SPACE);
     if (input.getButtonDown(SDLK_q)) UIobject->handleInput(SDLK_q);

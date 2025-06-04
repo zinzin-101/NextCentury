@@ -202,6 +202,9 @@ void LevelAct4::handleKey(InputManager& input) {
             if (input.getButton(SDLK_d) && !input.getButton(SDLK_a)) player->move(glm::vec2(1, 0));
             if (input.getButtonDown(SDLK_j)) player->parryAttack();
             if (input.getMouseButtonDown(SDL_BUTTON_RIGHT)) player->parryAttack();
+			if (input.getButtonDown(SDLK_v)) {
+				player->setHealth(0);
+			}
         }
 
         /// Use processed key here ///

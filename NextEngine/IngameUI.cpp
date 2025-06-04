@@ -300,7 +300,9 @@ void IngameUI::initUI(std::list<DrawableObject*>& objectsList) {
         healthBarBasePos,
         healthBarBaseScale
     );
+	healthBar->setRenderOrder(50); 
     objectsList.push_back(healthBar);
+
 
     healthBarFill = new SimpleObject();
     healthBarFill->setColor({ 0.0353f, 0.7216f, 0.6706f });
@@ -309,6 +311,7 @@ void IngameUI::initUI(std::list<DrawableObject*>& objectsList) {
         healthBarFillBasePos,
         healthBarFillBaseScale
     );
+	healthBarFill->setRenderOrder(51);
     objectsList.push_back(healthBarFill);
 
     staminaBar = new TexturedObject();
@@ -318,6 +321,7 @@ void IngameUI::initUI(std::list<DrawableObject*>& objectsList) {
         staminaBarBasePos,
         staminaBarBaseScale
     );
+	staminaBar->setRenderOrder(52);
     objectsList.push_back(staminaBar);
 
     staminaBarFill = new SimpleObject();
@@ -327,17 +331,20 @@ void IngameUI::initUI(std::list<DrawableObject*>& objectsList) {
         staminaBarFillBasePos,
         staminaBarFillBaseScale
     );
+	staminaBarFill->setRenderOrder(53);
     objectsList.push_back(staminaBarFill);
 
     deathBlackdrop = new SimpleObject();
     deathBlackdrop->setColor({ 0.0f, 0.0f, 0.0f });
     deathBlackdrop->setRenderOpacity(0.8f);
     deathBlackdrop->getTransform().setScale(glm::vec3(0.0f));
+	deathBlackdrop->setRenderOrder(95); 
     objectsList.push_back(deathBlackdrop);
 
     deathText = new TexturedObject();
     deathText->setTexture("../Resource/Texture/UI/DeathScreen/DeathText.png");
     deathText->getTransform().setScale(glm::vec3(0.0f));
+	deathText->setRenderOrder(101);
     objectsList.push_back(deathText);
 
     // 4) Death-menu buttons
@@ -346,6 +353,7 @@ void IngameUI::initUI(std::list<DrawableObject*>& objectsList) {
     deathmenubuttons[0]->setOnClickCallback([]() {
         GameEngine::getInstance()->getStateController()->gameStateNext = GameState::GS_RESTART;
         });
+	deathmenubuttons[0]->setRenderOrder(102);
     objectsList.push_back(deathmenubuttons[0]);
 
     deathmenubuttons[1] = new Button("MainMenuButton", "../Resource/Texture/UI/MainMenu/MainMenu.png");
@@ -353,49 +361,59 @@ void IngameUI::initUI(std::list<DrawableObject*>& objectsList) {
     deathmenubuttons[1]->setOnClickCallback([]() {
         GameEngine::getInstance()->getStateController()->gameStateNext = GameState::GS_MAINMENU;
         });
+	deathmenubuttons[1]->setRenderOrder(103);
     objectsList.push_back(deathmenubuttons[1]);
 
     // 5) Pause-menu buttons
     pausemenubuttons[0] = new Button("ResumeButton", "../Resource/Texture/UI/MainMenu/PlayGame.png");
     pausemenubuttons[0]->getTransform().setScale(glm::vec3(0.0f)); 
+    pausemenubuttons[0]->setRenderOrder(103);
     objectsList.push_back(pausemenubuttons[0]);
 
     pausemenubuttons[1] = new Button("SettingsButton", "../Resource/Texture/UI/MainMenu/Setting.png");
     pausemenubuttons[1]->getTransform().setScale(glm::vec3(0.0f)); 
+    pausemenubuttons[1]->setRenderOrder(104);
     objectsList.push_back(pausemenubuttons[1]);
 
     pausemenubuttons[2] = new Button("MainMenuButton", "../Resource/Texture/UI/MainMenu/MainMenu.png");
     pausemenubuttons[2]->getTransform().setScale(glm::vec3(0.0f)); 
+    pausemenubuttons[2]->setRenderOrder(105);
     objectsList.push_back(pausemenubuttons[2]);
 
 	potionIcon0 = new TexturedObject("PotionIcon0");
 	potionIcon0->setTexture("../Resource/Texture/UI/Ingame/Heal0.png");
 	potionIcon0->getTransform().setScale(glm::vec3(0.0f));
+	potionIcon0->setRenderOrder(54);
 	objectsList.push_back(potionIcon0);
 
     potionIcon1 = new TexturedObject("PotionIcon1");
     potionIcon1->setTexture("../Resource/Texture/UI/Ingame/Heal1.png");
     potionIcon1->getTransform().setScale(glm::vec3(0.0f));
+	potionIcon1->setRenderOrder(55);
     objectsList.push_back(potionIcon1);
 
     potionIcon2 = new TexturedObject("PotionIcon2");
     potionIcon2->setTexture("../Resource/Texture/UI/Ingame/Heal2.png");
     potionIcon2->getTransform().setScale(glm::vec3(0.0f));
+	potionIcon2->setRenderOrder(56);
     objectsList.push_back(potionIcon2);
 
     potionIcon3 = new TexturedObject("PotionIcon3");
     potionIcon3->setTexture("../Resource/Texture/UI/Ingame/Heal3.png");
     potionIcon3->getTransform().setScale(glm::vec3(0.0f));
+	potionIcon3->setRenderOrder(57);
     objectsList.push_back(potionIcon3);
 
     arrow = new TexturedObject("arrow");
     arrow->setTexture("../Resource/Texture/UI/MainMenu/Arrow.png");
     arrow->getTransform().setScale(glm::vec3(0.0f));
+	arrow->setRenderOrder(58);
     objectsList.push_back(arrow);
 
     gunIcons = new TexturedObject("GunIcons");
     gunIcons->setTexture("../Resource/Texture/UI/Ingame/gunNew.png");
     gunIcons->getTransform().setScale(glm::vec3(0.0f)); 
+	gunIcons->setRenderOrder(59);
     objectsList.push_back(gunIcons);
 
     ammoIcon = new TexturedObject("AmmoIcon");
@@ -405,6 +423,7 @@ void IngameUI::initUI(std::list<DrawableObject*>& objectsList) {
 	pauseText = new TexturedObject("PauseText");
 	pauseText->setTexture("../Resource/Texture/UI/Setting/PAUSE.png");
 	pauseText->getTransform().setScale(glm::vec3(0.0f));
+	pauseText->setRenderOrder(112);
 	objectsList.push_back(pauseText);
 
     Animation* ammoAnim = ammoIcon->getAnimationComponent();
@@ -415,6 +434,7 @@ void IngameUI::initUI(std::list<DrawableObject*>& objectsList) {
     ammoAnim->setState("ammo0");
 
     ammoIcon->getTransform().setScale(glm::vec3(0.0f)); 
+	ammoIcon->setRenderOrder(61);
     objectsList.push_back(ammoIcon);
 }
 

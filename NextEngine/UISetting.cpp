@@ -15,18 +15,23 @@ void UISetting::initUI(std::list<DrawableObject*>& objectsList) {
     blackdrop = new SimpleObject("SettingBlackdrop");
     blackdrop->setColor({ 0.0f, 0.0f, 0.0f });
     blackdrop->getTransform().setScale({ 20.0f, 20.0f, 0.0f });
+    blackdrop->setRenderOrder(30);
     objectsList.push_back(blackdrop);
+    
 
     AudioPageTex = new TexturedObject("AudioPageBG");
     AudioPageTex->setTexture("../Resource/Texture/UI/Setting/AudioPage.png");
     AudioPageTex->getTransform().setScale({ 16.0f, 9.0f, 0.0f });
     AudioPageTex->getTransform().setPosition({ 0.0f, 0.0f, 0.0f });
+    AudioPageTex->setRenderOrder(31);
     objectsList.push_back(AudioPageTex);
+    
 
     audioText = new TexturedObject("AudioText");
     audioText->setTexture("../Resource/Texture/UI/Setting/Audio.png");
     audioText->getTransform().setScale({ 0.0f, 0.0f, 0.0f });
     audioText->getTransform().setPosition({ -3.0f, 3.1f, 0.0f });
+    audioText->setRenderOrder(32);
     objectsList.push_back(audioText);
 
     audioText->initAnimation(1, 3);
@@ -39,6 +44,8 @@ void UISetting::initUI(std::list<DrawableObject*>& objectsList) {
     controlText->setTexture("../Resource/Texture/UI/Setting/Control.png");
     controlText->getTransform().setScale({ 0.0f, 0.0f, 0.0f });
     controlText->getTransform().setPosition({ 3.0f, 3.1f, 0.0f });
+    controlText->setRenderOrder(33);
+
     objectsList.push_back(controlText);
 
     controlText->initAnimation(1, 3);
@@ -51,18 +58,24 @@ void UISetting::initUI(std::list<DrawableObject*>& objectsList) {
     keyboardTex->setTexture("../Resource/Texture/UI/Setting/Keyboard.png");
     keyboardTex->getTransform().setScale({ 0.0f, 0.0f, 0.0f });  
     keyboardTex->getTransform().setPosition({ -1.0f, 0.0f, 0.0f });
+    keyboardTex->setRenderOrder(34);
+
     objectsList.push_back(keyboardTex);
 
     mouseTex = new TexturedObject("MouseSprite");
     mouseTex->setTexture("../Resource/Texture/UI/Setting/Mouse.png");
     mouseTex->getTransform().setScale({ 0.0f, 0.0f, 0.0f });     
     mouseTex->getTransform().setPosition({ -1.0f, 0.0f, 0.0f });
+    mouseTex->setRenderOrder(35);
+
     objectsList.push_back(mouseTex);
 
     ControlPageTex = new TexturedObject("ControlPageBG");
     ControlPageTex->setTexture("../Resource/Texture/UI/Setting/ControlPage.png");
     ControlPageTex->getTransform().setScale({ 0.0f, 0.0f, 0.0f }); 
     ControlPageTex->getTransform().setPosition({ 0.0f, 0.0f, 0.0f });
+    ControlPageTex->setRenderOrder(36);
+
     objectsList.push_back(ControlPageTex);
 
     mouseTex = new TexturedObject("KeyboardSprite");
@@ -70,6 +83,8 @@ void UISetting::initUI(std::list<DrawableObject*>& objectsList) {
     mouseTex->getTransform().setScale({ 1.0f * 7.0f, (78.0f / 119.0f) * 7.0f, 0.0f });
     mouseTex->getTransform().setPosition({ -1.0f, 0.0f, 0.0f });
     mouseTex->getTransform().setScale({ 0.0f, 0.0f, 0.0f });
+    mouseTex->setRenderOrder(37);
+
     objectsList.push_back(mouseTex);
 
     ControlPageTex = new TexturedObject("ControlPageBG");
@@ -77,6 +92,8 @@ void UISetting::initUI(std::list<DrawableObject*>& objectsList) {
     ControlPageTex->getTransform().setScale({16.0f, 9.0f, 0.0f});
     ControlPageTex->getTransform().setPosition({0.0f, 0.0f, 0.0f});
     ControlPageTex->getTransform().setScale({0.0f, 0.0f, 0.0f});
+    ControlPageTex->setRenderOrder(38);
+
     objectsList.push_back(ControlPageTex);
 
     const float barW = BAR_WIDTH;
@@ -87,36 +104,48 @@ void UISetting::initUI(std::list<DrawableObject*>& objectsList) {
     masterVolumeBar->setTexture("../Resource/Texture/UI/Setting/AudioBar.png");
     masterVolumeBar->getTransform().setScale({barW, barH, 0.0f});
     masterVolumeBar->getTransform().setPosition({barX, MASTER_Y, 0.0f});
+    masterVolumeBar->setRenderOrder(39);
+
     objectsList.push_back(masterVolumeBar);
 
     masterFill = new SimpleObject("MasterFill");
     masterFill->setColor({ 1.0f, 1.0f, 1.0f });
     masterFill->getTransform().setScale({barW, barH, 0.0f});
     masterFill->getTransform().setPosition({barX, MASTER_Y, 0.0f});
+    masterFill->setRenderOrder(40);
+
     objectsList.push_back(masterFill);
 
     soundEffectBar = new TexturedObject("SFXVolumeBar");
     soundEffectBar->setTexture("../Resource/Texture/UI/Setting/AudioBar.png");
     soundEffectBar->getTransform().setScale({barW, barH, 0.0f});
     soundEffectBar->getTransform().setPosition({barX, SFX_Y, 0.0f});
+    soundEffectBar->setRenderOrder(41);
+
     objectsList.push_back(soundEffectBar);
 
     sfxFill = new SimpleObject("SFXFill");
     sfxFill->setColor({ 1.0f, 1.0f, 1.0f });
     sfxFill->getTransform().setScale({barW, barH, 0.0f});
     sfxFill->getTransform().setPosition({barX, SFX_Y, 0.0f});
+    sfxFill->setRenderOrder(42);
+
     objectsList.push_back(sfxFill);
 
     musicBar = new TexturedObject("MusicVolumeBar");
     musicBar->setTexture("../Resource/Texture/UI/Setting/AudioBar.png");
     musicBar->getTransform().setScale({barW, barH, 0.0f});
     musicBar->getTransform().setPosition({barX, MUSIC_Y, 0.0f});
+    musicBar->setRenderOrder(43);
+
     objectsList.push_back(musicBar);
 
     musicFill = new SimpleObject("MusicFill");
     musicFill->setColor({ 1.0f, 1.0f, 1.0f });
     musicFill->getTransform().setScale({barW, barH, 0.0f});
     musicFill->getTransform().setPosition({barX, MUSIC_Y, 0.0f});
+    musicFill->setRenderOrder(44);
+
     objectsList.push_back(musicFill);
 
     const float arrowW = ARROW_SIZE;
@@ -132,6 +161,8 @@ void UISetting::initUI(std::list<DrawableObject*>& objectsList) {
     arrowMasterLeft->setTexture("../Resource/Texture/UI/Setting/ArrowLeft.png");
     arrowMasterLeft->getTransform().setScale({arrowW, arrowW, 0.0f});
     arrowMasterLeft->getTransform().setPosition({leftX, MASTER_Y, 0.0f});
+    arrowMasterLeft->setRenderOrder(45);
+
     objectsList.push_back(arrowMasterLeft);
 
     buttons[0] = new Button("MasterLeftButton", "");
@@ -143,12 +174,16 @@ void UISetting::initUI(std::list<DrawableObject*>& objectsList) {
         audio.adjustMusicVolume(-DELTA);
         audio.printVolume();
     });
+    buttons[0]->setRenderOrder(46);
+
     objectsList.push_back(buttons[0]);
 
     arrowMasterRight = new TexturedObject("MasterRight");
     arrowMasterRight->setTexture("../Resource/Texture/UI/Setting/ArrowRight.png");
     arrowMasterRight->getTransform().setScale({arrowW, arrowW, 0.0f});
     arrowMasterRight->getTransform().setPosition({rightX, MASTER_Y, 0.0f});
+    arrowMasterRight->setRenderOrder(47);
+
     objectsList.push_back(arrowMasterRight);
 
     buttons[1] = new Button("MasterRightButton", "");
@@ -160,12 +195,16 @@ void UISetting::initUI(std::list<DrawableObject*>& objectsList) {
         audio.adjustMusicVolume(+DELTA);
         audio.printVolume();
     });
+    buttons[1]->setRenderOrder(48);
+
     objectsList.push_back(buttons[1]);
 
     arrowSFXLeft = new TexturedObject("SFXLeft");
     arrowSFXLeft->setTexture("../Resource/Texture/UI/Setting/ArrowLeft.png");
     arrowSFXLeft->getTransform().setScale({arrowW, arrowW, 0.0f});
     arrowSFXLeft->getTransform().setPosition({leftX, SFX_Y, 0.0f});
+    arrowSFXLeft->setRenderOrder(49);
+
     objectsList.push_back(arrowSFXLeft);
 
     buttons[4] = new Button("SFXLeftButton", "");
@@ -176,12 +215,16 @@ void UISetting::initUI(std::list<DrawableObject*>& objectsList) {
         audio.adjustSoundEffectVolume(-DELTA);
         audio.printVolume();
     });
+    buttons[4]->setRenderOrder(50);
+
     objectsList.push_back(buttons[4]);
 
     arrowSFXRight = new TexturedObject("SFXRight");
     arrowSFXRight->setTexture("../Resource/Texture/UI/Setting/ArrowRight.png");
     arrowSFXRight->getTransform().setScale({arrowW, arrowW, 0.0f});
     arrowSFXRight->getTransform().setPosition({rightX, SFX_Y, 0.0f});
+    arrowSFXRight->setRenderOrder(51);
+
     objectsList.push_back(arrowSFXRight);
 
     buttons[5] = new Button("SFXRightButton", "");
@@ -192,12 +235,16 @@ void UISetting::initUI(std::list<DrawableObject*>& objectsList) {
         audio.adjustSoundEffectVolume(+DELTA);
         audio.printVolume();
     });
+    buttons[5]->setRenderOrder(52);
+
     objectsList.push_back(buttons[5]);
 
     arrowMusicLeft = new TexturedObject("MusicLeft");
     arrowMusicLeft->setTexture("../Resource/Texture/UI/Setting/ArrowLeft.png");
     arrowMusicLeft->getTransform().setScale({arrowW, arrowW, 0.0f});
     arrowMusicLeft->getTransform().setPosition({leftX, MUSIC_Y, 0.0f});
+    arrowMusicLeft->setRenderOrder(53);
+
     objectsList.push_back(arrowMusicLeft);
 
     buttons[2] = new Button("MusicLeftButton", "");
@@ -208,6 +255,8 @@ void UISetting::initUI(std::list<DrawableObject*>& objectsList) {
         audio.adjustMusicVolume(-DELTA);
         audio.printVolume();
     });
+    buttons[2]->setRenderOrder(54);
+
     objectsList.push_back(buttons[2]);
 
     arrowMusicRight = new TexturedObject("MusicRight");
@@ -215,6 +264,7 @@ void UISetting::initUI(std::list<DrawableObject*>& objectsList) {
     arrowMusicRight->getTransform().setScale({arrowW, arrowW, 0.0f});
     arrowMusicRight->getTransform().setPosition({rightX, MUSIC_Y, 0.0f});
     objectsList.push_back(arrowMusicRight);
+	arrowMusicRight->setRenderOrder(55);
 
     buttons[3] = new Button("MusicRightButton", "");
     buttons[3]->getTransform().setScale({arrowW, arrowW, 0.0f});
@@ -224,11 +274,20 @@ void UISetting::initUI(std::list<DrawableObject*>& objectsList) {
         audio.adjustMusicVolume(+DELTA);
         audio.printVolume();
     });
+    buttons[3]->setRenderOrder(56);
+
     objectsList.push_back(buttons[3]);
 
     selectedButtonIndex = 0;
     buttons[0]->setFocused(true);
     updateArrowHighlight();
+
+    arrowMasterLeft->getTransform().setRotation(-90);
+    arrowMasterRight->getTransform().setRotation(-90);
+    arrowSFXLeft->getTransform().setRotation(-90);
+    arrowSFXRight->getTransform().setRotation(-90);
+    arrowMusicLeft->getTransform().setRotation(-90);
+    arrowMusicRight->getTransform().setRotation(-90);
 }
 
 void UISetting::updateArrowHighlight() {
@@ -366,7 +425,10 @@ void UISetting::handleInput(SDL_Keycode key) {
     case SDLK_UP:
         if (currentPage == Page::AUDIO) {
             buttons[selectedButtonIndex]->setFocused(false);
-            selectedButtonIndex = (selectedButtonIndex - 1 + 6) % 6;
+            selectedButtonIndex = selectedButtonIndex - 2;
+            if (selectedButtonIndex < 0) {
+                selectedButtonIndex = 4;
+            }
             updateArrowHighlight();
         }
         break;
@@ -375,22 +437,22 @@ void UISetting::handleInput(SDL_Keycode key) {
     case SDLK_DOWN:
         if (currentPage == Page::AUDIO) {
             buttons[selectedButtonIndex]->setFocused(false);
-            selectedButtonIndex = (selectedButtonIndex + 1) % 6;
+            selectedButtonIndex = (selectedButtonIndex + 2) % 6;
             updateArrowHighlight();
         }
         break;
 
     case SDLK_a:
     case SDLK_LEFT:
-        if (currentPage == Page::AUDIO && (selectedButtonIndex % 2 == 0)) {
+        if (currentPage == Page::AUDIO) {
             adjustVolume(selectedButtonIndex);
         }
         break;
 
     case SDLK_d:
     case SDLK_RIGHT:
-        if (currentPage == Page::AUDIO && (selectedButtonIndex % 2 == 1)) {
-            adjustVolume(selectedButtonIndex);
+        if (currentPage == Page::AUDIO) {
+            adjustVolume(selectedButtonIndex + 1);
         }
         break;
 

@@ -21,24 +21,28 @@ void UI::initUI(std::list<DrawableObject*>& objectsList) {
     background->setTexture("../Resource/Texture/UI/MainMenu/MainmenuArt.png");
     background->getTransform().setScale(glm::vec3(17.77777777777f, 10.0f, 0.0f));
     objectsList.push_back(background);
+    background->setRenderOrder(20);
 
     TexturedObject* title = new TexturedObject("title");
     title->setTexture("../Resource/Texture/UI/MainMenu/NextCenturyTitle.png");
     title->getTransform().setScale(glm::vec3(14.22222222222222f, 8.0f, 0.0f));
     title->getTransform().setPosition(glm::vec3(-1.0f, 0.5f, 0.0f));
     objectsList.push_back(title);
+    title->setRenderOrder(21);
 
     arrow = new TexturedObject("arrow");
     arrow->setTexture("../Resource/Texture/UI/MainMenu/Arrow.png");
     arrow->getTransform().setScale(glm::vec3(0.213f, 0.213f, 0.0f));
     arrow->getTransform().setPosition(glm::vec3(0.0f, 0.0f, 0.0f));
     objectsList.push_back(arrow);
+    arrow->setRenderOrder(22);
 
     TexturedObject* confirm = new TexturedObject("confirm");
     confirm->setTexture("../Resource/Texture/UI/MainMenu/AConfirm_BBack.png");
     confirm->getTransform().setScale(glm::vec3(2.295652173913043, 0.3f, 0.0f));
     confirm->getTransform().setPosition(glm::vec3(0.0f, -4.0f, 0.0f));
     objectsList.push_back(confirm);
+    confirm->setRenderOrder(23);
 
     buttons[0] = new Button("PlayGameButton", "");
     buttons[0]->setTexture("../Resource/Texture/UI/MainMenu/PlayGame.png");
@@ -47,7 +51,9 @@ void UI::initUI(std::list<DrawableObject*>& objectsList) {
     buttons[0]->setOnClickCallback([]() {
 		GameEngine::getInstance()->getStateController()->gameStateNext = GameState::GS_ACT1;
         });
+    buttons[0]->setRenderOrder(24);
     objectsList.push_back(buttons[0]);
+    
 
     buttons[1] = new Button("SettingButton", ""); 
     buttons[1]->setTexture("../Resource/Texture/UI/MainMenu/Setting.png");
@@ -57,6 +63,7 @@ void UI::initUI(std::list<DrawableObject*>& objectsList) {
         this->inSettings = true;
         std::cout << "Switched to Settings Screen\n";
         });
+	buttons[1]->setRenderOrder(24);
     objectsList.push_back(buttons[1]);
 
     buttons[2] = new Button("CreditsButton", "");
@@ -66,6 +73,7 @@ void UI::initUI(std::list<DrawableObject*>& objectsList) {
     buttons[2]->setOnClickCallback([]() {
         GameEngine::getInstance()->getStateController()->gameStateNext = GameState::GS_CREDIT;
         });
+    buttons[2]->setRenderOrder(25);
     objectsList.push_back(buttons[2]);
 
     buttons[3] = new Button("QuitGameButton", "");
@@ -73,9 +81,13 @@ void UI::initUI(std::list<DrawableObject*>& objectsList) {
     buttons[3]->getTransform().setScale(glm::vec3(1.5f, 0.5f, 0.0f));
     buttons[3]->getTransform().setPosition(glm::vec3(-5.0f, -2.0f, 0.0f));
     buttons[3]->setOnClickCallback([]() {
-        std::cout << "Quit Button clicked!" << std::endl;
+        GameEngine::getInstance()->getStateController()->gameStateNext = GameState::GS_QUIT;
         });
+    buttons[3]->setRenderOrder(26);
     objectsList.push_back(buttons[3]);
+    
+    
+    
 
     settingsUI = new UISetting();
     settingsUI->initUI(objectsList);
@@ -83,6 +95,8 @@ void UI::initUI(std::list<DrawableObject*>& objectsList) {
 
     buttons[0]->setFocused(true);
     updateArrowPosition();
+
+
 }
 
 void UI::updateArrowPosition() {
