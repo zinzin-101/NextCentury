@@ -1,4 +1,5 @@
 #include "LevelAct12.h"
+#include "ElivaBoss.h"
 
 void LevelAct12::levelLoad() {
     SquareMeshVbo* square = new SquareMeshVbo();
@@ -81,6 +82,10 @@ void LevelAct12::levelInit() {
 
     Level::importTransformData(objectsList, "act12", false);
 
+    boss = new ElivaBoss();
+    boss->getTransform().setPosition(-5.9f, -1.6f);
+    objectsList.emplace_back(boss);
+
     player->getTransform().setPosition(glm::vec3(4.0f, -1.6f, 0.0f));
     player->setIsFacingRight(false);
     objectsList.emplace_back(player);
@@ -91,37 +96,40 @@ void LevelAct12::levelInit() {
     backGround->getTransform().setScale(scaleX, scaleY);
     objectsList.emplace_back(backGround);
 
-    isStop = false;
+    isStop = true;
 
     GameEngine::getInstance()->getRenderer()->getCamera()->setTarget(player);
     GameEngine::getInstance()->getRenderer()->setToggleViewport(false);
-
-    // initializing parallax object
-    for (DrawableObject* obj : objectsList) {
-        ParallaxObject* pObj = dynamic_cast<ParallaxObject*>(obj);
-        if (pObj != NULL) {
-            pObj->setPlayer(player);
-        }
-    }
 
     startObjects(objectsList);
 
     GameEngine::getInstance()->getRenderer()->getCamera()->setTarget(player);
     player->getDamageCollider()->setFollowOffset(glm::vec3(1.0f, -0.2f, 0));
 
-    //UIobject->initUI(objectsList);
+    UIobject->initUI(objectsList);
 
     fb = new FadeBlack(1.0f);
     objectsList.emplace_back(fb);
     fb->FadeToTransparent();
 
     vector<glm::vec3> l;
+    //l.push_back(glm::vec3(-1.1f, 0.8f, 0.0f));
     l.push_back(glm::vec3(-7.0f, 0.8f, 0.0f));
     preFight = new ChatBubble("../Resource/Texture/StoryStuff/preBossFight.txt", player, l, objectsList);
+    //preFight = new ChatBubble("../Resource/Texture/StoryStuff/postBossFight.txt", player, l, objectsList);
     
-    GameEngine::getInstance()->getRenderer()->getCamera()->setPosition(glm::vec3(-5.0f, 0.0f, 0.0f));
+    // initializing parallax object
+    //for (DrawableObject* obj : objectsList) {
+    //    if (obj != boss) {
+    //        obj->getTransform().translate(5.9f, 0.0f);
+    //    }
+    //}
+
+    //GameEngine::getInstance()->getRenderer()->getCamera()->setPosition(glm::vec3(1.9f, 0.0f, 0.0f));
+    GameEngine::getInstance()->getRenderer()->getCamera()->setPosition(glm::vec3(-4.0f, 0.0f, 0.0f));
 
     GameEngine::getInstance()->getRenderer()->getCamera()->setDeadLimitBool(true);
+    //GameEngine::getInstance()->getRenderer()->getCamera()->setDeadLimitMinMax(-3.1f, 14.9f);
     GameEngine::getInstance()->getRenderer()->getCamera()->setDeadLimitMinMax(-9.0f, 9.0f);
 
     GameEngine::getInstance()->getRenderer()->getCamera()->setOffset(glm::vec3(0.0f, -0.5f, 0.0f));
@@ -135,23 +143,31 @@ void LevelAct12::levelUpdate() {
     updateObjects(objectsList);
     preFight->runChat(objectsList);
     if (preFight->hasEnded()) {
+        isStop = false;
         GameEngine::getInstance()->getRenderer()->updateCamera();
+        boss->signalCanStart();
+    }
+    if (killCount == 1 && !once) {
+        vector <glm::vec3> l2;
+        l2.push_back(glm::vec3(boss->getTransform().getPosition().x - 1.2f, boss->getTransform().getPosition().y + 0.5f, 0.0f));
+        postFight = new ChatBubble("../Resource/Texture/StoryStuff/postBossFight.txt", player, l2, objectsList);
+        
+        once = true;
+    }
+    else if (killCount == 1) {
+        postFight->runChat(objectsList);
+        if (postFight->hasEnded()) {
+            door->setActive(true);
+        }
     }
     if (end) {
         timefade -= GameEngine::getInstance()->getTime()->getDeltaTime();
-        if (timefade < 6.1f && !once) {
-            fb->FadeToBlack();
-            // play walking down stair sound
-            once = true;
-        }
         if (timefade < 0.0f) {
             loadNextLevel();
         }
     }
 
-    
-
-    //UIobject->updateUI(*player, camPos);
+    UIobject->updateUI(player);
 }
 
 void LevelAct12::levelDraw() {
@@ -168,6 +184,7 @@ void LevelAct12::levelFree() {
     }
     objectsList.clear();
     delete preFight;
+    delete postFight;
     delete UIobject;
 }
 
@@ -263,7 +280,19 @@ void LevelAct12::handleKey(InputManager& input) {
         }
     }
 
+    if (input.getButtonDown(SDLK_r)) {
+        player->useHealthPotion();
+    }
+
     if (input.getButtonDown(SDLK_e)) {
-        
+        if (door->getIsActive() && door->getIsClickable()) {
+            fb->FadeToBlack();
+            end = true;
+        }
     }
 }
+
+void LevelAct12::signalFromEngine() {
+    this->killCount++;
+}
+

@@ -13,12 +13,15 @@ private:
     ChatBubble* preFight;
     ChatBubble* postFight;
     InteractableObject* door;
+    ElivaBoss* boss;
 
     bool isStop;
     FadeBlack* fb;
     bool end = false;
     bool once = false;
-    float timefade = 10.0f;
+    float timefade = 1.0f;
+
+    int killCount = 0;
 
 public:
     virtual void levelLoad();
@@ -29,4 +32,6 @@ public:
     virtual void levelUnload();
 
     virtual void handleKey(InputManager& input);
+
+    virtual void signalFromEngine();
 };

@@ -39,7 +39,7 @@ namespace ElivaStat {
 	constexpr float FURY_BAYONET_SLASH_TIME_PER_FRAME = 0.0833f;
 	constexpr float FURY_BLINKING_TIME_PER_FRAME = 0.0833f;
 
-	constexpr float DEATH_DIALOGUE_TIMER = 4.0f;
+	constexpr float DEATH_DIALOGUE_TIMER = 13.3f;
 }
 
 class ElivaBoss;
