@@ -99,10 +99,8 @@ void ProtagThoughts::skipSentence() {
 		if (!lifeTimeEachSentence.empty()) {
 			lifeTimeEachSentence.pop();
 			if (!lifeTimeEachSentence.empty()) {
-				cout << "1";
 				keepTime = lifeTimeEachSentence.front();
 				dialogueText->nextSentence();
-				cout << "2" << endl;
 			}
 		}
 
