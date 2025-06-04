@@ -71,9 +71,6 @@ void LevelAct14::levelInit() {
 
     Level::importTransformData(objectsList, "act14", false);
 
-    //player->getTransform().setScale(4.166f, 2.5f);
-    //player->getColliderComponent()->getTransform().translate(0.0f, -0.44f);
-    //player->getColliderComponent()->setDimension(0.25f, 0.65f);
     objectsList.emplace_back(player);
 
     GameEngine::getInstance()->getRenderer()->getCamera()->setTarget(player);
@@ -100,6 +97,10 @@ void LevelAct14::levelInit() {
     fb = new FadeBlack(1.0f);
     objectsList.emplace_back(fb);
     fb->FadeToTransparent();
+
+    p1 = new ProtagThoughts("../Resource/Texture/StoryStuff/protagAct14.txt", player);
+    p1->setRenderOrder(4);
+    objectsList.emplace_back(p1);
 
     isStop = false;
 
@@ -132,8 +133,11 @@ void LevelAct14::levelUpdate() {
 
     if (end) {
         timefade -= GameEngine::getInstance()->getTime()->getDeltaTime();
-        if (timefade < 4.0f) {
+        if (timefade < 20.0f) {
             fb->setRenderOpacity(1.0f);
+        }
+        if (timefade < 18.0f) {
+            p1->activateDialogue();
         }
         if (timefade < 0.0f) {
             loadNextLevel();

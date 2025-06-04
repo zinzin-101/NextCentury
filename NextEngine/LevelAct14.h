@@ -11,10 +11,11 @@ private:
     PlayerObject* player = nullptr;
     IngameUI* UIobject;
 
+    ProtagThoughts* p1;
     FadeBlack* fb;
     bool isStop;
     bool isFadingToBlack = false;
-    float timefade = 8.0f;
+    float timefade = 24.0f;
     bool end = false;
 
     AudioEngine m_audio;
