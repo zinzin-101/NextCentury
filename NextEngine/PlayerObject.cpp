@@ -202,7 +202,6 @@ void PlayerObject::useHealthPotion() {
     isHealing = true;
     healed = false;
 
-    currentNumOfPotion--;
     this->getAnimationComponent()->setState("Healing");
 }
 
@@ -755,6 +754,7 @@ void PlayerObject::handleHealing() {
     Animation::State animState = this->getAnimationComponent()->getCurrentAnimationState();
     if (animState.currentFrame == healFrame && !healed) {
         this->heal(PlayerStat::HEAL_AMOUNT);
+        currentNumOfPotion--;
         resetAttack();
         endMeleeAttack();
         healed = true;
