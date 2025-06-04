@@ -59,7 +59,7 @@ void UI::initUI(std::list<DrawableObject*>& objectsList) {
     buttons[1]->getTransform().setScale(glm::vec3(1.5f, 0.5f, 0.0f));
     buttons[1]->getTransform().setPosition(glm::vec3(-5.0f, 0.5f, 0.0f));
     buttons[1]->setOnClickCallback([]() {
-		
+		GameEngine::getInstance()->getStateController()->gameStateNext = GameState::GS_ACT1;
         });
     buttons[1]->setRenderOrder(24);
     objectsList.push_back(buttons[1]);
@@ -91,7 +91,7 @@ void UI::initUI(std::list<DrawableObject*>& objectsList) {
     buttons[4]->getTransform().setScale(glm::vec3(1.5f, 0.5f, 0.0f));
     buttons[4]->getTransform().setPosition(glm::vec3(-5.0f, -2.5f, 0.0f));
     buttons[4]->setOnClickCallback([]() {
-        std::cout << "Quit Button clicked!" << std::endl;
+		GameEngine::getInstance()->getStateController()->gameStateNext = GameState::GS_QUIT;
         });
     buttons[4]->setRenderOrder(26);
     objectsList.push_back(buttons[4]);
