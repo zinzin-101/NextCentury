@@ -325,5 +325,8 @@ void LevelAct3::handleKey(InputManager& input) {
             desk->setDescriptionActive(!desk->getDescriptionActive());
         }
     }
+    if (input.getButtonDown(SDLK_r)) {
+        player->useHealthPotion();
+    }
     UIobject->handleInput(input, player);
 }

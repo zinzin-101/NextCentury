@@ -17,6 +17,7 @@ private:
     bool isFadingToBlack = false;
     float timefade = 24.0f;
     bool end = false;
+    bool playSound = false;
 
     AudioEngine m_audio;
     SoundEffect m_jumpSfx;

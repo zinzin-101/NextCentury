@@ -268,6 +268,11 @@ void LevelAct9::handleKey(InputManager& input) {
             fb->FadeToBlack();
         }
     }
+
+    if (input.getButtonDown(SDLK_r)) {
+        player->useHealthPotion();
+    }
+
     UIobject->handleInput(input, player);
 }
 

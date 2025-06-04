@@ -367,6 +367,9 @@ void LevelAct6::handleKey(InputManager& input) {
                 end = true;
             }
         }
+        if (input.getButtonDown(SDLK_r)) {
+            player->useHealthPotion();
+        }
     }
 	UIobject->handleInput(input,player);
 }
