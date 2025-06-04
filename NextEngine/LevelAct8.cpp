@@ -17,6 +17,7 @@ void LevelAct8::levelLoad() {
 }
 
 void LevelAct8::levelInit() {
+    GameEngine::getInstance()->playMusic("BGM_Fight.wav", 1);
     UIobject = new IngameUI();
     GameEngine::getInstance()->getRenderer()->setClearColor(0.1f, 0.1f, 0.1f);
 

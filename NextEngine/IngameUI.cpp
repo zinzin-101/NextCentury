@@ -347,7 +347,6 @@ void IngameUI::initUI(std::list<DrawableObject*>& objectsList) {
 	deathText->setRenderOrder(101);
     objectsList.push_back(deathText);
 
-    // 4) Death-menu buttons
     deathmenubuttons[0] = new Button("RestartButton", "../Resource/Texture/UI/MainMenu/Retry.png");
     deathmenubuttons[0]->getTransform().setScale(glm::vec3(0.0f));
     deathmenubuttons[0]->setOnClickCallback([]() {
@@ -364,20 +363,56 @@ void IngameUI::initUI(std::list<DrawableObject*>& objectsList) {
 	deathmenubuttons[1]->setRenderOrder(103);
     objectsList.push_back(deathmenubuttons[1]);
 
-    // 5) Pause-menu buttons
     pausemenubuttons[0] = new Button("ResumeButton", "../Resource/Texture/UI/MainMenu/PlayGame.png");
     pausemenubuttons[0]->getTransform().setScale(glm::vec3(0.0f)); 
     pausemenubuttons[0]->setRenderOrder(103);
+	pausemenubuttons[0]->setOnClickCallback([this]() {
+		isPaused = false;
+		isShowingSettings = false;
+		settingsUI->hideAllSettings();
+		for (auto* btn : pausemenubuttons) {
+			if (btn) {
+				btn->getTransform().setScale(glm::vec3(0.0f));
+				btn->setFocused(false);
+			}
+		}
+		if (arrow) arrow->getTransform().setScale(glm::vec3(0.0f));
+		if (pauseText) pauseText->getTransform().setScale(glm::vec3(0.0f));
+		ammoIcon->getAnimationComponent()->setPaused(false);
+		GameEngine::getInstance()->resumeTime();
+		});
     objectsList.push_back(pausemenubuttons[0]);
+
+    settingsUI = new UISetting();
+    settingsUI->initUI(objectsList);
+    settingsUI->hideAllSettings();
 
     pausemenubuttons[1] = new Button("SettingsButton", "../Resource/Texture/UI/MainMenu/Setting.png");
     pausemenubuttons[1]->getTransform().setScale(glm::vec3(0.0f)); 
     pausemenubuttons[1]->setRenderOrder(104);
+    pausemenubuttons[1]->setOnClickCallback([this]() {
+        for (auto* btn : pausemenubuttons) {
+            if (btn) {
+                btn->getTransform().setScale(glm::vec3(0.0f));
+                btn->setFocused(false);
+            }
+        }
+        if (arrow) arrow->getTransform().setScale(glm::vec3(0.0f));
+        if (pauseText) pauseText->getTransform().setScale(glm::vec3(0.0f));
+
+        isShowingSettings = true;
+        settingsUI->showAllSettings();
+        });
     objectsList.push_back(pausemenubuttons[1]);
+
+    
 
     pausemenubuttons[2] = new Button("MainMenuButton", "../Resource/Texture/UI/MainMenu/MainMenu.png");
     pausemenubuttons[2]->getTransform().setScale(glm::vec3(0.0f)); 
     pausemenubuttons[2]->setRenderOrder(105);
+	pausemenubuttons[2]->setOnClickCallback([]() {
+		GameEngine::getInstance()->getStateController()->gameStateNext = GameState::GS_MAINMENU;
+		});
     objectsList.push_back(pausemenubuttons[2]);
 
 	potionIcon0 = new TexturedObject("PotionIcon0");
@@ -441,12 +476,17 @@ void IngameUI::initUI(std::list<DrawableObject*>& objectsList) {
 void IngameUI::updateUI(PlayerObject* playerObject) {
     camPos = GameEngine::getInstance()->getRenderer()->getCamera()->getPosition();
 
+    if (isPaused && isShowingSettings) {
+        settingsUI->updateUI();
+        return;
+    }
+
     if (isPaused) {
         hideAllUI();
         showPauseMenu();
         ammoIcon->getAnimationComponent()->setPaused(true);
         return;
-	}
+    }
 	else pauseText->getTransform().setScale(glm::vec3(0.0f));
 
     if (playerObject && playerObject->getHealth() > 0) {
@@ -472,7 +512,18 @@ void IngameUI::updateUI(PlayerObject* playerObject) {
 }
 
 void IngameUI::handleInput(InputManager& input, PlayerObject* playerObject) {
+    // ─── 1) Always intercept ESC first ───
     if (input.getButtonDown(SDLK_ESCAPE)) {
+        // If we are paused AND currently showing settings,
+        // ESC should close the settings screen and re‐open the pause menu.
+        if (isPaused && isShowingSettings) {
+            isShowingSettings = false;
+            settingsUI->hideAllSettings();
+            reopenPauseMenuBehindSettings();
+            return;
+        }
+
+        // Otherwise, ESC toggles pause on/off as before
         isPaused = !isPaused;
         if (isPaused) {
             GameEngine::getInstance()->pauseTime();
@@ -493,10 +544,47 @@ void IngameUI::handleInput(InputManager& input, PlayerObject* playerObject) {
         return;
     }
 
+    // ─── 2) If paused AND in the Settings panel, forward specific keys ───
+    if (isPaused && isShowingSettings) {
+        // Forward each relevant key:
+        if (input.getButtonDown(SDLK_TAB)) {
+            settingsUI->handleInput(SDLK_TAB);
+        }
+        else if (input.getButtonDown(SDLK_w) || input.getButtonDown(SDLK_UP)) {
+            settingsUI->handleInput(SDLK_w);
+        }
+        else if (input.getButtonDown(SDLK_s) || input.getButtonDown(SDLK_DOWN)) {
+            settingsUI->handleInput(SDLK_s);
+        }
+        else if (input.getButtonDown(SDLK_a) || input.getButtonDown(SDLK_LEFT)) {
+            settingsUI->handleInput(SDLK_a);
+        }
+        else if (input.getButtonDown(SDLK_d) || input.getButtonDown(SDLK_RIGHT)) {
+            settingsUI->handleInput(SDLK_d);
+        }
+        else if (input.getButtonDown(SDLK_RETURN) || input.getButtonDown(SDLK_SPACE)) {
+            settingsUI->handleInput(SDLK_RETURN);
+        }
+        else if (input.getButtonDown(SDLK_q)) {
+            settingsUI->handleInput(SDLK_q);
+        }
+        // No need to check ESC here since IngameUI already did.
+
+        // ─── Now check if settings just closed itself ───
+        if (settingsUI->isClosed()) {
+            isShowingSettings = false;
+            settingsUI->resetClosedFlag();
+            reopenPauseMenuBehindSettings();
+        }
+        return;
+    }
+
+    // ─── 3) If paused but NOT in settings, handle pause‐menu navigation ───
     if (isPaused) {
         if (input.getButtonDown(SDLK_w) || input.getButtonDown(SDLK_UP)) {
             pausemenubuttons[selectedButtonIndex]->setFocused(false);
-            selectedButtonIndex = (selectedButtonIndex - 1 + pausemenubuttons.size()) % pausemenubuttons.size();
+            selectedButtonIndex = (selectedButtonIndex - 1 + pausemenubuttons.size())
+                % pausemenubuttons.size();
             pausemenubuttons[selectedButtonIndex]->setFocused(true);
             updateArrowPosition(playerObject);
         }
@@ -515,10 +603,12 @@ void IngameUI::handleInput(InputManager& input, PlayerObject* playerObject) {
         return;
     }
 
+    // ─── 4) If player is dead, handle death‐menu input ───
     if (playerObject && playerObject->getHealth() <= 0) {
         if (input.getButtonDown(SDLK_w) || input.getButtonDown(SDLK_UP)) {
             deathmenubuttons[selectedButtonIndex]->setFocused(false);
-            selectedButtonIndex = (selectedButtonIndex - 1 + deathmenubuttons.size()) % deathmenubuttons.size();
+            selectedButtonIndex = (selectedButtonIndex - 1 + deathmenubuttons.size())
+                % deathmenubuttons.size();
             deathmenubuttons[selectedButtonIndex]->setFocused(true);
             updateArrowPosition(playerObject);
         }
@@ -536,6 +626,7 @@ void IngameUI::handleInput(InputManager& input, PlayerObject* playerObject) {
         }
     }
 }
+
 
 IngameUI::~IngameUI() {
 }

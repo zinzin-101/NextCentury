@@ -202,6 +202,8 @@ class PlayerObject : public LivingEntity {
         unsigned int noWeaponSprite;
         unsigned int normalSprite;
 
+        bool deathSoundPlayed = false;
+
     public:
         PlayerObject();
         ~PlayerObject();

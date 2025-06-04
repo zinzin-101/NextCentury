@@ -1,6 +1,7 @@
 #include "LevelMainMenu.h"
 
 void LevelMainMenu::levelLoad() {
+
     SquareMeshVbo* square = new SquareMeshVbo();
     square->loadData();
     GameEngine::getInstance()->addMesh(SquareMeshVbo::MESH_NAME, square);
@@ -16,6 +17,7 @@ void LevelMainMenu::levelLoad() {
 }
 
 void LevelMainMenu::levelInit() {
+    GameEngine::getInstance()->playMusic("BGM_MainMenu.wav", 1);
     UIobject = new UI();
     UIobject->initUI(objectsList);
 }
@@ -55,8 +57,6 @@ void LevelMainMenu::handleKey(InputManager& input) {
     if (input.getButtonDown(SDLK_q)) UIobject->handleInput(SDLK_q);
     if (input.getButtonDown(SDLK_TAB))    UIobject->handleInput(SDLK_TAB);
     if (input.getButtonDown(SDLK_ESCAPE)) UIobject->handleInput(SDLK_ESCAPE);
-    if (input.getButtonDown(SDLK_b)) GameEngine::getInstance()->playMusic("BGMAct1.wav", 1);
-    if (input.getButtonDown(SDLK_v)) GameEngine::getInstance()->playSoundEffect("Rolling.wav", 1);
 
 
 }
