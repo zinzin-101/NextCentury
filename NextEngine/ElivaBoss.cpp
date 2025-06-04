@@ -27,6 +27,8 @@ ElivaBoss::ElivaBoss(): EnemyObject(DefaultEnemyStat::ELIVA_INFO) {
 	deathTimer = ElivaStat::DEATH_DIALOGUE_TIMER;
 	isDyingDialoguePlaying = false;
 
+	blinkOrigin = glm::vec3();
+
 	for (int i = 0; i < 3; i++) {
 		rifleProjectiles[i] = nullptr;
 	}
@@ -257,7 +259,7 @@ void ElivaBoss::handleBlink() {
 		canBlink = false;
 
 		glm::vec3 playerPos = targetEntity->getTransform().getPosition();
-		glm::vec3 origin = glm::vec3();
+		glm::vec3 origin = blinkOrigin;
 		glm::vec3 elivaPos = this->getTransform().getPosition();
 		float direction = Random::Float() < 0.5f ? -1.0f : 1.0f;
 		float distance = Random::Float() * ElivaStat::MAX_BLINK_DISTANCE_FROM_PLAYER;
@@ -297,7 +299,7 @@ void ElivaBoss::handleFuryBlink() {
 		canBlink = false;
 
 		glm::vec3 playerPos = targetEntity->getTransform().getPosition();
-		glm::vec3 origin = glm::vec3();
+		glm::vec3 origin = blinkOrigin;
 		glm::vec3 elivaPos = this->getTransform().getPosition();
 		float direction = Random::Float() < 0.5f ? -1.0f : 1.0f;
 		float distance = Random::Float() * ElivaStat::MAX_BLINK_DISTANCE_FROM_PLAYER;
@@ -773,6 +775,10 @@ void ElivaBoss::signalStagger() {
 	currentState = &states[BossState::Cooldown];
 	cooldownTimer = ElivaStat::STAGGERED_DURATION;
 	bayonetCollider->setActive(false);
+}
+
+void ElivaBoss::setBlinkOrigin(float x) {
+	this->blinkOrigin.x = x;
 }
 
 bool ElivaBoss::getCanStart() const {
