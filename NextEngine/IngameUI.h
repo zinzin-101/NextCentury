@@ -25,6 +25,7 @@ private:
     TexturedObject* deathText = nullptr;
     std::vector<Button*> deathmenubuttons;
     std::vector<Button*> pausemenubuttons;
+	TexturedObject* pauseText = nullptr;
 
     TexturedObject* arrow = nullptr;
     int             selectedButtonIndex = 0;
@@ -36,6 +37,9 @@ private:
 
     glm::vec3 camPos;
     bool      isPaused = false;
+    bool hideGunUI = false;
+    bool hidePotionUI = false;
+    bool isdeathMenuDeactivate = false;
 
     glm::vec3 healthBarBasePos = { -5.5f, -4.0f, 0.0f };
     glm::vec3 healthBarBaseScale = { 2.0f,  (2.0f / 14.0f), 0.0f };
@@ -59,13 +63,16 @@ private:
     glm::vec3 gunIconsBaseScale = { 1.0f * 0.4f,  (15.0f/21.0f) * 0.4f, 0.0f };
 
     glm::vec3 deathBlackdropBasePos = { 0.0f,  0.0f, 0.0f };
-    glm::vec3 deathBlackdropBaseScale = { 0.0f,  0.0f, 0.0f };
+    glm::vec3 deathBlackdropBaseScale = { 20.0f,  20.0f, 0.0f };
 
     glm::vec3 deathTextBasePos = { 0.0f,  0.0f, 0.0f };
     glm::vec3 deathTextBaseScale = { 0.0f,  0.0f, 0.0f };
 
     glm::vec3 arrowBasePos = { 0.0f,  0.0f, 0.0f };
     glm::vec3 arrowBaseScale = { 0.213f, 0.213f, 0.0f };
+
+	glm::vec3 pauseTextBasePos = { 0.0f,  2.5f, 0.0f };
+    glm::vec3 pauseTextBaseScale = { 1.0f * 5.0f,(160.0f/640.0f)*5.0f, 0.0f };
 
     void updateArrowPosition(PlayerObject* playerObject);
     void hideAllUI();
@@ -80,4 +87,32 @@ public:
     void updateUI(PlayerObject* playerObject);
     void handleInput(InputManager& input, PlayerObject* playerObject);
     ~IngameUI();
+    void setDeathMenuDeactivate(bool deactivate) {
+        isdeathMenuDeactivate = deactivate;
+        if (deactivate) {
+            deathBlackdrop->getTransform().setScale({ 0,0,0 });
+            deathText->getTransform().setScale({ 0,0,0 });
+            for (auto* btn : deathmenubuttons) {
+                btn->getTransform().setScale({ 0,0,0 });
+            }
+            arrow->getTransform().setScale({ 0,0,0 });
+        }
+    }
+    void setDeactivateGunUI(bool deactivate) {
+        hideGunUI = deactivate;
+        if (deactivate) {
+            gunIcons->getTransform().setScale({ 0,0,0 });
+            ammoIcon->getTransform().setScale({ 0,0,0 });
+        }
+    }
+
+    void setDeactivatePotionUI(bool deactivate) {
+        hidePotionUI = deactivate;
+        if (deactivate) {
+            potionIcon0->getTransform().setScale({ 0,0,0 });
+            potionIcon1->getTransform().setScale({ 0,0,0 });
+            potionIcon2->getTransform().setScale({ 0,0,0 });
+            potionIcon3->getTransform().setScale({ 0,0,0 });
+        }
+    }
 };

@@ -15,6 +15,12 @@ private:
     InteractableObject* door;
     ElivaBoss* boss;
 
+	TexturedObject* bossHpBar;
+	SimpleObject* bossHpFill;
+	TexturedObject* bossNameText;
+    glm::vec3 camPos = glm::vec3(0.0f, 0.0f, 0.0f);
+
+
     bool isStop;
     FadeBlack* fb;
     bool end = false;

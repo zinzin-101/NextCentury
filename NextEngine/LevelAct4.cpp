@@ -56,9 +56,6 @@ void LevelAct4::levelInit() {
     midGround3->getTransform().setScale(scaleX, scaleY);
     objectsList.emplace_back(midGround3);
 
-    //TexturedObject* door = new TexturedObject();
-    //door->setTexture("../Resource/Texture/Act2/RSDT_P05_Door.png");
-    //objectsList.emplace_back(door);
 
     TexturedObject* barrier = new TexturedObject();
     barrier->setTexture("../Resource/Texture/Act2/RSDT_P07_Barrier.png");
@@ -78,19 +75,8 @@ void LevelAct4::levelInit() {
     ground->getTransform().setScale(scaleX, scaleY);
     objectsList.emplace_back(ground);
 
-
-    //float height = 8.0f;
-    //float width = height * 2.7778f;
-    //for (auto a : objectsList) {
-    //    a->getTransform().setScale(width, height);
-    //    a->getTransform().setPosition(0.0f, -0.75f);
-    //}
-
     Level::importTransformData(objectsList, "act4", false);
 
-    //player->getTransform().setScale(4.166f, 2.5f);
-    //player->getColliderComponent()->getTransform().translate(0.0f, -0.44f);
-    //player->getColliderComponent()->setDimension(0.25f, 0.65f);
     player->getTransform().setPosition(glm::vec3(8.9f, -1.6f, 0.0f));
     objectsList.emplace_back(player);
 
@@ -102,7 +88,6 @@ void LevelAct4::levelInit() {
     GameEngine::getInstance()->getRenderer()->getCamera()->setPosition(glm::vec3(4.5f, 0.0f, 0.0f));
     GameEngine::getInstance()->getRenderer()->setToggleViewport(false);
 
-    // initializing parallax object
     for (DrawableObject* obj : objectsList) {
         ParallaxObject* pObj = dynamic_cast<ParallaxObject*>(obj);
         if (pObj != NULL) {
@@ -120,8 +105,6 @@ void LevelAct4::levelInit() {
 
     player->getDamageCollider()->setFollowOffset(glm::vec3(1.0f, -0.2f, 0));
     player->setIsFacingRight(false);
-    //player->getTransform().scales(1.0f, 1.0f);
-    //player->move(glm::vec2(-1, 0));
 
     UIobject->initUI(objectsList);
 
