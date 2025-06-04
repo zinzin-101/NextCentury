@@ -24,6 +24,7 @@
 #include "LevelAct11.h"
 #include "LevelAct12.h"
 #include "LevelAct13.h"
+#include "LevelAct14.h"
 #include "LevelMainMenu.h"
 
 GameStateController::GameStateController() {
@@ -45,7 +46,7 @@ void GameStateController::loadLevel() {
 	cout << gameStateCurr << endl;
 	switch (gameStateCurr) {
 		case GameState::GS_MENU:
-			currentLevel = new LevelAct13();
+			currentLevel = new LevelAct12();
 			break;
 		case GameState::GS_ACT1:
 			currentLevel = new LevelAct1();

@@ -51,7 +51,7 @@ void LevelAct10::levelInit() {
 
     TexturedObject* board = new TexturedObject();
     board->getTransform().setPosition(-1.7f, -0.5f);
-    board->setTexture("../Resource/Texture/Act10/boardAct10.png");
+    board->setTexture("../Resource/Texture/Act10/board2Act10.png");
     board->getTransform().setScale(2.5f, 1.41f);
     objectsList.emplace_back(board);
 

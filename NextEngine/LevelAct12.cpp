@@ -84,6 +84,7 @@ void LevelAct12::levelInit() {
 
     boss = new ElivaBoss();
     boss->getTransform().setPosition(-5.9f, -1.6f);
+    boss->setBlinkOrigin(0.0f);
     objectsList.emplace_back(boss);
 
     player->getTransform().setPosition(glm::vec3(4.0f, -1.6f, 0.0f));
