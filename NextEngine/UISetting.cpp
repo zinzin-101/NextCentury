@@ -596,6 +596,9 @@ void UISetting::hideAllSettings() {
     if (audioText)   audioText->getTransform().setScale({ 0.0f, 0.0f, 0.0f });
     if (controlText) controlText->getTransform().setScale({ 0.0f, 0.0f, 0.0f });
 
+    if (f8) f8->getTransform().setScale({ 0.0f, 0.0f, 0.0f });
+    if (f11) f11->getTransform().setScale({ 0.0f, 0.0f, 0.0f });
+
     for (auto* b : buttons) {
         if (b) b->getTransform().setScale({ 0.0f, 0.0f, 0.0f });
     }
