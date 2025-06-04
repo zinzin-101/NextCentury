@@ -82,6 +82,8 @@ void LevelAlphaTest::levelInit() {
 
     GameEngine::getInstance()->freezeGameForSeconds(0.5f);
 
+
+    player->setMaxNumOfPotion(1);
 }
 
 void LevelAlphaTest::levelUpdate() {

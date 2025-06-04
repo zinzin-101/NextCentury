@@ -20,6 +20,7 @@ namespace PlayerStat {
     constexpr float PARRY_ANIMATION_TIME_PER_FRAME = 0.04f;
     constexpr float CHARGE_ANIMATION_TIME_PER_FRAME = 0.08f;
     constexpr float GUN_CHARGE_ANIMATION_TIME_PER_FRAME = 0.08f;
+    constexpr float GUN_SHOT_ANIMATION_TIME_PER_FRAME = 0.08f;
 
     constexpr int COMBO_DAMAGE_1 = 10;
     constexpr int COMBO_DAMAGE_2 = 15;
@@ -189,6 +190,7 @@ class PlayerObject : public LivingEntity {
         int currentNumOfBullets;
         float bulletRechargeTimer;
 
+        int maxNumOfPotion;
         int currentNumOfPotion;
         float potionRechargeTimer;
         bool isHealing;
@@ -196,6 +198,9 @@ class PlayerObject : public LivingEntity {
         int healFrame;
         void resetHealing();
         void handleHealing();
+
+        unsigned int noWeaponSprite;
+        unsigned int normalSprite;
 
     public:
         PlayerObject();
@@ -222,7 +227,7 @@ class PlayerObject : public LivingEntity {
         void dodge(float xDirection);
 
         void useHealthPotion();
-        void resetNumOfPotion();
+        void resetNumOfBullet();
 
         bool getCanMove() const;
         bool getIsParrying() const;
@@ -232,6 +237,9 @@ class PlayerObject : public LivingEntity {
 
         virtual void takeDamage(int damage);
         void flinch(float duration);
+
+        void setWieldWeaponSprite(bool value);
+        void setMaxNumOfPotion(int n);
 
         int getStamina() const;
         int getCurrentNumOfBullet() const;
