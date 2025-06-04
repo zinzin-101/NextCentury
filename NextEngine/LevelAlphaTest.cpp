@@ -51,7 +51,7 @@ void LevelAlphaTest::levelInit() {
 
     player = new PlayerObject();
     //player->setAffectedByLighting(true);
-    player->setDrawCollider(true);
+    //player->setDrawCollider(true);
     objectsList.emplace_back(player);
 
 
@@ -74,7 +74,7 @@ void LevelAlphaTest::levelInit() {
     startObjects(objectsList);
 
     player->getDamageCollider()->setFollowOffset(glm::vec3(1.0f, -0.2f, 0));
-    player->getDamageCollider()->setDrawCollider(true);
+    //player->getDamageCollider()->setDrawCollider(true);
 
 
     GameEngine::getInstance()->getRenderer()->getCamera()->setOffset(glm::vec3(0.0f, -0.5f, 0.0f));

@@ -43,7 +43,7 @@ void Wailer::start(list<DrawableObject*>& objectsList) {
 
 	targetEntity = EnemyObject::findPlayer(objectsList);
 
-	setDrawCollider(true);
+	//setDrawCollider(true);
 }
 
 void Wailer::updateState() {

@@ -9,7 +9,7 @@ PoisonCloudCollider::PoisonCloudCollider(LivingEntity* owner) : owner(owner) {
 	this->DrawableObject::setActive(false);
 	this->followOwner = false;
 
-	this->setDrawCollider(true); // debug
+	//this->setDrawCollider(true); // debug
 
 	this->getTransform().setScale(2.0f, 1.0f);
 }

@@ -7,8 +7,8 @@ SonicWave::SonicWave() {
 
 	this->addColliderComponent();
 	this->getColliderComponent()->setTrigger(true);
-	this->setDrawCollider(true);
-	this->setDrawColliderColor(glm::vec3(1, 0, 0));
+	//this->setDrawCollider(true);
+	//this->setDrawColliderColor(glm::vec3(1, 0, 0));
 
 	this->setRenderOrder(1);
 

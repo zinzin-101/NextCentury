@@ -61,7 +61,7 @@ FlameDamage<TargetEntityType>::FlameDamage(LivingEntity* owner, int damage, floa
 	this->DrawableObject::setActive(false);
 	this->followOwner = false;
 
-	this->setDrawCollider(true); // debug
+	//this->setDrawCollider(true); // debug
 
 	this->setTexture("../Resource/Texture/BlightFlameFixed3.png");
 	this->initAnimation(9, 11);

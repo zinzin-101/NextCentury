@@ -132,7 +132,7 @@ void ElivaBoss::start(list<DrawableObject*>& objectsList) {
 		rifleProjectiles[i]->setDestroyOnDespawn(false);
 		rifleProjectiles[i]->getParticleEmitter()->update(objectsList);
 		rifleProjectiles[i]->setActive(false);
-		rifleProjectiles[i]->setDrawCollider(true); // debug
+		//rifleProjectiles[i]->setDrawCollider(true); // debug
 		objectsList.emplace_back(rifleProjectiles[i]);
 	}
 
@@ -141,7 +141,7 @@ void ElivaBoss::start(list<DrawableObject*>& objectsList) {
 	bayonetCollider->setFollowOwner(true);
 	bayonetCollider->setFollowOffset(glm::vec3(-1.0f, -1.0f, 0));
 	bayonetCollider->getColliderComponent()->setDimension(2.0f, 2.0f);
-	bayonetCollider->setDrawCollider(true); // debug
+	//bayonetCollider->setDrawCollider(true); // debug
 	bayonetCollider->setCanDamage(false);
 	objectsList.emplace_back(bayonetCollider);
 
@@ -150,14 +150,14 @@ void ElivaBoss::start(list<DrawableObject*>& objectsList) {
 	poisonCollider->setFollowOwner(true);
 	poisonCollider->setFollowOffset(glm::vec3(0.0f, -1.0f, 0.0f));
 	poisonCollider->getColliderComponent()->setWidth(2.0f);
-	poisonCollider->setDrawCollider(true); // debug
+	//poisonCollider->setDrawCollider(true); // debug
 	objectsList.emplace_back(poisonCollider);
 
 	this->getTransform().setScale(5.0f, 3.75f);
 	this->getColliderComponent()->setHeight(0.5f);
 	this->getColliderComponent()->getTransform().setScale(0.5f, 1.0f);
 	this->getColliderComponent()->getTransform().setPosition(0.0f, -0.925f);
-	this->setDrawCollider(true);
+	//this->setDrawCollider(true);
 
 	targetEntity = EnemyObject::findPlayer(objectsList);
 }

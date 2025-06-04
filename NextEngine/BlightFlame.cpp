@@ -29,7 +29,7 @@ void BlightFlame::start(list<DrawableObject*>& objectsList) {
 	attackHitbox->setActive(false);
 	attackHitbox->setFollowOwner(true);
 	attackHitbox->setFollowOffset(glm::vec3(0.6f, 0.0f ,0.0f));
-	attackHitbox->setDrawCollider(true); // debug
+	//attackHitbox->setDrawCollider(true); // debug
 	attackHitbox->setCanDamage(false);
 	attackFrameStart = 3;
 	attackFrameActivate = 5;
