@@ -365,7 +365,7 @@ void PlayerObject::updateBehavior(list<DrawableObject*>& objectsList) {
 }
 
 void PlayerObject::normalAttack() {
-    if (isAttacking || isParrying || isDodging || isJumping || isHealing) {
+    if (isAttacking || isParrying || isDodging || isJumping || isHealing || isInRangeAttack) {
         return;
     }
 
