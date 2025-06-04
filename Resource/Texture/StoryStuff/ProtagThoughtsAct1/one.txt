@@ -18,3 +18,11 @@ They're searching for something in ASCENDBURG.
 4.0
 A MAGIC-CONTROL DEVICE...
 4.0
+...
+1.0
+PRESS [F] to Interact with Objects.
+1.5
+PRESS [F] to Interact with Objects.
+1.5
+PRESS [F] to Interact with Objects.
+1.5

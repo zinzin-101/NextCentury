@@ -134,7 +134,7 @@ void LevelAct14::levelUpdate() {
         end = true;
         player->takeDamage(9999);
         if (!playSound) {
-            GameEngine::getInstance()->playSoundEffect("Sound_Gun_Shoot", 0);
+            GameEngine::getInstance()->playSoundEffect("Sound_Shoot_Envi.wav", 0);
             playSound = true;
         }
     }
