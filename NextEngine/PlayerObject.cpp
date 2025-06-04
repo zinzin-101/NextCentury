@@ -10,8 +10,10 @@
 PlayerObject::PlayerObject() : LivingEntity("Player", PlayerStat::MAX_HEALTH) {
     //this->damage = playerInfo.damage;
 
-    setTexture("../Resource/Texture/MCFINAL3.png");
-    initAnimation(17, 8);
+    noWeaponSprite = setTexture("../Resource/Texture/MC.png");
+    normalSprite = setTexture("../Resource/Texture/MC.png");
+    initAnimation(18, 9);
+    this->getAnimationComponent()->setTexture(normalSprite);
 
     getAnimationComponent()->addState("Idle", 0, 0, 6, true);
     getAnimationComponent()->addState("Walking", 1, 0, 6, true);
@@ -23,21 +25,21 @@ PlayerObject::PlayerObject() : LivingEntity("Player", PlayerStat::MAX_HEALTH) {
     getAnimationComponent()->addState("Combo2", 5, 0, 5, false, PlayerStat::ATTACK_ANIMATION_TIME_PER_FRAME);
     getAnimationComponent()->addState("Combo3", 6, 0, 5, false, PlayerStat::ATTACK_ANIMATION_TIME_PER_FRAME);
 
-    getAnimationComponent()->addState("Charging", 7, 0, 6, false, PlayerStat::CHARGE_ANIMATION_TIME_PER_FRAME);
-    getAnimationComponent()->addState("MaxCharging", 7, 1, 3, true, PlayerStat::CHARGE_ANIMATION_TIME_PER_FRAME);
-    getAnimationComponent()->addState("Charge1", 8, 0, 4, false, PlayerStat::ATTACK_ANIMATION_TIME_PER_FRAME);
-    getAnimationComponent()->addState("Charge2", 9, 0, 4, false, PlayerStat::ATTACK_ANIMATION_TIME_PER_FRAME);
+    getAnimationComponent()->addState("Charging", 7, 0, 8, false, PlayerStat::CHARGE_ANIMATION_TIME_PER_FRAME);
+    getAnimationComponent()->addState("MaxCharging", 8, 0, 3, true, PlayerStat::CHARGE_ANIMATION_TIME_PER_FRAME);
+    getAnimationComponent()->addState("Charge1", 9, 0, 4, false, PlayerStat::ATTACK_ANIMATION_TIME_PER_FRAME);
+    getAnimationComponent()->addState("Charge2", 10, 0, 4, false, PlayerStat::ATTACK_ANIMATION_TIME_PER_FRAME);
 
-    getAnimationComponent()->addState("Parrying", 14, 0, 8, false, PlayerStat::PARRY_ANIMATION_TIME_PER_FRAME);
+    getAnimationComponent()->addState("Parrying", 15, 0, 8, false, PlayerStat::PARRY_ANIMATION_TIME_PER_FRAME);
 
-    getAnimationComponent()->addState("GunCharge1", 11, 0, 6, true, PlayerStat::GUN_CHARGE_ANIMATION_TIME_PER_FRAME);
-    getAnimationComponent()->addState("GunCharge2", 12, 0, 6, true, PlayerStat::GUN_CHARGE_ANIMATION_TIME_PER_FRAME);
-    getAnimationComponent()->addState("GunCharge3", 13, 0, 6, true, PlayerStat::GUN_CHARGE_ANIMATION_TIME_PER_FRAME);
-    getAnimationComponent()->addState("GunShoot", 10, 0, 3, false, 0.08f);
+    getAnimationComponent()->addState("GunCharge1", 12, 0, 6, true, PlayerStat::GUN_CHARGE_ANIMATION_TIME_PER_FRAME);
+    getAnimationComponent()->addState("GunCharge2", 13, 0, 6, true, PlayerStat::GUN_CHARGE_ANIMATION_TIME_PER_FRAME);
+    getAnimationComponent()->addState("GunCharge3", 14, 0, 6, true, PlayerStat::GUN_CHARGE_ANIMATION_TIME_PER_FRAME);
+    getAnimationComponent()->addState("GunShoot", 11, 1, 3, false, PlayerStat::GUN_SHOT_ANIMATION_TIME_PER_FRAME);
 
-    getAnimationComponent()->addState("Healing", 15, 0, 7, false);
+    getAnimationComponent()->addState("Healing", 16, 0, 7, false);
 
-    getAnimationComponent()->addState("Dead", 16, 0, 6, false);
+    getAnimationComponent()->addState("Dead", 17, 0, 6, false);
 
     //getTransform().setScale(1, 1);
     addColliderComponent();
@@ -102,8 +104,9 @@ PlayerObject::PlayerObject() : LivingEntity("Player", PlayerStat::MAX_HEALTH) {
     staminaRechargeDelayTimer = 0.0f;
     staminaRechargeTimer = 0.0f;
 
+    setMaxNumOfPotion(PlayerStat::MAX_HEALTH_POTION);
 
-    resetNumOfPotion();
+    resetNumOfBullet();
     resetHealing();
     healFrame = 4;
 
@@ -118,7 +121,7 @@ PlayerObject::~PlayerObject() {
 
 void PlayerObject::move(glm::vec2 direction) {
     this->moveDirection.x += direction.x;
-	
+
     if (this->moveDirection.x != 0.0f) {
         this->moveDirection.x /= abs(this->moveDirection.x);
 
@@ -199,7 +202,6 @@ void PlayerObject::useHealthPotion() {
     isHealing = true;
     healed = false;
 
-    currentNumOfPotion--;
     this->getAnimationComponent()->setState("Healing");
 }
 
@@ -251,14 +253,14 @@ void PlayerObject::updateStat() {
         }
     }
 
-    if (potionRechargeTimer > 0.0f && currentNumOfPotion < PlayerStat::MAX_HEALTH_POTION) {
-        potionRechargeTimer -= dt;
-    }
+    //if (potionRechargeTimer > 0.0f && currentNumOfPotion < PlayerStat::MAX_HEALTH_POTION) {
+    //    potionRechargeTimer -= dt;
+    //}
 
-    if (currentNumOfPotion < PlayerStat::MAX_HEALTH_POTION && potionRechargeTimer <= 0.0f) {
-        potionRechargeTimer = PlayerStat::POTION_RECHARGE_TIMER;
-        currentNumOfPotion++;
-    }
+    //if (currentNumOfPotion < PlayerStat::MAX_HEALTH_POTION && potionRechargeTimer <= 0.0f) {
+    //    potionRechargeTimer = PlayerStat::POTION_RECHARGE_TIMER;
+    //    currentNumOfPotion++;
+    //}
     //cout << "potion left: " << currentNumOfPotion << endl;
 }
 
@@ -633,7 +635,6 @@ void PlayerObject::startRangeAttack(float dt) {
     if (rangeHeldDuration > rangeChargeDuration[PlayerRangeCharge::CHARGE_3] && currentNumOfBullets >= rangeChargeDuration[PlayerRangeCharge::CHARGE_3]) {
         currentRangeCharge = PlayerRangeCharge::CHARGE_3;
         this->getAnimationComponent()->setState("GunCharge3");
-        GameEngine::getInstance()->playSoundEffect("Sound_Gun_Charge.wav");
         //GameEngine::getInstance()->getRenderer()->getCamera()->shake = true;
         return;
     }
@@ -650,7 +651,6 @@ void PlayerObject::startRangeAttack(float dt) {
 
 void PlayerObject::handleDodging() {
     this->getAnimationComponent()->setState("Dodging");
-	GameEngine::getInstance()->playSoundEffect("Rolling.wav");
 
     canChangeFacingDirection = false;
 
@@ -697,7 +697,6 @@ void PlayerObject::handleMovement() {
     }
     else {
         this->getAnimationComponent()->setState("Walking");
-        GameEngine::getInstance()->playSoundEffect("Walk.wav");
     }
 
     vel = this->physics->getVelocity();
@@ -755,7 +754,7 @@ void PlayerObject::handleHealing() {
     Animation::State animState = this->getAnimationComponent()->getCurrentAnimationState();
     if (animState.currentFrame == healFrame && !healed) {
         this->heal(PlayerStat::HEAL_AMOUNT);
-		GameEngine::getInstance()->playSoundEffect("Sound_Heal.wav");
+        currentNumOfPotion--;
         resetAttack();
         endMeleeAttack();
         healed = true;
@@ -795,7 +794,7 @@ void PlayerObject::handleNormalAttack() {
     if (currentFrame == comboFrame[currentCombo].startAttackFrame + 1) {
         startMeleeAttack();
 
-        GameEngine::getInstance()->playSoundEffect("Sound_Attack_Light_1.wav");
+        GameEngine::getInstance()->playSoundEffect("MC_Sound_Attack_Light_1.wav");
 
         return;
     }
@@ -887,7 +886,6 @@ void PlayerObject::handleRangeAttack() {
             isAttacking = false;
             canMove = true;
             getAnimationComponent()->setState("Idle");
-			GameEngine::getInstance()->playSoundEffect("Sound_Gun_Shoot.wav");
         }
         return;
     }
@@ -931,7 +929,6 @@ void PlayerObject::handleParryAttack() {
             canMove = true;
             isParrying = false;
             moveDirection.x = 0.0f;
-			GameEngine::getInstance()->playSoundEffect("Sound_Parry.wav");
         }
 
         return;
@@ -1013,7 +1010,7 @@ void PlayerObject::resetStaminaRechargeDelay() {
     staminaRechargeDelayTimer = PlayerStat::STAMINA_RECHARGE_DELAY;
 }
 
-void PlayerObject::resetNumOfPotion() {
+void PlayerObject::resetNumOfBullet() {
     currentNumOfBullets = PlayerStat::MAX_BULLET;
     bulletRechargeTimer = PlayerStat::BULLET_RECHARGE_TIMER;
 }
@@ -1021,6 +1018,15 @@ void PlayerObject::resetNumOfPotion() {
 void PlayerObject::resetHealing() {
     isHealing = false;
     healed = false;
+}
+
+void PlayerObject::setWieldWeaponSprite(bool value) {
+    value ? this->getAnimationComponent()->setTexture(normalSprite) : this->getAnimationComponent()->setTexture(noWeaponSprite);
+}
+
+void PlayerObject::setMaxNumOfPotion(int n) {
+    this->maxNumOfPotion = n;
+    this->currentNumOfPotion = this->maxNumOfPotion;
 }
 
 int PlayerObject::getStamina() const {
