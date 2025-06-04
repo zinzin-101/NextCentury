@@ -311,7 +311,6 @@ void UISetting::adjustVolume(int buttonIndex) {
 }
 
 void UISetting::updateUI() {
-    // 1) Grab the camera’s world position each frame:
     glm::vec3 camPos = GameEngine::getInstance()
         ->getRenderer()
         ->getCamera()
@@ -321,21 +320,16 @@ void UISetting::updateUI() {
         f8->getTransform().setPosition({ camPos.x - 3.0f, camPos.y - 2.5f, camPos.z + 0.0f });
         f11->getTransform().setPosition({ camPos.x - 3.0f, camPos.y - 3.0f, camPos.z + 0.0f });
 
-        // ─── Blackdrop always fills the screen, centered on camera ───
         blackdrop->getTransform().setScale({ 20.0f, 20.0f, 0.0f });
         blackdrop->getTransform().setPosition({ camPos.x, camPos.y, camPos.z });
 
-        // ─── AudioPage background ───
         AudioPageTex->getTransform().setScale({ 16.0f, 9.0f, 0.0f });
         AudioPageTex->getTransform().setPosition({ camPos.x, camPos.y, camPos.z });
 
-        // ─── Hide the control page elements ───
         ControlPageTex->getTransform().setScale({ 0.0f, 0.0f, 0.0f });
         keyboardTex->getTransform().setScale({ 0.0f, 0.0f, 0.0f });
         mouseTex->getTransform().setScale({ 0.0f, 0.0f, 0.0f });
 
-        // ─── “AUDIO” and “CONTROL” labels sit near the top of the screen ───
-        //     Their base positions were (−3.0, +3.1, 0) and (+3.0, +3.1, 0).
         audioText->getTransform().setScale({ 4.0f, 1.0f, 0.0f });
         audioText->getTransform().setPosition({camPos.x  - 3.0f, camPos.y + 3.1f, camPos.z + 0.0f });
         controlText->getTransform().setScale({ 4.0f, 1.0f, 0.0f });
@@ -348,7 +342,6 @@ void UISetting::updateUI() {
 		f8->getTransform().setScale({ 5.0f, (12.0f / 80.0f) * 5.0f, 0.0f });
 		f11->getTransform().setScale({ 5.0f, (12.0f / 80.0f) * 5.0f, 0.0f });
 
-        // ─── Determine arrow scale/position based on which button is focused ───
         const float zeroScale[3] = { 0.0f, 0.0f, 0.0f };
         const float normalScale[3] = { ARROW_SIZE, ARROW_SIZE, 0.0f };
 
@@ -361,8 +354,6 @@ void UISetting::updateUI() {
             }
             };
 
-        // The six arrows sit along three horizontal bars at y = { MASTER_Y, SFX_Y, MUSIC_Y },
-        // but always offset by camPos.y:
         hideOrShow(arrowMasterLeft, 0);
         arrowMasterLeft->getTransform().setPosition({ camPos.x + (BAR_XPOS - BAR_WIDTH / 2.0f - ARROW_SIZE / 2.0f - ARROW_MARGIN),
                                                       camPos.y + MASTER_Y,
@@ -393,7 +384,6 @@ void UISetting::updateUI() {
                                                     camPos.y + SFX_Y,
                                                     camPos.z });
 
-        // ─── Draw the three volume bars at their “base” scales and positions ───
         masterVolumeBar->getTransform().setScale({ BAR_WIDTH, BAR_HEIGHT, 0.0f });
         masterVolumeBar->getTransform().setPosition({ camPos.x + BAR_XPOS, camPos.y + MASTER_Y, camPos.z });
 
@@ -403,7 +393,6 @@ void UISetting::updateUI() {
         musicBar->getTransform().setScale({ BAR_WIDTH, BAR_HEIGHT, 0.0f });
         musicBar->getTransform().setPosition({ camPos.x + BAR_XPOS, camPos.y + MUSIC_Y, camPos.z });
 
-        // ─── Now adjust each “fill” rectangle so that its width reflects current volume ───
         int currentSfxVol = Mix_Volume(-1, -1);
         int currentMusicVol = Mix_VolumeMusic(-1);
         int currentMasterVol = std::max(currentSfxVol, currentMusicVol);
@@ -412,7 +401,7 @@ void UISetting::updateUI() {
         const float halfBar = fullWidth / 2.0f;
         const float barLeftX = BAR_XPOS - halfBar;
 
-        {   // Master fill:
+        {
             float masterFrac = computeFillFraction(currentMasterVol);
             float masterW = fullWidth * masterFrac;
             float masterCenter = barLeftX + (masterW * 0.5f);
@@ -420,7 +409,7 @@ void UISetting::updateUI() {
             masterFill->getTransform().setPosition({ camPos.x + masterCenter, camPos.y + MASTER_Y, camPos.z });
         }
 
-        {   // SFX fill:
+        {  
             float sfxFrac = computeFillFraction(currentSfxVol);
             float sfxW = fullWidth * sfxFrac;
             float sfxCenter = barLeftX + (sfxW * 0.5f);
@@ -428,7 +417,7 @@ void UISetting::updateUI() {
             sfxFill->getTransform().setPosition({ camPos.x + sfxCenter, camPos.y + SFX_Y, camPos.z });
         }
 
-        {   // Music fill:
+        {  
             float musicFrac = computeFillFraction(currentMusicVol);
             float musicW = fullWidth * musicFrac;
             float musicCenter = barLeftX + (musicW * 0.5f);
@@ -439,7 +428,6 @@ void UISetting::updateUI() {
         updateArrowHighlight();
     }
     else {
-        // ─── CONTROL page ───
         blackdrop->getTransform().setScale({ 20.0f, 20.0f, 0.0f });
         blackdrop->getTransform().setPosition({ camPos.x, camPos.y, camPos.z });
 
