@@ -155,6 +155,8 @@ void LevelAct12::levelInit() {
 
     GameEngine::getInstance()->freezeGameForSeconds(0.5f);
     GameEngine::getInstance()->getTime()->setTimeScale(1.0f);
+
+    killCount = 0;
 }
 
 void LevelAct12::levelUpdate() {
@@ -337,15 +339,6 @@ void LevelAct12::handleKey(InputManager& input) {
 
     if (input.getButtonDown(SDLK_e)) {
         player->useHealthPotion();
-    }
-
-    if (input.getButtonDown(SDLK_f)) {
-        if (door->getIsActive() && door->getIsClickable()) {
-            fb->FadeToBlack();
-            end = true;
-        }
-        preFight->skipSentence();
-        postFight->skipSentence();
     }
 	UIobject->handleInput(input, player);
 }

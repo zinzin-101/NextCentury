@@ -17,6 +17,7 @@ void LevelAct6::levelLoad() {
 }
 
 void LevelAct6::levelInit() {
+    
     GameEngine::getInstance()->playMusic("BGM_Fight.wav", 1);
     UIobject = new IngameUI();
     player = new PlayerObject();
@@ -163,6 +164,9 @@ void LevelAct6::levelInit() {
     objectsList.emplace_back(fb);
     fb->FadeToTransparent();
 
+    set1FightDone = false;
+    set2FightDone = false;
+
     UIobject->initUI(objectsList);
 
     GameEngine::getInstance()->getRenderer()->getCamera()->setPosition(glm::vec3(0.0f, 0.0f, 0.0f));
@@ -175,6 +179,9 @@ void LevelAct6::levelInit() {
 
     GameEngine::getInstance()->freezeGameForSeconds(0.5f);
     GameEngine::getInstance()->getTime()->setTimeScale(1.0f);
+
+    isStop = false;
+    killCount = 0;
 }
 
 void LevelAct6::levelUpdate() {
@@ -183,15 +190,17 @@ void LevelAct6::levelUpdate() {
     updateObjects(objectsList);
     GameEngine::getInstance()->getRenderer()->updateCamera();
     
-
+    cout << set1FightDone << endl;
     if (player->getTransform().getPosition().x > 24.8f && !set1FightDone) {
         GameEngine::getInstance()->getRenderer()->getCamera()->setTarget(camTarget);
         //GameEngine::getInstance()->getRenderer()->getCamera()->setPosition(glm::vec3(32.0f, 0.0f, 0.0f));
         chat1->runChat(objectsList);
+        //cout << "???2" << endl;
         if (!chat1->hasEnded()) {
             isStop = true;
         }
         else {
+            //cout << "???" << endl;
             chat2->runChat(objectsList);
             if (!chat2->hasEnded()) {
                 turnTime -= GameEngine::getInstance()->getTime()->getDeltaTime();
@@ -375,7 +384,7 @@ void LevelAct6::handleKey(InputManager& input) {
             fb->FadeToBlack();
             end = true;
         }
-        cout << "what" << endl;
+        //cout << "what" << endl;
         chat1->skipSentence();
         chat2->skipSentence();
         thought1->skipSentence();

@@ -123,6 +123,8 @@ void LevelAct9::levelInit() {
 
     GameEngine::getInstance()->freezeGameForSeconds(0.5f);
     GameEngine::getInstance()->getTime()->setTimeScale(1.0f);
+
+    killCount = 0;
 }
 
 void LevelAct9::levelUpdate() {
