@@ -1,5 +1,5 @@
 #pragma once
-#define DEBUG_MODE_ON // Launch in debug mode
+//#define DEBUG_MODE_ON // Launch in debug mode
 //#define START_FULLSCREEN // Launch in full screen
 //#define DEBUG_NO_EDITOR
 
