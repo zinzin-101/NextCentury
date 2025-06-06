@@ -422,6 +422,10 @@ void PlayerObject::normalAttack() {
 }
 
 void PlayerObject::heavyAttack() {
+    if (stamina < PlayerStat::HEAVY1_STAMINA_CONSUMPTION) {
+        return;
+    }
+
     isAttacking = true;
     canChangeFacingDirection = false;
 
