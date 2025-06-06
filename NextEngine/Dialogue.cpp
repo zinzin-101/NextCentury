@@ -39,7 +39,6 @@ void Dialogue::update(list<DrawableObject*>& objectsList) {
 		checkActiveRange();
 	}
 	if (!sentences.empty() && text.getText() != sentences.front()) {
-		
 		text.loadText(sentences.front(), { 255, 255, 255, 255 }, fontsize);
 	}
 	

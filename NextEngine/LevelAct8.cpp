@@ -266,7 +266,6 @@ void LevelAct8::handleKey(InputManager& input) {
                     p1->activateDialogue();
                 }
             }
-            p1->skipSentence();
         }
         if (input.getButtonDown(SDLK_e)) {
             player->useHealthPotion();

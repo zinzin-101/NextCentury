@@ -341,6 +341,12 @@ void LevelAct12::handleKey(InputManager& input) {
         player->useHealthPotion();
     }
 	UIobject->handleInput(input, player);
+
+    if (input.getButtonDown(SDLK_f)) {
+        if (door->getIsClickable()) {
+            end = true;
+        }
+    }
 }
 
 void LevelAct12::signalFromEngine() {
