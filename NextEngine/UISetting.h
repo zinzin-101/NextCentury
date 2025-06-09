@@ -65,6 +65,7 @@ private:
 
 	TexturedObject* f8 = nullptr;
 	TexturedObject* f11 = nullptr;
+	TexturedObject* pressTab = nullptr;
 
     void updateArrowHighlight();
     void adjustVolume(int buttonIndex);

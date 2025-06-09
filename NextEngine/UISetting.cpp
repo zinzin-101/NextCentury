@@ -277,7 +277,7 @@ void UISetting::initUI(std::list<DrawableObject*>& objectsList) {
 	f8 = new TexturedObject("F8Text");
 	f8->setTexture("../Resource/Texture/UI/Setting/F8.png");
 	f8->getTransform().setScale({ 0.0f, 0.0f, 0.0f });
-	f8->getTransform().setPosition({ -3.0f, -2.5f, 0.0f });
+	f8->getTransform().setPosition({ -3.0f, -3.0f, 0.0f });
 	f8->setRenderOrder(257);
 	objectsList.push_back(f8);
 
@@ -288,6 +288,12 @@ void UISetting::initUI(std::list<DrawableObject*>& objectsList) {
 	f11->setRenderOrder(258);
 	objectsList.push_back(f11);
 
+    pressTab = new TexturedObject("PressTab");
+    pressTab->setTexture("../Resource/Texture/UI/Setting/pressTab.png");
+    pressTab->getTransform().setScale({ 0.0f, 0.0f, 0.0f });
+    pressTab->getTransform().setPosition({ -3.0f, -3.0f, 0.0f });
+    pressTab->setRenderOrder(258);
+    objectsList.push_back(pressTab);
 
     objectsList.push_back(buttons[3]);
     selectedButtonIndex = 0;
@@ -324,8 +330,9 @@ void UISetting::updateUI() {
         ->getPosition();
 
     if (currentPage == Page::AUDIO) {
-        f8->getTransform().setPosition({ camPos.x - 3.0f, camPos.y - 2.5f, camPos.z + 0.0f });
-        f11->getTransform().setPosition({ camPos.x - 3.0f, camPos.y - 3.0f, camPos.z + 0.0f });
+        f8->getTransform().setPosition({ camPos.x - 4.0f, camPos.y - 2.75f, camPos.z + 0.0f });
+        f11->getTransform().setPosition({ camPos.x + 0.5f, camPos.y - 2.75f, camPos.z + 0.0f });
+        pressTab->getTransform().setPosition({ camPos.x + 5.0f, camPos.y - 2.75f, camPos.z + 0.0f });
 
         blackdrop->getTransform().setScale({ 20.0f, 20.0f, 0.0f });
         blackdrop->getTransform().setPosition({ camPos.x, camPos.y, camPos.z });
@@ -347,7 +354,8 @@ void UISetting::updateUI() {
         }
 
 		f8->getTransform().setScale({ 5.0f, (12.0f / 80.0f) * 5.0f, 0.0f });
-		f11->getTransform().setScale({ 5.0f, (12.0f / 80.0f) * 5.0f, 0.0f });
+		f11->getTransform().setScale({ 4.0f, (12.8f / 64.0f) * 4.0f, 0.0f });
+        pressTab->getTransform().setScale({ 2.0f, (12.8f / 64.0f) * 2.0f, 0.0f });
 
         const float zeroScale[3] = { 0.0f, 0.0f, 0.0f };
         const float normalScale[3] = { ARROW_SIZE, ARROW_SIZE, 0.0f };
@@ -476,6 +484,7 @@ void UISetting::updateUI() {
 
         f8->getTransform().setScale(0, 0);
         f11->getTransform().setScale(0, 0);
+        pressTab->getTransform().setScale(0, 0);
     }
 }
 
@@ -556,6 +565,7 @@ void UISetting::handleInput(SDL_Keycode key) {
 
 		if (f8) f8->getTransform().setScale({ 0.0f, 0.0f, 0.0f });
 		if (f11) f11->getTransform().setScale({ 0.0f, 0.0f, 0.0f });
+		if (pressTab) pressTab->getTransform().setScale({ 0.0f, 0.0f, 0.0f });
 
         for (auto* b : buttons) {
             if (b) {
@@ -598,6 +608,7 @@ void UISetting::hideAllSettings() {
 
     if (f8) f8->getTransform().setScale({ 0.0f, 0.0f, 0.0f });
     if (f11) f11->getTransform().setScale({ 0.0f, 0.0f, 0.0f });
+    if (pressTab) pressTab->getTransform().setScale({ 0.0f, 0.0f, 0.0f });
 
     for (auto* b : buttons) {
         if (b) b->getTransform().setScale({ 0.0f, 0.0f, 0.0f });
