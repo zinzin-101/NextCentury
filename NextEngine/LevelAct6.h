@@ -19,6 +19,8 @@ private:
     bool isStop = false;
     bool set1FightDone = false;
     bool set2FightDone = false;
+    bool once = false;
+    bool once2 = false;
     float turnTime = 0.8f;
     ColliderObject* set1Block;
     list<EnemyObject*> enemSet1;

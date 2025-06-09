@@ -214,6 +214,7 @@ void LevelAct12::levelUpdate() {
     }
     else if (killCount == 1) {
         postFight->runChat(objectsList);
+        GameEngine::getInstance()->stopMusic();
         if (postFight->hasEnded()) {
             door->setActive(true);
         }
@@ -344,7 +345,7 @@ void LevelAct12::handleKey(InputManager& input) {
 
     if (input.getButtonDown(SDLK_f)) {
         if (door->getIsClickable()) {
-            GameEngine::getInstance()->playSoundEffect("Sound_Door.wav", 0);
+            //GameEngine::getInstance()->playSoundEffect("Sound_Door.wav", 0);
             end = true;
         }
     }

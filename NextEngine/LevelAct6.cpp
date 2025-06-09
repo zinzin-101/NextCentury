@@ -179,7 +179,7 @@ void LevelAct6::levelInit() {
 
     GameEngine::getInstance()->freezeGameForSeconds(0.5f);
     GameEngine::getInstance()->getTime()->setTimeScale(1.0f);
-
+    once = false;
     isStop = false;
     killCount = 0;
 }
@@ -190,20 +190,25 @@ void LevelAct6::levelUpdate() {
     updateObjects(objectsList);
     GameEngine::getInstance()->getRenderer()->updateCamera();
     
-    cout << set1FightDone << endl;
+    //cout << set1FightDone << endl;
     if (player->getTransform().getPosition().x > 24.8f && !set1FightDone) {
         GameEngine::getInstance()->getRenderer()->getCamera()->setTarget(camTarget);
         //GameEngine::getInstance()->getRenderer()->getCamera()->setPosition(glm::vec3(32.0f, 0.0f, 0.0f));
         chat1->runChat(objectsList);
-        if (chat1->getCurrentChatIndex() == 3) {
+        if (chat1->getCurrentChatIndex() == 3 && !once) {
             GameEngine::getInstance()->playSoundEffect("Act6_Sound_Speaker.wav", 0);
+            once = true;
         }
         //cout << "???2" << endl;
         if (!chat1->hasEnded()) {
-            GameEngine::getInstance()->stopSfx();
+            //
             isStop = true;
         }
         else {
+            if (!once2) {
+                GameEngine::getInstance()->stopSfx();
+                once2 = true;
+            }
             //cout << "???" << endl;
             chat2->runChat(objectsList);
             if (!chat2->hasEnded()) {
