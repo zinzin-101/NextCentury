@@ -19,6 +19,9 @@ private:
     FadeBlack* fb;
     bool isFadingToBlack = false;
     float fadetime = 1.0f;
+    float initTimeFade = 4.5f;
+    bool once = false;
+    bool once2 = false;
     ColliderObject* set1Block;
 
     AudioEngine m_audio;                      

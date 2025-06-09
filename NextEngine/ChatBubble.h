@@ -17,6 +17,7 @@ class ChatBubble {
 	queue<float> timeAppearEachChat;
 	bool isChatting;
 	bool isEnd;
+	int currentIndex;
 public:
 	ChatBubble(string file, PlayerObject* player, vector<glm::vec3> talkers, list<DrawableObject*>& objectsList);
 	void runChat(list<DrawableObject*>& objectsList);
@@ -26,4 +27,5 @@ public:
 	void setOffSetX(float x);
 	bool hasEnded();
 	void skipSentence();
+	int getCurrentChatIndex();
 };

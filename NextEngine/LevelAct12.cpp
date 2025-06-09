@@ -344,6 +344,7 @@ void LevelAct12::handleKey(InputManager& input) {
 
     if (input.getButtonDown(SDLK_f)) {
         if (door->getIsClickable()) {
+            GameEngine::getInstance()->playSoundEffect("Sound_Door.wav", 0);
             end = true;
         }
     }

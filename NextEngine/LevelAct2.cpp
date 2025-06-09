@@ -77,7 +77,8 @@ void LevelAct2::levelInit() {
 
     GameEngine::getInstance()->getRenderer()->getCamera()->setTarget(player);
     GameEngine::getInstance()->getRenderer()->setToggleViewport(false);
-
+    
+    GameEngine::getInstance()->playSoundEffect("Act2_Sound_NightAmbient.wav", 1);
     // initializing parallax object
     for (DrawableObject* obj : objectsList) {
         ParallaxObject* pObj = dynamic_cast<ParallaxObject*>(obj);
@@ -186,6 +187,7 @@ void LevelAct2::handleKey(InputManager& input) {
         if (door->getIsClickable()) {
             //sfx
             //transition
+            GameEngine::getInstance()->playSoundEffect("Sound_Door.wav", 0);
             fb->FadeToBlack();
             end = true;
         }

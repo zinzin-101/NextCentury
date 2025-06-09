@@ -110,8 +110,8 @@ void LevelAct1::levelInit() {
     objectsList.emplace_back(p2);
 
     fb = new FadeBlack(1.0f);
+    fb->setRenderOpacity(1.0f);
     objectsList.emplace_back(fb);
-    fb->FadeToTransparent();
 
     set1Block = new ColliderObject();
     set1Block->getTransform().setPosition(glm::vec3(29.0f, 0.0f, 0.0f));
@@ -132,18 +132,35 @@ void LevelAct1::levelInit() {
     GameEngine::getInstance()->getRenderer()->getCamera()->setOffset(glm::vec3(0.0f, -0.5f, 0.0f));
     GameEngine::getInstance()->getRenderer()->setToggleViewport(true);
 
+    once = false;
+    once2 = false;
+
     GameEngine::getInstance()->freezeGameForSeconds(0.5f);
+    GameEngine::getInstance()->playSoundEffect("Act1_Sound_BarDoor.wav", 0);
     GameEngine::getInstance()->getTime()->setTimeScale(1.0f);
 }
 
 void LevelAct1::levelUpdate() {
     updateObjects(objectsList);
 
+    initTimeFade -= GameEngine::getInstance()->getTime()->getDeltaTime();
+    if (!once && initTimeFade < 0.0f) {
+        fb->FadeToTransparent();
+        GameEngine::getInstance()->playSoundEffect("Act1_Sound_BarAmbient.wav", 1);
+        once = true;
+    }
+
     GameEngine::getInstance()->getRenderer()->updateCamera();
 
     //Dialogue logics
     if (player->getTransform().getPosition().x > -5.0f) {
         p1->activateDialogue();
+    }
+
+    if (player->getTransform().getPosition().x > 12.0f && !once2) {
+        GameEngine::getInstance()->stopSfx();
+        GameEngine::getInstance()->playSoundEffect("Act1_Sound_DayAmbient.wav", 1);
+        once2 = true;
     }
 
     if (interactCount == 2) {

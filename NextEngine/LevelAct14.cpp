@@ -110,6 +110,8 @@ void LevelAct14::levelInit() {
     UIobject->setDeathMenuDeactivate(true);
     player->setMaxNumOfPotion(3);
 
+    GameEngine::getInstance()->playSoundEffect("Sound_Door.wav", 0);
+
     GameEngine::getInstance()->getRenderer()->getCamera()->setPosition(glm::vec3(3.8f, 0.0f, 0.0f));
 
     GameEngine::getInstance()->getRenderer()->getCamera()->setDeadLimitBool(true);

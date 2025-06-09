@@ -13,6 +13,7 @@ ChatBubble::ChatBubble(string fileName, PlayerObject* player, vector<glm::vec3> 
 	eachTalker = talkers;
 
 	offsetX = 0;
+	currentIndex = 0;
 
 	isChatting = false;
 	isEnd = false;
@@ -129,6 +130,7 @@ void ChatBubble::nextChat() {
 		p->isDialogueActive = false;
 	}
 	chats.pop();
+	currentIndex++;
 }
 
 void ChatBubble::setCurrentChatPos(glm::vec3 pos) {
@@ -166,4 +168,8 @@ void ChatBubble::skipSentence() {
 	if (isChatting && !isEnd) {
 		nextChat();
 	}
+}
+
+int ChatBubble::getCurrentChatIndex() {
+	return currentIndex;
 }

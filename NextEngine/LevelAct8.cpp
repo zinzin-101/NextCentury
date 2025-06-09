@@ -98,6 +98,8 @@ void LevelAct8::levelInit() {
     repeat = new ProtagThoughts("../Resource/Texture/StoryStuff/ProtagThoughtsAct3/repeat.txt", player);
     objectsList.emplace_back(repeat);
 
+    GameEngine::getInstance()->playSoundEffect("Sound_Door.wav", 0);
+
     GameEngine::getInstance()->getRenderer()->getCamera()->setDeadLimitBool(true);
     GameEngine::getInstance()->getRenderer()->getCamera()->setDeadLimitMinMax(-9.0f, 9.0f);
 
@@ -253,6 +255,7 @@ void LevelAct8::handleKey(InputManager& input) {
 
         if (input.getButtonDown(SDLK_f)) {
             if (shelf->isClickedOnce && door->getIsClickable()) {
+                GameEngine::getInstance()->playSoundEffect("Sound_Door.wav", 0);
                 fb->FadeToBlack();
                 end = true;
             }

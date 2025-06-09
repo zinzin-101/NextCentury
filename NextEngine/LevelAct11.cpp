@@ -112,6 +112,8 @@ void LevelAct11::levelInit() {
     objectsList.emplace_back(fb);
     fb->FadeToTransparent();
 
+    GameEngine::getInstance()->playSoundEffect("Sound_Door.wav", 0);
+
     GameEngine::getInstance()->getRenderer()->getCamera()->setPosition(glm::vec3(-4.0f, 0.0f, 0.0f));
 
     GameEngine::getInstance()->getRenderer()->getCamera()->setDeadLimitBool(true);

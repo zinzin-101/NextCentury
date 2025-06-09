@@ -145,6 +145,8 @@ void LevelAct3::levelInit() {
     GameEngine::getInstance()->getRenderer()->getCamera()->setOffset(glm::vec3(0.0f, -0.5f, 0.0f));
     GameEngine::getInstance()->getRenderer()->setToggleViewport(true);
 
+    GameEngine::getInstance()->playSoundEffect("Sound_Door.wav", 0);
+    GameEngine::getInstance()->playSoundEffect("Act3_Sound_RoomAmbient.wav", 1);
     GameEngine::getInstance()->freezeGameForSeconds(0.5f);
     GameEngine::getInstance()->getTime()->setTimeScale(1.0f);
 }
@@ -159,6 +161,7 @@ void LevelAct3::levelUpdate() {
 
     if(done->getDialogueObject()->isEnd){
         if (!end) {
+            GameEngine::getInstance()->playSoundEffect("Sound_Door.wav", 0);
             fb->FadeToBlack();
             end = true;
         }
@@ -304,6 +307,7 @@ void LevelAct3::handleKey(InputManager& input) {
         done->skipSentence();
         repeatNotDone->skipSentence();
         if (chest->getIsClickable()) {
+            GameEngine::getInstance()->playSoundEffect("Act3_Sound_Chest.wav", 0); 
             magicPistol->activateAppear();
             duoBlade->activateAppear();
             UIobject->setDeactivateGunUI(false);
@@ -312,6 +316,7 @@ void LevelAct3::handleKey(InputManager& input) {
         }
 
         if (shelf->getIsClickable()) {
+            GameEngine::getInstance()->playSoundEffect("Act3_Sound_Paper.wav", 0);
             fakePassport->activateAppear();
             shelf->isClickedOnce = true;
         }

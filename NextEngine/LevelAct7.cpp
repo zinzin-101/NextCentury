@@ -115,6 +115,8 @@ void LevelAct7::levelInit() {
     objectsList.emplace_back(fb);
     fb->FadeToTransparent();
 
+    GameEngine::getInstance()->playSoundEffect("Sound_Door.wav", 0);
+
     GameEngine::getInstance()->getRenderer()->getCamera()->setDeadLimitBool(true);
     GameEngine::getInstance()->getRenderer()->getCamera()->setDeadLimitMinMax(-9.0f, 9.0f);
 
@@ -258,6 +260,7 @@ void LevelAct7::handleKey(InputManager& input) {
 
         if (input.getButtonDown(SDLK_f)) {
             if (shelf->isClickedOnce && computer->isClickedOnce && board->isClickedOnce && door->getIsClickable()) {
+                GameEngine::getInstance()->playSoundEffect("Sound_Door.wav", 0);
                 fb->FadeToBlack();
                 end = true;
             }

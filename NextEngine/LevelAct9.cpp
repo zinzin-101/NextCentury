@@ -272,6 +272,7 @@ void LevelAct9::handleKey(InputManager& input) {
     //Dialogue interact
     if (input.getButtonDown(SDLK_f)) {
         if (door->getIsClickable() && door->getIsActive()) {
+            GameEngine::getInstance()->playSoundEffect("Sound_Door.wav", 0);
             end = true;
             fb->FadeToBlack();
         }

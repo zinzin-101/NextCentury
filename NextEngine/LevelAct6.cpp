@@ -195,8 +195,12 @@ void LevelAct6::levelUpdate() {
         GameEngine::getInstance()->getRenderer()->getCamera()->setTarget(camTarget);
         //GameEngine::getInstance()->getRenderer()->getCamera()->setPosition(glm::vec3(32.0f, 0.0f, 0.0f));
         chat1->runChat(objectsList);
+        if (chat1->getCurrentChatIndex() == 3) {
+            GameEngine::getInstance()->playSoundEffect("Act6_Sound_Speaker.wav", 0);
+        }
         //cout << "???2" << endl;
         if (!chat1->hasEnded()) {
+            GameEngine::getInstance()->stopSfx();
             isStop = true;
         }
         else {
@@ -381,6 +385,7 @@ void LevelAct6::handleKey(InputManager& input) {
         if (door->getIsClickable()) {
             //sfx
             //transition
+            GameEngine::getInstance()->playSoundEffect("Sound_Door.wav", 0);
             fb->FadeToBlack();
             end = true;
         }
