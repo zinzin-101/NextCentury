@@ -15,6 +15,7 @@
 #include "LevelAct13.h"
 #include "LevelAct14.h"
 #include "LevelMainMenu.h"
+#include "Level_Secret.h"
 #include "LevelCredit.h"
 
 GameStateController::GameStateController() {
@@ -83,6 +84,9 @@ void GameStateController::loadLevel() {
 			break;
 		case GameState::GS_CREDIT:
 			currentLevel = new LevelCredit();
+			break;
+		case GameState::GS_SECRET:
+			currentLevel = new Level_Secret();
 			break;
 
 		default:

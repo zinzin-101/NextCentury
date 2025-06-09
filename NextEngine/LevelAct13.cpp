@@ -268,6 +268,9 @@ void LevelAct13::handleKey(InputManager& input) {
     }
 
     if (input.getButtonDown(SDLK_f)) {
+        if (player->getTransform().getPosition().x > 6.30f) {
+            GameEngine::getInstance()->getStateController()->gameStateNext = (GameState)16;
+        }
         if (door->getIsClickable()) {
             GameEngine::getInstance()->playSoundEffect("Sound_Door.wav", 0);
             if (com->isClickedOnce) {

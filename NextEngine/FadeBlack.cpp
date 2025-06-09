@@ -4,6 +4,7 @@
 FadeBlack::FadeBlack(float time) {
 	timeToFade = time;
 	targetOpacity = 0.0f;
+	followCam = true;
 	this->setRenderOpacity(targetOpacity);
 	this->setColor(0.0f, 0.0f, 0.0f);
 	this->setRenderOrder(3);
@@ -23,7 +24,9 @@ void FadeBlack::FadeToTransparent() {
 }
 
 void FadeBlack::update(list<DrawableObject*>& objectsList) {
-	this->getTransform().setPosition(GameEngine::getInstance()->getRenderer()->getCamera()->getPosition());
+	if (followCam) {
+		this->getTransform().setPosition(GameEngine::getInstance()->getRenderer()->getCamera()->getPosition());
+	}
 
 	float deltaTime = GameEngine::getInstance()->getTime()->getDeltaTimeRealTime();
 	if (fadingIn) {
@@ -39,4 +42,9 @@ void FadeBlack::update(list<DrawableObject*>& objectsList) {
 		if (t >= 1.0f) fadingOut = false;
 	}
 	//cout << this->getRenderOpacity() << endl;
+}
+
+
+void FadeBlack::setFollowCam(bool f){
+	followCam = f;
 }
