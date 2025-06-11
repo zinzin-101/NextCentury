@@ -61,7 +61,6 @@
     <ClCompile Include="..\Resource\imgui\imgui_widgets.cpp">
       <Filter>Imgui</Filter>
     </ClCompile>
-    <ClCompile Include="LevelImgui.cpp" />
     <ClCompile Include="Wailer.cpp" />
     <ClCompile Include="Dialogue.cpp" />
     <ClCompile Include="IngameUI.cpp" />
@@ -98,6 +97,7 @@
     <ClCompile Include="LevelAct14.cpp" />
     <ClCompile Include="LevelCredit.cpp" />
     <ClCompile Include="UISetting.cpp" />
+    <ClCompile Include="Level_Secret.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
@@ -175,7 +175,6 @@
       <Filter>Imgui</Filter>
     </ClInclude>
     <ClInclude Include="DebugMode.h" />
-    <ClInclude Include="LevelImgui.h" />
     <ClInclude Include="Wailer.h" />
     <ClInclude Include="FlameDamage.h" />
     <ClInclude Include="Dialogue.h" />
@@ -214,11 +213,18 @@
     <ClInclude Include="LevelCredit.h" />
     <ClInclude Include="UISetting.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="Level_Secret.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Resource\Shader\fragment.shd" />
     <None Include="..\Resource\Shader\vertext.shd" />
     <None Include="imgui.ini" />
+    <None Include="RCa42140" />
+    <None Include="RCa45800" />
+    <None Include="RCb42140" />
+    <None Include="RCb45800" />
+    <None Include="RCc45800" />
+    <None Include="Resource.aps" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Imgui">
