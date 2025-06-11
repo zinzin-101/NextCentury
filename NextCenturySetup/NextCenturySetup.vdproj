@@ -2025,6 +2025,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_E2F77E46CCA24D628FDF6BB9B371E82C"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_E33DAD97C8A34F8BB1EEB8A499127C79"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -9096,6 +9102,26 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_E2F77E46CCA24D628FDF6BB9B371E82C"
+            {
+            "SourcePath" = "8:..\\Resource\\Texture\\UI\\Setting\\pressTab.png"
+            "TargetName" = "8:pressTab.png"
+            "Tag" = "8:"
+            "Folder" = "8:_A588F1ACF48C4835BBD78BDABFEA420B"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_E33DAD97C8A34F8BB1EEB8A499127C79"
             {
             "SourcePath" = "8:..\\..\\GameBuild\\NextCenturyReleases\\NextCenturyBetaPrecompiledBuild\\Resource\\Texture\\UI\\MainMenu\\AConfirm_BBack.png"
@@ -10635,7 +10661,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Next Century"
         "ProductCode" = "8:{272EF897-7C33-4C7E-ACF0-247894E8921E}"
-        "PackageCode" = "8:{438B24D1-14E8-4661-8B34-124FB6AD18A9}"
+        "PackageCode" = "8:{6E44DBC4-26EE-4AAE-B7F3-830231EB8BE8}"
         "UpgradeCode" = "8:{9BAC7EA7-69E0-41E7-8A83-B54FCF0BFB9F}"
         "AspNetVersion" = "8:2.0.50727.0"
         "RestartWWWService" = "11:FALSE"
