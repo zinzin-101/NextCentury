@@ -1034,6 +1034,23 @@ void PlayerObject::takeDamage(int damage) {
 	GameEngine::getInstance()->playSoundEffect("Sound_GettingHit.wav");
 }
 
+void PlayerObject::takeDamage(int damage, bool ignoreCanTakeDamage) {
+    if (this->getHealth() - damage <= 0 && !isDead) {
+        this->LivingEntity::takeDamage(damage);
+        this->setHealth(0);
+        this->setCanTakeDamage(false);
+        isDead = true;
+
+        this->getAnimationComponent()->setState("Dead");
+
+        return;
+    }
+
+    this->LivingEntity::takeDamage(damage, true);
+    iFrameTimeRemaining = PlayerStat::INVINCIBLE_DURATION_AFTER_TAKING_DAMAGE;
+    GameEngine::getInstance()->playSoundEffect("Sound_GettingHit.wav");
+}
+
 void PlayerObject::resetStaminaRechargeDelay() {
     staminaRechargeDelayTimer = PlayerStat::STAMINA_RECHARGE_DELAY;
 }

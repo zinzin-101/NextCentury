@@ -238,6 +238,7 @@ class PlayerObject : public LivingEntity {
         void signalSuccessfulParry();
 
         virtual void takeDamage(int damage);
+        virtual void takeDamage(int damage, bool ignoreCanTakeDamage);
         void flinch(float duration);
 
         void setWieldWeaponSprite(bool value);
