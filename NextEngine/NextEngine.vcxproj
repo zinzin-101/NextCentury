@@ -22,6 +22,12 @@
     <None Include="..\Resource\Shader\fragment.shd" />
     <None Include="..\Resource\Shader\vertext.shd" />
     <None Include="imgui.ini" />
+    <None Include="RCa42140" />
+    <None Include="RCa45800" />
+    <None Include="RCb42140" />
+    <None Include="RCb45800" />
+    <None Include="RCc45800" />
+    <None Include="Resource.aps" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Resource\imgui\backends\imgui_impl_opengl3.cpp" />
@@ -70,7 +76,6 @@
     <ClCompile Include="LevelAct8.cpp" />
     <ClCompile Include="LevelAct9.cpp" />
     <ClCompile Include="LevelCredit.cpp" />
-    <ClCompile Include="LevelImgui.cpp" />
     <ClCompile Include="LevelMainMenu.cpp" />
     <ClCompile Include="Level_Secret.cpp" />
     <ClCompile Include="LightSource.cpp" />
@@ -159,7 +164,6 @@
     <ClInclude Include="InteractableObject.h" />
     <ClInclude Include="Level.h" />
     <ClInclude Include="LevelAct1.h" />
-    <ClInclude Include="LevelImgui.h" />
     <ClInclude Include="LevelMainMenu.h" />
     <ClInclude Include="Level_Secret.h" />
     <ClInclude Include="LightSource.h" />

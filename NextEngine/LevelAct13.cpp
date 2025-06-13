@@ -13,7 +13,7 @@ void LevelAct13::levelLoad() {
     addLoadingScreen(objectsList);
     levelDraw();
     removeLoadingScreen(objectsList);
-    saveCurrentGameState();
+    //saveCurrentGameState(); // only save the boss level to allow boss replay
 }
 
 void LevelAct13::levelInit() {

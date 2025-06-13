@@ -187,7 +187,7 @@ void LivingEntity::handleBurning() {
 
     if (damageTimer > timeBetweenFireDamage) {
         damageTimer = 0.0f;
-        LivingEntity::takeDamage(LivingEntityStat::BURNING_DAMAGE, true); // fire damage per damage cooldown
+        takeDamage(LivingEntityStat::BURNING_DAMAGE, true); // fire damage per damage cooldown
     }
 
     if (emitTimer > timeBetweenEmit) {
@@ -224,7 +224,7 @@ void LivingEntity::handlePoison() {
 
     if (damageTimer > timeBetweenPoisonDamage) {
         damageTimer = 0.0f;
-        LivingEntity::takeDamage(LivingEntityStat::BURNING_DAMAGE, true); // poison damage per damage cooldown
+        takeDamage(LivingEntityStat::BURNING_DAMAGE, true); // poison damage per damage cooldown
     }
 
     if (emitTimer > timeBetweenEmit) {

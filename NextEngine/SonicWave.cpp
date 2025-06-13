@@ -18,6 +18,8 @@ SonicWave::SonicWave() {
 	getAnimationComponent()->addState("Marking", 6, 0, 4, false, SonicWaveStat::ANIMATION_TIME_PER_FRAME);
 	getAnimationComponent()->addState("Attack", 6, 8, 16, false, SonicWaveStat::ANIMATION_TIME_PER_FRAME);
 
+	this->getAnimationComponent()->setState("Marking");
+
 	damageStartFrame = 4;
 
 	getTransform().scales(2.0f);
