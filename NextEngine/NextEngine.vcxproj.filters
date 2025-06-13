@@ -98,6 +98,7 @@
     <ClCompile Include="LevelAct14.cpp" />
     <ClCompile Include="LevelCredit.cpp" />
     <ClCompile Include="UISetting.cpp" />
+    <ClCompile Include="Level_Secret.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
@@ -213,7 +214,7 @@
     <ClInclude Include="LevelAct14.h" />
     <ClInclude Include="LevelCredit.h" />
     <ClInclude Include="UISetting.h" />
-    <ClInclude Include="resource.h" />
+    <ClInclude Include="Level_Secret.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Resource\Shader\fragment.shd" />
@@ -224,9 +225,6 @@
     <Filter Include="Imgui">
       <UniqueIdentifier>{55ba9f0d-e87b-4203-a1cd-e8f9b6f44941}</UniqueIdentifier>
     </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="Resource.rc" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="icon1.ico" />
