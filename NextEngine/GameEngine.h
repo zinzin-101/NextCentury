@@ -61,7 +61,7 @@ public:
 	SDL_GLContext* getGLContextPtr() const;
 
 	void initAudio(const std::string& effectFolder, const std::string& musicFolder);
-	void playSoundEffect(const std::string& fileName, int loop = 0);
+	void playSoundEffect(const std::string& fileName, int loop = 0, bool canOverlap = false);
 	void playMusic(const std::string& fileName, int loop = -1);
 	void stopMusic();
 	void stopSfx();

@@ -148,8 +148,8 @@ void GameEngine::initAudio(const std::string& effectFolder, const std::string& m
 		<< " Music:" << musicFolder << std::endl;
 }
 
-void GameEngine::playSoundEffect(const std::string& fileName, int loop) {
-	audioEngine.playSoundEffectByName(fileName, loop);
+void GameEngine::playSoundEffect(const std::string& fileName, int loop, bool canOverlap) {
+	audioEngine.playSoundEffectByName(fileName, loop, canOverlap);
 }
 
 void GameEngine::playMusic(const std::string& fileName, int loop) {

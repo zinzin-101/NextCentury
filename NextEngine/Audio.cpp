@@ -7,14 +7,15 @@
 #include <fstream>
 
 #define MIX_MIN_VOLUME 0
+#define MAX_CHANNEL 64
 
 static const std::filesystem::path SAVE_PATH = std::filesystem::path(std::getenv("LOCALAPPDATA")) / "NextCentury" / "Audio";
 
-void SoundEffect::play(int loop)
+void SoundEffect::play(int loop, bool canOverlap)
 {
 	if (m_channel >= 0)
 	{
-		if (Mix_Playing(m_channel))
+		if (!canOverlap && Mix_Playing(m_channel))
 		{
 			return;
 		}
@@ -107,6 +108,8 @@ void AudioEngine::init(const std::string& effectFolderPath, const std::string& m
 		std::cout << "Mix_Init Error " << std::string(Mix_GetError());
 	}
 
+	Mix_AllocateChannels(MAX_CHANNEL);
+
 	Mix_Volume(-1, currentSoundEffectVolume);
 	Mix_VolumeMusic(currentMusicVolume);
 
@@ -167,10 +170,10 @@ void AudioEngine::playSoundEffectByIndex(const int index, int loop) {
 	}
 }
 
-void AudioEngine::playSoundEffectByName(const std::string& fileName, int loop) {
+void AudioEngine::playSoundEffectByName(const std::string& fileName, int loop, bool canOverlap) {
 	for (auto& item : v_soundEffect) {
 		if (item.fileName == fileName) {
-			item.soundEffect.play(loop);
+			item.soundEffect.play(loop, canOverlap);
 			return;
 		}
 	}

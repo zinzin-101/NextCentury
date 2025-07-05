@@ -13,7 +13,7 @@ public:
 
 	/// @brief Plays the sound effect, but only if it's not already playing.
 	/// @param loop The number of times to repeat (0 = play once, 1 = play twice, etc.)
-	void play(int loop = 0);
+	void play(int loop = 0, bool canOverlap = false);
 
 private:
 	Mix_Chunk* m_chunk = nullptr;
@@ -84,7 +84,7 @@ public:
 	/// @brief This function plays the sound effect by its name
 	/// @param fileName is the name of the sound effect
 	/// @param loop is the number of times to repeat the sound effect
-	void playSoundEffectByName(const std::string& fileName, int loop = 0);
+	void playSoundEffectByName(const std::string& fileName, int loop = 0, bool canOverlap = false);
 
 	/// @brief This function loads the music from file path
 	/// @param filePath is the folder path to the music

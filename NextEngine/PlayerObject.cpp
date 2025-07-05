@@ -172,7 +172,7 @@ void PlayerObject::dodge() {
     stamina -= PlayerStat::DODGE_STAMINA_CONSUMPTION;
     resetStaminaRechargeDelay();
 
-	GameEngine::getInstance()->getAudioEngine().playSoundEffectByName("Sound_Rolling.wav");
+	GameEngine::getInstance()->getAudioEngine().playSoundEffectByName("Sound_Rolling.wav", 0, true);
     isDodging = true;
     canChangeFacingDirection = false;
 
@@ -204,7 +204,7 @@ void PlayerObject::useHealthPotion() {
     healed = false;
 
     this->getAnimationComponent()->setState("Healing");
-	GameEngine::getInstance()->getAudioEngine().playSoundEffectByName("Sound_Heal.wav");
+	GameEngine::getInstance()->getAudioEngine().playSoundEffectByName("Sound_Heal.wav", 0, true);
 }
 
 void PlayerObject::start(list<DrawableObject*>& objectsList) {
@@ -503,7 +503,7 @@ void PlayerObject::rangeAttack(std::list<DrawableObject*>& objectsList) {
 
     isAttacking = true;
     canChangeFacingDirection = false;
-    GameEngine::getInstance()->playSoundEffect("Sound_Gun_Shoot.wav");
+    GameEngine::getInstance()->playSoundEffect("Sound_Gun_Shoot.wav", 0, true);
 
     if (moveDirection.x != 0.0f) {
         isFacingRight = moveDirection.x >= 0.0f ? true : false;
@@ -642,7 +642,7 @@ void PlayerObject::startRangeAttack(float dt) {
     if (rangeHeldDuration > rangeChargeDuration[PlayerRangeCharge::CHARGE_3] && currentNumOfBullets >= rangeChargeDuration[PlayerRangeCharge::CHARGE_3]) {
         currentRangeCharge = PlayerRangeCharge::CHARGE_3;
         this->getAnimationComponent()->setState("GunCharge3");
-		GameEngine::getInstance()->getAudioEngine().playSoundEffectByName("Sound_Gun_Charge.wav");
+		GameEngine::getInstance()->getAudioEngine().playSoundEffectByName("Sound_Gun_Charge.wav", 1);
         return;
     }
 
@@ -1005,7 +1005,7 @@ DamageCollider<EnemyObject>* PlayerObject::getDamageCollider() const {
 }
 
 void PlayerObject::signalSuccessfulParry() {
-	GameEngine::getInstance()->playSoundEffect("Enemy_Getting Parry.wav");
+	GameEngine::getInstance()->playSoundEffect("Enemy_Getting Parry.wav", 0, true);
     successfulParry = true;
     stamina += PlayerStat::STAMINA_GAIN_FROM_PARRY;
     if (stamina > PlayerStat::MAX_STAMINA) {
@@ -1031,7 +1031,7 @@ void PlayerObject::takeDamage(int damage) {
 
     this->LivingEntity::takeDamage(damage);
     iFrameTimeRemaining = PlayerStat::INVINCIBLE_DURATION_AFTER_TAKING_DAMAGE;
-	GameEngine::getInstance()->playSoundEffect("Sound_GettingHit.wav");
+	GameEngine::getInstance()->playSoundEffect("Sound_GettingHit.wav", 0, true);
 }
 
 void PlayerObject::takeDamage(int damage, bool ignoreCanTakeDamage) {
