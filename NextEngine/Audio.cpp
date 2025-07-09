@@ -13,22 +13,25 @@ static const std::filesystem::path SAVE_PATH = std::filesystem::path(std::getenv
 
 void SoundEffect::play(int loop, bool canOverlap)
 {
-	if (m_channel >= 0)
+	if (!canOverlap)
 	{
-		if (!canOverlap && Mix_Playing(m_channel))
+		for (int i = 0; i < MAX_CHANNEL; ++i)
 		{
-			return;
+			if (Mix_GetChunk(i) == m_chunk && Mix_Playing(i))
+			{
+				return;  
+			}
 		}
 	}
 
-	int newlyAssignedChannel = Mix_PlayChannel(-1, m_chunk, loop);
-	if (newlyAssignedChannel == -1)
+	int newChannel = Mix_PlayChannel(-1, m_chunk, loop);
+	if (newChannel == -1)
 	{
 		std::cerr << "Mix_PlayChannel Error: " << Mix_GetError() << std::endl;
 	}
 	else
 	{
-		m_channel = newlyAssignedChannel;
+		m_channel = newChannel;
 	}
 }
 

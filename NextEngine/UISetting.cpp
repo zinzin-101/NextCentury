@@ -154,9 +154,9 @@ void UISetting::initUI(std::list<DrawableObject*>& objectsList) {
     float leftX  = barX - halfBar - halfArr - margin; 
     float rightX = barX + halfBar + halfArr + margin; 
     static constexpr int DELTA = 10;
-
+	string resourcePath = GameEngine::getInstance()->getResourcePath();
     arrowMasterLeft = new TexturedObject("MasterLeft");
-    arrowMasterLeft->setTexture("../Resource/Texture/UI/Setting/ArrowLeft.png");
+    arrowMasterLeft->setTexture(resourcePath + "/Texture/ArrowLeft.png");
     arrowMasterLeft->getTransform().setScale({arrowW, arrowW, 0.0f});
     arrowMasterLeft->getTransform().setPosition({leftX, MASTER_Y, 0.0f});
     arrowMasterLeft->setRenderOrder(245);
@@ -177,7 +177,7 @@ void UISetting::initUI(std::list<DrawableObject*>& objectsList) {
     objectsList.push_back(buttons[0]);
 
     arrowMasterRight = new TexturedObject("MasterRight");
-    arrowMasterRight->setTexture("../Resource/Texture/UI/Setting/ArrowRight.png");
+    arrowMasterRight->setTexture("../Resource/Texture/ArrowRight.png");
     arrowMasterRight->getTransform().setScale({arrowW, arrowW, 0.0f});
     arrowMasterRight->getTransform().setPosition({rightX, MASTER_Y, 0.0f});
     arrowMasterRight->setRenderOrder(247);
@@ -300,15 +300,10 @@ void UISetting::initUI(std::list<DrawableObject*>& objectsList) {
     buttons[0]->setFocused(true);
     updateArrowHighlight();
 
-    arrowMasterLeft->getTransform().setRotation(-90);
-    arrowMasterRight->getTransform().setRotation(-90);
-    arrowSFXLeft->getTransform().setRotation(-90);
-    arrowSFXRight->getTransform().setRotation(-90);
-    arrowMusicLeft->getTransform().setRotation(-90);
-    arrowMusicRight->getTransform().setRotation(-90);
 }
 
 void UISetting::updateArrowHighlight() {
+    ;
     for (int i = 0; i < 6; ++i) {
         buttons[i]->setFocused(false);
     }
@@ -357,47 +352,36 @@ void UISetting::updateUI() {
 		f11->getTransform().setScale({ 4.0f, (12.8f / 64.0f) * 4.0f, 0.0f });
         pressTab->getTransform().setScale({ 2.0f, (12.8f / 64.0f) * 2.0f, 0.0f });
 
-        const float zeroScale[3] = { 0.0f, 0.0f, 0.0f };
-        const float normalScale[3] = { ARROW_SIZE, ARROW_SIZE, 0.0f };
+        const glm::vec3 zeroScale = glm::vec3(0.0f);
+        const glm::vec3 normalScale = glm::vec3(ARROW_SIZE, ARROW_SIZE, 0.0f);
 
-        auto hideOrShow = [&](TexturedObject* arrow, int idx) {
-            if (selectedButtonIndex == idx) {
-                arrow->getTransform().setScale({ normalScale[0], normalScale[1], normalScale[2] });
-            }
-            else {
-                arrow->getTransform().setScale({ zeroScale[0], zeroScale[1], zeroScale[2] });
-            }
-            };
+        bool isMaster = (selectedButtonIndex == 0 || selectedButtonIndex == 1);
+        bool isMusic = (selectedButtonIndex == 2 || selectedButtonIndex == 3);
+        bool isSfx = (selectedButtonIndex == 4 || selectedButtonIndex == 5);
 
-        hideOrShow(arrowMasterLeft, 0);
-        arrowMasterLeft->getTransform().setPosition({ camPos.x + (BAR_XPOS - BAR_WIDTH / 2.0f - ARROW_SIZE / 2.0f - ARROW_MARGIN),
-                                                      camPos.y + MASTER_Y,
-                                                      camPos.z });
+        // Master arrows
+        arrowMasterLeft->getTransform().setScale(isMaster ? normalScale : zeroScale);
+        arrowMasterRight->getTransform().setScale(isMaster ? normalScale : zeroScale);
+        arrowMasterLeft->getTransform().setPosition({ camPos.x + (BAR_XPOS - BAR_WIDTH / 2 - ARROW_SIZE / 2 - ARROW_MARGIN),
+                                                      camPos.y + MASTER_Y, camPos.z });
+        arrowMasterRight->getTransform().setPosition({ camPos.x + (BAR_XPOS + BAR_WIDTH / 2 + ARROW_SIZE / 2 + ARROW_MARGIN),
+                                                       camPos.y + MASTER_Y, camPos.z });
 
-        hideOrShow(arrowMasterRight, 1);
-        arrowMasterRight->getTransform().setPosition({ camPos.x + (BAR_XPOS + BAR_WIDTH / 2.0f + ARROW_SIZE / 2.0f + ARROW_MARGIN),
-                                                       camPos.y + MASTER_Y,
-                                                       camPos.z });
+        // Music arrows
+        arrowMusicLeft->getTransform().setScale(isMusic ? normalScale : zeroScale);
+        arrowMusicRight->getTransform().setScale(isMusic ? normalScale : zeroScale);
+        arrowMusicLeft->getTransform().setPosition({ camPos.x + (BAR_XPOS - BAR_WIDTH / 2 - ARROW_SIZE / 2 - ARROW_MARGIN),
+                                                     camPos.y + MUSIC_Y, camPos.z });
+        arrowMusicRight->getTransform().setPosition({ camPos.x + (BAR_XPOS + BAR_WIDTH / 2 + ARROW_SIZE / 2 + ARROW_MARGIN),
+                                                      camPos.y + MUSIC_Y, camPos.z });
 
-        hideOrShow(arrowMusicLeft, 2);
-        arrowMusicLeft->getTransform().setPosition({ camPos.x + (BAR_XPOS - BAR_WIDTH / 2.0f - ARROW_SIZE / 2.0f - ARROW_MARGIN),
-                                                     camPos.y + MUSIC_Y,
-                                                     camPos.z });
-
-        hideOrShow(arrowMusicRight, 3);
-        arrowMusicRight->getTransform().setPosition({ camPos.x + (BAR_XPOS + BAR_WIDTH / 2.0f + ARROW_SIZE / 2.0f + ARROW_MARGIN),
-                                                      camPos.y + MUSIC_Y,
-                                                      camPos.z });
-
-        hideOrShow(arrowSFXLeft, 4);
-        arrowSFXLeft->getTransform().setPosition({ camPos.x + (BAR_XPOS - BAR_WIDTH / 2.0f - ARROW_SIZE / 2.0f - ARROW_MARGIN),
-                                                   camPos.y + SFX_Y,
-                                                   camPos.z });
-
-        hideOrShow(arrowSFXRight, 5);
-        arrowSFXRight->getTransform().setPosition({ camPos.x + (BAR_XPOS + BAR_WIDTH / 2.0f + ARROW_SIZE / 2.0f + ARROW_MARGIN),
-                                                    camPos.y + SFX_Y,
-                                                    camPos.z });
+        // SFX arrows
+        arrowSFXLeft->getTransform().setScale(isSfx ? normalScale : zeroScale);
+        arrowSFXRight->getTransform().setScale(isSfx ? normalScale : zeroScale);
+        arrowSFXLeft->getTransform().setPosition({ camPos.x + (BAR_XPOS - BAR_WIDTH / 2 - ARROW_SIZE / 2 - ARROW_MARGIN),
+                                                    camPos.y + SFX_Y, camPos.z });
+        arrowSFXRight->getTransform().setPosition({ camPos.x + (BAR_XPOS + BAR_WIDTH / 2 + ARROW_SIZE / 2 + ARROW_MARGIN),
+                                                     camPos.y + SFX_Y, camPos.z });
 
         masterVolumeBar->getTransform().setScale({ BAR_WIDTH, BAR_HEIGHT, 0.0f });
         masterVolumeBar->getTransform().setPosition({ camPos.x + BAR_XPOS, camPos.y + MASTER_Y, camPos.z });

@@ -10,7 +10,200 @@ static void applyTransforms(Transform& t,
     t.setScale(baseScale);
     t.setPosition(basePos);
 }
+void IngameUI::initUI(std::list<DrawableObject*>& objectsList) {
+    deathmenubuttons.resize(2);
+    pausemenubuttons.resize(4);
 
+    settingsUI = new UISetting();
+    settingsUI->initUI(objectsList);
+    settingsUI->hideAllSettings();
+
+    healthBar = new TexturedObject();
+    healthBar->setTexture("../Resource/Texture/UI/Ingame/MC_HP_Bar.png");
+    applyTransforms(
+        healthBar->getTransform(),
+        healthBarBasePos,
+        healthBarBaseScale
+    );
+    healthBar->setRenderOrder(50);
+    objectsList.push_back(healthBar);
+
+
+    healthBarFill = new SimpleObject();
+    healthBarFill->setColor({ 0.0353f, 0.7216f, 0.6706f });
+    applyTransforms(
+        healthBarFill->getTransform(),
+        healthBarFillBasePos,
+        healthBarFillBaseScale
+    );
+    healthBarFill->setRenderOrder(51);
+    objectsList.push_back(healthBarFill);
+
+    staminaBar = new TexturedObject();
+    staminaBar->setTexture("../Resource/Texture/UI/Ingame/MC_Mana_Bar.png");
+    applyTransforms(
+        staminaBar->getTransform(),
+        staminaBarBasePos,
+        staminaBarBaseScale
+    );
+    staminaBar->setRenderOrder(52);
+    objectsList.push_back(staminaBar);
+
+    staminaBarFill = new SimpleObject();
+    staminaBarFill->setColor({ 1.0f, 1.0f, 1.0f });
+    applyTransforms(
+        staminaBarFill->getTransform(),
+        staminaBarFillBasePos,
+        staminaBarFillBaseScale
+    );
+    staminaBarFill->setRenderOrder(53);
+    objectsList.push_back(staminaBarFill);
+
+    deathBlackdrop = new SimpleObject();
+    deathBlackdrop->setColor({ 0.0f, 0.0f, 0.0f });
+    deathBlackdrop->setRenderOpacity(0.8f);
+    deathBlackdrop->getTransform().setScale(glm::vec3(0.0f));
+    deathBlackdrop->setRenderOrder(95);
+    objectsList.push_back(deathBlackdrop);
+
+    deathText = new TexturedObject();
+    deathText->setTexture("../Resource/Texture/UI/DeathScreen/DeathText.png");
+    deathText->getTransform().setScale(glm::vec3(0.0f));
+    deathText->setRenderOrder(101);
+    objectsList.push_back(deathText);
+
+    deathmenubuttons[0] = new Button("RestartButton", "../Resource/Texture/UI/MainMenu/Retry.png");
+    deathmenubuttons[0]->getTransform().setScale(glm::vec3(0.0f));
+    deathmenubuttons[0]->setOnClickCallback([]() {
+        GameEngine::getInstance()->getStateController()->gameStateNext = GameState::GS_RESTART;
+        });
+    deathmenubuttons[0]->setRenderOrder(102);
+    objectsList.push_back(deathmenubuttons[0]);
+
+    deathmenubuttons[1] = new Button("MainMenuButton", "../Resource/Texture/UI/MainMenu/MainMenu.png");
+    deathmenubuttons[1]->getTransform().setScale(glm::vec3(0.0f));
+    deathmenubuttons[1]->setOnClickCallback([]() {
+        GameEngine::getInstance()->getStateController()->gameStateNext = GameState::GS_MAINMENU;
+        });
+    deathmenubuttons[1]->setRenderOrder(103);
+    objectsList.push_back(deathmenubuttons[1]);
+
+    pausemenubuttons[0] = new Button("ResumeButton", "../Resource/Texture/UI/MainMenu/PlayGame.png");
+    pausemenubuttons[0]->getTransform().setScale(glm::vec3(0.0f));
+    pausemenubuttons[0]->setRenderOrder(103);
+    pausemenubuttons[0]->setOnClickCallback([this]() {
+        isPaused = false;
+        isShowingSettings = false;
+        settingsUI->hideAllSettings();
+        for (auto* btn : pausemenubuttons) {
+            if (btn) {
+                btn->getTransform().setScale(glm::vec3(0.0f));
+                btn->setFocused(false);
+            }
+        }
+        if (arrow) arrow->getTransform().setScale(glm::vec3(0.0f));
+        if (pauseText) pauseText->getTransform().setScale(glm::vec3(0.0f));
+        ammoIcon->getAnimationComponent()->setPaused(false);
+        GameEngine::getInstance()->resumeTime();
+        });
+    objectsList.push_back(pausemenubuttons[0]);
+
+
+
+    pausemenubuttons[1] = new Button("RetryButtin", "../Resource/Texture/UI/MainMenu/Retry.png");
+    pausemenubuttons[1]->getTransform().setScale(glm::vec3(0.0f));
+    pausemenubuttons[1]->setRenderOrder(107);
+    pausemenubuttons[1]->setOnClickCallback([]() {
+        GameEngine::getInstance()->getStateController()->gameStateNext = GameState::GS_RESTART;
+        });
+    objectsList.push_back(pausemenubuttons[1]);
+
+
+    pausemenubuttons[2] = new Button("SettingsButton", "../Resource/Texture/UI/MainMenu/Setting.png");
+    pausemenubuttons[2]->getTransform().setScale(glm::vec3(0.0f));
+    pausemenubuttons[2]->setRenderOrder(104);
+    pausemenubuttons[2]->setOnClickCallback([this]() {
+        for (auto* btn : pausemenubuttons) {
+            if (btn) {
+                btn->getTransform().setScale(glm::vec3(0.0f));
+                btn->setFocused(false);
+            }
+        }
+        if (arrow) arrow->getTransform().setScale(glm::vec3(0.0f));
+        if (pauseText) pauseText->getTransform().setScale(glm::vec3(0.0f));
+
+        isShowingSettings = true;
+        settingsUI->showAllSettings();
+        });
+    objectsList.push_back(pausemenubuttons[2]);
+
+
+
+    pausemenubuttons[3] = new Button("MainMenuButton", "../Resource/Texture/UI/MainMenu/MainMenu.png");
+    pausemenubuttons[3]->getTransform().setScale(glm::vec3(0.0f));
+    pausemenubuttons[3]->setRenderOrder(105);
+    pausemenubuttons[3]->setOnClickCallback([]() {
+        GameEngine::getInstance()->getStateController()->gameStateNext = GameState::GS_MAINMENU;
+        });
+    objectsList.push_back(pausemenubuttons[3]);
+
+    potionIcon0 = new TexturedObject("PotionIcon0");
+    potionIcon0->setTexture("../Resource/Texture/UI/Ingame/Heal0.png");
+    potionIcon0->getTransform().setScale(glm::vec3(0.0f));
+    potionIcon0->setRenderOrder(54);
+    objectsList.push_back(potionIcon0);
+
+    potionIcon1 = new TexturedObject("PotionIcon1");
+    potionIcon1->setTexture("../Resource/Texture/UI/Ingame/Heal1.png");
+    potionIcon1->getTransform().setScale(glm::vec3(0.0f));
+    potionIcon1->setRenderOrder(55);
+    objectsList.push_back(potionIcon1);
+
+    potionIcon2 = new TexturedObject("PotionIcon2");
+    potionIcon2->setTexture("../Resource/Texture/UI/Ingame/Heal2.png");
+    potionIcon2->getTransform().setScale(glm::vec3(0.0f));
+    potionIcon2->setRenderOrder(56);
+    objectsList.push_back(potionIcon2);
+
+    potionIcon3 = new TexturedObject("PotionIcon3");
+    potionIcon3->setTexture("../Resource/Texture/UI/Ingame/Heal3.png");
+    potionIcon3->getTransform().setScale(glm::vec3(0.0f));
+    potionIcon3->setRenderOrder(57);
+    objectsList.push_back(potionIcon3);
+
+    arrow = new TexturedObject("arrow");
+    arrow->setTexture("../Resource/Texture/ArrowRight.png");
+    arrow->getTransform().setScale(glm::vec3(0.0f));
+    arrow->setRenderOrder(58);
+    objectsList.push_back(arrow);
+
+    gunIcons = new TexturedObject("GunIcons");
+    gunIcons->setTexture("../Resource/Texture/UI/Ingame/gunNew.png");
+    gunIcons->getTransform().setScale(glm::vec3(0.0f));
+    gunIcons->setRenderOrder(59);
+    objectsList.push_back(gunIcons);
+
+    ammoIcon = new TexturedObject("AmmoIcon");
+    ammoIcon->setTexture("../Resource/Texture/UI/Ingame/Bullet2SpritesheetFix.png");
+    ammoIcon->initAnimation(MAX_BULLETS + 1, 1);
+
+    pauseText = new TexturedObject("PauseText");
+    pauseText->setTexture("../Resource/Texture/UI/Setting/PAUSE.png");
+    pauseText->getTransform().setScale(glm::vec3(0.0f));
+    pauseText->setRenderOrder(112);
+    objectsList.push_back(pauseText);
+
+    Animation* ammoAnim = ammoIcon->getAnimationComponent();
+    for (int i = 0; i <= MAX_BULLETS; ++i) {
+        std::string s = "ammo" + std::to_string(i);
+        ammoAnim->addState(s, i, 0, 4, true);
+    }
+    ammoAnim->setState("ammo0");
+
+    ammoIcon->getTransform().setScale(glm::vec3(0.0f));
+    ammoIcon->setRenderOrder(61);
+    objectsList.push_back(ammoIcon);
+}
 void IngameUI::updateArrowPosition(PlayerObject* playerObject) {
     if (!arrow || !playerObject) return;
 
@@ -183,7 +376,7 @@ void IngameUI::updateAmmoUI(PlayerObject* playerObject) {
 
 void IngameUI::showPauseMenu() {
     hideAllUI();
-
+    Mix_Pause(-1);
     applyTransforms(
         deathBlackdrop->getTransform(),
         { camPos.x + deathBlackdropBasePos.x,
@@ -202,7 +395,7 @@ void IngameUI::showPauseMenu() {
 
     glm::vec3 btnScale = { 1.5f, 0.5f, 0.0f };
     for (int i = 0; i < (int)pausemenubuttons.size(); ++i) {
-        float y = camPos.y - (1.0f + i);
+        float y = camPos.y - i;
         applyTransforms(
             pausemenubuttons[i]->getTransform(),
             { camPos.x, y, camPos.z },
@@ -211,11 +404,6 @@ void IngameUI::showPauseMenu() {
         pausemenubuttons[i]->setFocused(i == selectedButtonIndex);
     }
 
-    applyTransforms(
-        arrow->getTransform(),
-        arrowBasePos,
-        arrowBaseScale
-    );
 }
 
 
@@ -223,7 +411,7 @@ void IngameUI::showDeathMenu(PlayerObject* playerObject) {
     if (isdeathMenuDeactivate)
         return;
     hideAllUI();
-
+    Mix_Pause(-1);
     applyTransforms(
         deathBlackdrop->getTransform(),
         { camPos.x + deathBlackdropBasePos.x, camPos.y + deathBlackdropBasePos.y, camPos.z + deathBlackdropBasePos.z },
@@ -289,198 +477,7 @@ void IngameUI::updatePotionUI(PlayerObject* playerObject) {
     }
 }
 
-void IngameUI::initUI(std::list<DrawableObject*>& objectsList) {
-    deathmenubuttons.resize(2);
-    pausemenubuttons.resize(4);
 
-    healthBar = new TexturedObject();
-    healthBar->setTexture("../Resource/Texture/UI/Ingame/MC_HP_Bar.png");
-    applyTransforms(
-        healthBar->getTransform(),
-        healthBarBasePos,
-        healthBarBaseScale
-    );
-	healthBar->setRenderOrder(50); 
-    objectsList.push_back(healthBar);
-
-
-    healthBarFill = new SimpleObject();
-    healthBarFill->setColor({ 0.0353f, 0.7216f, 0.6706f });
-    applyTransforms(
-        healthBarFill->getTransform(),
-        healthBarFillBasePos,
-        healthBarFillBaseScale
-    );
-	healthBarFill->setRenderOrder(51);
-    objectsList.push_back(healthBarFill);
-
-    staminaBar = new TexturedObject();
-    staminaBar->setTexture("../Resource/Texture/UI/Ingame/MC_Mana_Bar.png");
-    applyTransforms(
-        staminaBar->getTransform(),
-        staminaBarBasePos,
-        staminaBarBaseScale
-    );
-	staminaBar->setRenderOrder(52);
-    objectsList.push_back(staminaBar);
-
-    staminaBarFill = new SimpleObject();
-    staminaBarFill->setColor({ 1.0f, 1.0f, 1.0f });
-    applyTransforms(
-        staminaBarFill->getTransform(),
-        staminaBarFillBasePos,
-        staminaBarFillBaseScale
-    );
-	staminaBarFill->setRenderOrder(53);
-    objectsList.push_back(staminaBarFill);
-
-    deathBlackdrop = new SimpleObject();
-    deathBlackdrop->setColor({ 0.0f, 0.0f, 0.0f });
-    deathBlackdrop->setRenderOpacity(0.8f);
-    deathBlackdrop->getTransform().setScale(glm::vec3(0.0f));
-	deathBlackdrop->setRenderOrder(95); 
-    objectsList.push_back(deathBlackdrop);
-
-    deathText = new TexturedObject();
-    deathText->setTexture("../Resource/Texture/UI/DeathScreen/DeathText.png");
-    deathText->getTransform().setScale(glm::vec3(0.0f));
-	deathText->setRenderOrder(101);
-    objectsList.push_back(deathText);
-
-    deathmenubuttons[0] = new Button("RestartButton", "../Resource/Texture/UI/MainMenu/Retry.png");
-    deathmenubuttons[0]->getTransform().setScale(glm::vec3(0.0f));
-    deathmenubuttons[0]->setOnClickCallback([]() {
-        GameEngine::getInstance()->getStateController()->gameStateNext = GameState::GS_RESTART;
-        });
-	deathmenubuttons[0]->setRenderOrder(102);
-    objectsList.push_back(deathmenubuttons[0]);
-
-    deathmenubuttons[1] = new Button("MainMenuButton", "../Resource/Texture/UI/MainMenu/MainMenu.png");
-    deathmenubuttons[1]->getTransform().setScale(glm::vec3(0.0f)); 
-    deathmenubuttons[1]->setOnClickCallback([]() {
-        GameEngine::getInstance()->getStateController()->gameStateNext = GameState::GS_MAINMENU;
-        });
-	deathmenubuttons[1]->setRenderOrder(103);
-    objectsList.push_back(deathmenubuttons[1]);
-
-    pausemenubuttons[0] = new Button("ResumeButton", "../Resource/Texture/UI/MainMenu/PlayGame.png");
-    pausemenubuttons[0]->getTransform().setScale(glm::vec3(0.0f)); 
-    pausemenubuttons[0]->setRenderOrder(103);
-	pausemenubuttons[0]->setOnClickCallback([this]() {
-		isPaused = false;
-		isShowingSettings = false;
-		settingsUI->hideAllSettings();
-		for (auto* btn : pausemenubuttons) {
-			if (btn) {
-				btn->getTransform().setScale(glm::vec3(0.0f));
-				btn->setFocused(false);
-			}
-		}
-		if (arrow) arrow->getTransform().setScale(glm::vec3(0.0f));
-		if (pauseText) pauseText->getTransform().setScale(glm::vec3(0.0f));
-		ammoIcon->getAnimationComponent()->setPaused(false);
-		GameEngine::getInstance()->resumeTime();
-		});
-    objectsList.push_back(pausemenubuttons[0]);
-
-    settingsUI = new UISetting();
-    settingsUI->initUI(objectsList);
-    settingsUI->hideAllSettings();
-
-	pausemenubuttons[1] = new Button("RetryButtin", "../Resource/Texture/UI/MainMenu/Retry.png");
-	pausemenubuttons[1]->getTransform().setScale(glm::vec3(0.0f));
-	pausemenubuttons[1]->setRenderOrder(107);
-	pausemenubuttons[1]->setOnClickCallback([]() {
-		GameEngine::getInstance()->getStateController()->gameStateNext = GameState::GS_RESTART;
-		});
-	objectsList.push_back(pausemenubuttons[1]);
-
-
-    pausemenubuttons[2] = new Button("SettingsButton", "../Resource/Texture/UI/MainMenu/Setting.png");
-    pausemenubuttons[2]->getTransform().setScale(glm::vec3(0.0f)); 
-    pausemenubuttons[2]->setRenderOrder(104);
-    pausemenubuttons[2]->setOnClickCallback([this]() {
-        for (auto* btn : pausemenubuttons) {
-            if (btn) {
-                btn->getTransform().setScale(glm::vec3(0.0f));
-                btn->setFocused(false);
-            }
-        }
-        if (arrow) arrow->getTransform().setScale(glm::vec3(0.0f));
-        if (pauseText) pauseText->getTransform().setScale(glm::vec3(0.0f));
-
-        isShowingSettings = true;
-        settingsUI->showAllSettings();
-        });
-    objectsList.push_back(pausemenubuttons[2]);
-
-    
-
-    pausemenubuttons[3] = new Button("MainMenuButton", "../Resource/Texture/UI/MainMenu/MainMenu.png");
-    pausemenubuttons[3]->getTransform().setScale(glm::vec3(0.0f)); 
-    pausemenubuttons[3]->setRenderOrder(105);
-	pausemenubuttons[3]->setOnClickCallback([]() {
-		GameEngine::getInstance()->getStateController()->gameStateNext = GameState::GS_MAINMENU;
-		});
-    objectsList.push_back(pausemenubuttons[3]);
-
-	potionIcon0 = new TexturedObject("PotionIcon0");
-	potionIcon0->setTexture("../Resource/Texture/UI/Ingame/Heal0.png");
-	potionIcon0->getTransform().setScale(glm::vec3(0.0f));
-	potionIcon0->setRenderOrder(54);
-	objectsList.push_back(potionIcon0);
-
-    potionIcon1 = new TexturedObject("PotionIcon1");
-    potionIcon1->setTexture("../Resource/Texture/UI/Ingame/Heal1.png");
-    potionIcon1->getTransform().setScale(glm::vec3(0.0f));
-	potionIcon1->setRenderOrder(55);
-    objectsList.push_back(potionIcon1);
-
-    potionIcon2 = new TexturedObject("PotionIcon2");
-    potionIcon2->setTexture("../Resource/Texture/UI/Ingame/Heal2.png");
-    potionIcon2->getTransform().setScale(glm::vec3(0.0f));
-	potionIcon2->setRenderOrder(56);
-    objectsList.push_back(potionIcon2);
-
-    potionIcon3 = new TexturedObject("PotionIcon3");
-    potionIcon3->setTexture("../Resource/Texture/UI/Ingame/Heal3.png");
-    potionIcon3->getTransform().setScale(glm::vec3(0.0f));
-	potionIcon3->setRenderOrder(57);
-    objectsList.push_back(potionIcon3);
-
-    arrow = new TexturedObject("arrow");
-    arrow->setTexture("../Resource/Texture/UI/MainMenu/Arrow.png");
-    arrow->getTransform().setScale(glm::vec3(0.0f));
-	arrow->setRenderOrder(58);
-    objectsList.push_back(arrow);
-
-    gunIcons = new TexturedObject("GunIcons");
-    gunIcons->setTexture("../Resource/Texture/UI/Ingame/gunNew.png");
-    gunIcons->getTransform().setScale(glm::vec3(0.0f)); 
-	gunIcons->setRenderOrder(59);
-    objectsList.push_back(gunIcons);
-
-    ammoIcon = new TexturedObject("AmmoIcon");
-    ammoIcon->setTexture("../Resource/Texture/UI/Ingame/Bullet2SpritesheetFix.png");
-    ammoIcon->initAnimation(MAX_BULLETS + 1, 1);
-
-	pauseText = new TexturedObject("PauseText");
-	pauseText->setTexture("../Resource/Texture/UI/Setting/PAUSE.png");
-	pauseText->getTransform().setScale(glm::vec3(0.0f));
-	pauseText->setRenderOrder(112);
-	objectsList.push_back(pauseText);
-
-    Animation* ammoAnim = ammoIcon->getAnimationComponent();
-    for (int i = 0; i <= MAX_BULLETS; ++i) {
-        std::string s = "ammo" + std::to_string(i);
-        ammoAnim->addState(s, i, 0, 4, true);
-    }
-    ammoAnim->setState("ammo0");
-
-    ammoIcon->getTransform().setScale(glm::vec3(0.0f)); 
-	ammoIcon->setRenderOrder(61);
-    objectsList.push_back(ammoIcon);
-}
 
 void IngameUI::updateUI(PlayerObject* playerObject) {
     camPos = GameEngine::getInstance()->getRenderer()->getCamera()->getPosition();
@@ -543,6 +540,7 @@ void IngameUI::handleInput(InputManager& input, PlayerObject* playerObject) {
         }
         else {
             GameEngine::getInstance()->resumeTime();
+            Mix_Resume(-1);
             for (auto* btn : pausemenubuttons) {
                 btn->getTransform().setScale(glm::vec3(0.0f));
                 btn->setFocused(false);
@@ -589,7 +587,8 @@ void IngameUI::handleInput(InputManager& input, PlayerObject* playerObject) {
     }
 
     // ─── 3) If paused but NOT in settings, handle pause‐menu navigation ───
-    if (isPaused) {
+    if (isPaused) {   
+        arrow->setRenderOpacity(1.0f);              
         if (input.getButtonDown(SDLK_w) || input.getButtonDown(SDLK_UP)) {
             pausemenubuttons[selectedButtonIndex]->setFocused(false);
             selectedButtonIndex = (selectedButtonIndex - 1 + pausemenubuttons.size())

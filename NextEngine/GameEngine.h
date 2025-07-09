@@ -56,7 +56,7 @@ public:
 	bool getIsGamePaused() const;
 	void pauseTime();
 	void resumeTime();
-
+	string getResourcePath() const { return "../Resource/"; }
 	SDL_Window* getSDLWindow() const;
 	SDL_GLContext* getGLContextPtr() const;
 
