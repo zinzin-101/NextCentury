@@ -52,45 +52,12 @@ void UISetting::initUI(std::list<DrawableObject*>& objectsList) {
     controlTextAnim->setFrame(0, 0);
 
 
-    keyboardTex = new TexturedObject("KeyboardSprite");
-    keyboardTex->setTexture("../Resource/Texture/UI/Setting/Keyboard.png");
-    keyboardTex->getTransform().setScale({ 0.0f, 0.0f, 0.0f });  
-    keyboardTex->getTransform().setPosition({ -1.0f, 0.0f, 0.0f });
-    keyboardTex->setRenderOrder(234);
-
-    objectsList.push_back(keyboardTex);
-
-    mouseTex = new TexturedObject("MouseSprite");
-    mouseTex->setTexture("../Resource/Texture/UI/Setting/Mouse.png");
-    mouseTex->getTransform().setScale({ 0.0f, 0.0f, 0.0f });     
-    mouseTex->getTransform().setPosition({ -1.0f, 0.0f, 0.0f });
-    mouseTex->setRenderOrder(235);
-
-    objectsList.push_back(mouseTex);
 
     ControlPageTex = new TexturedObject("ControlPageBG");
-    ControlPageTex->setTexture("../Resource/Texture/UI/Setting/ControlPage.png");
+    ControlPageTex->setTexture("../Resource/Texture/UI/MainMenu/ControlPage.png");
     ControlPageTex->getTransform().setScale({ 0.0f, 0.0f, 0.0f }); 
     ControlPageTex->getTransform().setPosition({ 0.0f, 0.0f, 0.0f });
     ControlPageTex->setRenderOrder(236);
-
-    objectsList.push_back(ControlPageTex);
-
-    mouseTex = new TexturedObject("KeyboardSprite");
-    mouseTex->setTexture("../Resource/Texture/UI/Setting/Mouse.png");
-    mouseTex->getTransform().setScale({ 1.0f * 7.0f, (78.0f / 119.0f) * 7.0f, 0.0f });
-    mouseTex->getTransform().setPosition({ -1.0f, 0.0f, 0.0f });
-    mouseTex->getTransform().setScale({ 0.0f, 0.0f, 0.0f });
-    mouseTex->setRenderOrder(237);
-
-    objectsList.push_back(mouseTex);
-
-    ControlPageTex = new TexturedObject("ControlPageBG");
-    ControlPageTex->setTexture("../Resource/Texture/UI/Setting/ControlPage.png");
-    ControlPageTex->getTransform().setScale({16.0f, 9.0f, 0.0f});
-    ControlPageTex->getTransform().setPosition({0.0f, 0.0f, 0.0f});
-    ControlPageTex->getTransform().setScale({0.0f, 0.0f, 0.0f});
-    ControlPageTex->setRenderOrder(238);
 
     objectsList.push_back(ControlPageTex);
 
@@ -336,8 +303,6 @@ void UISetting::updateUI() {
         AudioPageTex->getTransform().setPosition({ camPos.x, camPos.y, camPos.z });
 
         ControlPageTex->getTransform().setScale({ 0.0f, 0.0f, 0.0f });
-        keyboardTex->getTransform().setScale({ 0.0f, 0.0f, 0.0f });
-        mouseTex->getTransform().setScale({ 0.0f, 0.0f, 0.0f });
 
         audioText->getTransform().setScale({ 4.0f, 1.0f, 0.0f });
         audioText->getTransform().setPosition({camPos.x  - 3.0f, camPos.y + 3.1f, camPos.z + 0.0f });
@@ -435,12 +400,6 @@ void UISetting::updateUI() {
         ControlPageTex->getTransform().setScale({ 16.0f, 9.0f, 0.0f });
         ControlPageTex->getTransform().setPosition({ camPos.x, camPos.y, camPos.z });
 
-        keyboardTex->getTransform().setScale({ 6.0f, (100.0f / 231.0f) * 6.0f, 0.0f });
-        keyboardTex->getTransform().setPosition({ camPos.x - 1.1f, camPos.y - 0.275f, camPos.z });
-
-        mouseTex->getTransform().setScale({ (78.0f / 119.0f) * 3.5f, 3.5f, 0.0f });
-        mouseTex->getTransform().setPosition({ camPos.x + 3.85f, camPos.y + 0.0f, camPos.z + 0.0f });
-
         audioText->getTransform().setScale({ 4.0f, 1.0f, 0.0f });
         audioText->getTransform().setPosition({ camPos.x + (-3.0f), camPos.y + 3.1f, camPos.z + 0.0f });
 
@@ -526,8 +485,6 @@ void UISetting::handleInput(SDL_Keycode key) {
         if (blackdrop)       blackdrop->getTransform().setScale({ 0.0f, 0.0f, 0.0f });
         if (AudioPageTex)    AudioPageTex->getTransform().setScale({ 0.0f, 0.0f, 0.0f });
         if (ControlPageTex)  ControlPageTex->getTransform().setScale({ 0.0f, 0.0f, 0.0f });
-        if (keyboardTex)     keyboardTex->getTransform().setScale({ 0.0f, 0.0f, 0.0f });
-        if (mouseTex)        mouseTex->getTransform().setScale({ 0.0f, 0.0f, 0.0f });
 
         if (masterVolumeBar) masterVolumeBar->getTransform().setScale({ 0.0f, 0.0f, 0.0f });
         if (soundEffectBar)  soundEffectBar->getTransform().setScale({ 0.0f, 0.0f, 0.0f });
@@ -569,8 +526,6 @@ void UISetting::hideAllSettings() {
     if (blackdrop)       blackdrop->getTransform().setScale({ 0.0f, 0.0f, 0.0f });
     if (AudioPageTex)    AudioPageTex->getTransform().setScale({ 0.0f, 0.0f, 0.0f });
     if (ControlPageTex)  ControlPageTex->getTransform().setScale({ 0.0f, 0.0f, 0.0f });
-    if (keyboardTex)     keyboardTex->getTransform().setScale({ 0.0f, 0.0f, 0.0f });
-    if (mouseTex)        mouseTex->getTransform().setScale({ 0.0f, 0.0f, 0.0f });
 
     if (masterVolumeBar) masterVolumeBar->getTransform().setScale({ 0.0f, 0.0f, 0.0f });
     if (soundEffectBar)  soundEffectBar->getTransform().setScale({ 0.0f, 0.0f, 0.0f });
@@ -605,8 +560,6 @@ void UISetting::showAllSettings() {
 	if (blackdrop)       blackdrop->getTransform().setScale({ 20.0f, 20.0f, 0.0f });
 	if (AudioPageTex)    AudioPageTex->getTransform().setScale({ 16.0f, 9.0f, 0.0f });
 	if (ControlPageTex)  ControlPageTex->getTransform().setScale({ 16.0f, 9.0f, 0.0f });
-	if (keyboardTex)     keyboardTex->getTransform().setScale({ 6.0f, (100.0f / 231.0f) * 6.0f, 0.0f });
-	if (mouseTex)        mouseTex->getTransform().setScale({ (78.0f / 119.0f) * 3.5f, 3.5f, 0.0f });
 	if (masterVolumeBar) masterVolumeBar->getTransform().setScale({ BAR_WIDTH, BAR_HEIGHT, 0.0f });
 	if (soundEffectBar)  soundEffectBar->getTransform().setScale({ BAR_WIDTH, BAR_HEIGHT, 0.0f });
 	if (musicBar)        musicBar->getTransform().setScale({ BAR_WIDTH, BAR_HEIGHT, 0.0f });

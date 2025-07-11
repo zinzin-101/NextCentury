@@ -39,9 +39,6 @@ private:
     TexturedObject* AudioPageTex = nullptr;
     TexturedObject* ControlPageTex = nullptr;
 
-    TexturedObject* keyboardTex = nullptr;
-    TexturedObject* mouseTex = nullptr;
-
     TexturedObject* masterVolumeBar = nullptr;
     TexturedObject* soundEffectBar = nullptr;
     TexturedObject* musicBar = nullptr;
