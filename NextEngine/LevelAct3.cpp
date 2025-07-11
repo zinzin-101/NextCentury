@@ -120,7 +120,7 @@ void LevelAct3::levelInit() {
     startObjects(objectsList);
 
     player->setWieldWeaponSprite(false);
-    player->getDamageCollider()->setFollowOffset(glm::vec3(1.0f, -0.2f, 0));
+    //player->getDamageCollider()->setFollowOffset(glm::vec3(1.0f, -0.2f, 0));
 
     TexturedObject* backGround2 = new TexturedObject();
     backGround2->getTransform().setPosition(0.0f, 0.0f);

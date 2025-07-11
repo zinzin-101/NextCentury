@@ -109,7 +109,7 @@ void LevelAct12::levelInit() {
     startObjects(objectsList);
 
     GameEngine::getInstance()->getRenderer()->getCamera()->setTarget(player);
-    player->getDamageCollider()->setFollowOffset(glm::vec3(1.0f, -0.2f, 0));
+    //player->getDamageCollider()->setFollowOffset(glm::vec3(1.0f, -0.2f, 0));
 
     UIobject->initUI(objectsList);
 

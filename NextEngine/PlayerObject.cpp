@@ -204,16 +204,16 @@ void PlayerObject::useHealthPotion() {
     healed = false;
 
     this->getAnimationComponent()->setState("Healing");
-	GameEngine::getInstance()->getAudioEngine().playSoundEffectByName("Sound_Heal.wav", 0, true);
 }
 
 void PlayerObject::start(list<DrawableObject*>& objectsList) {
     attackHitbox = new DamageCollider<EnemyObject>(this, 0, -1);
     //attackHitbox = new DamageCollider<EnemyObject>(this, damage, 2.5f);
+    //attackHitbox->setDrawCollider(true); // debug
     attackHitbox->setActive(false);
     attackHitbox->setFollowOwner(true);
-    attackHitbox->setFollowOffset(glm::vec3(0.1f, 0.0f, 0));
-    attackHitbox->getColliderComponent()->setWidth(1.8f);
+    attackHitbox->setFollowOffset(glm::vec3(0.7f, -0.2f, 0));
+    attackHitbox->getColliderComponent()->setWidth(1.5f);
     attackHitbox->addEmitter(objectsList);
     objectsList.emplace_back(attackHitbox);
 
@@ -760,6 +760,7 @@ void PlayerObject::handleHealing() {
 
     Animation::State animState = this->getAnimationComponent()->getCurrentAnimationState();
     if (animState.currentFrame == healFrame && !healed) {
+        GameEngine::getInstance()->getAudioEngine().playSoundEffectByName("Sound_Heal.wav", 0, true);
         this->heal(PlayerStat::HEAL_AMOUNT);
         currentNumOfPotion--;
         resetAttack();

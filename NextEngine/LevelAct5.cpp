@@ -132,7 +132,7 @@ void LevelAct5::levelInit() {
 
     startObjects(objectsList);
 
-    player->getDamageCollider()->setFollowOffset(glm::vec3(1.0f, -0.2f, 0));
+    //player->getDamageCollider()->setFollowOffset(glm::vec3(1.0f, -0.2f, 0));
 
     //ParallaxObject* fog = new ParallaxObject(0.0f, -0.1f, 60.0f, false, player, true, pictureWidth, pictureHeight);
     //fog->setTexture("../Resource/Texture/OutskirtParallax/OSKT_P01_Fog.png");

@@ -413,7 +413,6 @@ void ElivaBoss::handleBayonetSlash() {
 
 	if (animState.name != "BayonetSlash") {
 		this->getAnimationComponent()->setState("BayonetSlash");
-		GameEngine::getInstance()->playSoundEffect("Boss_Slash.wav", 0, true);
 		glm::vec3 playerPos = targetEntity->getTransform().getPosition();
 		glm::vec3 elivaPos = this->getTransform().getPosition();
 		float offsetX = playerPos.x - elivaPos.x;
@@ -428,6 +427,7 @@ void ElivaBoss::handleBayonetSlash() {
 	int currentFrame = animState.currentFrame;
 
 	if (currentFrame == 4 + 1) {
+		GameEngine::getInstance()->playSoundEffect("Boss_Slash.wav", 0, false);
 		bayonetCollider->trigger(this->getTransform().getPosition());
 		bayonetCollider->setCanDamage(false);
 		bayonetCollider->setCanDecreaseTime(false);
@@ -592,7 +592,6 @@ void ElivaBoss::handleFuryBayonetSlash() {
 	const Animation::State& animState = this->getAnimationComponent()->getCurrentAnimationStateRef();
 	if (animState.name != "FuryBayonetSlash") {
 		this->getAnimationComponent()->setState("FuryBayonetSlash");
-		GameEngine::getInstance()->playSoundEffect("Boss_Slash.wav", 0, true);
 		glm::vec3 playerPos = targetEntity->getTransform().getPosition();
 		glm::vec3 elivaPos = this->getTransform().getPosition();
 		float offsetX = playerPos.x - elivaPos.x;
@@ -603,6 +602,7 @@ void ElivaBoss::handleFuryBayonetSlash() {
 	int currentFrame = animState.currentFrame;
 
 	if (currentFrame == 4 + 1) {
+		GameEngine::getInstance()->playSoundEffect("Boss_Slash.wav", 0, false);
 		bayonetCollider->trigger(this->getTransform().getPosition());
 		bayonetCollider->setCanDamage(false);
 		bayonetCollider->setCanDecreaseTime(false);

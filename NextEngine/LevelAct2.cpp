@@ -89,7 +89,7 @@ void LevelAct2::levelInit() {
 
     startObjects(objectsList);
 
-    player->getDamageCollider()->setFollowOffset(glm::vec3(1.0f, -0.2f, 0));
+    //player->getDamageCollider()->setFollowOffset(glm::vec3(1.0f, -0.2f, 0));
     player->getTransform().setPosition(glm::vec3(-6.0f, -1.6f, 0.0f));
 
     UIobject->initUI(objectsList);

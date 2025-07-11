@@ -96,7 +96,7 @@ void LevelAct1::levelInit() {
 
     startObjects(objectsList);
 
-    player->getDamageCollider()->setFollowOffset(glm::vec3(1.0f, -0.2f, 0));
+    //player->getDamageCollider()->setFollowOffset(glm::vec3(1.0f, -0.2f, 0));
     player->getTransform().setPosition(glm::vec3( - 6.0f, -1.6f, 0.0f));
 
     ParallaxObject* pole = new ParallaxObject(16.0f, 0.0f, 0.1f, false, player, true, pictureWidth, pictureHeight);
