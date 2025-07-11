@@ -4,7 +4,7 @@
 #include "Level.h"
 
 UI::UI() {
-    buttons.resize(5);
+    buttons.resize(6);
     selectedButtonIndex = 0;
 }
 
@@ -89,18 +89,33 @@ void UI::initUI(std::list<DrawableObject*>& objectsList) {
     buttons[3]->setRenderOrder(25);
     objectsList.push_back(buttons[3]);
 
-    buttons[4] = new Button("QuitGameButton", "");
-    buttons[4]->setTexture("../Resource/Texture/UI/MainMenu/QuitGame.png");
+    buttons[4] = new Button("ControlButton", "");
+    buttons[4]->setTexture("../Resource/Texture/UI/MainMenu/Control.png");
     buttons[4]->getTransform().setScale(glm::vec3(1.5f, 0.5f, 0.0f));
     buttons[4]->getTransform().setPosition(glm::vec3(-5.0f, -2.5f, 0.0f));
-    buttons[4]->setOnClickCallback([]() {
-		GameEngine::getInstance()->getStateController()->gameStateNext = GameState::GS_QUIT;
+    buttons[4]->setOnClickCallback([this]() {
+		controlPageVisible = !controlPageVisible;
         });
     buttons[4]->setRenderOrder(26);
     objectsList.push_back(buttons[4]);
-    
-    
-    
+
+    buttons[5] = new Button("QuitGameButton", "");
+    buttons[5]->setTexture("../Resource/Texture/UI/MainMenu/QuitGame.png");
+    buttons[5]->getTransform().setScale(glm::vec3(1.5f, 0.5f, 0.0f));
+    buttons[5]->getTransform().setPosition(glm::vec3(-5.0f, -3.5f, 0.0f));
+    buttons[5]->setOnClickCallback([]() {
+		GameEngine::getInstance()->getStateController()->gameStateNext = GameState::GS_QUIT;
+        });
+    buttons[5]->setRenderOrder(26);
+    objectsList.push_back(buttons[5]);
+
+	controlPage = new TexturedObject("ControlPage");
+	controlPage->setTexture("../Resource/Texture/UI/MainMenu/ControlPage.png");
+	controlPage->getTransform().setScale(glm::vec3(8.8888888888885f, 8.0f, 0.0f));
+	controlPage->getTransform().setPosition(glm::vec3(2.0f, -0.5f, 0.0f));
+	controlPage->setRenderOrder(27);
+	objectsList.push_back(controlPage);
+	controlPageVisible = false;
 
     settingsUI = new UISetting();
     settingsUI->initUI(objectsList);
@@ -135,6 +150,13 @@ void UI::updateUI() {
         return;
     }
 
+    if (controlPageVisible) {
+		controlPage->getTransform().setScale(glm::vec3(12.4444444444439f, 7.0f, 0.0f));
+    }
+    else {
+		controlPage->getTransform().setScale(glm::vec3(0.0f, 0.0f, 0.0f));
+    }
+
     for (size_t i = 0; i < buttons.size(); ++i) {
         buttons[i]->setFocused(int(i) == selectedButtonIndex);
     }
@@ -148,6 +170,7 @@ void UI::handleInput(SDL_Keycode key) {
         if (key == SDLK_ESCAPE) {
             settingsUI->hideAllSettings();
             inSettings = false;
+            
         }
         return;
     }
@@ -176,7 +199,11 @@ void UI::handleInput(SDL_Keycode key) {
         buttons[selectedButtonIndex]->handleKeyboardInput(SDLK_RETURN, true);
         buttons[selectedButtonIndex]->handleKeyboardInput(SDLK_RETURN, false);
         break;
-
+	case SDLK_ESCAPE:
+		if (controlPageVisible) {
+			controlPageVisible = false;
+			controlPage->getTransform().setScale(glm::vec3(0.0f, 0.0f, 0.0f));
+		}
     default:
         break;
     }
@@ -193,13 +220,14 @@ void UI::handleInput(char key) {
         case '\t': kc = SDLK_TAB; break;
         case '\r':
         case ' ': kc = SDLK_RETURN; break;
-        case 27:  kc = SDLK_ESCAPE; break;
+        case 27:  kc = SDLK_ESCAPE;  break;
         default:  kc = 0; break;
         }
         settingsUI->handleInput(key);
         if (key == SDLK_ESCAPE) {
             settingsUI->hideAllSettings();
             inSettings = false;
+            controlPageVisible = false;
         }
 
         return;

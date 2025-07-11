@@ -24,10 +24,14 @@ private:
     SimpleObject* healthBar;
     int            selectedButtonIndex;
     TexturedObject* arrow;
+	TexturedObject* controlPage;
 
+	bool controlPageVisible = false; 
     bool inSettings = false;           
     UISetting* settingsUI = nullptr;    
 
     std::list<DrawableObject*>* sharedObjectsList = nullptr;
+
+	
 
 };
