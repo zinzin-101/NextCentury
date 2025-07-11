@@ -2,6 +2,6 @@ Cultist 1
 0
 0
 4.0
-STOP! You're not allowed to go out 
-ahead without PERMISSION.
+Stop! You're not allowed to pass
+without PERMISSION.
 NEXTCHAT

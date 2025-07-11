@@ -2,5 +2,5 @@ Cultist
 0
 0
 4.2
-YOU! You have magic!!
+You! You magic user!
 NEXTCHAT

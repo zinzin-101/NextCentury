@@ -19,6 +19,8 @@ SonicWave::SonicWave() {
 	getAnimationComponent()->addState("Attack", 6, 8, 16, false, SonicWaveStat::ANIMATION_TIME_PER_FRAME);
 
 	this->getAnimationComponent()->setState("Marking");
+	Animation::State currentState = this->getAnimationComponent()->getCurrentAnimationState();
+	this->getAnimationComponent()->setFrame(currentState.row, currentState.currentFrame);
 
 	damageStartFrame = 4;
 

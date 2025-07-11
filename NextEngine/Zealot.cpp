@@ -11,7 +11,7 @@ Zealot::Zealot(const EnemyInfo& enemyinfo) : EnemyObject(enemyinfo) {
 	getColliderComponent()->setDimension(0.5f, 0.85f);
 	getColliderComponent()->getTransform().setPosition(0.0f, -0.15f);
 
-	attackFrameStart = 5;
+	attackFrameStart = 4;
 	attackFrameActivate = 6;
 	attackFrameEnd = 7;
 }

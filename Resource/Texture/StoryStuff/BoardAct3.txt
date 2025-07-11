@@ -31,6 +31,9 @@ n
 VOSS
 18
 b
-a highly skilled medic, has saved countless soldiers injured in berserker battles.
+a highly skilled medic, has saved countless soldiers injured in the battles
+18
+n
+against berserkers.
 18
 n

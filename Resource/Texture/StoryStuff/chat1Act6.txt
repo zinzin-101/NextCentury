@@ -3,7 +3,7 @@ Cultist 1
 0
 9.0
 ...Lately, there have been more and 
-more berserk, and each one is really
+more berserk, and each one was really
 hard to deal with. But do we really
 have to train this hard?
 NEXTCHAT
@@ -28,7 +28,7 @@ Speaker
 1
 12.0
 Urgent report! Soldiers are being 
-eliminated by MAGIC USER, 
+eliminated by a MAGIC USER, 
 heading towards the outskirts. 
 They're expected to appear in 
 the Danger Zone. STAY ALERT!

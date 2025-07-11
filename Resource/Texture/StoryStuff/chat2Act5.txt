@@ -9,7 +9,7 @@ Cultist 2
 0
 8.0
 First time here? Don't stir up trouble.
-This is CULTIST BASE.
+This is the CULTIST BASE.
 Even if you're one of them, 
 look suspicious and YOU'RE DONE.
 NEXTCHAT
