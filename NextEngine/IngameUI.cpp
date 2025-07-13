@@ -172,7 +172,7 @@ void IngameUI::initUI(std::list<DrawableObject*>& objectsList) {
     objectsList.push_back(potionIcon3);
 
     arrow = new TexturedObject("arrow");
-    arrow->setTexture("../Resource/Texture/ArrowRight.png");
+    arrow->setTexture("../Resource/Texture/UI/Setting/ArrowRight.png");
     arrow->getTransform().setScale(glm::vec3(0.0f));
     arrow->setRenderOrder(58);
     objectsList.push_back(arrow);

@@ -123,7 +123,7 @@ void UISetting::initUI(std::list<DrawableObject*>& objectsList) {
     static constexpr int DELTA = 10;
 	string resourcePath = GameEngine::getInstance()->getResourcePath();
     arrowMasterLeft = new TexturedObject("MasterLeft");
-    arrowMasterLeft->setTexture(resourcePath + "/Texture/ArrowLeft.png");
+    arrowMasterLeft->setTexture(resourcePath + "/Texture/UI/Setting/ArrowLeft.png");
     arrowMasterLeft->getTransform().setScale({arrowW, arrowW, 0.0f});
     arrowMasterLeft->getTransform().setPosition({leftX, MASTER_Y, 0.0f});
     arrowMasterLeft->setRenderOrder(245);
@@ -144,7 +144,7 @@ void UISetting::initUI(std::list<DrawableObject*>& objectsList) {
     objectsList.push_back(buttons[0]);
 
     arrowMasterRight = new TexturedObject("MasterRight");
-    arrowMasterRight->setTexture("../Resource/Texture/ArrowRight.png");
+    arrowMasterRight->setTexture("../Resource/Texture/UI/Setting/ArrowRight.png");
     arrowMasterRight->getTransform().setScale({arrowW, arrowW, 0.0f});
     arrowMasterRight->getTransform().setPosition({rightX, MASTER_Y, 0.0f});
     arrowMasterRight->setRenderOrder(247);

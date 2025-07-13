@@ -327,6 +327,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_209B807B137D4A3AAA86DA6977518D9C"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_20B0B925846345B4AB4E66543FCD46CF"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -874,6 +880,12 @@
         "Entry"
         {
         "MsmKey" = "8:_591C4A2BB4DA4F4DA69B5A5959699C37"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_5BD0253889EF453197F88B20906E92CE"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -1677,6 +1689,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_B9711297ED9B4B7C93151E377ECC8ECF"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_BB0ACCA67D0BEA61352C995D067ACF1C"
         "OwnerKey" = "8:_0725A418FC5A43C78D6839C20EF02791"
         "MsmSig" = "8:_UNDEFINED"
@@ -1780,12 +1798,6 @@
         "Entry"
         {
         "MsmKey" = "8:_C75E1789C0FD499DA30A80DEF605A4F3"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_C90644901E4C461488D53E0CA4FEEE8C"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -3426,6 +3438,26 @@
             {
             "SourcePath" = "8:..\\..\\GameBuild\\NextCenturyReleases\\NextCenturyBetaPrecompiledBuild\\Resource\\scenes\\act4.dat"
             "TargetName" = "8:act4.dat"
+            "Tag" = "8:"
+            "Folder" = "8:_27669AFBD5304D88B7A855BA9B1C1A5F"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_209B807B137D4A3AAA86DA6977518D9C"
+            {
+            "SourcePath" = "8:..\\Resource\\scenes\\actSecret.dat"
+            "TargetName" = "8:actSecret.dat"
             "Tag" = "8:"
             "Folder" = "8:_27669AFBD5304D88B7A855BA9B1C1A5F"
             "Condition" = "8:"
@@ -5268,6 +5300,26 @@
             "TargetName" = "8:IMGT_P05_MidGround02.png"
             "Tag" = "8:"
             "Folder" = "8:_9780B14EA6374C058159EE8FB8340A75"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_5BD0253889EF453197F88B20906E92CE"
+            {
+            "SourcePath" = "8:..\\Resource\\scenes\\act1.dat"
+            "TargetName" = "8:act1.dat"
+            "Tag" = "8:"
+            "Folder" = "8:_27669AFBD5304D88B7A855BA9B1C1A5F"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -7942,6 +7994,26 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_B9711297ED9B4B7C93151E377ECC8ECF"
+            {
+            "SourcePath" = "8:..\\Resource\\Texture\\UI\\MainMenu\\ControlPage.png"
+            "TargetName" = "8:ControlPage.png"
+            "Tag" = "8:"
+            "Folder" = "8:_FA1C0A9265354FDF9E8B22325B1BC8E3"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_BB0ACCA67D0BEA61352C995D067ACF1C"
             {
             "SourcePath" = "8:glew32.dll"
@@ -8288,26 +8360,6 @@
             "TargetName" = "8:ChatBubble.png"
             "Tag" = "8:"
             "Folder" = "8:_F8EB1DC2CDBD4BEFA3CE8A9F818369A1"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_C90644901E4C461488D53E0CA4FEEE8C"
-            {
-            "SourcePath" = "8:..\\..\\GameBuild\\NextCenturyReleases\\NextCenturyBetaPrecompiledBuild\\Resource\\scenes\\act1.dat"
-            "TargetName" = "8:act1.dat"
-            "Tag" = "8:"
-            "Folder" = "8:_27669AFBD5304D88B7A855BA9B1C1A5F"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -10661,7 +10713,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Next Century"
         "ProductCode" = "8:{272EF897-7C33-4C7E-ACF0-247894E8921E}"
-        "PackageCode" = "8:{6E44DBC4-26EE-4AAE-B7F3-830231EB8BE8}"
+        "PackageCode" = "8:{B7A9CC96-8F34-43BB-A138-64A6F98ABF3A}"
         "UpgradeCode" = "8:{9BAC7EA7-69E0-41E7-8A83-B54FCF0BFB9F}"
         "AspNetVersion" = "8:2.0.50727.0"
         "RestartWWWService" = "11:FALSE"
