@@ -17,6 +17,7 @@
 #include "LevelMainMenu.h"
 #include "Level_Secret.h"
 #include "LevelCredit.h"
+#include "LevelTutorial.h"
 
 GameStateController::GameStateController() {
 	// set the initial game state
@@ -26,7 +27,6 @@ GameStateController::GameStateController() {
 }//
 
 void GameStateController::init(GameState gameStateInit) {
-	// reset the current, previoud and next game
 	gameStateCurr = gameStatePrev = gameStateNext = gameStateInit;
 }
 
@@ -36,9 +36,11 @@ void GameStateController::loadLevel() {
 	}
 	cout << gameStateCurr << endl;
 	switch (gameStateCurr) {
+		case GameState::GS_TUTORIAL:
+			currentLevel = new LevelTutorial();
+			break;
 		case GameState::GS_MAINMENU:
 			currentLevel = new LevelMainMenu();
-			//currentLevel = new LevelAct4();
 			break;
 		case GameState::GS_ACT1:
 			currentLevel = new LevelAct1();

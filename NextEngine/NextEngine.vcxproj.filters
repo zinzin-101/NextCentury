@@ -98,6 +98,7 @@
     <ClCompile Include="LevelCredit.cpp" />
     <ClCompile Include="UISetting.cpp" />
     <ClCompile Include="Level_Secret.cpp" />
+    <ClCompile Include="LevelTutorial.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
@@ -212,8 +213,8 @@
     <ClInclude Include="LevelAct14.h" />
     <ClInclude Include="LevelCredit.h" />
     <ClInclude Include="UISetting.h" />
-    <ClInclude Include="resource.h" />
     <ClInclude Include="Level_Secret.h" />
+    <ClInclude Include="LevelTutorial.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Resource\Shader\fragment.shd" />
