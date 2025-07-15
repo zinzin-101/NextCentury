@@ -111,5 +111,6 @@ void LevelTutorial::handleKey(InputManager& input) {
     if (input.getButtonDown(SDLK_a)) UIobject->handleInput(SDLK_a);
     if (input.getButtonDown(SDLK_d)) UIobject->handleInput(SDLK_d);
     if (input.getButtonDown(SDLK_RETURN)) UIobject->handleInput(SDLK_RETURN);
+    if (input.getButtonDown(SDLK_SPACE)) loadNextLevel();
     if (input.getButtonDown(SDLK_ESCAPE)) UIobject->handleInput(SDLK_ESCAPE);
 }
