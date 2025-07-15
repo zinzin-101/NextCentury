@@ -167,3 +167,10 @@ void GameEngine::stopSfx() {
 void GameEngine::signalToCurrentLevel() {
 	stateController->getCurrentLevel()->signalFromEngine();
 }
+
+std::string GameEngine::getAssetPath(const std::string& rel) {
+	char* basePathC = SDL_GetBasePath();
+	std::string basePath = basePathC ? basePathC : "";
+	SDL_free(basePathC);
+	return basePath + "../Resource/" + rel;
+}

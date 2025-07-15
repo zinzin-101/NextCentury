@@ -11,6 +11,9 @@ UISetting::~UISetting() {
 
 void UISetting::initUI(std::list<DrawableObject*>& objectsList) {
     sharedObjectsList = &objectsList;
+    auto arrowLeftPath = GameEngine::getInstance()->getAssetPath("Texture/UI/Setting/ArrowLeft.png");
+    auto arrowRightPath = GameEngine::getInstance()->getAssetPath("Texture/UI/Setting/ArrowRight.png");
+
 
     blackdrop = new SimpleObject("SettingBlackdrop");
     blackdrop->setColor({ 0.0f, 0.0f, 0.0f });
@@ -121,9 +124,9 @@ void UISetting::initUI(std::list<DrawableObject*>& objectsList) {
     float leftX  = barX - halfBar - halfArr - margin; 
     float rightX = barX + halfBar + halfArr + margin; 
     static constexpr int DELTA = 10;
-	string resourcePath = GameEngine::getInstance()->getResourcePath();
+
     arrowMasterLeft = new TexturedObject("MasterLeft");
-    arrowMasterLeft->setTexture(resourcePath + "/Texture/UI/Setting/ArrowLeft.png");
+    arrowMasterLeft->setTexture(arrowLeftPath);
     arrowMasterLeft->getTransform().setScale({arrowW, arrowW, 0.0f});
     arrowMasterLeft->getTransform().setPosition({leftX, MASTER_Y, 0.0f});
     arrowMasterLeft->setRenderOrder(245);
@@ -131,6 +134,8 @@ void UISetting::initUI(std::list<DrawableObject*>& objectsList) {
     objectsList.push_back(arrowMasterLeft);
 
     buttons[0] = new Button("MasterLeftButton", "");
+	buttons[0]->setTexture(arrowLeftPath);
+	buttons[0]->setRenderOpacity(0.0f);
     buttons[0]->getTransform().setScale({arrowW, arrowW, 0.0f});
     buttons[0]->getTransform().setPosition({leftX, MASTER_Y, 0.0f});
     buttons[0]->setOnClickCallback([]() {
@@ -144,7 +149,7 @@ void UISetting::initUI(std::list<DrawableObject*>& objectsList) {
     objectsList.push_back(buttons[0]);
 
     arrowMasterRight = new TexturedObject("MasterRight");
-    arrowMasterRight->setTexture("../Resource/Texture/UI/Setting/ArrowRight.png");
+    arrowMasterRight->setTexture(arrowRightPath);
     arrowMasterRight->getTransform().setScale({arrowW, arrowW, 0.0f});
     arrowMasterRight->getTransform().setPosition({rightX, MASTER_Y, 0.0f});
     arrowMasterRight->setRenderOrder(247);
@@ -152,6 +157,8 @@ void UISetting::initUI(std::list<DrawableObject*>& objectsList) {
     objectsList.push_back(arrowMasterRight);
 
     buttons[1] = new Button("MasterRightButton", "");
+	buttons[1]->setTexture(arrowRightPath);
+	buttons[1]->setRenderOpacity(0.0f);
     buttons[1]->getTransform().setScale({arrowW, arrowW, 0.0f});
     buttons[1]->getTransform().setPosition({rightX, MASTER_Y, 0.0f});
     buttons[1]->setOnClickCallback([]() {
@@ -165,7 +172,7 @@ void UISetting::initUI(std::list<DrawableObject*>& objectsList) {
     objectsList.push_back(buttons[1]);
 
     arrowSFXLeft = new TexturedObject("SFXLeft");
-    arrowSFXLeft->setTexture("../Resource/Texture/UI/Setting/ArrowLeft.png");
+    arrowSFXLeft->setTexture(arrowLeftPath);
     arrowSFXLeft->getTransform().setScale({arrowW, arrowW, 0.0f});
     arrowSFXLeft->getTransform().setPosition({leftX, SFX_Y, 0.0f});
     arrowSFXLeft->setRenderOrder(249);
@@ -173,6 +180,8 @@ void UISetting::initUI(std::list<DrawableObject*>& objectsList) {
     objectsList.push_back(arrowSFXLeft);
 
     buttons[4] = new Button("SFXLeftButton", "");
+	buttons[4]->setTexture(arrowLeftPath);
+	buttons[4]->setRenderOpacity(0.0f);
     buttons[4]->getTransform().setScale({arrowW, arrowW, 0.0f});
     buttons[4]->getTransform().setPosition({leftX, SFX_Y, 0.0f});
     buttons[4]->setOnClickCallback([]() {
@@ -185,7 +194,7 @@ void UISetting::initUI(std::list<DrawableObject*>& objectsList) {
     objectsList.push_back(buttons[4]);
 
     arrowSFXRight = new TexturedObject("SFXRight");
-    arrowSFXRight->setTexture("../Resource/Texture/UI/Setting/ArrowRight.png");
+    arrowSFXRight->setTexture(arrowRightPath);
     arrowSFXRight->getTransform().setScale({arrowW, arrowW, 0.0f});
     arrowSFXRight->getTransform().setPosition({rightX, SFX_Y, 0.0f});
     arrowSFXRight->setRenderOrder(251);
@@ -193,6 +202,8 @@ void UISetting::initUI(std::list<DrawableObject*>& objectsList) {
     objectsList.push_back(arrowSFXRight);
 
     buttons[5] = new Button("SFXRightButton", "");
+	buttons[5]->setTexture(arrowRightPath);
+	buttons[5]->setRenderOpacity(0.0f);
     buttons[5]->getTransform().setScale({arrowW, arrowW, 0.0f});
     buttons[5]->getTransform().setPosition({rightX, SFX_Y, 0.0f});
     buttons[5]->setOnClickCallback([]() {
@@ -205,7 +216,7 @@ void UISetting::initUI(std::list<DrawableObject*>& objectsList) {
     objectsList.push_back(buttons[5]);
 
     arrowMusicLeft = new TexturedObject("MusicLeft");
-    arrowMusicLeft->setTexture("../Resource/Texture/UI/Setting/ArrowLeft.png");
+    arrowMusicLeft->setTexture(arrowLeftPath);
     arrowMusicLeft->getTransform().setScale({arrowW, arrowW, 0.0f});
     arrowMusicLeft->getTransform().setPosition({leftX, MUSIC_Y, 0.0f});
     arrowMusicLeft->setRenderOrder(253);
@@ -213,6 +224,8 @@ void UISetting::initUI(std::list<DrawableObject*>& objectsList) {
     objectsList.push_back(arrowMusicLeft);
 
     buttons[2] = new Button("MusicLeftButton", "");
+	buttons[2]->setTexture(arrowLeftPath);
+	buttons[2]->setRenderOpacity(0.0f);
     buttons[2]->getTransform().setScale({arrowW, arrowW, 0.0f});
     buttons[2]->getTransform().setPosition({leftX, MUSIC_Y, 0.0f});
     buttons[2]->setOnClickCallback([]() {
@@ -225,13 +238,15 @@ void UISetting::initUI(std::list<DrawableObject*>& objectsList) {
     objectsList.push_back(buttons[2]);
 
     arrowMusicRight = new TexturedObject("MusicRight");
-    arrowMusicRight->setTexture("../Resource/Texture/UI/Setting/ArrowRight.png");
+    arrowMusicRight->setTexture(arrowRightPath);
     arrowMusicRight->getTransform().setScale({arrowW, arrowW, 0.0f});
     arrowMusicRight->getTransform().setPosition({rightX, MUSIC_Y, 0.0f});
     objectsList.push_back(arrowMusicRight);
 	arrowMusicRight->setRenderOrder(255);
 
     buttons[3] = new Button("MusicRightButton", "");
+	buttons[3]->setTexture(arrowRightPath);
+	buttons[3]->setRenderOpacity(0.0f);
     buttons[3]->getTransform().setScale({arrowW, arrowW, 0.0f});
     buttons[3]->getTransform().setPosition({rightX, MUSIC_Y, 0.0f});
     buttons[3]->setOnClickCallback([]() {
@@ -568,3 +583,4 @@ void UISetting::showAllSettings() {
 	}
 	updateUI();
 }
+

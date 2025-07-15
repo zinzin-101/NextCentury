@@ -26,6 +26,7 @@ public:
     bool isClosed() const { return justClosed; }
     void resetClosedFlag() { justClosed = false; }
 
+
 private:
     enum class Page {
         AUDIO,

@@ -369,7 +369,7 @@ GLuint GLRenderer::LoadTexture(string path) {
     SDL_Surface* image = IMG_Load(path.c_str());
     if (image == NULL) {
         cerr << "IMG_Load: " << SDL_GetError() << endl;
-        return -1;
+        return 0;
     }
     unsigned int texture;
     glGenTextures(1, &texture);

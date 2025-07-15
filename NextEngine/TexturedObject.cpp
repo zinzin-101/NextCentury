@@ -16,10 +16,19 @@ TexturedObject::~TexturedObject() {
 	}
 }
 
-unsigned int TexturedObject::setTexture(string path) {
-	texture = GameEngine::getInstance()->getRenderer()->LoadTexture(path);
+unsigned int TexturedObject::setTexture(std::string path) {
+	unsigned int texHandle =
+		GameEngine::getInstance()->getRenderer()->LoadTexture(path);
+	if (texHandle == 0) {
+		std::cout << "Texture load failed for '"
+			<< getName() << "' at path: " << path << std::endl;
+	}
+	else {
+		texture = texHandle;
+	}
 	return texture;
 }
+
 
 void TexturedObject::render(glm::mat4 globalModelTransform) {
 	if (animation != nullptr) {
@@ -82,14 +91,3 @@ Animation* TexturedObject::getAnimationComponent() {
 bool TexturedObject::isAnimated() {
 	return animation != nullptr;
 }
-
-//void TexturedObject::addAnimation(int rowCount, int colCount) {
-//	animated = true;
-//	this->rowCount = rowCount;
-//	this->colCount = colCount;
-//}
-//
-//void TexturedObject::setFrame(float row, float column) {
-//	offsetX = (1.0f / this->rowCount) * row;
-//	offsetY = (1.0f / this->colCount) * column;
-//}

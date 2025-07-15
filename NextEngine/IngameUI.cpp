@@ -518,10 +518,7 @@ void IngameUI::updateUI(PlayerObject* playerObject) {
 }
 
 void IngameUI::handleInput(InputManager& input, PlayerObject* playerObject) {
-    // ─── 1) Always intercept ESC first ───
     if (input.getButtonDown(SDLK_ESCAPE)) {
-        // If we are paused AND currently showing settings,
-        // ESC should close the settings screen and re‐open the pause menu.
         if (isPaused && isShowingSettings) {
             isShowingSettings = false;
             settingsUI->hideAllSettings();
@@ -529,7 +526,6 @@ void IngameUI::handleInput(InputManager& input, PlayerObject* playerObject) {
             return;
         }
 
-        // Otherwise, ESC toggles pause on/off as before
         isPaused = !isPaused;
         if (isPaused) {
             GameEngine::getInstance()->pauseTime();
@@ -551,9 +547,7 @@ void IngameUI::handleInput(InputManager& input, PlayerObject* playerObject) {
         return;
     }
 
-    // ─── 2) If paused AND in the Settings panel, forward specific keys ───
     if (isPaused && isShowingSettings) {
-        // Forward each relevant key:
         if (input.getButtonDown(SDLK_TAB)) {
             settingsUI->handleInput(SDLK_TAB);
         }
@@ -575,9 +569,6 @@ void IngameUI::handleInput(InputManager& input, PlayerObject* playerObject) {
         else if (input.getButtonDown(SDLK_q)) {
             settingsUI->handleInput(SDLK_q);
         }
-        // No need to check ESC here since IngameUI already did.
-
-        // ─── Now check if settings just closed itself ───
         if (settingsUI->isClosed()) {
             isShowingSettings = false;
             settingsUI->resetClosedFlag();
@@ -586,7 +577,6 @@ void IngameUI::handleInput(InputManager& input, PlayerObject* playerObject) {
         return;
     }
 
-    // ─── 3) If paused but NOT in settings, handle pause‐menu navigation ───
     if (isPaused) {   
         arrow->setRenderOpacity(1.0f);              
         if (input.getButtonDown(SDLK_w) || input.getButtonDown(SDLK_UP)) {
@@ -611,7 +601,6 @@ void IngameUI::handleInput(InputManager& input, PlayerObject* playerObject) {
         return;
     }
 
-    // ─── 4) If player is dead, handle death‐menu input ───
     if (playerObject && playerObject->getHealth() <= 0) {
         if (input.getButtonDown(SDLK_w) || input.getButtonDown(SDLK_UP)) {
             deathmenubuttons[selectedButtonIndex]->setFocused(false);

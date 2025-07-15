@@ -56,7 +56,6 @@ public:
 	bool getIsGamePaused() const;
 	void pauseTime();
 	void resumeTime();
-	string getResourcePath() const { return "../Resource/"; }
 	SDL_Window* getSDLWindow() const;
 	SDL_GLContext* getGLContextPtr() const;
 
@@ -69,4 +68,5 @@ public:
 	void signalToCurrentLevel();
 
 	AudioEngine& getAudioEngine() { return audioEngine; }
+	string getAssetPath(const std::string& rel);
 };

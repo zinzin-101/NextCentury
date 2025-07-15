@@ -9,10 +9,6 @@ UI::UI() {
 }
 
 UI::~UI() {
-    if (settingsUI) {
-        delete settingsUI;
-        settingsUI = nullptr;
-    }
 }
 
 void UI::initUI(std::list<DrawableObject*>& objectsList) {
