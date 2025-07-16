@@ -124,7 +124,7 @@ void Level_Secret::levelInit() {
 
     //player->getDamageCollider()->setFollowOffset(glm::vec3(1.0f, -0.2f, 0));
 
-    //UIobject->initUI(objectsList);
+    UIobject->initUI(objectsList);
 
     vector<glm::vec3> l;
     l.push_back({31.5f, 0.5f, 0.0f});
@@ -180,10 +180,10 @@ void Level_Secret::levelUpdate() {
             Ono->getTransform().translate(GameEngine::getInstance()->getTime()->getDeltaTime() * -10.0f, 0.0f);
         }
         if (timefade > 60.0f) {
-            GameEngine::getInstance()->getStateController()->gameStateNext = (GameState)13;
+            GameEngine::getInstance()->getStateController()->gameStateNext = GameState::GS_ACT13;
         }
     }
-    //UIobject->updateUI(player);
+    UIobject->updateUI(player);
 }
 
 void Level_Secret::levelDraw() {
